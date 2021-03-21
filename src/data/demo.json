@@ -63,6 +63,127 @@
           "cat": "title"
         }
       ]
+    },
+    {
+      "body": "Ravega’s overseas investments in YaoNet have proven fruitless - yet another failure from Peter Gregory. Hooli is a proven partner to startup founders. We can ensure your hard work becomes extremely profitable. Come to us instead of Russ Hanneman, Ravega, or anyone else on Sand Hill Road.",
+      "tags": [
+        {
+          "detail": "Ravega",
+          "cat": "competitors"
+        },
+        {
+          "detail": "YaoNet",
+          "cat": "competitors"
+        },
+        {
+          "detail": "Russ Hanneman",
+          "cat": "competitors"
+        },
+        {
+          "detail": "Networks",
+          "cat": "persona dept"
+        },
+        {
+          "detail": "Manufacturing",
+          "cat": "industry"
+        },
+        {
+          "detail": "Director",
+          "cat": "title"
+        },
+        {
+          "detail": "VP",
+          "cat": "title"
+        },
+        {
+          "detail": "CXO",
+          "cat": "title"
+        }
+      ]
+    },
+    {
+      "body": "Startups in Hooli’s investment portfolio grow 174% faster than Ravega’s portfolio YOY - our networks and AI accelerate all aspects of your operations.",
+      "tags": [
+        {
+          "detail": "Ravega",
+          "cat": "competitors"
+        },
+        {
+          "detail": "Russ Hanneman",
+          "cat": "competitors"
+        },
+        {
+          "detail": "VP",
+          "cat": "title"
+        },
+        {
+          "detail": "CXO",
+          "cat": "title"
+        },
+        {
+          "detail": "Director",
+          "cat": "title"
+        }
+      ]
+    },
+    {
+      "body": "Hooli is committed to the American way: we’ve decided to open a factory in the United States to produce the Gavin Belson Signature Box III. This box is 15% more efficient than Pied Piper’s box and is connected to a vast multitude of proprietary services to improve search, AI deployments, and overall functionality.",
+      "tags": [
+        {
+          "detail": "Pied Piper",
+          "cat": "competitors"
+        },
+        {
+          "detail": "Gavin Belson Signature Box III",
+          "cat": "products"
+        },
+        {
+          "detail": "Manufacturing",
+          "cat": "industry"
+        }
+      ]
+    },
+    {
+      "body": "Bolster your corporate communications department with Hooli XYZ’s potato cannon - it’s currently broken, but our grandchildren might take it for granted one day.",
+      "tags": [
+        {
+          "detail": "Potato Cannon",
+          "cat": "products"
+        },
+        {
+          "detail": "Communications",
+          "cat": "persona dept"
+        },
+        {
+          "detail": "Hooli XYZ",
+          "cat": "products"
+        }
+      ]
+    },
+    {
+      "body": "With Hooli’s communications network, your job will be much easier - it integrates into whatever you’re doing.",
+      "tags": [
+        {
+          "detail": "Hoolichat",
+          "cat": "products"
+        },
+        {
+          "detail": "Communications",
+          "cat": "persona dept"
+        },
+        {
+          "detail": "Practitioner",
+          "cat": "title"
+        },
+        {
+          "detail": "Networks",
+          "cat": "persona dept"
+        },
+        {
+          "detail": "Software",
+          "cat": "industry"
+        }
+      ]
     }
   ]
 }
