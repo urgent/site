@@ -1,3 +1,1 @@
-SMOOMS CHROME EXTENSION
-
-TARGET DATE APRIL 1st
+next chrome extension app - mvp
