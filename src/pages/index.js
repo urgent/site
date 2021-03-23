@@ -1,9 +1,13 @@
-
+import React from "react";
+import MessagesDisplayKTL from "../components/MessagesDisplayKTL";
+import CategorySidebarKTL from "../components/CategorySidebarKTL";
 
 export default function Home() {
   return (
     <div>
-      Home Page
+      <h1>Home Page</h1>
+      <MessagesDisplayKTL />
+      <CategorySidebarKTL />
     </div>
   )
 }
