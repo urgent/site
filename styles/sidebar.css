@@ -1,0 +1,31 @@
+.sideBarWrapper {
+  background-color: #3f3e3f;
+  border-right: 1px solid #000000;
+  width: 30%;
+  position: relative;
+  padding: 1rem;
+}
+
+.innerBorder::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  /* z-index: -1; */
+  border-right: 1px solid #2e2e2e;
+  border-left: 1px solid #7b7a7b;
+}
+
+/* .innerBorder::after {
+  content: " ";
+  position: absolute;
+  top: 0;
+  right: 1;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  border-right: 0.5px solid #2e2e2e;
+  border-left: 0.5px solid #7b7a7b;
+} */
