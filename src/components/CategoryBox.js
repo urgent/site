@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function CategoryBox({ title }) {
+export default function CategoryBox({ payload }) {
   return (
-    <h2>{title}</h2>
+    <h2>{Object.keys(payload)[0]}</h2>
   )
 }
