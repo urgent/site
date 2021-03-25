@@ -1,9 +1,12 @@
+import React from "react";
+import CategoryBox from "./CategoryBox";
 
+export default function Sidebar({categories}) {
+  const category = categories.map((cat,index) => <CategoryBox key={index} payload={cat}/>)
 
-export default function Sidebar() {
     return (
         <section className="sideBarWrapper innerBorder">
-            <a href="#">test</a>
+            {category}
         </section>
     )
 }
