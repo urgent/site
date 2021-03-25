@@ -1,12 +1,10 @@
 import MainWrapper from "../components/MainWrapper";
-import TagContext from "../utils/TagContext";
-
-
+import { SmoomsProvider } from "../utils/SmoomsState";
 
 export default function Home() {
   return (
-    <TagContext.Provider value={{ test: "test" }}>
+    <SmoomsProvider>
       <MainWrapper className="mainWrapper" />
-    </TagContext.Provider>
+    </SmoomsProvider>
   )
 }
