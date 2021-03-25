@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function Tag() {
+export default function Tag({ tag }) {
+
+
   return (
-    <div>
-      
-    </div>
+    <div className="tagBox">{tag}</div>
   )
 }
