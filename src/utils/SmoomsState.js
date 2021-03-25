@@ -2,12 +2,15 @@ import { createContext, useContext, useReducer } from "react";
 
 const SmoomsContext = createContext();
 const { Provider } = SmoomsContext;
-const initState = ({ value: [] });
+const initState = ({ activeTags: [] });
 
 const reducer = (state, { type, payload }) => {
     switch (type) {
-        case "test":
-            return { value: [...state.value, payload] }
+        case "addTag":
+            return { activeTags: [...state.activeTags, payload] }
+        case "removeTag":
+            let filteredTags = state.activeTags.filter(tag => tag != payload);
+            return { activeTags: [...filteredTags] }
         default:
             throw new Error(`Invalid action type: ${action.type}`);
     }
