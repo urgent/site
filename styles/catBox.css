@@ -1,0 +1,26 @@
+.catContainer {
+  width: 90%;
+  min-height: 10rem;
+  margin-bottom: 2rem;
+  border: 2px solid white;
+  padding: 1rem;
+}
+
+.tagsWrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tagBox {
+  width: fit-content;
+  height: fit-content;
+  padding: 0.5rem;
+  border: 2px solid white;
+  margin: 0.25rem;
+  cursor: pointer;
+}
+
+.tagBox:hover {
+  background-color: white;
+  color: #2e2e2e;
+}
