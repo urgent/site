@@ -1,12 +1,12 @@
-import { useContext } from "react";
 import CategoryBox from "./CategoryBox";
-import TagContext from "../utils/TagContext"
+import { useSmoomsContext } from "../utils/SmoomsState";
 
 export default function Sidebar({ categories }) {
     const category = categories.map((cat, index) => <CategoryBox key={index} payload={cat} />)
-    const test = useContext(TagContext);
+    const [{ value }, dispatch] = useSmoomsContext();
 
-    console.log(test);
+    console.log(value);
+
     return (
         <section className="sideBarWrapper innerBorder">
             {category}
