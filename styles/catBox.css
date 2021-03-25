@@ -20,7 +20,12 @@
   cursor: pointer;
 }
 
-.tagBox:hover {
+/* .tagBox:hover {
+  background-color: white;
+  color: #2e2e2e;
+} */
+
+.active {
   background-color: white;
   color: #2e2e2e;
 }
