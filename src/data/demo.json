@@ -1,31 +1,37 @@
 {
-  "categories": {
-    "competitors": [
-      "Pied Piper",
-      "Bro",
-      "Ravega",
-      "Russ Hanneman",
-      "Aviato",
-      "YaoNet",
-      "GooglyBibs"
-    ],
-    "products": [
-      "Hoolichat",
-      "Gavin Belson Signature Box III",
-      "Nucleus",
-      "Hooli XYZ",
-      "Potato Cannon"
-    ],
-    "industry": [
-      "Software",
-      "Manufacturing",
-      "Instant Messaging",
-      "Compression",
-      "AI"
-    ],
-    "persona dept": ["Digital", "Networks", "Communications"],
-    "title": ["Practitioner", "Manager", "Director", "VP", "CXO"]
-  },
+  "categories": [
+    {
+      "competitors": [
+        "Pied Piper",
+        "Bro",
+        "Ravega",
+        "Russ Hanneman",
+        "Aviato",
+        "YaoNet",
+        "GooglyBibs"
+      ]
+    },
+    {
+      "products": [
+        "Hoolichat",
+        "Gavin Belson Signature Box III",
+        "Nucleus",
+        "Hooli XYZ",
+        "Potato Cannon"
+      ]
+    },
+    {
+      "industry": [
+        "Software",
+        "Manufacturing",
+        "Instant Messaging",
+        "Compression",
+        "AI"
+      ]
+    },
+    { "persona dept": ["Digital", "Networks", "Communications"] },
+    { "title": ["Practitioner", "Manager", "Director", "VP", "CXO"] }
+  ],
   "messages": [
     {
       "body": "Nucleus’ compression algorithm has record-breaking Weissman scores and integrates seamlessly into Hooli’s robust ecosystem - Pied Piper offers no such integrations.",
