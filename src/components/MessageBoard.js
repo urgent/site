@@ -9,13 +9,21 @@ export default function Messages({ messages }) {
 
     const filteredMssgs = messages.filter(mssg => {
         let split = false;
+        let tagCount = 0;
 
+        console.log(activeTags.length);
         for (let i = 0; i < mssg.tags.length; i++) {
 
+
             if (activeTags.includes(mssg.tags[i].detail)) {
-                split = true;
+                tagCount++;
             }
         }
+
+        if (tagCount === activeTags.length) {
+            split = true;
+        }
+
         return split
     })
 
