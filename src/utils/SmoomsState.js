@@ -12,7 +12,7 @@ const reducer = (state, { type, payload }) => {
             let filteredTags = state.activeTags.filter(tag => tag != payload);
             return { activeTags: [...filteredTags] }
         default:
-            throw new Error(`Invalid action type: ${action.type}`);
+            throw new Error(`Invalid action type: ${type}`);
     }
 };
 
