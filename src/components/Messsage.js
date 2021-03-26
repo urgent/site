@@ -3,10 +3,7 @@ import Tag from "./Tag";
 
 export default function Messsage({ body, tagPayload }) {
 
-
-
     const mssgTags = tagPayload.map((tag, index) => {
-
         return <Tag key={index} tag={tag.detail} />
     })
 
