@@ -2,7 +2,7 @@ import data from "../data/demo.json";
 import Message from "./Messsage";
 import { useSmoomsContext } from "../utils/SmoomsState";
 
-
+// this component is the container for displaying all individual messages
 export default function Messages({ messages }) {
 
     const [{ activeTags }] = useSmoomsContext();

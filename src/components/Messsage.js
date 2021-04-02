@@ -1,6 +1,7 @@
 import React from 'react'
 import Tag from "./Tag";
 
+// this component displays an individual message
 export default function Messsage({ body, tagPayload }) {
 
     const mssgTags = tagPayload.map((tag, index) => {
