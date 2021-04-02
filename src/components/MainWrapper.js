@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import MessageBoard from "../components/MessageBoard";
 import Sidebar from "../components/Sidebar";
 import data from "../data/demo.json";
@@ -7,7 +8,7 @@ import { listCategorys } from '../../graphql/queries'
 // this component pulls categories from AWS API
 export default function MainWrapper() {
     const [categories, setCategories] = useState([]);
-    
+
     useEffect(() => {
       fetchCategories();
     }, [])
@@ -24,7 +25,7 @@ export default function MainWrapper() {
 
         <div className="mainWrapper">
             <Sidebar categories={categories} />
-            <MessageBoard messages={messages} />
+            {/* <MessageBoard messages={messages} /> */}
         </div>
     )
 }
