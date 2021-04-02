@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSmoomsContext } from "../utils/SmoomsState";
 
+// this component displays an individual tag in any given message on the message board
 export default function Tag({ tag }) {
   const [{ activeTags }, dispatch] = useSmoomsContext();
 
