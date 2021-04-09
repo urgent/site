@@ -79,6 +79,16 @@ export const createTag = /* GraphQL */ `
       id
       categoryID
       label
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -93,6 +103,16 @@ export const updateTag = /* GraphQL */ `
       id
       categoryID
       label
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -107,6 +127,184 @@ export const deleteTag = /* GraphQL */ `
       id
       categoryID
       label
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createMessageTag = /* GraphQL */ `
+  mutation CreateMessageTag(
+    $input: CreateMessageTagInput!
+    $condition: ModelMessageTagConditionInput
+  ) {
+    createMessageTag(input: $input, condition: $condition) {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateMessageTag = /* GraphQL */ `
+  mutation UpdateMessageTag(
+    $input: UpdateMessageTagInput!
+    $condition: ModelMessageTagConditionInput
+  ) {
+    updateMessageTag(input: $input, condition: $condition) {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteMessageTag = /* GraphQL */ `
+  mutation DeleteMessageTag(
+    $input: DeleteMessageTagInput!
+    $condition: ModelMessageTagConditionInput
+  ) {
+    deleteMessageTag(input: $input, condition: $condition) {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createMessage = /* GraphQL */ `
+  mutation CreateMessage(
+    $input: CreateMessageInput!
+    $condition: ModelMessageConditionInput
+  ) {
+    createMessage(input: $input, condition: $condition) {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateMessage = /* GraphQL */ `
+  mutation UpdateMessage(
+    $input: UpdateMessageInput!
+    $condition: ModelMessageConditionInput
+  ) {
+    updateMessage(input: $input, condition: $condition) {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteMessage = /* GraphQL */ `
+  mutation DeleteMessage(
+    $input: DeleteMessageInput!
+    $condition: ModelMessageConditionInput
+  ) {
+    deleteMessage(input: $input, condition: $condition) {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
