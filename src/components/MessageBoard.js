@@ -25,7 +25,7 @@ export default function Messages({ messages }) {
     })
     */
     const displayMessages = messages.map(mssg => {
-      console.log(mssg);
+      // console.log(mssg);
       return <Message key={mssg.id} body={mssg.body} tagPayload={mssg.tags.items} />
     })
     return (
