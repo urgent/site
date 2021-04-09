@@ -1,4 +1,13 @@
 type Category @model {
   id: ID!
   name: String!
+  tags: [Tag] @connection(keyName: "tagCategory", fields: ["id"])
 }
+
+type Tag @model 
+  @key(name: "tagCategory", fields: ["categoryID"]) {
+    id: ID!
+    categoryID: ID!
+    label: String!
+}
+

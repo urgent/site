@@ -7,8 +7,10 @@ import { listCategorys } from '../../graphql/queries'
 
 // this component pulls categories from AWS API
 export default function MainWrapper() {
+  // set state to hold categories
     const [categories, setCategories] = useState([]);
 
+    // fetch categories upon component load
     useEffect(() => {
       fetchCategories();
     }, [])
@@ -18,6 +20,7 @@ export default function MainWrapper() {
       const categoryData = await API.graphql({
         query: listCategorys
       });
+      console.log(categoryData);
       setCategories(categoryData.data.listCategorys.items);
     }
     // const { categories, messages } = data;
