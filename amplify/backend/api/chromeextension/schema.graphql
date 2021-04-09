@@ -9,5 +9,22 @@ type Tag @model
     id: ID!
     categoryID: ID!
     label: String!
+    messages: [MessageTag] @connection(keyName: "fromTag", fields: ["id"])
 }
 
+type MessageTag
+  @model(queries: null)
+  @key(name: "fromTag", fields: ["tagID", "messageID"])
+  @key(name: "fromMessage", fields: ["messageID", "tagID"]) {
+    id: ID!
+    tagID: ID!
+    messageID: ID!
+    tag: Tag! @connection(fields: ["tagID"])
+    message: Message! @connection(fields: ["messageID"])
+}
+
+type Message @model {
+  id: ID!
+  body: String!
+  tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
+}

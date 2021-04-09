@@ -47,6 +47,16 @@ export const getTag = /* GraphQL */ `
       id
       categoryID
       label
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -63,6 +73,49 @@ export const listTags = /* GraphQL */ `
         id
         categoryID
         label
+        messages {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getMessage = /* GraphQL */ `
+  query GetMessage($id: ID!) {
+    getMessage(id: $id) {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listMessages = /* GraphQL */ `
+  query ListMessages(
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listMessages(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        body
+        tags {
+          nextToken
+        }
         createdAt
         updatedAt
       }
