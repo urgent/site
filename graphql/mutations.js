@@ -14,6 +14,15 @@ export const createCategory = /* GraphQL */ `
           id
           categoryID
           label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -37,6 +46,15 @@ export const updateCategory = /* GraphQL */ `
           id
           categoryID
           label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -60,6 +78,15 @@ export const deleteCategory = /* GraphQL */ `
           id
           categoryID
           label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -83,6 +110,13 @@ export const createTag = /* GraphQL */ `
         id
         name
         tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -93,6 +127,19 @@ export const createTag = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -116,6 +163,13 @@ export const updateTag = /* GraphQL */ `
         id
         name
         tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -126,6 +180,19 @@ export const updateTag = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -149,6 +216,13 @@ export const deleteTag = /* GraphQL */ `
         id
         name
         tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -159,6 +233,19 @@ export const deleteTag = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -185,10 +272,20 @@ export const createMessageTag = /* GraphQL */ `
         category {
           id
           name
+          tags {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -198,6 +295,13 @@ export const createMessageTag = /* GraphQL */ `
         id
         body
         tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -224,10 +328,20 @@ export const updateMessageTag = /* GraphQL */ `
         category {
           id
           name
+          tags {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -237,6 +351,13 @@ export const updateMessageTag = /* GraphQL */ `
         id
         body
         tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -263,10 +384,20 @@ export const deleteMessageTag = /* GraphQL */ `
         category {
           id
           name
+          tags {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -276,6 +407,13 @@ export const deleteMessageTag = /* GraphQL */ `
         id
         body
         tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -299,6 +437,19 @@ export const createMessage = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -322,6 +473,19 @@ export const updateMessage = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -345,6 +509,19 @@ export const deleteMessage = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
