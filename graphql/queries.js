@@ -47,6 +47,15 @@ export const getTag = /* GraphQL */ `
       id
       categoryID
       label
+      category {
+        id
+        name
+        tags {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
       messages {
         items {
           id
@@ -73,6 +82,12 @@ export const listTags = /* GraphQL */ `
         id
         categoryID
         label
+        category {
+          id
+          name
+          createdAt
+          updatedAt
+        }
         messages {
           nextToken
         }
