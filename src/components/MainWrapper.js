@@ -20,7 +20,6 @@ export default function MainWrapper() {
       const categoryData = await API.graphql({
         query: listCategorys
       });
-      console.log(categoryData);
       setCategories(categoryData.data.listCategorys.items);
     }
     // const { categories, messages } = data;
