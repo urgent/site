@@ -11,6 +11,15 @@ export const getCategory = /* GraphQL */ `
           id
           categoryID
           label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
           createdAt
           updatedAt
         }
@@ -32,6 +41,13 @@ export const listCategorys = /* GraphQL */ `
         id
         name
         tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -51,6 +67,13 @@ export const getTag = /* GraphQL */ `
         id
         name
         tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -61,6 +84,19 @@ export const getTag = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -85,10 +121,20 @@ export const listTags = /* GraphQL */ `
         category {
           id
           name
+          tags {
+            nextToken
+          }
           createdAt
           updatedAt
         }
         messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
@@ -108,6 +154,19 @@ export const getMessage = /* GraphQL */ `
           id
           tagID
           messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
           createdAt
           updatedAt
         }
@@ -129,6 +188,13 @@ export const listMessages = /* GraphQL */ `
         id
         body
         tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
           nextToken
         }
         createdAt
