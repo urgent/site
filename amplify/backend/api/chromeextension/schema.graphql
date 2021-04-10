@@ -1,10 +1,4 @@
-type Messages @model @auth(rules: [{ allow: public }]) {
-  id: ID!
-  body: String
-  tagID: ID
-}
-
-type Category @model @auth(rules: [{ allow: public }]) {
+type Category @model {
   id: ID!
   name: String!
   tags: [Tag] @connection(keyName: "tagCategory", fields: ["id"])
