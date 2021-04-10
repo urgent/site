@@ -1,36 +1,31 @@
-type Messages @model @auth(rules: [{ allow: public }]) {
-  id: ID!
-  body: String
-  tagID: ID
-}
-
-type Category @model @auth(rules: [{ allow: public }]) {
+type Category @model {
   id: ID!
   name: String!
   tags: [Tag] @connection(keyName: "tagCategory", fields: ["id"])
 }
 
-type Tag @model @key(name: "tagCategory", fields: ["categoryID"]) {
-  id: ID!
-  categoryID: ID!
-  label: String!
-  category: Category @connection(fields: ["categoryID"])
-  messages: [MessageTag] @connection(keyName: "fromTag", fields: ["id"])
+type Tag @model
+  @key(name: "tagCategory", fields: ["categoryID"]) {
+    id: ID!
+    categoryID: ID!
+    label: String!
+    category: Category @connection(fields: ["categoryID"])
+    messages: [MessageTag] @connection(keyName: "fromTag", fields: ["id"])
 }
 
 type MessageTag
   @model(queries: null)
   @key(name: "fromTag", fields: ["tagID", "messageID"])
   @key(name: "fromMessage", fields: ["messageID", "tagID"]) {
-  id: ID!
-  tagID: ID!
-  messageID: ID!
-  tag: Tag! @connection(fields: ["tagID"])
-  message: Message! @connection(fields: ["messageID"])
+    id: ID!
+    tagID: ID!
+    messageID: ID!
+    tag: Tag! @connection(fields: ["tagID"])
+    message: Message! @connection(fields: ["messageID"])
 }
 
 type Message @model {
-  id: ID!
-  body: String!
-  tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
+    id: ID!
+    body: String!
+    tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
 }
