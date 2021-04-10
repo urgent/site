@@ -30,7 +30,7 @@ export default function MainWrapper() {
     const messageData = await API.graphql({
       query: listMessages,
     });
-    console.log(messageData);
+    // console.log(messageData);
     setMessages(messageData.data.listMessages.items);
   }
 

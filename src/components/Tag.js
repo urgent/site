@@ -7,9 +7,9 @@ export default function Tag({ tag }) {
 
   const handleTag = () => {
     if (activeTags.includes(tag.id)) {
-      dispatch({ type: "removeTag", payload: tag.id });
+      dispatch({ type: "removeTag", payload: { tag: tag.id } });
     } else {
-      dispatch({ type: "addTag", payload: tag.id });
+      dispatch({ type: "addTag", payload: { tag: tag.id } });
     }
   }
 
