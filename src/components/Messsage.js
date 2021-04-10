@@ -3,7 +3,7 @@ import Tag from "./Tag";
 
 // this component displays an individual message
 export default function Messsage({ body, tagPayload }) {
-
+    console.log(tagPayload);
     const mssgTags = tagPayload.map(tag => {
         return <Tag key={tag.id} tag={tag.tagID} />
     })
