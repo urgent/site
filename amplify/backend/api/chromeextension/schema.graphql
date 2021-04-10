@@ -4,7 +4,7 @@ type Category @model {
   tags: [Tag] @connection(keyName: "tagCategory", fields: ["id"])
 }
 
-type Tag @model 
+type Tag @model
   @key(name: "tagCategory", fields: ["categoryID"]) {
     id: ID!
     categoryID: ID!
@@ -25,7 +25,7 @@ type MessageTag
 }
 
 type Message @model {
-  id: ID!
-  body: String!
-  tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
+    id: ID!
+    body: String!
+    tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
 }
