@@ -6,15 +6,15 @@ export default function Tag({ tag }) {
   const [{ activeTags }, dispatch] = useSmoomsContext();
 
   const handleTag = () => {
-    if (activeTags.includes(tag)) {
-      dispatch({ type: "removeTag", payload: tag });
+    if (activeTags.includes(tag.id)) {
+      dispatch({ type: "removeTag", payload: tag.id });
     } else {
-      dispatch({ type: "addTag", payload: tag });
+      dispatch({ type: "addTag", payload: tag.id });
     }
   }
 
 
   return (
-    <div className={activeTags.includes(tag) ? "tagBox active" : "tagBox"} onClick={() => handleTag()}>{tag}</div>
+    <div className={activeTags.includes(tag.id) ? "tagBox active" : "tagBox"} onClick={() => handleTag()}>{tag.label}</div>
   )
 }
