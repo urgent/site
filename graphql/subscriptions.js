@@ -6,6 +6,25 @@ export const onCreateCategory = /* GraphQL */ `
     onCreateCategory {
       id
       name
+      tags {
+        items {
+          id
+          categoryID
+          label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -16,6 +35,25 @@ export const onUpdateCategory = /* GraphQL */ `
     onUpdateCategory {
       id
       name
+      tags {
+        items {
+          id
+          categoryID
+          label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
@@ -26,6 +64,433 @@ export const onDeleteCategory = /* GraphQL */ `
     onDeleteCategory {
       id
       name
+      tags {
+        items {
+          id
+          categoryID
+          label
+          category {
+            id
+            name
+            createdAt
+            updatedAt
+          }
+          messages {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateTag = /* GraphQL */ `
+  subscription OnCreateTag {
+    onCreateTag {
+      id
+      categoryID
+      label
+      category {
+        id
+        name
+        tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateTag = /* GraphQL */ `
+  subscription OnUpdateTag {
+    onUpdateTag {
+      id
+      categoryID
+      label
+      category {
+        id
+        name
+        tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteTag = /* GraphQL */ `
+  subscription OnDeleteTag {
+    onDeleteTag {
+      id
+      categoryID
+      label
+      category {
+        id
+        name
+        tags {
+          items {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      messages {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateMessageTag = /* GraphQL */ `
+  subscription OnCreateMessageTag {
+    onCreateMessageTag {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        category {
+          id
+          name
+          tags {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMessageTag = /* GraphQL */ `
+  subscription OnUpdateMessageTag {
+    onUpdateMessageTag {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        category {
+          id
+          name
+          tags {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMessageTag = /* GraphQL */ `
+  subscription OnDeleteMessageTag {
+    onDeleteMessageTag {
+      id
+      tagID
+      messageID
+      tag {
+        id
+        categoryID
+        label
+        category {
+          id
+          name
+          tags {
+            nextToken
+          }
+          createdAt
+          updatedAt
+        }
+        messages {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        tags {
+          items {
+            id
+            tagID
+            messageID
+            createdAt
+            updatedAt
+          }
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateMessage = /* GraphQL */ `
+  subscription OnCreateMessage {
+    onCreateMessage {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMessage = /* GraphQL */ `
+  subscription OnUpdateMessage {
+    onUpdateMessage {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMessage = /* GraphQL */ `
+  subscription OnDeleteMessage {
+    onDeleteMessage {
+      id
+      body
+      tags {
+        items {
+          id
+          tagID
+          messageID
+          tag {
+            id
+            categoryID
+            label
+            createdAt
+            updatedAt
+          }
+          message {
+            id
+            body
+            createdAt
+            updatedAt
+          }
+          createdAt
+          updatedAt
+        }
+        nextToken
+      }
       createdAt
       updatedAt
     }
