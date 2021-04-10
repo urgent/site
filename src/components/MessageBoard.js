@@ -12,11 +12,14 @@ export default function Messages({ messages }) {
     useEffect(() => {
         if (activeTags.length > 0) {
             let newMssgs = [];
+            let mssgIDs = {};
+
             messages.forEach(mssg => {
                 let tagsArr = mssg.tags.items
                 tagsArr.forEach(obj => {
-                    if (activeTags.includes(obj.tagID)) {
+                    if (activeTags.includes(obj.tagID) && !mssgIDs[mssg.id]) {
                         newMssgs.push(mssg);
+                        mssgIDs[mssg.id] = true;
                         return
                     }
                 });
@@ -26,17 +29,13 @@ export default function Messages({ messages }) {
         }
     }, [activeTags]);
 
-    // const displayMessages = messages.map(mssg => {
-    //     // console.log(mssg);
-    //     return <Message key={mssg.id} body={mssg.body} tagPayload={mssg.tags.items} />
-    // })
+    const displayMessages = activeMssgs.length > 0 ?
+        activeMssgs.map(mssg => {
+            return (<Message key={mssg.id} body={mssg.body} tagPayload={mssg.tags?.items} />)
+        })
+        : (<div>No messages</div>);
 
-    const displayMessages = activeMssgs?.map(mssg => {
-        console.log(mssg.id);
-
-        return <Message key={mssg.id} body={mssg.body} tagPayload={mssg.tags?.items} />
-    })
-    console.log("_________________________________________");
+    console.log(activeMssgs);
 
     return (
         <section className="mssgBoardWrapper">

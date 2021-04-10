@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer } from "react";
 
 const SmoomsContext = createContext();
 const { Provider } = SmoomsContext;
-const initState = ({ activeTags: [], activeMssgs: ["no messages"] });
+const initState = ({ activeTags: [], activeMssgs: [] });
 
 const reducer = (state, { type, payload }) => {
     switch (type) {
