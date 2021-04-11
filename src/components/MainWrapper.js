@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import MessageBoard from "../components/MessageBoard";
+import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";
 import { API } from "aws-amplify";
 import { listCategorys, listMessages } from "../../graphql/queries";
@@ -26,7 +27,7 @@ export default function MainWrapper() {
       });
       console.log(categoryData);
       setCategories(categoryData.data.listCategorys.items);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -39,15 +40,18 @@ export default function MainWrapper() {
       });
       // console.log(messageData);
       setMessages(messageData.data.listMessages.items);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
 
   return (
-    <div className="mainWrapper">
-      <Sidebar categories={categories} />
-      <MessageBoard messages={messages} />
-    </div>
+    <section className="originContainer">
+      <Nav />
+      <div className="mainWrapper">
+        <Sidebar categories={categories} />
+        <MessageBoard messages={messages} />
+      </div>
+    </section>
   );
 }

@@ -24,6 +24,11 @@ const reducer = (state, { type, payload }) => {
                 ...state,
                 activeTags: [...filteredTags]
             }
+        case "clearTags":
+            return {
+                ...state,
+                activeTags: []
+            }
         case "filterMssgs":
             return {
                 ...state,
