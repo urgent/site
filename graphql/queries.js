@@ -1,6 +1,60 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const syncCategories = /* GraphQL */ `
+  query SyncCategories(
+    $filter: ModelCategoryFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncCategories(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        name
+        tags {
+          items {
+            id
+            categoryID
+            label
+            category {
+              id
+              name
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            messages {
+              nextToken
+              startedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
 export const getCategory = /* GraphQL */ `
   query GetCategory($id: ID!) {
     getCategory(id: $id) {
@@ -16,7 +70,11 @@ export const getCategory = /* GraphQL */ `
             name
             tags {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -25,16 +83,27 @@ export const getCategory = /* GraphQL */ `
               id
               tagID
               messageID
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             nextToken
+            startedAt
           }
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -58,21 +127,117 @@ export const listCategorys = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             messages {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncTags = /* GraphQL */ `
+  query SyncTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTags(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        categoryID
+        label
+        category {
+          id
+          name
+          tags {
+            items {
+              id
+              categoryID
+              label
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        messages {
+          items {
+            id
+            tagID
+            messageID
+            tag {
+              id
+              categoryID
+              label
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            message {
+              id
+              body
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -93,17 +258,28 @@ export const getTag = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             messages {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
@@ -119,12 +295,19 @@ export const getTag = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             messages {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -133,15 +316,26 @@ export const getTag = /* GraphQL */ `
             body
             tags {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -166,11 +360,18 @@ export const listTags = /* GraphQL */ `
               id
               categoryID
               label
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             nextToken
+            startedAt
           }
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
@@ -183,24 +384,186 @@ export const listTags = /* GraphQL */ `
               id
               categoryID
               label
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             message {
               id
               body
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
+    }
+  }
+`;
+export const syncMessageTags = /* GraphQL */ `
+  query SyncMessageTags(
+    $filter: ModelMessageTagFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncMessageTags(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        tagID
+        messageID
+        tag {
+          id
+          categoryID
+          label
+          category {
+            id
+            name
+            tags {
+              nextToken
+              startedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          messages {
+            items {
+              id
+              tagID
+              messageID
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        message {
+          id
+          body
+          tags {
+            items {
+              id
+              tagID
+              messageID
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncMessages = /* GraphQL */ `
+  query SyncMessages(
+    $filter: ModelMessageFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncMessages(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        body
+        tags {
+          items {
+            id
+            tagID
+            messageID
+            tag {
+              id
+              categoryID
+              label
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            message {
+              id
+              body
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
     }
   }
 `;
@@ -221,12 +584,19 @@ export const getMessage = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             messages {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -235,15 +605,26 @@ export const getMessage = /* GraphQL */ `
             body
             tags {
               nextToken
+              startedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
         }
         nextToken
+        startedAt
       }
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -268,24 +649,38 @@ export const listMessages = /* GraphQL */ `
               id
               categoryID
               label
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
             message {
               id
               body
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
           }
           nextToken
+          startedAt
         }
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
       }
       nextToken
+      startedAt
     }
   }
 `;
