@@ -20,5 +20,13 @@
         }
       }
     }
+  },
+  "auth": {
+    "chromeextension3c21c221": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false
+    }
   }
 }

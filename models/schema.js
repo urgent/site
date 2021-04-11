@@ -1,55 +1,5 @@
 export const schema = {
     "models": {
-        "Messages": {
-            "name": "Messages",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "body": {
-                    "name": "body",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "tagID": {
-                    "name": "tagID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            },
-            "syncable": true,
-            "pluralName": "Messages",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "Category": {
             "name": "Category",
             "fields": {
@@ -78,7 +28,7 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "categoryID"
+                        "associatedWith": "category"
                     }
                 }
             },
@@ -88,22 +38,6 @@ export const schema = {
                 {
                     "type": "model",
                     "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
                 }
             ]
         },
@@ -117,19 +51,39 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "categoryID": {
-                    "name": "categoryID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
                 "label": {
                     "name": "label",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
                     "attributes": []
+                },
+                "category": {
+                    "name": "category",
+                    "isArray": false,
+                    "type": {
+                        "model": "Category"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "categoryID"
+                    }
+                },
+                "messages": {
+                    "name": "messages",
+                    "isArray": true,
+                    "type": {
+                        "model": "MessageTag"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "tag"
+                    }
                 }
             },
             "syncable": true,
@@ -147,27 +101,120 @@ export const schema = {
                             "categoryID"
                         ]
                     }
+                }
+            ]
+        },
+        "MessageTag": {
+            "name": "MessageTag",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tag": {
+                    "name": "tag",
+                    "isArray": false,
+                    "type": {
+                        "model": "Tag"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "tagID"
+                    }
+                },
+                "message": {
+                    "name": "message",
+                    "isArray": false,
+                    "type": {
+                        "model": "Message"
+                    },
+                    "isRequired": true,
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "BELONGS_TO",
+                        "targetName": "messageID"
+                    }
+                }
+            },
+            "syncable": true,
+            "pluralName": "MessageTags",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {
+                        "queries": null
+                    }
                 },
                 {
-                    "type": "auth",
+                    "type": "key",
                     "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
+                        "name": "fromTag",
+                        "fields": [
+                            "tagID",
+                            "messageID"
                         ]
                     }
+                },
+                {
+                    "type": "key",
+                    "properties": {
+                        "name": "fromMessage",
+                        "fields": [
+                            "messageID",
+                            "tagID"
+                        ]
+                    }
+                }
+            ]
+        },
+        "Message": {
+            "name": "Message",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "body": {
+                    "name": "body",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "tags": {
+                    "name": "tags",
+                    "isArray": true,
+                    "type": {
+                        "model": "MessageTag"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true,
+                    "association": {
+                        "connectionType": "HAS_MANY",
+                        "associatedWith": "message"
+                    }
+                }
+            },
+            "syncable": true,
+            "pluralName": "Messages",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
                 }
             ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "645baaceef464a036843627d51d2db86"
+    "version": "9d37eeda1be1e29644f7a050d9a760d8"
 };
