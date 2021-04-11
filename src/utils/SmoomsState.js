@@ -22,6 +22,11 @@ const reducer = (state, { type, payload }) => {
                 ...state,
                 activeMssgs: payload.messages
             }
+        case "clearMssgs":
+            return {
+                ...state,
+                activeMssgs: []
+            }
         default:
             throw new Error(`Invalid action type: ${type}`);
     }
