@@ -2,7 +2,11 @@ import { createContext, useContext, useReducer } from "react";
 
 const SmoomsContext = createContext();
 const { Provider } = SmoomsContext;
-const initState = ({ activeTags: [], activeMssgs: [] });
+const initState = ({
+    activeTags: [],
+    activeMssgs: [],
+    altMssgs: []
+});
 
 const reducer = (state, { type, payload }) => {
     switch (type) {
@@ -20,12 +24,18 @@ const reducer = (state, { type, payload }) => {
         case "filterMssgs":
             return {
                 ...state,
-                activeMssgs: payload.messages
+                activeMssgs: payload.messages,
+            }
+        case "filterAltMssgs":
+            return {
+                ...state,
+                altMssgs: payload.messages,
             }
         case "clearMssgs":
             return {
                 ...state,
-                activeMssgs: []
+                activeMssgs: [],
+                altMssgs: []
             }
         default:
             throw new Error(`Invalid action type: ${type}`);
