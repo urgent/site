@@ -15,6 +15,7 @@ export declare class Category {
 export declare class Tag {
   readonly id: string;
   readonly label: string;
+  readonly username?: string;
   readonly category?: Category;
   readonly messages?: (MessageTag | null)[];
   constructor(init: ModelInit<Tag>);
@@ -32,6 +33,7 @@ export declare class MessageTag {
 export declare class Message {
   readonly id: string;
   readonly body: string;
+  readonly username?: string;
   readonly tags?: (MessageTag | null)[];
   constructor(init: ModelInit<Message>);
   static copyOf(source: Message, mutator: (draft: MutableModel<Message>) => MutableModel<Message> | void): Message;

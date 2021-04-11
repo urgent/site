@@ -46,9 +46,6 @@ export const schema = {
                             {
                                 "allow": "public",
                                 "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
                                     "read"
                                 ]
                             }
@@ -72,6 +69,13 @@ export const schema = {
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 },
                 "category": {
@@ -123,11 +127,20 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
-                                "allow": "public",
+                                "provider": "userPools",
+                                "ownerField": "username",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
                                     "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "public",
+                                "operations": [
                                     "read"
                                 ]
                             }
@@ -221,6 +234,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "username": {
+                    "name": "username",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "tags": {
                     "name": "tags",
                     "isArray": true,
@@ -244,15 +264,34 @@ export const schema = {
                     "properties": {}
                 },
                 {
+                    "type": "key",
+                    "properties": {
+                        "name": "mssgsByUsername",
+                        "fields": [
+                            "username"
+                        ],
+                        "queryField": "mssgsByUsername"
+                    }
+                },
+                {
                     "type": "auth",
                     "properties": {
                         "rules": [
                             {
-                                "allow": "public",
+                                "provider": "userPools",
+                                "ownerField": "username",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
                                 "operations": [
                                     "create",
                                     "update",
                                     "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "public",
+                                "operations": [
                                     "read"
                                 ]
                             }
@@ -264,5 +303,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "9d37eeda1be1e29644f7a050d9a760d8"
+    "version": "c0b891c4b3ce1cc932a6000ce4d5e6b6"
 };
