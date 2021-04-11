@@ -15,3 +15,11 @@ a {
   box-sizing: border-box;
   color: white;
 }
+
+.mainFont {
+  font-family: "Inter", sans-serif;
+}
+
+.xl {
+  font-size: 3rem;
+}

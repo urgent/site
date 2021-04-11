@@ -22,3 +22,12 @@
 .searchParamsWrapper {
   display: flex;
 }
+
+.introText {
+  text-align: center;
+  padding-top: 5rem;
+}
+
+.otherMssgs {
+  display: none;
+}
