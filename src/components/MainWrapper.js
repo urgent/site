@@ -20,18 +20,28 @@ export default function MainWrapper() {
 
   // fetch call to Graphql API
   async function fetchCategories() {
-    const categoryData = await API.graphql({
-      query: listCategorys,
-    });
-    setCategories(categoryData.data.listCategorys.items);
+    try {
+      const categoryData = await API.graphql({
+        query: listCategorys,
+      });
+      console.log(categoryData);
+      setCategories(categoryData.data.listCategorys.items);
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   async function fetchMessages() {
-    const messageData = await API.graphql({
-      query: listMessages,
-    });
-    // console.log(messageData);
-    setMessages(messageData.data.listMessages.items);
+    try {
+
+      const messageData = await API.graphql({
+        query: listMessages,
+      });
+      // console.log(messageData);
+      setMessages(messageData.data.listMessages.items);
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   return (

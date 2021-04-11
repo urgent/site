@@ -1,5 +1,5 @@
 type Category @model 
-  @auth(rules: [{ allow: public, operations: [read] }]) {
+  @auth(rules: [{ allow: public }]) {
     id: ID!
     name: String!
     tags: [Tag] @connection(keyName: "tagCategory", fields: ["id"])
@@ -7,7 +7,7 @@ type Category @model
 
 type Tag @model 
   @key(name: "tagCategory", fields: ["categoryID"]) 
-  @auth(rules: [{ allow: public, operations: [read] }]) {
+  @auth(rules: [{ allow: public }]) {
     id: ID!
     categoryID: ID!
     label: String!
@@ -18,8 +18,7 @@ type Tag @model
 type MessageTag
   @model(queries: null)
   @key(name: "fromTag", fields: ["tagID", "messageID"])
-  @key(name: "fromMessage", fields: ["messageID", "tagID"]) 
-  @auth(rules: [{ allow: public, operations: [read] }]) {
+  @key(name: "fromMessage", fields: ["messageID", "tagID"]) {
     id: ID!
     tagID: ID!
     messageID: ID!
@@ -28,7 +27,7 @@ type MessageTag
 }
 
 type Message @model 
-  @auth(rules: [{ allow: public, operations: [read] }]) {
+  @auth(rules: [{ allow: public }]) {
     id: ID!
     body: String!
     tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
