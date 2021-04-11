@@ -31,3 +31,14 @@
 .otherMssgs {
   display: none;
 }
+
+.altMssgsTrigger {
+  cursor: pointer;
+}
+
+.altMssgsContainer {
+}
+
+.altHide {
+  display: none;
+}
