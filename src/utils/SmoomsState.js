@@ -5,7 +5,10 @@ const { Provider } = SmoomsContext;
 const initState = ({
     activeTags: [],
     activeMssgs: [],
-    altMssgs: []
+    altMssgs: {
+        active: false,
+        content: []
+    }
 });
 
 const reducer = (state, { type, payload }) => {
@@ -29,13 +32,18 @@ const reducer = (state, { type, payload }) => {
         case "filterAltMssgs":
             return {
                 ...state,
-                altMssgs: payload.messages,
+                altMssgs: { ...state.altMssgs, content: payload.messages },
             }
         case "clearMssgs":
             return {
                 ...state,
                 activeMssgs: [],
-                altMssgs: []
+                altMssgs: { content: [] }
+            }
+        case "displayAltMssgs":
+            return {
+                ...state,
+                altMssgs: { ...state.altMssgs, active: payload }
             }
         default:
             throw new Error(`Invalid action type: ${type}`);
