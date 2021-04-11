@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Nav from "../components/Nav";
 import { withAuthenticator, AmplifySignOut } from '@aws-amplify/ui-react'
 import { Auth } from 'aws-amplify'
 
@@ -11,9 +12,10 @@ function Profile() {
     const user = await Auth.currentAuthenticatedUser();
     setUser(user)
   }
-  if(!user) return null;
+  if (!user) return null;
   return (
     <div>
+      <Nav />
       <h1>Profile</h1>
       <h3>{user.username}</h3>
       <p>{user.attributes.email}</p>

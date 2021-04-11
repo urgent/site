@@ -1,0 +1,32 @@
+.navContainer {
+  background-color: #202124;
+  height: 2rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.navRight {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  color: white;
+  width: 70%;
+}
+
+.navLeft {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 30%;
+}
+
+.navItems {
+  cursor: pointer;
+  text-transform: uppercase;
+  margin: 0 1rem;
+}
+
+.sideBarItems {
+  margin: 0 1rem;
+}
