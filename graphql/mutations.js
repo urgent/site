@@ -1035,9 +1035,6 @@ export const createMessage = /* GraphQL */ `
           id
           tagID
           messageID
-          _version
-          _deleted
-          _lastChangedAt
           createdAt
           updatedAt
           tag {
@@ -1048,9 +1045,6 @@ export const createMessage = /* GraphQL */ `
             category {
               id
               name
-              _version
-              _deleted
-              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -1058,9 +1052,6 @@ export const createMessage = /* GraphQL */ `
               nextToken
               startedAt
             }
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -1072,9 +1063,6 @@ export const createMessage = /* GraphQL */ `
               nextToken
               startedAt
             }
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -1082,9 +1070,6 @@ export const createMessage = /* GraphQL */ `
         nextToken
         startedAt
       }
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
