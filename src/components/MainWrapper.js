@@ -34,7 +34,6 @@ export default function MainWrapper() {
 
   async function fetchMessages() {
     try {
-
       const messageData = await API.graphql({
         query: listMessages,
       });

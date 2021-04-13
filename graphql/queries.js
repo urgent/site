@@ -121,9 +121,6 @@ export const listCategorys = /* GraphQL */ `
       items {
         id
         name
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
         tags {
@@ -135,9 +132,6 @@ export const listCategorys = /* GraphQL */ `
             category {
               id
               name
-              _version
-              _deleted
-              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -145,9 +139,6 @@ export const listCategorys = /* GraphQL */ `
               nextToken
               startedAt
             }
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
           }
@@ -540,9 +531,6 @@ export const listMessages = /* GraphQL */ `
             id
             tagID
             messageID
-            _version
-            _deleted
-            _lastChangedAt
             createdAt
             updatedAt
             tag {
@@ -550,9 +538,6 @@ export const listMessages = /* GraphQL */ `
               categoryID
               label
               username
-              _version
-              _deleted
-              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -560,9 +545,6 @@ export const listMessages = /* GraphQL */ `
               id
               body
               username
-              _version
-              _deleted
-              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -570,9 +552,6 @@ export const listMessages = /* GraphQL */ `
           nextToken
           startedAt
         }
-        _version
-        _deleted
-        _lastChangedAt
         createdAt
         updatedAt
       }

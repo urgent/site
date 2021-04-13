@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Message from "./Messsage";
 import { useSmoomsContext } from "../utils/SmoomsState";
+import CreateMessage from './CreateMessage';
 
 // this component is the container for displaying all individual messages
 export default function Messages({ messages }) {
@@ -14,6 +15,7 @@ export default function Messages({ messages }) {
     }
   }, [activeTags]);
 
+  // create matching messages array
   const mainMssgs = (messages) => {
     let newMssgs = [];
     let activeTagIDs = {};
@@ -45,6 +47,7 @@ export default function Messages({ messages }) {
     dispatch({ type: "filterMssgs", payload: { messages: newMssgs } });
   };
 
+  // create the alternate messages array
   const displayAltMssgs = (messages, newMssgs) => {
     let newAltMssgs = [];
     let mssgIDs = {};
@@ -75,6 +78,7 @@ export default function Messages({ messages }) {
     dispatch({ type: "filterAltMssgs", payload: { messages: newAltMssgs } });
   };
 
+  // returns all matching messages
   const displayMessages =
     activeMssgs.length > 0 ? (
       activeMssgs.map((mssg) => {
@@ -94,6 +98,7 @@ export default function Messages({ messages }) {
       </div>
     );
 
+  // returns alternate matches
   const altMessages =
     altMssgs.content.length > 0
       ? altMssgs.content.map((mssg) => {
@@ -127,6 +132,7 @@ export default function Messages({ messages }) {
           <div className={altMssgs.active ? "" : "altHide"}>{altMessages}</div>
         </>
       )}
+      <CreateMessage />
     </section>
   );
 }
