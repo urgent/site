@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import Message from "./Messsage";
 import { useSmoomsContext } from "../utils/SmoomsState";
-import CreateMessage from './CreateMessage';
+import CreateMessageWrapper from './CreateMessageWrapper';
 
 // this component is the container for displaying all individual messages
 export default function Messages({ messages }) {
@@ -132,7 +132,7 @@ export default function Messages({ messages }) {
           <div className={altMssgs.active ? "" : "altHide"}>{altMessages}</div>
         </>
       )}
-      <CreateMessage />
+      <CreateMessageWrapper />
     </section>
   );
 }
