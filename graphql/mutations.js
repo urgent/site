@@ -1,6 +1,135 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const batchCreateMessageTag = /* GraphQL */ `
+  mutation BatchCreateMessageTag($messageTags: [CreateMessageTagInput]) {
+    batchCreateMessageTag(messageTags: $messageTags) {
+      id
+      tagID
+      messageID
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      tag {
+        id
+        categoryID
+        label
+        username
+        category {
+          id
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          tags {
+            items {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+        }
+        messages {
+          items {
+            id
+            tagID
+            messageID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            tag {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            message {
+              id
+              body
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      message {
+        id
+        body
+        username
+        tags {
+          items {
+            id
+            tagID
+            messageID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            tag {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            message {
+              id
+              body
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+          }
+          nextToken
+          startedAt
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;
 export const createCategory = /* GraphQL */ `
   mutation CreateCategory(
     $input: CreateCategoryInput!
