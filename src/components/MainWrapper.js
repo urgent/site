@@ -3,7 +3,8 @@ import MessageBoard from "../components/MessageBoard";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";
 import { API } from "aws-amplify";
-import { listCategorys, listMessages } from "../../graphql/queries";
+import { listCategories } from '../../graphql/listCategories';
+import { listMessages } from '../../graphql/listMessages';
 
 // this component pulls categories from AWS API
 export default function MainWrapper() {
@@ -23,7 +24,7 @@ export default function MainWrapper() {
   async function fetchCategories() {
     try {
       const categoryData = await API.graphql({
-        query: listCategorys,
+        query: listCategories,
       });
       console.log(categoryData);
       setCategories(categoryData.data.listCategorys.items);
