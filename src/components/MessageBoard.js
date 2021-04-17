@@ -15,6 +15,8 @@ export default function Messages({ messages }) {
     }
   }, [activeTags]);
 
+  // console.log(activeTags, activeMssgs);
+
   // create matching messages array
   const mainMssgs = (messages) => {
     let newMssgs = [];
@@ -93,23 +95,23 @@ export default function Messages({ messages }) {
     ) : altMssgs.content.length > 1 ? (
       <div className="introText mainFont xl">No Matches 😬</div>
     ) : (
-      <div className="introText mainFont xl">
-        👋 Hi! Select tags to pull up messages
-      </div>
-    );
+          <div className="introText mainFont xl">
+            👋 Hi! Select tags to pull up messages
+          </div>
+        );
 
   // returns alternate matches
   const altMessages =
     altMssgs.content.length > 0
       ? altMssgs.content.map((mssg) => {
-          return (
-            <Message
-              key={mssg.id}
-              body={mssg.body}
-              tagPayload={mssg.messageTags?.items}
-            />
-          );
-        })
+        return (
+          <Message
+            key={mssg.id}
+            body={mssg.body}
+            tagPayload={mssg.messageTags?.items}
+          />
+        );
+      })
       : "";
 
   const handleAltTrigger = () => {
