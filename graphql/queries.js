@@ -17,6 +17,9 @@ export const syncCategories = /* GraphQL */ `
       items {
         id
         name
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         tags {
@@ -28,15 +31,21 @@ export const syncCategories = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
-            messages {
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
               nextToken
               startedAt
             }
-            createdAt
-            updatedAt
           }
           nextToken
           startedAt
@@ -52,6 +61,9 @@ export const getCategory = /* GraphQL */ `
     getCategory(id: $id) {
       id
       name
+      _version
+      _deleted
+      _lastChangedAt
       createdAt
       updatedAt
       tags {
@@ -63,6 +75,9 @@ export const getCategory = /* GraphQL */ `
           category {
             id
             name
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
             tags {
@@ -70,19 +85,26 @@ export const getCategory = /* GraphQL */ `
               startedAt
             }
           }
-          messages {
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          messageTags {
             items {
               id
               tagID
               messageID
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
+              owner
             }
             nextToken
             startedAt
           }
-          createdAt
-          updatedAt
         }
         nextToken
         startedAt
@@ -100,6 +122,9 @@ export const listCategorys = /* GraphQL */ `
       items {
         id
         name
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         tags {
@@ -111,15 +136,298 @@ export const listCategorys = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
-            messages {
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
               nextToken
               startedAt
             }
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const listTags = /* GraphQL */ `
+  query ListTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        categoryID
+        label
+        username
+        category {
+          id
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          tags {
+            items {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        messageTags {
+          items {
+            id
+            tagID
+            messageID
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
+            tag {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            owner
+            message {
+              id
+              body
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+          }
+          nextToken
+          startedAt
+        }
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getTag = /* GraphQL */ `
+  query GetTag($id: ID!) {
+    getTag(id: $id) {
+      id
+      categoryID
+      label
+      username
+      category {
+        id
+        name
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        tags {
+          items {
+            id
+            categoryID
+            label
+            username
+            category {
+              id
+              name
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
+              nextToken
+              startedAt
+            }
+          }
+          nextToken
+          startedAt
+        }
+      }
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      messageTags {
+        items {
+          id
+          tagID
+          messageID
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          tag {
+            id
+            categoryID
+            label
+            username
+            category {
+              id
+              name
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
+              nextToken
+              startedAt
+            }
+          }
+          owner
+          message {
+            id
+            body
+            username
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
+              nextToken
+              startedAt
+            }
+          }
+        }
+        nextToken
+        startedAt
+      }
+    }
+  }
+`;
+export const syncTags = /* GraphQL */ `
+  query SyncTags(
+    $filter: ModelTagFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncTags(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        categoryID
+        label
+        username
+        category {
+          id
+          name
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          tags {
+            items {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            nextToken
+            startedAt
+          }
+        }
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        messageTags {
+          items {
+            id
+            tagID
+            messageID
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            tag {
+              id
+              categoryID
+              label
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
+            owner
+            message {
+              id
+              body
+              username
+              _version
+              _deleted
+              _lastChangedAt
+              createdAt
+              updatedAt
+            }
           }
           nextToken
           startedAt
@@ -147,6 +455,9 @@ export const syncMessageTags = /* GraphQL */ `
         id
         tagID
         messageID
+        _version
+        _deleted
+        _lastChangedAt
         createdAt
         updatedAt
         tag {
@@ -157,6 +468,9 @@ export const syncMessageTags = /* GraphQL */ `
           category {
             id
             name
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
             tags {
@@ -164,252 +478,53 @@ export const syncMessageTags = /* GraphQL */ `
               startedAt
             }
           }
-          messages {
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          messageTags {
             items {
               id
               tagID
               messageID
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
+              owner
             }
             nextToken
             startedAt
           }
-          createdAt
-          updatedAt
         }
+        owner
         message {
           id
           body
           username
-          tags {
+          _version
+          _deleted
+          _lastChangedAt
+          createdAt
+          updatedAt
+          messageTags {
             items {
               id
               tagID
               messageID
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
-            }
-            nextToken
-            startedAt
-          }
-          createdAt
-          updatedAt
-        }
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const listTags = /* GraphQL */ `
-  query ListTags(
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listTags(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        categoryID
-        label
-        username
-        category {
-          id
-          name
-          createdAt
-          updatedAt
-          tags {
-            items {
-              id
-              categoryID
-              label
-              username
-              createdAt
-              updatedAt
+              owner
             }
             nextToken
             startedAt
           }
         }
-        messages {
-          items {
-            id
-            tagID
-            messageID
-            createdAt
-            updatedAt
-            tag {
-              id
-              categoryID
-              label
-              username
-              createdAt
-              updatedAt
-            }
-            message {
-              id
-              body
-              username
-              createdAt
-              updatedAt
-            }
-          }
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getTag = /* GraphQL */ `
-  query GetTag($id: ID!) {
-    getTag(id: $id) {
-      id
-      categoryID
-      label
-      username
-      category {
-        id
-        name
-        createdAt
-        updatedAt
-        tags {
-          items {
-            id
-            categoryID
-            label
-            username
-            category {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            messages {
-              nextToken
-              startedAt
-            }
-            createdAt
-            updatedAt
-          }
-          nextToken
-          startedAt
-        }
-      }
-      messages {
-        items {
-          id
-          tagID
-          messageID
-          createdAt
-          updatedAt
-          tag {
-            id
-            categoryID
-            label
-            username
-            category {
-              id
-              name
-              createdAt
-              updatedAt
-            }
-            messages {
-              nextToken
-              startedAt
-            }
-            createdAt
-            updatedAt
-          }
-          message {
-            id
-            body
-            username
-            tags {
-              nextToken
-              startedAt
-            }
-            createdAt
-            updatedAt
-          }
-        }
-        nextToken
-        startedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const syncTags = /* GraphQL */ `
-  query SyncTags(
-    $filter: ModelTagFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncTags(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        categoryID
-        label
-        username
-        category {
-          id
-          name
-          createdAt
-          updatedAt
-          tags {
-            items {
-              id
-              categoryID
-              label
-              username
-              createdAt
-              updatedAt
-            }
-            nextToken
-            startedAt
-          }
-        }
-        messages {
-          items {
-            id
-            tagID
-            messageID
-            createdAt
-            updatedAt
-            tag {
-              id
-              categoryID
-              label
-              username
-              createdAt
-              updatedAt
-            }
-            message {
-              id
-              body
-              username
-              createdAt
-              updatedAt
-            }
-          }
-          nextToken
-          startedAt
-        }
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
@@ -427,11 +542,19 @@ export const listMessages = /* GraphQL */ `
         id
         body
         username
-        tags {
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        messageTags {
           items {
             id
             tagID
             messageID
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
             tag {
@@ -439,13 +562,20 @@ export const listMessages = /* GraphQL */ `
               categoryID
               label
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
+            owner
             message {
               id
               body
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -453,8 +583,6 @@ export const listMessages = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
@@ -467,11 +595,19 @@ export const getMessage = /* GraphQL */ `
       id
       body
       username
-      tags {
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+      messageTags {
         items {
           id
           tagID
           messageID
+          _version
+          _deleted
+          _lastChangedAt
           createdAt
           updatedAt
           tag {
@@ -482,33 +618,41 @@ export const getMessage = /* GraphQL */ `
             category {
               id
               name
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
-            messages {
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
               nextToken
               startedAt
             }
-            createdAt
-            updatedAt
           }
+          owner
           message {
             id
             body
             username
-            tags {
+            _version
+            _deleted
+            _lastChangedAt
+            createdAt
+            updatedAt
+            messageTags {
               nextToken
               startedAt
             }
-            createdAt
-            updatedAt
           }
         }
         nextToken
         startedAt
       }
-      createdAt
-      updatedAt
     }
   }
 `;
@@ -531,11 +675,19 @@ export const mssgsByUsername = /* GraphQL */ `
         id
         body
         username
-        tags {
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        messageTags {
           items {
             id
             tagID
             messageID
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
             tag {
@@ -543,13 +695,20 @@ export const mssgsByUsername = /* GraphQL */ `
               categoryID
               label
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
+            owner
             message {
               id
               body
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -557,8 +716,6 @@ export const mssgsByUsername = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt
@@ -582,11 +739,19 @@ export const syncMessages = /* GraphQL */ `
         id
         body
         username
-        tags {
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+        messageTags {
           items {
             id
             tagID
             messageID
+            _version
+            _deleted
+            _lastChangedAt
             createdAt
             updatedAt
             tag {
@@ -594,13 +759,20 @@ export const syncMessages = /* GraphQL */ `
               categoryID
               label
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
+            owner
             message {
               id
               body
               username
+              _version
+              _deleted
+              _lastChangedAt
               createdAt
               updatedAt
             }
@@ -608,8 +780,6 @@ export const syncMessages = /* GraphQL */ `
           nextToken
           startedAt
         }
-        createdAt
-        updatedAt
       }
       nextToken
       startedAt

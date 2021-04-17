@@ -17,7 +17,7 @@ export declare class Tag {
   readonly label: string;
   readonly username?: string;
   readonly category?: Category;
-  readonly messages?: (MessageTag | null)[];
+  readonly messageTags?: (MessageTag | null)[];
   constructor(init: ModelInit<Tag>);
   static copyOf(source: Tag, mutator: (draft: MutableModel<Tag>) => MutableModel<Tag> | void): Tag;
 }
@@ -34,7 +34,7 @@ export declare class Message {
   readonly id: string;
   readonly body: string;
   readonly username?: string;
-  readonly tags?: (MessageTag | null)[];
+  readonly messageTags?: (MessageTag | null)[];
   constructor(init: ModelInit<Message>);
   static copyOf(source: Message, mutator: (draft: MutableModel<Message>) => MutableModel<Message> | void): Message;
 }
