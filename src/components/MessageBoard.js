@@ -22,7 +22,7 @@ export default function Messages({ messages }) {
 
     messages.forEach((mssg) => {
       let count = 0;
-      let tagsArr = mssg.tags.items;
+      let tagsArr = mssg.messageTags.items;
 
       activeTags.forEach((aTag) => {
         activeTagIDs[aTag] = true;
@@ -58,7 +58,7 @@ export default function Messages({ messages }) {
     });
 
     messages.forEach((mssg) => {
-      let tagsArr = mssg.tags.items;
+      let tagsArr = mssg.messageTags.items;
 
       tagsArr.forEach((obj) => {
         if (
@@ -86,7 +86,7 @@ export default function Messages({ messages }) {
           <Message
             key={mssg.id}
             body={mssg.body}
-            tagPayload={mssg.tags?.items}
+            tagPayload={mssg.messageTags?.items}
           />
         );
       })
@@ -106,7 +106,7 @@ export default function Messages({ messages }) {
             <Message
               key={mssg.id}
               body={mssg.body}
-              tagPayload={mssg.tags?.items}
+              tagPayload={mssg.messageTags?.items}
             />
           );
         })
