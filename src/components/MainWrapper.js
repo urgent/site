@@ -26,7 +26,7 @@ export default function MainWrapper() {
       const categoryData = await API.graphql({
         query: listCategories,
       });
-      console.log(categoryData);
+      // console.log(categoryData);
       setCategories(categoryData.data.listCategorys.items);
     } catch (e) {
       console.log(e);
@@ -38,7 +38,7 @@ export default function MainWrapper() {
       const messageData = await API.graphql({
         query: listMessages,
       });
-      // console.log(messageData);
+      console.log(messageData);
       setMessages(messageData.data.listMessages.items);
     } catch (e) {
       console.log(e);

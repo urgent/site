@@ -15,6 +15,8 @@ export default function Messages({ messages }) {
     }
   }, [activeTags]);
 
+  // console.log(activeTags, activeMssgs);
+
   // create matching messages array
   const mainMssgs = (messages) => {
     let newMssgs = [];
@@ -22,7 +24,7 @@ export default function Messages({ messages }) {
 
     messages.forEach((mssg) => {
       let count = 0;
-      let tagsArr = mssg.tags.items;
+      let tagsArr = mssg.messageTags.items;
 
       activeTags.forEach((aTag) => {
         activeTagIDs[aTag] = true;
@@ -58,7 +60,7 @@ export default function Messages({ messages }) {
     });
 
     messages.forEach((mssg) => {
-      let tagsArr = mssg.tags.items;
+      let tagsArr = mssg.messageTags.items;
 
       tagsArr.forEach((obj) => {
         if (
@@ -86,30 +88,30 @@ export default function Messages({ messages }) {
           <Message
             key={mssg.id}
             body={mssg.body}
-            tagPayload={mssg.tags?.items}
+            tagPayload={mssg.messageTags?.items}
           />
         );
       })
     ) : altMssgs.content.length > 1 ? (
       <div className="introText mainFont xl">No Matches 😬</div>
     ) : (
-      <div className="introText mainFont xl">
-        👋 Hi! Select tags to pull up messages
-      </div>
-    );
+          <div className="introText mainFont xl">
+            👋 Hi! Select tags to pull up messages
+          </div>
+        );
 
   // returns alternate matches
   const altMessages =
     altMssgs.content.length > 0
       ? altMssgs.content.map((mssg) => {
-          return (
-            <Message
-              key={mssg.id}
-              body={mssg.body}
-              tagPayload={mssg.tags?.items}
-            />
-          );
-        })
+        return (
+          <Message
+            key={mssg.id}
+            body={mssg.body}
+            tagPayload={mssg.messageTags?.items}
+          />
+        );
+      })
       : "";
 
   const handleAltTrigger = () => {
