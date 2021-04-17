@@ -1,5 +1,5 @@
 export const listMessages = /* GraphQL */ `
-  query ListMessages(
+  query listMessages(
     $filter: ModelMessageFilterInput
     $limit: Int
     $nextToken: String
@@ -9,7 +9,7 @@ export const listMessages = /* GraphQL */ `
         id
         body
         username
-        tags {
+        messageTags {
           items {
             id
             tagID
