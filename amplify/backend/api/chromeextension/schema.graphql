@@ -16,13 +16,17 @@ type Tag @model
     label: String!
     username: String
     category: Category @connection(fields: ["categoryID"])
-    messages: [MessageTag] @connection(keyName: "fromTag", fields: ["id"])
+    messageTags: [MessageTag] @connection(keyName: "fromTag", fields: ["id"])
 }
 
 type MessageTag
   @model(queries: null)
   @key(name: "fromTag", fields: ["tagID", "messageID"])
-  @key(name: "fromMessage", fields: ["messageID", "tagID"]) {
+  @key(name: "fromMessage", fields: ["messageID", "tagID"]) 
+  @auth(rules: [
+    { allow: owner },
+    { allow: public, operations: [read] }
+  ]){
     id: ID!
     tagID: ID!
     messageID: ID!
@@ -39,5 +43,5 @@ type Message @model
     id: ID!
     body: String!
     username: String
-    tags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
+    messageTags: [MessageTag] @connection(keyName: "fromMessage", fields: ["id"])
 }

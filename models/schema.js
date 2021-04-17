@@ -91,8 +91,8 @@ export const schema = {
                         "targetName": "categoryID"
                     }
                 },
-                "messages": {
-                    "name": "messages",
+                "messageTags": {
+                    "name": "messageTags",
                     "isArray": true,
                     "type": {
                         "model": "MessageTag"
@@ -214,6 +214,31 @@ export const schema = {
                             "tagID"
                         ]
                     }
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
                 }
             ]
         },
@@ -241,8 +266,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "tags": {
-                    "name": "tags",
+                "messageTags": {
+                    "name": "messageTags",
                     "isArray": true,
                     "type": {
                         "model": "MessageTag"
@@ -303,5 +328,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "c0b891c4b3ce1cc932a6000ce4d5e6b6"
+    "version": "8fc5a6b669870f1a22d47e903d2b0ac8"
 };
