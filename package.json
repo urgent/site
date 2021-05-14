@@ -10,6 +10,7 @@
   "dependencies": {
     "@aws-amplify/ui-react": "^1.0.6",
     "aws-amplify": "^3.3.26",
+    "jsonwebtoken": "^8.5.1",
     "next": "^10.0.9",
     "next-auth": "^3.22.0",
     "react": "17.0.1",
