@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { withAuthenticator } from '@aws-amplify/ui-react'
+import { signIn, signOut, useSession } from 'next-auth/client'
 import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import { createMessage } from '../../graphql/createMessage'
@@ -8,6 +8,7 @@ const initialState = { body: '' }
 
 function CreateMessageWrapper() {
   const [mssg, setMssg] = useState(initialState);
+  const [session, loading] = useSession()
   const { body } = mssg;
 
   function handleChange(evt) {
@@ -25,16 +26,26 @@ function CreateMessageWrapper() {
   }
 
   return (
-    <div>
-      <h1>Create a new message</h1>
-      <input
-        onChange={handleChange}
-        name="body"
-        placeholder="Message Body"
-        value={mssg.body}
-      />
-      <button onClick={createNewMssg}>Create Message</button>
-    </div>
+    <>
+      {!session && <>
+        Not signed in <br />
+        <button onClick={signIn}>Sign in</button>
+      </>}
+      {session && <>
+        Signed in as {session.user.name} <br />
+        <button onClick={signOut}>Sign out</button>
+        <div>
+          <h1>Create a new message</h1>
+          <input
+            onChange={handleChange}
+            name="body"
+            placeholder="Message Body"
+            value={mssg.body}
+          />
+          <button onClick={createNewMssg}>Create Message</button>
+        </div>
+      </>}
+    </>
   )
 }
 
