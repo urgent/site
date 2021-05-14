@@ -7,11 +7,14 @@ import "../../styles/Nav.css";
 import "../../configureAmplify";
 import { SmoomsProvider } from "../utils/SmoomsState";
 import Link from "next/link";
+import { Provider } from 'next-auth/client'
 
 function MyApp({ Component, pageProps }) {
   return (
     <SmoomsProvider>
-      <Component {...pageProps} />
+      <Provider session={pageProps.session}>
+        <Component {...pageProps} />
+      </Provider>
     </SmoomsProvider>
   );
 }
