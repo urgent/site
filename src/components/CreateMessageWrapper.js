@@ -11,11 +11,11 @@ function CreateMessageWrapper() {
   const { body } = mssg;
 
   function handleChange(evt) {
-    setMssg(() => ({ ...mssg, [evt.target.name]: evt.target.value}))
+    setMssg(() => ({ ...mssg, [evt.target.name]: evt.target.value }))
   }
 
   async function createNewMssg() {
-    if(!body) return
+    if (!body) return
     const newMessage = await API.graphql({
       query: createMessage,
       variables: { input: mssg },
@@ -38,4 +38,4 @@ function CreateMessageWrapper() {
   )
 }
 
-export default withAuthenticator(CreateMessageWrapper);
+export default CreateMessageWrapper;
