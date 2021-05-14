@@ -16,7 +16,8 @@
     "next-auth": "^3.22.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-relay": "^11.0.2"
+    "react-relay": "^11.0.2",
+    "relay-nextjs": "^0.1.2"
   },
   "devDependencies": {
     "babel-plugin-relay": "^11.0.2",
