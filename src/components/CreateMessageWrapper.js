@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
-import { API } from 'aws-amplify'
 import { useRouter } from 'next/router'
 import { createMessage } from '../../graphql/createMessage'
 
@@ -17,12 +16,12 @@ function CreateMessageWrapper() {
 
   async function createNewMssg() {
     if (!body) return
-    const newMessage = await API.graphql({
+    const newMessage = {
       query: createMessage,
       variables: { input: mssg },
       authMode: "AMAZON_COGNITO_USER_POOLS"
-    });
-    console.log(newMessage.data.createMessage.id);
+    };
+
   }
 
   return (

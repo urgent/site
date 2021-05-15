@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MessageBoard from "../components/MessageBoard";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar";
-import { API } from "aws-amplify";
+
 import { listCategories } from '../../graphql/listCategories';
 import { listMessages } from '../../graphql/listMessages';
 
