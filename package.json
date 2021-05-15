@@ -9,9 +9,6 @@
     "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx"
   },
   "dependencies": {
-    "@aws-amplify/ui-react": "^1.0.6",
-    "@graphql-tools/schema": "^7.1.5",
-    "aws-amplify": "^3.3.26",
     "jsonwebtoken": "^8.5.1",
     "next": "^10.0.9",
     "next-auth": "^3.22.0",
