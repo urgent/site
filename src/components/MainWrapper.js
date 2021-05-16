@@ -22,27 +22,11 @@ export default function MainWrapper() {
 
   // fetch call to Graphql API
   async function fetchCategories() {
-    try {
-      const categoryData = await API.graphql({
-        query: listCategories,
-      });
-      // console.log(categoryData);
-      setCategories(categoryData.data.listCategorys.items);
-    } catch (e) {
-      console.log(e);
-    }
+
   }
 
   async function fetchMessages() {
-    try {
-      const messageData = await API.graphql({
-        query: listMessages,
-      });
-      console.log(messageData);
-      setMessages(messageData.data.listMessages.items);
-    } catch (e) {
-      console.log(e);
-    }
+
   }
 
   return (
