@@ -33,6 +33,9 @@ export default NextAuth({
     jwt: {
         secret: process.env.SECRET,
         encode: async ({ secret, token, maxAge }) => {
+            if (!token.id) {
+                return;
+            }
             const jwtClaims = {
                 "sub": token.id.toString(),
                 "name": token.name,

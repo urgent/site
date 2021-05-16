@@ -5,14 +5,21 @@ import { getSession } from 'next-auth/client'
 export function createServerNetwork() {
     return Network.create(async (params, variables) => {
         const session = await getSession();
-        console.log(await session)
+        let authHeaders;
+        if (session) {
+            authHeaders = {
+                'Authorization': `Bearer ${session.token}`,
+                'X-Hasura-Role': 'user'
+            }
+        } else {
+            authHeaders = {}
+        }
         const response = await fetch('https://smooms.hasura.app/v1beta1/relay', {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                /*'Authorization': `Bearer ${session.token}`,
-                'X-Hasura-Role': 'user'*/
+                ...authHeaders
             },
             body: JSON.stringify({
                 query: params.text,
@@ -22,7 +29,6 @@ export function createServerNetwork() {
 
 
         const json = await response.text();
-        console.log(json)
         return JSON.parse(json, withHydrateDatetime);
     });
 }
