@@ -6,23 +6,16 @@ import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
-    messages_connection {
-      edges {
-        node {
-          message
-        }
-      }
-    }
+    ...MainWrapperFragment_messages
   }
 `;
 
 function Home({ preloadedQuery }) {
-  if (preloadedQuery) {
-    const query = usePreloadedQuery(HomeQuery, preloadedQuery);
-  }
+
+  const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
 
   return (
-    <MainWrapper className="mainWrapper" />
+    <MainWrapper className="mainWrapper" messages={messages} />
   )
 }
 

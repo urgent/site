@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { useSmoomsContext } from "../utils/SmoomsState";
 
 export default function Nav() {
 
-    const [_, dispatch] = useSmoomsContext();
+
 
     const clearTags = () => {
-        dispatch({ type: "clearTags" });
+
     }
 
 
@@ -26,4 +25,4 @@ export default function Nav() {
             </div>
         </nav>
     )
-}   
+}
