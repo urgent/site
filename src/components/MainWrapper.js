@@ -1,40 +1,28 @@
-import { useState, useEffect } from "react";
-import MessageBoard from "../components/MessageBoard";
 import Nav from "../components/Nav";
-import Sidebar from "../components/Sidebar";
+import { graphql, useFragment } from 'react-relay';
 
-import { listCategories } from '../../graphql/listCategories';
-import { listMessages } from '../../graphql/listMessages';
 
 // this component pulls categories from AWS API
-export default function MainWrapper() {
-  // set state to hold categories
-  const [categories, setCategories] = useState([]);
-
-  // set state to hold messages
-  const [messages, setMessages] = useState([]);
-
-  // fetch categories upon component load
-  useEffect(() => {
-    fetchCategories();
-    fetchMessages();
-  }, []);
-
-  // fetch call to Graphql API
-  async function fetchCategories() {
-
-  }
-
-  async function fetchMessages() {
-
-  }
+export default function MainWrapper({ messages }) {
+  const data = useFragment(
+    graphql`
+      fragment MainWrapperFragment_messages on query_root {
+        messages_connection {
+          edges {
+            node {
+              message
+            }
+          }
+        }
+      }
+    `, messages
+  );
 
   return (
     <section className="originContainer">
       <Nav />
-      <div className="mainWrapper">
-        <Sidebar categories={categories} />
-        <MessageBoard messages={messages} />
+      <div className="mainWrapper" style={{ color: "black" }}>
+        {data.messages_connection.edges[0].node.message}
       </div>
     </section>
   );

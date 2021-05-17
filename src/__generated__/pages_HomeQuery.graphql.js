@@ -8,15 +8,10 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+import type { MainWrapperFragment_messages$ref } from "./MainWrapperFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +messages_connection: {|
-    +edges: $ReadOnlyArray<{|
-      +node: {|
-        +message: string
-      |}
-    |}>
-  |}
+  +$fragmentRefs: MainWrapperFragment_messages$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -27,6 +22,10 @@ export type pages_HomeQuery = {|
 
 /*
 query pages_HomeQuery {
+  ...MainWrapperFragment_messages
+}
+
+fragment MainWrapperFragment_messages on query_root {
   messages_connection {
     edges {
       node {
@@ -38,15 +37,7 @@ query pages_HomeQuery {
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "message",
-  "storageKey": null
-};
-return {
+const node/*: ConcreteRequest*/ = {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
@@ -54,38 +45,9 @@ return {
     "name": "pages_HomeQuery",
     "selections": [
       {
-        "alias": null,
         "args": null,
-        "concreteType": "messagesConnection",
-        "kind": "LinkedField",
-        "name": "messages_connection",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "messagesEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "messages",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
+        "kind": "FragmentSpread",
+        "name": "MainWrapperFragment_messages"
       }
     ],
     "type": "query_root",
@@ -121,7 +83,13 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "message",
+                    "storageKey": null
+                  },
                   {
                     "alias": null,
                     "args": null,
@@ -141,16 +109,15 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3c82e564ffe352edcb426bb884e6dec2",
+    "cacheID": "7fbf7a9f8cbfc8b39e6b6bf64c097118",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  messages_connection {\n    edges {\n      node {\n        message\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...MainWrapperFragment_messages\n}\n\nfragment MainWrapperFragment_messages on query_root {\n  messages_connection {\n    edges {\n      node {\n        message\n        id\n      }\n    }\n  }\n}\n"
   }
 };
-})();
 // prettier-ignore
-(node/*: any*/).hash = '20db5d514e8ecf5ac03ee6be3b59c7a5';
+(node/*: any*/).hash = 'b8ad24b4a70f3aef8b58ac1b04e2682d';
 
 module.exports = node;
