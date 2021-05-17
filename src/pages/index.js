@@ -2,6 +2,7 @@ import MainWrapper from "../components/MainWrapper";
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 
+
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
@@ -18,7 +19,6 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
   if (preloadedQuery) {
     const query = usePreloadedQuery(HomeQuery, preloadedQuery);
-    console.log(query);
   }
 
   return (
@@ -41,13 +41,12 @@ export default withRelay(Home, HomeQuery, {
   createClientEnvironment: () => getClientEnvironment(),
   // Gets server side props for the page.
   serverSideProps: async (ctx) => {
+
     // This is an example of getting an auth token from the request context.
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
 
-
-
-    return {};
+    return { token: ctx.req.cookies['next-auth.session-token'] };
   },
   // Server-side props can be accessed as the second argument
   // to this function.
@@ -55,9 +54,9 @@ export default withRelay(Home, HomeQuery, {
     ctx,
     // The object returned from serverSideProps. If you don't need a token
     // you can remove this argument.
-    { }
+    { token }
   ) => {
     const { createServerEnvironment } = await import('../lib/server_environment');
-    return createServerEnvironment();
+    return createServerEnvironment(token);
   },
 });
