@@ -1,15 +1,10 @@
-import "../../styles/globals.css";
-import "../../styles/mainWrapper.css";
-import "../../styles/mssgBoard.css";
-import "../../styles/sidebar.css";
-import "../../styles/catBox.css";
-import "../../styles/Nav.css";
 import { SmoomsProvider } from "../utils/SmoomsState";
-import Link from "next/link";
 import { Provider } from 'next-auth/client'
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { getInitialPreloadedQuery, getRelayProps } from 'relay-nextjs/app';
 import { getClientEnvironment } from '../lib/client_environment';
+import { ChakraProvider, Grid } from "@chakra-ui/react";
+import { theme } from "../components/theme";
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
@@ -24,7 +19,18 @@ function MyApp({ Component, pageProps }) {
     <SmoomsProvider>
       <Provider session={pageProps.session}>
         <RelayEnvironmentProvider environment={env}>
-          <Component {...pageProps} {...relayProps} />
+          <ChakraProvider theme={theme}>
+            <Grid
+              data-cy="grid"
+              templateColumns="[sidebar] 1fr [content] 3fr [info] 1fr"
+              templateRows="[nav] 3rem [body] auto [footer] 600px"
+              bg="white"
+              color={"text.600"}
+              minHeight="100vh"
+            >
+              <Component {...pageProps} {...relayProps} />
+            </Grid>
+          </ChakraProvider>
         </RelayEnvironmentProvider>
       </Provider>
     </SmoomsProvider>
