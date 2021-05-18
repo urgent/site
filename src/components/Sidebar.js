@@ -8,7 +8,10 @@ export default function Sidebar({ caption }) {
 
     return (
         <>
-            <Button ref={btnRef} onClick={onOpen}>
+            <Button ref={btnRef} onClick={onOpen} variant="solid"
+                size="sm"
+                backgroundColor="primary.500"
+                _hover={{ background: "hover.500" }}>
                 {caption}
             </Button>
             <Drawer
@@ -20,7 +23,7 @@ export default function Sidebar({ caption }) {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Create your account</DrawerHeader>
+                    <DrawerHeader>Categories</DrawerHeader>
 
                     <DrawerBody>
                         <Input placeholder="Type here..." />
