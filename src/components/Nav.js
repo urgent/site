@@ -8,7 +8,7 @@ export default function Nav() {
             as="nav"
             gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [button] 128px [navRightMargin] 10px"
             gridRow="nav"
-            gridColumn="sidebar / -1"
+            gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
             pt={4}
         >
             <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />

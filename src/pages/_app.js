@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }) {
               data-cy="grid"
               templateColumns="[sidebar] 1fr [content] 3fr [info] 1fr"
               templateRows="[nav] 3rem [body] auto [footer] 600px"
-              bg="bg.50"
+              bg={"background.50"}
               color={"text.600"}
               minHeight="100vh"
             >
