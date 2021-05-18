@@ -1,9 +1,8 @@
 import { signIn, signOut, useSession } from 'next-auth/client'
-import { Button, Icon, Text } from '@chakra-ui/react'
-import { FaGithub } from 'react-icons/fa';
+import { Button } from '@chakra-ui/react'
 
 
-export default function SignIn() {
+export default function SignIn({ caption }) {
     const [session] = useSession()
     if (session) {
         return <>
@@ -12,9 +11,17 @@ export default function SignIn() {
         </>
     }
     else {
-        return <Button onClick={() => signIn(1)} variant="solid" size="md" backgroundColor="primary.500" _hover={{ background: "hover.500" }}>
-            <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in with Github</Text>
-        </Button>
+        return (
+            <Button
+                onClick={() => signIn(1)}
+                variant="solid"
+                size="sm"
+                backgroundColor="primary.500"
+                _hover={{ background: "hover.500" }}
+            >
+                {caption}
+            </Button>
+        )
     }
 
 }

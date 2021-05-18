@@ -1,10 +1,12 @@
-import { Grid, Box, Menu, MenuButton, Image } from '@chakra-ui/react'
+import { Grid, Box, Menu, MenuButton, Image, Icon, Text } from '@chakra-ui/react'
+import { FaGithub } from 'react-icons/fa';
+import SignIn from "../components/SignIn"
 
 export default function Nav() {
     return (
         <Grid
             as="nav"
-            gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [button] 48px [navRightMargin] 10px"
+            gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [button] 128px [navRightMargin] 10px"
             gridRow="nav"
             gridColumn="sidebar / -1"
             pt={4}
@@ -18,7 +20,13 @@ export default function Nav() {
                     <MenuButton mx={2}>Contact</MenuButton>
                 </Menu>
             </Box>
-
-        </Grid>
+            <Box sx={{ gridColumn: "button" }} mt={2} >
+                <SignIn caption={
+                    <>
+                        <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in</Text>
+                    </>
+                } />
+            </Box>
+        </Grid >
     )
 }
