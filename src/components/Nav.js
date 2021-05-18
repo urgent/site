@@ -12,14 +12,6 @@ export default function Nav() {
             pt={4}
         >
             <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />
-            <Box sx={{ gridColumn: "menu" }} mt={3} ml={3}>
-                <Menu>
-                    <MenuButton mx={2}>Product</MenuButton>
-                    <MenuButton mx={2}>Company</MenuButton>
-                    <MenuButton mx={2}>Blog</MenuButton>
-                    <MenuButton mx={2}>Contact</MenuButton>
-                </Menu>
-            </Box>
             <Box sx={{ gridColumn: "button" }} mt={2} >
                 <SignIn caption={
                     <>
