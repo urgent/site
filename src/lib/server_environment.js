@@ -1,6 +1,5 @@
 import { withHydrateDatetime } from 'relay-nextjs/date';
 import { Network, Environment, Store, RecordSource } from 'relay-runtime';
-import { getSession } from 'next-auth/client'
 
 export function createServerNetwork(token) {
     return Network.create(async (params, variables) => {
