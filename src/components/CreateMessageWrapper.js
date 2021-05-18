@@ -9,8 +9,8 @@ function CreateMessageWrapper() {
   return (
     <>
       {!session && <>
-        <Button onClick={() => signIn(1)} variant="solid" size="md" backgroundColor={"primary.500"}>
-          <Icon as={FaGithub} /><Text mx={2}>Sign in with Github</Text>
+        <Button onClick={() => signIn(1)} variant="solid" size="md" backgroundColor="primary.500" _hover={{ background: "hover.500" }}>
+          <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in with Github</Text>
         </Button>
       </>}
       {session && <>
