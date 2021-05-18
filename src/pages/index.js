@@ -1,4 +1,6 @@
-import MainWrapper from "../components/MainWrapper";
+import Nav from "../components/Nav";
+import Sidebar from "../components/Sidebar"
+import MessageBoard from "../components/MessageBoard"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 
@@ -15,7 +17,13 @@ function Home({ preloadedQuery }) {
   const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
 
   return (
-    <MainWrapper className="mainWrapper" messages={messages} />
+    <section className="originContainer">
+      <Nav />
+      <div className="mainWrapper">
+        <Sidebar />
+        <MessageBoard messages={messages} />
+      </div>
+    </section>
   )
 }
 
