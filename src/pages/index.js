@@ -2,7 +2,7 @@ import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
-import { Grid } from '@chakra-ui/react'
+import { Grid, Text } from '@chakra-ui/react'
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
@@ -23,9 +23,10 @@ function Home({ preloadedQuery }) {
         gridColumn="content"
         pt={4}
         mx="auto"
+        pt={20}
         sx={{ textAlign: "center" }}
       >
-        <Sidebar caption="👋 Navigate" />
+        <Sidebar caption={<Text mx={2} color="text.50">👋 Navigate</Text>} />
       </Grid>
     </>
   )
