@@ -1,9 +1,10 @@
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
-import MessageBoard from "../components/MessageBoard"
+import { signIn, signOut, useSession } from 'next-auth/client'
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
-import { Grid } from '@chakra-ui/react'
+import { Grid, Button, Icon, Text } from '@chakra-ui/react'
+import { FaGithub } from 'react-icons/fa';
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
@@ -15,19 +16,39 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
 
   const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const [session] = useSession()
 
   return (
     <>
       <Nav />
-      <Sidebar />
       <Grid
         as="main"
         gridRow="body"
         gridColumn="content"
         pt={4}
         mx="auto"
+        sx={{ textAlign: "center" }}
       >
-        <MessageBoard messages={messages} />
+        <Sidebar caption="👋 Navigate" />
+
+        {!session && <>
+          <Button onClick={() => signIn(1)} variant="solid" size="md" backgroundColor="primary.500" _hover={{ background: "hover.500" }}>
+            <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in with Github</Text>
+          </Button>
+        </>}
+        {session && <>
+          Signed in as {session.user.name} <br />
+          <button onClick={signOut}>Sign out</button>
+          <div>
+            <h1>Create a new message</h1>
+            <input
+              name="body"
+              placeholder="Message Body"
+            />
+            <button>Create Message</button>
+          </div>
+        </>}
+
       </Grid>
     </>
   )
