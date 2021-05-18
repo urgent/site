@@ -1,5 +1,4 @@
 import { Grid, Box, Menu, MenuButton, Image } from '@chakra-ui/react'
-import Link from "next/link";
 
 export default function Nav() {
     return (
