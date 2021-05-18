@@ -1,6 +1,6 @@
 import React from 'react'
 import { signIn, signOut, useSession } from 'next-auth/client'
-import { Button, Icon } from "@chakra-ui/react"
+import { Button, Icon, Text } from "@chakra-ui/react"
 import { FaGithub } from 'react-icons/fa';
 
 function CreateMessageWrapper() {
@@ -9,8 +9,8 @@ function CreateMessageWrapper() {
   return (
     <>
       {!session && <>
-        <Button onClick={signIn} variant="solid" size="md" backgroundColor="black">
-          <Icon as={FaGithub} /> Sign in with Github
+        <Button onClick={() => signIn(1)} variant="solid" size="md" backgroundColor={"primary.500"}>
+          <Icon as={FaGithub} /><Text mx={2}>Sign in with Github</Text>
         </Button>
       </>}
       {session && <>
