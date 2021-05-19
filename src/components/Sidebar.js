@@ -2,7 +2,7 @@ import React from 'react'
 import { useDisclosure, Button, Input, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
 
 // this component displays an individual category in the sidebar
-export default function Sidebar({ caption }) {
+export default function Sidebar({ children }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
 
@@ -16,7 +16,7 @@ export default function Sidebar({ caption }) {
                 my={4}
                 mx="auto"
             >
-                {caption}
+                {children}
             </Button>
             <Drawer
                 isOpen={isOpen}

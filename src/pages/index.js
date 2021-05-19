@@ -28,7 +28,9 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Sidebar caption={<Text mx={2} color="text.50">👋 Navigate</Text>} />
+        <Sidebar>
+          <Text mx={2} color="text.50">👋 Navigate</Text>
+        </Sidebar>
         <Tiles messages={messages} />
       </Grid>
     </>
