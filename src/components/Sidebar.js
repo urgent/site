@@ -11,7 +11,11 @@ export default function Sidebar({ caption }) {
             <Button ref={btnRef} onClick={onOpen} variant="solid"
                 size="sm"
                 backgroundColor="primary.500"
-                _hover={{ background: "hover.500" }}>
+                _hover={{ background: "hover.500" }}
+                maxWidth={24}
+                my={4}
+                mx="auto"
+            >
                 {caption}
             </Button>
             <Drawer

@@ -1,5 +1,6 @@
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
+import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid, Text } from '@chakra-ui/react'
@@ -25,8 +26,10 @@ function Home({ preloadedQuery }) {
         mx="auto"
         pt={20}
         sx={{ textAlign: "center" }}
+        width="100%"
       >
         <Sidebar caption={<Text mx={2} color="text.50">👋 Navigate</Text>} />
+        <Tiles />
       </Grid>
     </>
   )
