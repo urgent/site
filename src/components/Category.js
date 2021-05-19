@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react"
 
-export default function Category({ index, children }) {
+export default function Category({ children }) {
     return (
-        <Box key={index}>
+        <Box>
             {children}
         </Box>
     )
