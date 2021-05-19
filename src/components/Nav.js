@@ -13,11 +13,11 @@ export default function Nav() {
         >
             <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />
             <Box sx={{ gridColumn: "button" }} mt={2} >
-                <SignIn caption={
+                <SignIn>
                     <>
                         <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in</Text>
                     </>
-                } />
+                </SignIn>
             </Box>
         </Grid >
     )

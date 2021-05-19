@@ -2,7 +2,7 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 import { Button } from '@chakra-ui/react'
 
 
-export default function SignIn({ caption }) {
+export default function SignIn({ children }) {
     const [session] = useSession()
     if (session) {
         return <>
@@ -19,7 +19,7 @@ export default function SignIn({ caption }) {
                 backgroundColor="primary.500"
                 _hover={{ background: "hover.500" }}
             >
-                {caption}
+                {children}
             </Button>
         )
     }
