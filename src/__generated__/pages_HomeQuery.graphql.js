@@ -8,10 +8,10 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-import type { MainWrapperFragment_messages$ref } from "./MainWrapperFragment_messages.graphql";
+import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +$fragmentRefs: MainWrapperFragment_messages$ref
+  +$fragmentRefs: TilesFragment_messages$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -22,10 +22,10 @@ export type pages_HomeQuery = {|
 
 /*
 query pages_HomeQuery {
-  ...MainWrapperFragment_messages
+  ...TilesFragment_messages
 }
 
-fragment MainWrapperFragment_messages on query_root {
+fragment TilesFragment_messages on query_root {
   messages_connection {
     edges {
       node {
@@ -47,7 +47,7 @@ const node/*: ConcreteRequest*/ = {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "MainWrapperFragment_messages"
+        "name": "TilesFragment_messages"
       }
     ],
     "type": "query_root",
@@ -109,15 +109,15 @@ const node/*: ConcreteRequest*/ = {
     ]
   },
   "params": {
-    "cacheID": "7fbf7a9f8cbfc8b39e6b6bf64c097118",
+    "cacheID": "407fdec0b33df42c498eccf3101bd632",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...MainWrapperFragment_messages\n}\n\nfragment MainWrapperFragment_messages on query_root {\n  messages_connection {\n    edges {\n      node {\n        message\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...TilesFragment_messages\n}\n\nfragment TilesFragment_messages on query_root {\n  messages_connection {\n    edges {\n      node {\n        message\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 // prettier-ignore
-(node/*: any*/).hash = 'b8ad24b4a70f3aef8b58ac1b04e2682d';
+(node/*: any*/).hash = 'c21a2e78c4b050bdaef207cc45bd75f5';
 
 module.exports = node;

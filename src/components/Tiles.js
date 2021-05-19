@@ -1,6 +1,23 @@
 import { Grid, Box } from "@chakra-ui/react"
+import { graphql, useFragment } from 'react-relay';
 
-export default function Tiles() {
+
+export default function Tiles({ messages }) {
+
+    const data = useFragment(
+        graphql`
+          fragment TilesFragment_messages on query_root {
+            messages_connection {
+              edges {
+                node {
+                  message
+                }
+              }
+            }
+          }
+        `, messages
+    );
+
     return (
         <Grid
             gridTemplateColumns={[
@@ -13,32 +30,6 @@ export default function Tiles() {
             gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
             gridAutoFlow="dense"
         >
-            <Box bg="red"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red" gridColumn="span 2"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red" gridColumn="span 2"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red"></Box>
-            <Box bg="blue" gridRow="span 2"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red" gridColumn="span 2" gridRow="span 2"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
-            <Box bg="red"></Box>
-            <Box bg="blue"></Box>
-            <Box border="1px solid black"></Box>
+            {data.messages_connection.edges.map((edge) => <Box>{edge.node.message}</Box>)}
         </Grid>)
 }
