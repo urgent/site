@@ -1,20 +1,14 @@
-import React from 'react'
-import { useSmoomsContext } from "../utils/SmoomsState";
+import { Button } from "@chakra-ui/react"
 
-// this component displays an individual tag in any given message on the message board
-export default function Tag({ tag }) {
-  const [{ activeTags }, dispatch] = useSmoomsContext();
-
-  const handleTag = () => {
-    if (activeTags.includes(tag.id)) {
-      dispatch({ type: "removeTag", payload: { tag: tag.id } });
-    } else {
-      dispatch({ type: "addTag", payload: { tag: tag.id } });
-    }
-  }
-
-
+export default function Tag({ children }) {
   return (
-    <div className={activeTags.includes(tag.id) ? "tagBox active" : "tagBox"} onClick={() => handleTag()}>{tag.label}</div>
+    <Button
+      fontSize={[10, 10, 12, 12, 12]}
+      p={0}
+      minWidth="inherit"
+      height="inherit"
+    >
+      {children}
+    </Button>
   )
 }

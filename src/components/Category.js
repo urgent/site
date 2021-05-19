@@ -1,4 +1,5 @@
-import { Grid, Box } from "@chakra-ui/react"
+import Tag from "../components/Tag"
+import { Grid, Box, Wrap, WrapItem } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
 
 export default function Category({ children }) {
@@ -12,8 +13,8 @@ export default function Category({ children }) {
             fontSize={[8, 12, 12, 12, 12]}
             textAlign="left"
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-            gridTemplateRows="[titlebar] 16px [body] auto"
-            gridTemplateColumns="[content] auto [corner] 16px"
+            gridTemplateRows="[titlebar] 24px [body] auto"
+            gridTemplateColumns="[content] auto [corner] 24px"
         >
             <Box
                 gridRow="titlebar"
@@ -30,6 +31,15 @@ export default function Category({ children }) {
             >
                 {children}
             </Box>
+            <Wrap
+                gridRow="body"
+                gridColumn="content / -1"
+                my={2}
+                justify="center"
+                spacing={4}
+            >
+                {["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"].map((node) => <WrapItem><Tag>{node}</Tag></WrapItem>)}
+            </Wrap>
         </Grid>
     )
 }
