@@ -1,4 +1,5 @@
-import { Grid, Box } from "@chakra-ui/react"
+import Message from "../components/Messsage"
+import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
 
@@ -30,6 +31,6 @@ export default function Tiles({ messages }) {
             gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
             gridAutoFlow="dense"
         >
-            {data.messages_connection.edges.map((edge) => <Box>{edge.node.message}</Box>)}
+            {data.messages_connection.edges.map((edge) => <Message>{edge.node.message}</Message>)}
         </Grid>)
 }

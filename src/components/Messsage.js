@@ -1,16 +1,9 @@
 import React from "react";
-import Tag from "./Tag";
+import { Box } from "@chakra-ui/react"
 
 // this component displays an individual message
-export default function Messsage({ body, tagPayload }) {
-  const mssgTags = tagPayload?.map((tag) => {
-    return <Tag key={tag.tagID} tag={tag.tag} />;
-  });
-
+export default function Messsage({ children }) {
   return (
-    <div className="messageWrapper">
-      {body}
-      <div className="mssgTags">{mssgTags}</div>
-    </div>
+    <Box>{children}</Box>
   );
 }
