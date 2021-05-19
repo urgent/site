@@ -1,5 +1,6 @@
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
+import Editor from "../components/Editor"
 import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
@@ -18,19 +19,19 @@ function Home({ preloadedQuery }) {
   return (
     <>
       <Nav />
+      <Sidebar />
       <Grid
         as="main"
         gridRow="body"
         gridColumn="content"
-        pt={4}
+        pt={2}
         mx="auto"
-        pt={20}
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Sidebar>
-          <Text mx={2} color="text.50">👋 Navigate</Text>
-        </Sidebar>
+        <Editor>
+          <Text mx={2} color="text.50">👋 Write</Text>
+        </Editor>
         <Tiles messages={messages} />
       </Grid>
     </>
