@@ -12,10 +12,10 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type TilesFragment_messages$ref: FragmentReference;
 declare export opaque type TilesFragment_messages$fragmentType: TilesFragment_messages$ref;
 export type TilesFragment_messages = {|
-  +messages_connection: {|
+  +message_connection: {|
     +edges: $ReadOnlyArray<{|
       +node: {|
-        +message: string
+        +content: string
       |}
     |}>
   |},
@@ -39,15 +39,15 @@ const node/*: ReaderFragment*/ = {
     {
       "alias": null,
       "args": null,
-      "concreteType": "messagesConnection",
+      "concreteType": "messageConnection",
       "kind": "LinkedField",
-      "name": "messages_connection",
+      "name": "message_connection",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "messagesEdge",
+          "concreteType": "messageEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -55,7 +55,7 @@ const node/*: ReaderFragment*/ = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "messages",
+              "concreteType": "message",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -64,7 +64,7 @@ const node/*: ReaderFragment*/ = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "message",
+                  "name": "content",
                   "storageKey": null
                 }
               ],
@@ -81,6 +81,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'd3db6edcf59f862dcae115d65fd2438d';
+(node/*: any*/).hash = '8ed8908bcf631b3700b1de33e3062488';
 
 module.exports = node;

@@ -1,14 +1,55 @@
 import Category from "../components/Category"
 import { Box } from "@chakra-ui/react"
+import { graphql, useFragment } from 'react-relay';
 
-export default function Sidebar() {
-    const data = ["Category 1", "Category 2", "Category 3"]
+
+/*
+
+query MyQuery {
+  message_connection {
+    edges {
+      node {
+        message_message_tag {
+          message_tag_tag {
+            name
+            category {
+              name
+            }
+          }
+        }
+        content
+      }
+    }
+  }
+}
+
+
+*/
+
+export default function Sidebar({ categories }) {
+    const data = useFragment(
+        graphql`
+            fragment SidebarFragment_categories on query_root {
+                category_connection {
+                    edges {
+                        node {
+                            tags {
+                                name
+                            }
+                            name
+                        }
+                    }
+                }
+            }
+            `, categories
+    );
+
     return (
         <Box
             gridColumn="sidebar"
             gridRow="body"
         >
-            {data.map((node, index) => <Category key={index}>{node}</Category>)}
+            {data.category_connection.edges.map((edge, index) => <Category key={index} category={edge.node} />)}
         </Box>
     )
 }

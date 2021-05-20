@@ -4,150 +4,716 @@ schema {
   subscription: subscription_root
 }
 
-# columns and relationships of "messages"
-type messages implements Node {
+# columns and relationships of "category"
+type category implements Node {
   id: ID!
-  message: String!
-  next_auth_token: String!
+  name: String!
+
+  # An array relationship
+  tags(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): [tag!]!
+
+  # An aggregate relationship
+  tags_aggregate(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tag_aggregate!
+
+  # An array relationship connection
+  tags_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tagConnection!
+  user_id: String!
 }
 
-# Boolean expression to filter rows from the table "messages". All fields are combined with a logical 'AND'.
-input messages_bool_exp {
-  _and: [messages_bool_exp!]
-  _not: messages_bool_exp
-  _or: [messages_bool_exp!]
+# Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'.
+input category_bool_exp {
+  _and: [category_bool_exp!]
+  _not: category_bool_exp
+  _or: [category_bool_exp!]
   id: uuid_comparison_exp
-  message: String_comparison_exp
-  next_auth_token: String_comparison_exp
+  name: String_comparison_exp
+  tags: tag_bool_exp
+  user_id: String_comparison_exp
 }
 
-# unique or primary key constraints on table "messages"
-enum messages_constraint {
+# unique or primary key constraints on table "category"
+enum category_constraint {
   # unique or primary key constraint
-  messages_pkey
+  category_pkey
 }
 
-# input type for inserting data into table "messages"
-input messages_insert_input {
+# input type for inserting data into table "category"
+input category_insert_input {
   id: uuid
-  message: String
-  next_auth_token: String
+  name: String
+  tags: tag_arr_rel_insert_input
+  user_id: String
 }
 
-# response of any mutation on the table "messages"
-type messages_mutation_response {
+# response of any mutation on the table "category"
+type category_mutation_response {
   # number of rows affected by the mutation
   affected_rows: Int!
 
   # data from the rows affected by the mutation
-  returning: [messages!]!
+  returning: [category!]!
 }
 
-# on conflict condition type for table "messages"
-input messages_on_conflict {
-  constraint: messages_constraint!
-  update_columns: [messages_update_column!]! = []
-  where: messages_bool_exp
+# input type for inserting object relation for remote table "category"
+input category_obj_rel_insert_input {
+  data: category_insert_input!
+
+  # on conflict condition
+  on_conflict: category_on_conflict
 }
 
-# Ordering options when selecting data from "messages".
-input messages_order_by {
+# on conflict condition type for table "category"
+input category_on_conflict {
+  constraint: category_constraint!
+  update_columns: [category_update_column!]! = []
+  where: category_bool_exp
+}
+
+# Ordering options when selecting data from "category".
+input category_order_by {
   id: order_by
-  message: order_by
-  next_auth_token: order_by
+  name: order_by
+  tags_aggregate: tag_aggregate_order_by
+  user_id: order_by
 }
 
-# primary key columns input for table: messages
-input messages_pk_columns_input {
+# primary key columns input for table: category
+input category_pk_columns_input {
   id: uuid!
 }
 
-# select columns of table "messages"
-enum messages_select_column {
+# select columns of table "category"
+enum category_select_column {
   # column name
   id
 
   # column name
-  message
+  name
 
   # column name
-  next_auth_token
+  user_id
 }
 
-# input type for updating data in table "messages"
-input messages_set_input {
+# input type for updating data in table "category"
+input category_set_input {
   id: uuid
-  message: String
-  next_auth_token: String
+  name: String
+  user_id: String
 }
 
-# update columns of table "messages"
-enum messages_update_column {
+# update columns of table "category"
+enum category_update_column {
   # column name
   id
 
   # column name
-  message
+  name
 
   # column name
-  next_auth_token
+  user_id
 }
 
-# A Relay connection object on "messages"
-type messagesConnection {
-  edges: [messagesEdge!]!
+# A Relay connection object on "category"
+type categoryConnection {
+  edges: [categoryEdge!]!
   pageInfo: PageInfo!
 }
 
-type messagesEdge {
+type categoryEdge {
   cursor: String!
-  node: messages!
+  node: category!
+}
+
+# columns and relationships of "message"
+type message implements Node {
+  content: String!
+  id: ID!
+
+  # An object relationship
+  message_message_tag: message_tag
+  user_id: String!
+}
+
+# aggregated selection of "message"
+type message_aggregate {
+  aggregate: message_aggregate_fields
+  nodes: [message!]!
+}
+
+# aggregate fields of "message"
+type message_aggregate_fields {
+  count(columns: [message_select_column!], distinct: Boolean): Int!
+  max: message_max_fields
+  min: message_min_fields
+}
+
+# order by aggregate values of table "message"
+input message_aggregate_order_by {
+  count: order_by
+  max: message_max_order_by
+  min: message_min_order_by
+}
+
+# input type for inserting array relation for remote table "message"
+input message_arr_rel_insert_input {
+  data: [message_insert_input!]!
+
+  # on conflict condition
+  on_conflict: message_on_conflict
+}
+
+# Boolean expression to filter rows from the table "message". All fields are combined with a logical 'AND'.
+input message_bool_exp {
+  _and: [message_bool_exp!]
+  _not: message_bool_exp
+  _or: [message_bool_exp!]
+  content: String_comparison_exp
+  id: uuid_comparison_exp
+  message_message_tag: message_tag_bool_exp
+  user_id: String_comparison_exp
+}
+
+# unique or primary key constraints on table "message"
+enum message_constraint {
+  # unique or primary key constraint
+  message_pkey
+}
+
+# input type for inserting data into table "message"
+input message_insert_input {
+  content: String
+  id: uuid
+  message_message_tag: message_tag_obj_rel_insert_input
+  user_id: String
+}
+
+# aggregate max on columns
+type message_max_fields {
+  content: String
+  id: uuid
+  user_id: String
+}
+
+# order by max() on columns of table "message"
+input message_max_order_by {
+  content: order_by
+  id: order_by
+  user_id: order_by
+}
+
+# aggregate min on columns
+type message_min_fields {
+  content: String
+  id: uuid
+  user_id: String
+}
+
+# order by min() on columns of table "message"
+input message_min_order_by {
+  content: order_by
+  id: order_by
+  user_id: order_by
+}
+
+# response of any mutation on the table "message"
+type message_mutation_response {
+  # number of rows affected by the mutation
+  affected_rows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [message!]!
+}
+
+# on conflict condition type for table "message"
+input message_on_conflict {
+  constraint: message_constraint!
+  update_columns: [message_update_column!]! = []
+  where: message_bool_exp
+}
+
+# Ordering options when selecting data from "message".
+input message_order_by {
+  content: order_by
+  id: order_by
+  message_message_tag: message_tag_order_by
+  user_id: order_by
+}
+
+# primary key columns input for table: message
+input message_pk_columns_input {
+  id: uuid!
+}
+
+# select columns of table "message"
+enum message_select_column {
+  # column name
+  content
+
+  # column name
+  id
+
+  # column name
+  user_id
+}
+
+# input type for updating data in table "message"
+input message_set_input {
+  content: String
+  id: uuid
+  user_id: String
+}
+
+# columns and relationships of "message_tag"
+type message_tag implements Node {
+  id: ID!
+  message_id: uuid!
+
+  # An array relationship
+  message_tag_message(
+    # distinct select on columns
+    distinct_on: [message_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_order_by!]
+
+    # filter the rows returned
+    where: message_bool_exp
+  ): [message!]!
+
+  # An aggregate relationship
+  message_tag_message_aggregate(
+    # distinct select on columns
+    distinct_on: [message_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_order_by!]
+
+    # filter the rows returned
+    where: message_bool_exp
+  ): message_aggregate!
+
+  # An array relationship connection
+  message_tag_message_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_order_by!]
+
+    # filter the rows returned
+    where: message_bool_exp
+  ): messageConnection!
+
+  # An array relationship
+  message_tag_tag(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): [tag!]!
+
+  # An aggregate relationship
+  message_tag_tag_aggregate(
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tag_aggregate!
+
+  # An array relationship connection
+  message_tag_tag_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tagConnection!
+  tag_id: uuid!
+}
+
+# Boolean expression to filter rows from the table "message_tag". All fields are combined with a logical 'AND'.
+input message_tag_bool_exp {
+  _and: [message_tag_bool_exp!]
+  _not: message_tag_bool_exp
+  _or: [message_tag_bool_exp!]
+  message_id: uuid_comparison_exp
+  message_tag_message: message_bool_exp
+  message_tag_tag: tag_bool_exp
+  tag_id: uuid_comparison_exp
+}
+
+# unique or primary key constraints on table "message_tag"
+enum message_tag_constraint {
+  # unique or primary key constraint
+  message_tag_pkey
+}
+
+# input type for inserting data into table "message_tag"
+input message_tag_insert_input {
+  message_id: uuid
+  message_tag_message: message_arr_rel_insert_input
+  message_tag_tag: tag_arr_rel_insert_input
+  tag_id: uuid
+}
+
+# response of any mutation on the table "message_tag"
+type message_tag_mutation_response {
+  # number of rows affected by the mutation
+  affected_rows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [message_tag!]!
+}
+
+# input type for inserting object relation for remote table "message_tag"
+input message_tag_obj_rel_insert_input {
+  data: message_tag_insert_input!
+
+  # on conflict condition
+  on_conflict: message_tag_on_conflict
+}
+
+# on conflict condition type for table "message_tag"
+input message_tag_on_conflict {
+  constraint: message_tag_constraint!
+  update_columns: [message_tag_update_column!]! = []
+  where: message_tag_bool_exp
+}
+
+# Ordering options when selecting data from "message_tag".
+input message_tag_order_by {
+  message_id: order_by
+  message_tag_message_aggregate: message_aggregate_order_by
+  message_tag_tag_aggregate: tag_aggregate_order_by
+  tag_id: order_by
+}
+
+# primary key columns input for table: message_tag
+input message_tag_pk_columns_input {
+  message_id: uuid!
+  tag_id: uuid!
+}
+
+# select columns of table "message_tag"
+enum message_tag_select_column {
+  # column name
+  message_id
+
+  # column name
+  tag_id
+}
+
+# input type for updating data in table "message_tag"
+input message_tag_set_input {
+  message_id: uuid
+  tag_id: uuid
+}
+
+# update columns of table "message_tag"
+enum message_tag_update_column {
+  # column name
+  message_id
+
+  # column name
+  tag_id
+}
+
+# A Relay connection object on "message_tag"
+type message_tagConnection {
+  edges: [message_tagEdge!]!
+  pageInfo: PageInfo!
+}
+
+type message_tagEdge {
+  cursor: String!
+  node: message_tag!
+}
+
+# update columns of table "message"
+enum message_update_column {
+  # column name
+  content
+
+  # column name
+  id
+
+  # column name
+  user_id
+}
+
+# A Relay connection object on "message"
+type messageConnection {
+  edges: [messageEdge!]!
+  pageInfo: PageInfo!
+}
+
+type messageEdge {
+  cursor: String!
+  node: message!
 }
 
 # mutation root
 type mutation_root {
-  # delete data from the table: "messages"
-  delete_messages(
+  # delete data from the table: "category"
+  delete_category(
     # filter the rows which have to be deleted
-    where: messages_bool_exp!
-  ): messages_mutation_response
+    where: category_bool_exp!
+  ): category_mutation_response
 
-  # delete single row from the table: "messages"
-  delete_messages_by_pk(id: uuid!): messages
+  # delete single row from the table: "category"
+  delete_category_by_pk(id: uuid!): category
 
-  # insert data into the table: "messages"
-  insert_messages(
+  # delete data from the table: "message"
+  delete_message(
+    # filter the rows which have to be deleted
+    where: message_bool_exp!
+  ): message_mutation_response
+
+  # delete single row from the table: "message"
+  delete_message_by_pk(id: uuid!): message
+
+  # delete data from the table: "message_tag"
+  delete_message_tag(
+    # filter the rows which have to be deleted
+    where: message_tag_bool_exp!
+  ): message_tag_mutation_response
+
+  # delete single row from the table: "message_tag"
+  delete_message_tag_by_pk(message_id: uuid!, tag_id: uuid!): message_tag
+
+  # delete data from the table: "tag"
+  delete_tag(
+    # filter the rows which have to be deleted
+    where: tag_bool_exp!
+  ): tag_mutation_response
+
+  # delete single row from the table: "tag"
+  delete_tag_by_pk(id: uuid!): tag
+
+  # insert data into the table: "category"
+  insert_category(
     # the rows to be inserted
-    objects: [messages_insert_input!]!
+    objects: [category_insert_input!]!
 
     # on conflict condition
-    on_conflict: messages_on_conflict
-  ): messages_mutation_response
+    on_conflict: category_on_conflict
+  ): category_mutation_response
 
-  # insert a single row into the table: "messages"
-  insert_messages_one(
+  # insert a single row into the table: "category"
+  insert_category_one(
     # the row to be inserted
-    object: messages_insert_input!
+    object: category_insert_input!
 
     # on conflict condition
-    on_conflict: messages_on_conflict
-  ): messages
+    on_conflict: category_on_conflict
+  ): category
 
-  # update data of the table: "messages"
-  update_messages(
+  # insert data into the table: "message"
+  insert_message(
+    # the rows to be inserted
+    objects: [message_insert_input!]!
+
+    # on conflict condition
+    on_conflict: message_on_conflict
+  ): message_mutation_response
+
+  # insert a single row into the table: "message"
+  insert_message_one(
+    # the row to be inserted
+    object: message_insert_input!
+
+    # on conflict condition
+    on_conflict: message_on_conflict
+  ): message
+
+  # insert data into the table: "message_tag"
+  insert_message_tag(
+    # the rows to be inserted
+    objects: [message_tag_insert_input!]!
+
+    # on conflict condition
+    on_conflict: message_tag_on_conflict
+  ): message_tag_mutation_response
+
+  # insert a single row into the table: "message_tag"
+  insert_message_tag_one(
+    # the row to be inserted
+    object: message_tag_insert_input!
+
+    # on conflict condition
+    on_conflict: message_tag_on_conflict
+  ): message_tag
+
+  # insert data into the table: "tag"
+  insert_tag(
+    # the rows to be inserted
+    objects: [tag_insert_input!]!
+
+    # on conflict condition
+    on_conflict: tag_on_conflict
+  ): tag_mutation_response
+
+  # insert a single row into the table: "tag"
+  insert_tag_one(
+    # the row to be inserted
+    object: tag_insert_input!
+
+    # on conflict condition
+    on_conflict: tag_on_conflict
+  ): tag
+
+  # update data of the table: "category"
+  update_category(
     # sets the columns of the filtered rows to the given values
-    _set: messages_set_input
+    _set: category_set_input
 
     # filter the rows which have to be updated
-    where: messages_bool_exp!
-  ): messages_mutation_response
+    where: category_bool_exp!
+  ): category_mutation_response
 
-  # update single row of the table: "messages"
-  update_messages_by_pk(
+  # update single row of the table: "category"
+  update_category_by_pk(
     # sets the columns of the filtered rows to the given values
-    _set: messages_set_input
-    pk_columns: messages_pk_columns_input!
-  ): messages
+    _set: category_set_input
+    pk_columns: category_pk_columns_input!
+  ): category
+
+  # update data of the table: "message"
+  update_message(
+    # sets the columns of the filtered rows to the given values
+    _set: message_set_input
+
+    # filter the rows which have to be updated
+    where: message_bool_exp!
+  ): message_mutation_response
+
+  # update single row of the table: "message"
+  update_message_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: message_set_input
+    pk_columns: message_pk_columns_input!
+  ): message
+
+  # update data of the table: "message_tag"
+  update_message_tag(
+    # sets the columns of the filtered rows to the given values
+    _set: message_tag_set_input
+
+    # filter the rows which have to be updated
+    where: message_tag_bool_exp!
+  ): message_tag_mutation_response
+
+  # update single row of the table: "message_tag"
+  update_message_tag_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: message_tag_set_input
+    pk_columns: message_tag_pk_columns_input!
+  ): message_tag
+
+  # update data of the table: "tag"
+  update_tag(
+    # sets the columns of the filtered rows to the given values
+    _set: tag_set_input
+
+    # filter the rows which have to be updated
+    where: tag_bool_exp!
+  ): tag_mutation_response
+
+  # update single row of the table: "tag"
+  update_tag_by_pk(
+    # sets the columns of the filtered rows to the given values
+    _set: tag_set_input
+    pk_columns: tag_pk_columns_input!
+  ): tag
 }
 
 # An object with globally unique ID
@@ -185,26 +751,77 @@ type PageInfo {
 }
 
 type query_root {
-  # fetch data from the table: "messages"
-  messages_connection(
+  # fetch data from the table: "category"
+  category_connection(
     after: String
     before: String
 
     # distinct select on columns
-    distinct_on: [messages_select_column!]
+    distinct_on: [category_select_column!]
     first: Int
     last: Int
 
     # sort the rows by one or more columns
-    order_by: [messages_order_by!]
+    order_by: [category_order_by!]
 
     # filter the rows returned
-    where: messages_bool_exp
-  ): messagesConnection!
+    where: category_bool_exp
+  ): categoryConnection!
+
+  # fetch data from the table: "message"
+  message_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_order_by!]
+
+    # filter the rows returned
+    where: message_bool_exp
+  ): messageConnection!
+
+  # fetch data from the table: "message_tag"
+  message_tag_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tagConnection!
   node(
     # A globally unique id
     id: ID!
   ): Node
+
+  # fetch data from the table: "tag"
+  tag_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tagConnection!
 }
 
 # Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
@@ -251,26 +868,259 @@ input String_comparison_exp {
 }
 
 type subscription_root {
-  # fetch data from the table: "messages"
-  messages_connection(
+  # fetch data from the table: "category"
+  category_connection(
     after: String
     before: String
 
     # distinct select on columns
-    distinct_on: [messages_select_column!]
+    distinct_on: [category_select_column!]
     first: Int
     last: Int
 
     # sort the rows by one or more columns
-    order_by: [messages_order_by!]
+    order_by: [category_order_by!]
 
     # filter the rows returned
-    where: messages_bool_exp
-  ): messagesConnection!
+    where: category_bool_exp
+  ): categoryConnection!
+
+  # fetch data from the table: "message"
+  message_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_order_by!]
+
+    # filter the rows returned
+    where: message_bool_exp
+  ): messageConnection!
+
+  # fetch data from the table: "message_tag"
+  message_tag_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tagConnection!
   node(
     # A globally unique id
     id: ID!
   ): Node
+
+  # fetch data from the table: "tag"
+  tag_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [tag_order_by!]
+
+    # filter the rows returned
+    where: tag_bool_exp
+  ): tagConnection!
+}
+
+# columns and relationships of "tag"
+type tag implements Node {
+  # An object relationship
+  category: category!
+  category_id: uuid!
+  id: ID!
+  name: String!
+
+  # An object relationship
+  tag_message_tag: message_tag
+  user_id: String!
+}
+
+# aggregated selection of "tag"
+type tag_aggregate {
+  aggregate: tag_aggregate_fields
+  nodes: [tag!]!
+}
+
+# aggregate fields of "tag"
+type tag_aggregate_fields {
+  count(columns: [tag_select_column!], distinct: Boolean): Int!
+  max: tag_max_fields
+  min: tag_min_fields
+}
+
+# order by aggregate values of table "tag"
+input tag_aggregate_order_by {
+  count: order_by
+  max: tag_max_order_by
+  min: tag_min_order_by
+}
+
+# input type for inserting array relation for remote table "tag"
+input tag_arr_rel_insert_input {
+  data: [tag_insert_input!]!
+
+  # on conflict condition
+  on_conflict: tag_on_conflict
+}
+
+# Boolean expression to filter rows from the table "tag". All fields are combined with a logical 'AND'.
+input tag_bool_exp {
+  _and: [tag_bool_exp!]
+  _not: tag_bool_exp
+  _or: [tag_bool_exp!]
+  category: category_bool_exp
+  category_id: uuid_comparison_exp
+  id: uuid_comparison_exp
+  name: String_comparison_exp
+  tag_message_tag: message_tag_bool_exp
+  user_id: String_comparison_exp
+}
+
+# unique or primary key constraints on table "tag"
+enum tag_constraint {
+  # unique or primary key constraint
+  tag_pkey
+}
+
+# input type for inserting data into table "tag"
+input tag_insert_input {
+  category: category_obj_rel_insert_input
+  category_id: uuid
+  id: uuid
+  name: String
+  tag_message_tag: message_tag_obj_rel_insert_input
+  user_id: String
+}
+
+# aggregate max on columns
+type tag_max_fields {
+  category_id: uuid
+  id: uuid
+  name: String
+  user_id: String
+}
+
+# order by max() on columns of table "tag"
+input tag_max_order_by {
+  category_id: order_by
+  id: order_by
+  name: order_by
+  user_id: order_by
+}
+
+# aggregate min on columns
+type tag_min_fields {
+  category_id: uuid
+  id: uuid
+  name: String
+  user_id: String
+}
+
+# order by min() on columns of table "tag"
+input tag_min_order_by {
+  category_id: order_by
+  id: order_by
+  name: order_by
+  user_id: order_by
+}
+
+# response of any mutation on the table "tag"
+type tag_mutation_response {
+  # number of rows affected by the mutation
+  affected_rows: Int!
+
+  # data from the rows affected by the mutation
+  returning: [tag!]!
+}
+
+# on conflict condition type for table "tag"
+input tag_on_conflict {
+  constraint: tag_constraint!
+  update_columns: [tag_update_column!]! = []
+  where: tag_bool_exp
+}
+
+# Ordering options when selecting data from "tag".
+input tag_order_by {
+  category: category_order_by
+  category_id: order_by
+  id: order_by
+  name: order_by
+  tag_message_tag: message_tag_order_by
+  user_id: order_by
+}
+
+# primary key columns input for table: tag
+input tag_pk_columns_input {
+  id: uuid!
+}
+
+# select columns of table "tag"
+enum tag_select_column {
+  # column name
+  category_id
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  user_id
+}
+
+# input type for updating data in table "tag"
+input tag_set_input {
+  category_id: uuid
+  id: uuid
+  name: String
+  user_id: String
+}
+
+# update columns of table "tag"
+enum tag_update_column {
+  # column name
+  category_id
+
+  # column name
+  id
+
+  # column name
+  name
+
+  # column name
+  user_id
+}
+
+# A Relay connection object on "tag"
+type tagConnection {
+  edges: [tagEdge!]!
+  pageInfo: PageInfo!
+}
+
+type tagEdge {
+  cursor: String!
+  node: tag!
 }
 
 scalar uuid
