@@ -29,9 +29,6 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Editor>
-          <Text mx={2} color="text.50">👋 Write</Text>
-        </Editor>
         <Tiles messages={messages} />
       </Grid>
     </>
