@@ -3,7 +3,7 @@ import Edit from "../components/Edit"
 import { Grid, Box, Image, Icon, Text } from '@chakra-ui/react'
 import { FaGithub } from 'react-icons/fa';
 
-export default function Nav() {
+export default function Nav({ click }) {
     return (
         <Grid
             as="nav"
@@ -14,7 +14,7 @@ export default function Nav() {
         >
             <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />
             <Box gridColumn="menu" ml={8} mt={2}>
-                <Edit>Edit</Edit>
+                <Edit click={click}>Edit</Edit>
             </Box>
             <Box sx={{ gridColumn: "button" }} mt={2} >
                 <SignIn>

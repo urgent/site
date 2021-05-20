@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
@@ -22,10 +23,18 @@ const HomeQuery = graphql`
 
 function Home({ preloadedQuery }) {
   const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const [mode, setMode] = useState('view')
 
   return (
     <>
-      <Nav />
+      <Nav click={() => {
+        if (mode === "edit") {
+          setMode('view')
+        }
+        else {
+          setMode('edit')
+        }
+      }} />
       <Sidebar categories={messages} />
       <Grid
         as="main"
@@ -36,7 +45,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles messages={messages} />
+        <Tiles edit={mode === 'edit'} messages={messages} />
       </Grid>
     </>
   )
