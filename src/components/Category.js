@@ -2,7 +2,7 @@ import Tag from "../components/Tag"
 import { Grid, Box, Wrap, WrapItem } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
 
-export default function Category({ children }) {
+export default function Category({ category }) {
     return (
         <Grid
             maxWidth={[16, 24, 36, 48, 48]}
@@ -29,7 +29,7 @@ export default function Category({ children }) {
                 pl={1}
                 pt={1}
             >
-                {children}
+                {category.name}
             </Box>
             <Wrap
                 gridRow="body"
@@ -38,7 +38,7 @@ export default function Category({ children }) {
                 justify="center"
                 spacing={4}
             >
-                {["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"].map((node, index) => <WrapItem key={index}><Tag>{node}</Tag></WrapItem>)}
+                {category.tags.map((tag, index) => <WrapItem key={index}><Tag>{tag.name}</Tag></WrapItem>)}
             </Wrap>
         </Grid>
     )

@@ -8,6 +8,14 @@ import { Grid } from '@chakra-ui/react'
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
+    message_connection {
+      edges {
+        node {
+          content
+        }
+      }
+    }
+    ...SidebarFragment_categories
     ...TilesFragment_messages
   }
 `;
@@ -18,7 +26,7 @@ function Home({ preloadedQuery }) {
   return (
     <>
       <Nav />
-      <Sidebar />
+      <Sidebar categories={messages} />
       <Grid
         as="main"
         gridRow="body"

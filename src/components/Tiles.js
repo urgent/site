@@ -8,10 +8,10 @@ export default function Tiles({ messages }) {
   const data = useFragment(
     graphql`
           fragment TilesFragment_messages on query_root {
-            messages_connection {
+            message_connection {
               edges {
                 node {
-                  message
+                  content
                 }
               }
             }
@@ -31,6 +31,6 @@ export default function Tiles({ messages }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {data.messages_connection.edges.map((edge, index) => <Message key={index}>{edge.node.message}</Message>)}
+      {data.message_connection.edges.map((edge, index) => <Message key={index}>{edge.node.content}</Message>)}
     </Grid>)
 }

@@ -8,10 +8,18 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+import type { SidebarFragment_categories$ref } from "./SidebarFragment_categories.graphql";
 import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +$fragmentRefs: TilesFragment_messages$ref
+  +message_connection: {|
+    +edges: $ReadOnlyArray<{|
+      +node: {|
+        +content: string
+      |}
+    |}>
+  |},
+  +$fragmentRefs: SidebarFragment_categories$ref & TilesFragment_messages$ref,
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -22,14 +30,38 @@ export type pages_HomeQuery = {|
 
 /*
 query pages_HomeQuery {
+  message_connection {
+    edges {
+      node {
+        content
+        id
+      }
+    }
+  }
+  ...SidebarFragment_categories
   ...TilesFragment_messages
 }
 
-fragment TilesFragment_messages on query_root {
-  messages_connection {
+fragment SidebarFragment_categories on query_root {
+  category_connection {
     edges {
       node {
-        message
+        tags {
+          name
+          id
+        }
+        name
+        id
+      }
+    }
+  }
+}
+
+fragment TilesFragment_messages on query_root {
+  message_connection {
+    edges {
+      node {
+        content
         id
       }
     }
@@ -37,13 +69,74 @@ fragment TilesFragment_messages on query_root {
 }
 */
 
-const node/*: ConcreteRequest*/ = {
+const node/*: ConcreteRequest*/ = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "content",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
+return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "pages_HomeQuery",
     "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "messageConnection",
+        "kind": "LinkedField",
+        "name": "message_connection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "messageEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "message",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v0/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "SidebarFragment_categories"
+      },
       {
         "args": null,
         "kind": "FragmentSpread",
@@ -62,15 +155,15 @@ const node/*: ConcreteRequest*/ = {
       {
         "alias": null,
         "args": null,
-        "concreteType": "messagesConnection",
+        "concreteType": "messageConnection",
         "kind": "LinkedField",
-        "name": "messages_connection",
+        "name": "message_connection",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "messagesEdge",
+            "concreteType": "messageEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -78,7 +171,42 @@ const node/*: ConcreteRequest*/ = {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "messages",
+                "concreteType": "message",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v0/*: any*/),
+                  (v1/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "categoryConnection",
+        "kind": "LinkedField",
+        "name": "category_connection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "categoryEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "category",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -86,17 +214,18 @@ const node/*: ConcreteRequest*/ = {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "message",
+                    "concreteType": "tag",
+                    "kind": "LinkedField",
+                    "name": "tags",
+                    "plural": true,
+                    "selections": [
+                      (v2/*: any*/),
+                      (v1/*: any*/)
+                    ],
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  }
+                  (v2/*: any*/),
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -109,15 +238,16 @@ const node/*: ConcreteRequest*/ = {
     ]
   },
   "params": {
-    "cacheID": "407fdec0b33df42c498eccf3101bd632",
+    "cacheID": "70900f18019a9e971f2c5a2e42045b73",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...TilesFragment_messages\n}\n\nfragment TilesFragment_messages on query_root {\n  messages_connection {\n    edges {\n      node {\n        message\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n}\n"
   }
 };
+})();
 // prettier-ignore
-(node/*: any*/).hash = 'c21a2e78c4b050bdaef207cc45bd75f5';
+(node/*: any*/).hash = 'fdac9f88820eaed61d2108f704c4254c';
 
 module.exports = node;
