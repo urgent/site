@@ -3,7 +3,7 @@ import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
 
-export default function Tiles({ messages }) {
+export default function Tiles({ edit, messages }) {
 
   const data = useFragment(
     graphql`
@@ -31,6 +31,6 @@ export default function Tiles({ messages }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {data.message_connection.edges.map((edge, index) => <Message key={index}>{edge.node.content}</Message>)}
+      {data.message_connection.edges.map((edge, index) => <Message key={index} edit={edit}>{edge.node.content}</Message>)}
     </Grid>)
 }
