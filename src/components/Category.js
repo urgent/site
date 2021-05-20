@@ -38,7 +38,7 @@ export default function Category({ children }) {
                 justify="center"
                 spacing={4}
             >
-                {["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"].map((node) => <WrapItem><Tag>{node}</Tag></WrapItem>)}
+                {["Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6", "Cat 1", "Cat 2", "Cat 3", "Cat 4", "Cat 5", "Cat 6"].map((node, index) => <WrapItem key={index}><Tag>{node}</Tag></WrapItem>)}
             </Wrap>
         </Grid>
     )
