@@ -1,10 +1,9 @@
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
-import Editor from "../components/Editor"
 import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
-import { Grid, Text } from '@chakra-ui/react'
+import { Grid } from '@chakra-ui/react'
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
