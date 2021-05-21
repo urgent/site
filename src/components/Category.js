@@ -44,7 +44,6 @@ export default function Category({ edit, category }) {
                 gridColumn="content / -1"
                 pl={1}
                 pt={1}
-                textAlign="center"
             >
                 {category.name}
             </Box>
