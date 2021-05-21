@@ -26,9 +26,9 @@ query MyQuery {
 
 */
 
-export default function Sidebar({ categories }) {
-    const data = useFragment(
-        graphql`
+export default function Sidebar({ edit, categories }) {
+  const data = useFragment(
+    graphql`
             fragment SidebarFragment_categories on query_root {
                 category_connection {
                     edges {
@@ -42,14 +42,14 @@ export default function Sidebar({ categories }) {
                 }
             }
             `, categories
-    );
+  );
 
-    return (
-        <Box
-            gridColumn="sidebar"
-            gridRow="body"
-        >
-            {data.category_connection.edges.map((edge, index) => <Category key={index} category={edge.node} />)}
-        </Box>
-    )
+  return (
+    <Box
+      gridColumn="sidebar"
+      gridRow="body"
+    >
+      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} />)}
+    </Box>
+  )
 }

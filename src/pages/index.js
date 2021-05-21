@@ -35,7 +35,7 @@ function Home({ preloadedQuery }) {
           setMode('edit')
         }
       }} />
-      <Sidebar categories={messages} />
+      <Sidebar edit={mode === 'edit'} categories={messages} />
       <Grid
         as="main"
         gridRow="body"
