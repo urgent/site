@@ -34,6 +34,8 @@ export default function Category({ edit, category }) {
                 gridRow="toolbar"
                 gridColumn="corner"
                 pt={1}
+                pr={2}
+                textAlign="right"
             >
                 <HamburgerIcon />
             </Box>
