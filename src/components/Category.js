@@ -44,6 +44,9 @@ export default function Category({ edit, category }) {
                 gridColumn="content / -1"
                 pl={1}
                 pt={1}
+                fontWeight="bold"
+                fontSize={12}
+                letterSpacing={1}
             >
                 {category.name}
             </Box>
