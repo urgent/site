@@ -1,6 +1,6 @@
 import React from "react";
 import Toolbar from "./Toolbar"
-import { Grid, Box } from "@chakra-ui/react"
+import { Grid, Box, Badge } from "@chakra-ui/react"
 
 function display(visible) {
   if (visible) {
@@ -8,14 +8,20 @@ function display(visible) {
   }
 }
 
+function list(tags) {
+  if (tags) {
+    return tags.map((relation, index) => <Badge key={index} colorScheme="red">{relation.tag.name}</Badge>)
+  }
+}
+
 // this component displays an individual message
-export default function Messsage({ edit, children }) {
+export default function Messsage({ tags, edit, children }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows="[menu] 2em [body] auto"
+      gridTemplateRows="[menu] 2em [body] auto [tags] 2em"
       gridTemplateColumns="[body] auto [menu] 4.5em"
     >
       <Box
@@ -31,6 +37,15 @@ export default function Messsage({ edit, children }) {
         pb={2}
       >
         {children}
+      </Box>
+      <Box
+        gridRow="tags"
+        gridColumn="body / -1"
+        alignSelf="end"
+        px={4}
+        pb={2}
+      >
+        {list(tags)}
       </Box>
     </Grid>
   );

@@ -62,6 +62,17 @@ fragment TilesFragment_messages on query_root {
     edges {
       node {
         content
+        message_tags {
+          tag {
+            name
+            category {
+              name
+              id
+            }
+            id
+          }
+          id
+        }
         id
       }
     }
@@ -90,7 +101,11 @@ v2 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-};
+},
+v3 = [
+  (v2/*: any*/),
+  (v1/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -177,7 +192,42 @@ return {
                 "plural": false,
                 "selections": [
                   (v0/*: any*/),
-                  (v1/*: any*/)
+                  (v1/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "message_tag",
+                    "kind": "LinkedField",
+                    "name": "message_tags",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "tag",
+                        "kind": "LinkedField",
+                        "name": "tag",
+                        "plural": false,
+                        "selections": [
+                          (v2/*: any*/),
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "category",
+                            "kind": "LinkedField",
+                            "name": "category",
+                            "plural": false,
+                            "selections": (v3/*: any*/),
+                            "storageKey": null
+                          },
+                          (v1/*: any*/)
+                        ],
+                        "storageKey": null
+                      },
+                      (v1/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -218,10 +268,7 @@ return {
                     "kind": "LinkedField",
                     "name": "tags",
                     "plural": true,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v1/*: any*/)
-                    ],
+                    "selections": (v3/*: any*/),
                     "storageKey": null
                   },
                   (v2/*: any*/),
@@ -238,12 +285,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "70900f18019a9e971f2c5a2e42045b73",
+    "cacheID": "c6c8d8e3e53b9721eec0b1be75502937",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
