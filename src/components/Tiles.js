@@ -17,6 +17,7 @@ export default function Tiles({ edit, messages }) {
                       name
                       category {
                         name
+                        color
                       }
                     }
                   }

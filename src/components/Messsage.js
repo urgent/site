@@ -10,7 +10,7 @@ function display(visible) {
 
 function list(tags) {
   if (tags) {
-    return tags.map((relation, index) => <Badge key={index} colorScheme="red">{relation.tag.name}</Badge>)
+    return tags.map((relation, index) => <Badge key={index} color="white" mr={1} bg={`#${relation.tag.category.color}`}>{relation.tag.name}</Badge>)
   }
 }
 
