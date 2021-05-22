@@ -6,6 +6,7 @@ schema {
 
 # columns and relationships of "category"
 type category implements Node {
+  color: String
   id: ID!
   name: String!
 
@@ -69,6 +70,7 @@ input category_bool_exp {
   _and: [category_bool_exp!]
   _not: category_bool_exp
   _or: [category_bool_exp!]
+  color: String_comparison_exp
   id: uuid_comparison_exp
   name: String_comparison_exp
   tags: tag_bool_exp
@@ -83,6 +85,7 @@ enum category_constraint {
 
 # input type for inserting data into table "category"
 input category_insert_input {
+  color: String
   id: uuid
   name: String
   tags: tag_arr_rel_insert_input
@@ -115,6 +118,7 @@ input category_on_conflict {
 
 # Ordering options when selecting data from "category".
 input category_order_by {
+  color: order_by
   id: order_by
   name: order_by
   tags_aggregate: tag_aggregate_order_by
@@ -129,6 +133,9 @@ input category_pk_columns_input {
 # select columns of table "category"
 enum category_select_column {
   # column name
+  color
+
+  # column name
   id
 
   # column name
@@ -140,6 +147,7 @@ enum category_select_column {
 
 # input type for updating data in table "category"
 input category_set_input {
+  color: String
   id: uuid
   name: String
   user_id: String
@@ -147,6 +155,9 @@ input category_set_input {
 
 # update columns of table "category"
 enum category_update_column {
+  # column name
+  color
+
   # column name
   id
 
@@ -173,8 +184,58 @@ type message implements Node {
   content: String!
   id: ID!
 
-  # An object relationship
-  message_message_tag: message_tag
+  # An array relationship
+  message_tags(
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): [message_tag!]!
+
+  # An aggregate relationship
+  message_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tag_aggregate!
+
+  # An array relationship connection
+  message_tags_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tagConnection!
   user_id: String!
 }
 
@@ -213,7 +274,7 @@ input message_bool_exp {
   _or: [message_bool_exp!]
   content: String_comparison_exp
   id: uuid_comparison_exp
-  message_message_tag: message_tag_bool_exp
+  message_tags: message_tag_bool_exp
   user_id: String_comparison_exp
 }
 
@@ -227,7 +288,7 @@ enum message_constraint {
 input message_insert_input {
   content: String
   id: uuid
-  message_message_tag: message_tag_obj_rel_insert_input
+  message_tags: message_tag_arr_rel_insert_input
   user_id: String
 }
 
@@ -268,6 +329,14 @@ type message_mutation_response {
   returning: [message!]!
 }
 
+# input type for inserting object relation for remote table "message"
+input message_obj_rel_insert_input {
+  data: message_insert_input!
+
+  # on conflict condition
+  on_conflict: message_on_conflict
+}
+
 # on conflict condition type for table "message"
 input message_on_conflict {
   constraint: message_constraint!
@@ -279,7 +348,7 @@ input message_on_conflict {
 input message_order_by {
   content: order_by
   id: order_by
-  message_message_tag: message_tag_order_by
+  message_tags_aggregate: message_tag_aggregate_order_by
   user_id: order_by
 }
 
@@ -310,6 +379,9 @@ input message_set_input {
 # columns and relationships of "message_tag"
 type message_tag implements Node {
   id: ID!
+
+  # An object relationship
+  message: message!
   message_id: uuid!
 
   # An array relationship
@@ -417,7 +489,38 @@ type message_tag implements Node {
     # filter the rows returned
     where: tag_bool_exp
   ): tagConnection!
+
+  # An object relationship
+  tag: tag!
   tag_id: uuid!
+}
+
+# aggregated selection of "message_tag"
+type message_tag_aggregate {
+  aggregate: message_tag_aggregate_fields
+  nodes: [message_tag!]!
+}
+
+# aggregate fields of "message_tag"
+type message_tag_aggregate_fields {
+  count(columns: [message_tag_select_column!], distinct: Boolean): Int!
+  max: message_tag_max_fields
+  min: message_tag_min_fields
+}
+
+# order by aggregate values of table "message_tag"
+input message_tag_aggregate_order_by {
+  count: order_by
+  max: message_tag_max_order_by
+  min: message_tag_min_order_by
+}
+
+# input type for inserting array relation for remote table "message_tag"
+input message_tag_arr_rel_insert_input {
+  data: [message_tag_insert_input!]!
+
+  # on conflict condition
+  on_conflict: message_tag_on_conflict
 }
 
 # Boolean expression to filter rows from the table "message_tag". All fields are combined with a logical 'AND'.
@@ -425,9 +528,11 @@ input message_tag_bool_exp {
   _and: [message_tag_bool_exp!]
   _not: message_tag_bool_exp
   _or: [message_tag_bool_exp!]
+  message: message_bool_exp
   message_id: uuid_comparison_exp
   message_tag_message: message_bool_exp
   message_tag_tag: tag_bool_exp
+  tag: tag_bool_exp
   tag_id: uuid_comparison_exp
 }
 
@@ -439,10 +544,36 @@ enum message_tag_constraint {
 
 # input type for inserting data into table "message_tag"
 input message_tag_insert_input {
+  message: message_obj_rel_insert_input
   message_id: uuid
   message_tag_message: message_arr_rel_insert_input
   message_tag_tag: tag_arr_rel_insert_input
+  tag: tag_obj_rel_insert_input
   tag_id: uuid
+}
+
+# aggregate max on columns
+type message_tag_max_fields {
+  message_id: uuid
+  tag_id: uuid
+}
+
+# order by max() on columns of table "message_tag"
+input message_tag_max_order_by {
+  message_id: order_by
+  tag_id: order_by
+}
+
+# aggregate min on columns
+type message_tag_min_fields {
+  message_id: uuid
+  tag_id: uuid
+}
+
+# order by min() on columns of table "message_tag"
+input message_tag_min_order_by {
+  message_id: order_by
+  tag_id: order_by
 }
 
 # response of any mutation on the table "message_tag"
@@ -454,14 +585,6 @@ type message_tag_mutation_response {
   returning: [message_tag!]!
 }
 
-# input type for inserting object relation for remote table "message_tag"
-input message_tag_obj_rel_insert_input {
-  data: message_tag_insert_input!
-
-  # on conflict condition
-  on_conflict: message_tag_on_conflict
-}
-
 # on conflict condition type for table "message_tag"
 input message_tag_on_conflict {
   constraint: message_tag_constraint!
@@ -471,9 +594,11 @@ input message_tag_on_conflict {
 
 # Ordering options when selecting data from "message_tag".
 input message_tag_order_by {
+  message: message_order_by
   message_id: order_by
   message_tag_message_aggregate: message_aggregate_order_by
   message_tag_tag_aggregate: tag_aggregate_order_by
+  tag: tag_order_by
   tag_id: order_by
 }
 
@@ -947,10 +1072,60 @@ type tag implements Node {
   category: category!
   category_id: uuid!
   id: ID!
-  name: String!
 
-  # An object relationship
-  tag_message_tag: message_tag
+  # An array relationship
+  message_tags(
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): [message_tag!]!
+
+  # An aggregate relationship
+  message_tags_aggregate(
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+
+    # limit the number of rows returned
+    limit: Int
+
+    # skip the first n rows. Use only with order_by
+    offset: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tag_aggregate!
+
+  # An array relationship connection
+  message_tags_connection(
+    after: String
+    before: String
+
+    # distinct select on columns
+    distinct_on: [message_tag_select_column!]
+    first: Int
+    last: Int
+
+    # sort the rows by one or more columns
+    order_by: [message_tag_order_by!]
+
+    # filter the rows returned
+    where: message_tag_bool_exp
+  ): message_tagConnection!
+  name: String!
   user_id: String!
 }
 
@@ -990,8 +1165,8 @@ input tag_bool_exp {
   category: category_bool_exp
   category_id: uuid_comparison_exp
   id: uuid_comparison_exp
+  message_tags: message_tag_bool_exp
   name: String_comparison_exp
-  tag_message_tag: message_tag_bool_exp
   user_id: String_comparison_exp
 }
 
@@ -1006,8 +1181,8 @@ input tag_insert_input {
   category: category_obj_rel_insert_input
   category_id: uuid
   id: uuid
+  message_tags: message_tag_arr_rel_insert_input
   name: String
-  tag_message_tag: message_tag_obj_rel_insert_input
   user_id: String
 }
 
@@ -1052,6 +1227,14 @@ type tag_mutation_response {
   returning: [tag!]!
 }
 
+# input type for inserting object relation for remote table "tag"
+input tag_obj_rel_insert_input {
+  data: tag_insert_input!
+
+  # on conflict condition
+  on_conflict: tag_on_conflict
+}
+
 # on conflict condition type for table "tag"
 input tag_on_conflict {
   constraint: tag_constraint!
@@ -1064,8 +1247,8 @@ input tag_order_by {
   category: category_order_by
   category_id: order_by
   id: order_by
+  message_tags_aggregate: message_tag_aggregate_order_by
   name: order_by
-  tag_message_tag: message_tag_order_by
   user_id: order_by
 }
 

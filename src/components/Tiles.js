@@ -12,6 +12,14 @@ export default function Tiles({ edit, messages }) {
               edges {
                 node {
                   content
+                  message_tags {
+                    tag {
+                      name
+                      category {
+                        name
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -31,6 +39,6 @@ export default function Tiles({ edit, messages }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {data.message_connection.edges.map((edge, index) => <Message key={index} edit={edit}>{edge.node.content}</Message>)}
+      {data.message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
     </Grid>)
 }
