@@ -23,7 +23,10 @@ const HomeQuery = graphql`
 
 function Home({ preloadedQuery }) {
   const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
+  // show editor
   const [mode, setMode] = useState('view')
+  // filter based on tags
+  const [tagFilter, setTagFilter] = useState([])
 
   return (
     <>
@@ -35,7 +38,7 @@ function Home({ preloadedQuery }) {
           setMode('edit')
         }
       }} />
-      <Sidebar edit={mode === 'edit'} categories={messages} />
+      <Sidebar tagClick={setTagFilter} edit={mode === 'edit'} categories={messages} />
       <Grid
         as="main"
         gridRow="body"
@@ -45,7 +48,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} messages={messages} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} />
       </Grid>
     </>
   )
