@@ -9,7 +9,7 @@ function display(visible) {
     }
 }
 
-export default function Category({ edit, category }) {
+export default function Category({ edit, category, tagClick }) {
     return (
         <Grid
             maxWidth={[16, 24, 36, 48, 48]}
@@ -57,7 +57,7 @@ export default function Category({ edit, category }) {
                 justify="center"
                 spacing={4}
             >
-                {category.tags.map((tag, index) => <WrapItem key={index}><Tag>{tag.name}</Tag></WrapItem>)}
+                {category.tags.map((tag, index) => <WrapItem key={index}><Tag click={tagClick} name={tag.name}>{tag.name}</Tag></WrapItem>)}
             </Wrap>
         </Grid>
     )
