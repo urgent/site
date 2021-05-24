@@ -2,31 +2,7 @@ import Category from "../components/Category"
 import { Box } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
-
-/*
-
-query MyQuery {
-  message_connection {
-    edges {
-      node {
-        message_message_tag {
-          message_tag_tag {
-            name
-            category {
-              name
-            }
-          }
-        }
-        content
-      }
-    }
-  }
-}
-
-
-*/
-
-export default function Sidebar({ edit, categories }) {
+export default function Sidebar({ edit, categories, tagClick }) {
   const data = useFragment(
     graphql`
             fragment SidebarFragment_categories on query_root {

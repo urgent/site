@@ -6,7 +6,8 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
-    "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx"
+    "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx",
+    "test": "jest --watch"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
@@ -26,6 +27,7 @@
   "devDependencies": {
     "babel-plugin-relay": "^11.0.2",
     "graphql": "^15.5.0",
+    "jest": "^26.6.3",
     "relay-compiler": "^11.0.2",
     "relay-config": "^11.0.2"
   }
