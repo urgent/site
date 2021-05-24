@@ -2,10 +2,6 @@ import Message from "../components/Messsage"
 import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
-export function display(messages) {
-  return messages.message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)
-}
-
 export function format(nodes) {
   return {
     "message_connection": {
@@ -15,7 +11,7 @@ export function format(nodes) {
 }
 
 export function filter(messages, tagFilter) {
-  if (tagFilter === []) {
+  if (tagFilter.length === 0) {
     // no tag filter, display all
     return messages
   } else {
@@ -29,7 +25,7 @@ export function filter(messages, tagFilter) {
         return false;
       }
       else {
-        // is one tag in filter
+        // is one tag in filter?
         return edge.node.message_tags.some((relation) => {
           const comparison = tagFilter.includes(relation.tag.name)
           return comparison
@@ -80,6 +76,6 @@ export default function Tiles({ edit, messages, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter)}
+      {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
     </Grid>)
 }
