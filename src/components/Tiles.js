@@ -36,9 +36,6 @@ export function filter(messages, tagFilter) {
   }
 }
 
-
-
-
 export default function Tiles({ edit, messages, tagFilter }) {
 
   const data = useFragment(
