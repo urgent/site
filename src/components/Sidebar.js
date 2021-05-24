@@ -2,7 +2,7 @@ import Category from "../components/Category"
 import { Box } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
-export default function Sidebar({ edit, categories, tagClick }) {
+export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
   const data = useFragment(
     graphql`
             fragment SidebarFragment_categories on query_root {
@@ -25,7 +25,7 @@ export default function Sidebar({ edit, categories, tagClick }) {
       gridColumn="sidebar"
       gridRow="body"
     >
-      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagClick={tagClick} />)}
+      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagFilter={tagFilter} tagClick={tagClick} />)}
     </Box>
   )
 }

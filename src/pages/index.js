@@ -38,7 +38,18 @@ function Home({ preloadedQuery }) {
           setMode('edit')
         }
       }} />
-      <Sidebar tagClick={setTagFilter} edit={mode === 'edit'} categories={messages} />
+      <Sidebar
+        tagFilter={tagFilter}
+        tagClick={(name, tagFilter) => {
+          if (tagFilter.includes(name)) {
+            setTagFilter(tagFilter.filter(active => active !== name))
+          } else {
+            setTagFilter([...tagFilter, name])
+          }
+        }}
+        edit={mode === 'edit'}
+        categories={messages}
+      />
       <Grid
         as="main"
         gridRow="body"
