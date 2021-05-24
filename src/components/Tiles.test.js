@@ -1,43 +1,39 @@
-import { filter } from "./Tiles"
+import { filter, format } from "./Tiles"
 
-const messages = {
-    message_connection: {
-        edges: [
+const match = {
+    node: {
+        content: 'tag',
+        message_tags: [
             {
-                node: {
-                    content: 'tag',
-                    message_tags: [
-                        {
-                            tag: {
-                                name: 'test',
-                            }
-                        },
-                        {
-                            tag: {
-                                name: 'test2'
-                            }
-                        }
-                    ]
+                tag: {
+                    name: 'test',
                 }
             },
             {
-                node: {
-                    content: 'no-tag',
-                    message_tags: []
+                tag: {
+                    name: 'test2'
                 }
-            },
+            }
+        ]
+    }
+}
+
+const noMatch = {
+    node: {
+        content: 'no-tag',
+        message_tags: []
+    }
+}
+
+const misMatch = {
+    node: {
+        content: 'mismatch-tag',
+        message_tags: [
             {
-                node: {
-                    content: 'mismatch-tag',
-                    message_tags: [
-                        {
-                            tag: {
-                                name: 'test3',
-                            }
-                        }
-                    ]
+                tag: {
+                    name: 'test3',
                 }
-            },
+            }
         ]
     }
 }
@@ -45,26 +41,5 @@ const messages = {
 const tagFilter = ['test', 'test2']
 
 test('filters tags', () => {
-    expect(filter(messages, tagFilter)).toEqual({
-        message_connection: {
-            edges: [
-                {
-                    node: {
-                        content: 'tag',
-                        message_tags: [
-                            {
-                                tag: {
-                                    name: 'test',
-                                }
-                            },
-                            {
-                                tag: {
-                                    name: 'test2'
-                                }
-                            }
-                        ]
-                    }
-                }]
-        },
-    });
+    expect(filter(format([match, noMatch, misMatch]), tagFilter)).toEqual(format([match]));
 });

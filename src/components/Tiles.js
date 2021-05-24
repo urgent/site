@@ -6,7 +6,7 @@ export function display(messages) {
   return messages.message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)
 }
 
-function format(nodes) {
+export function format(nodes) {
   return {
     "message_connection": {
       "edges": nodes
