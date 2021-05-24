@@ -25,7 +25,7 @@ export default function Sidebar({ edit, categories, tagClick }) {
       gridColumn="sidebar"
       gridRow="body"
     >
-      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} />)}
+      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagClick={tagClick} />)}
     </Box>
   )
 }
