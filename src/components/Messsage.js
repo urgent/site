@@ -15,7 +15,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Messsage({ tags, edit, children }) {
+export default function Messsage({ tags, edit, gridColumn, gridRow, children }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -23,6 +23,8 @@ export default function Messsage({ tags, edit, children }) {
       textAlign="left"
       gridTemplateRows="[menu] 2em [body] auto [tags] 2em"
       gridTemplateColumns="[body] auto [menu] 4.5em"
+      gridColumn={gridColumn}
+      gridRow={gridRow}
     >
       <Box
         gridRow="menu"

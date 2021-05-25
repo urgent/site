@@ -3,6 +3,6 @@ import 'react-quill/dist/quill.snow.css';
 
 export function Editor() {
     return (
-        <ReactQuill theme="snow" />
+        <ReactQuill style={{ height: "70%" }} theme="snow" />
     )
 }

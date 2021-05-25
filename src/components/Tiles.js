@@ -75,6 +75,8 @@ export default function Tiles({ edit, messages, tagFilter }) {
       gridAutoFlow="dense"
     >
       {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
-      <Grid sx={{ gridColumn: "span 2" }} ><Editor /></Grid>
+      <Message gridColumn="span 2" gridRow="span 2">
+        <Editor />
+      </Message>
     </Grid>)
 }
