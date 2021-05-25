@@ -1,4 +1,4 @@
-import { Button } from "@chakra-ui/react"
+import { Button, Box } from "@chakra-ui/react"
 
 function style(color, isActive) {
   if (isActive) {
@@ -7,12 +7,20 @@ function style(color, isActive) {
       borderColor: `#${color}`,
       _active: {
         bg: "white",
+      },
+      _hover: {
+        bg: "white",
+        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
       }
     }
   } else {
     return {
       color: "white",
       bg: `#${color}`,
+      _hover: {
+        bg: `#${color}`,
+        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
+      }
     }
 
   }
@@ -24,7 +32,7 @@ export default function Tag({ click, name, tagFilter, color, children }) {
   return (
     <Button
       fontSize={[10, 10, 12, 12, 12]}
-      p={1}
+      p={2}
       minWidth="inherit"
       height="inherit"
       border="2px"
@@ -32,7 +40,9 @@ export default function Tag({ click, name, tagFilter, color, children }) {
       isActive={isActive}
       {...styles}
     >
-      {children}
+      <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+        {children}
+      </Box>
     </Button>
   )
 }
