@@ -63,6 +63,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                             click={tagClick}
                             name={tag.name}
                             tagFilter={tagFilter}
+                            color={category.color}
                         >
                             {tag.name}
                         </Tag>

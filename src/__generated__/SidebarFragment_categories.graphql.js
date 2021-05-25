@@ -19,6 +19,7 @@ export type SidebarFragment_categories = {|
           +name: string
         |}>,
         +name: string,
+        +color: ?string,
       |}
     |}>
   |},
@@ -83,7 +84,14 @@ return {
                   ],
                   "storageKey": null
                 },
-                (v0/*: any*/)
+                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "color",
+                  "storageKey": null
+                }
               ],
               "storageKey": null
             }
@@ -99,6 +107,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cb829eaa217e38f77512e9fb3b07cdfd';
+(node/*: any*/).hash = '6a606963ccf7dbcdb41f7e05227bcd80';
 
 module.exports = node;
