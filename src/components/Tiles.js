@@ -1,6 +1,7 @@
 import Message from "../components/Messsage"
 import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
+import { Editor } from './Editor';
 
 export function format(nodes) {
   return {
@@ -74,5 +75,6 @@ export default function Tiles({ edit, messages, tagFilter }) {
       gridAutoFlow="dense"
     >
       {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
+      <Grid sx={{ gridColumn: "span 2" }} ><Editor /></Grid>
     </Grid>)
 }
