@@ -1,46 +1,8 @@
-import React from 'react'
-import { useDisclosure, Button, Input, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+import 'react-quill/dist/quill.snow.css';
 
-// this component displays an individual category in the sidebar
-export default function Editor({ children }) {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = React.useRef()
-
+export function Editor() {
     return (
-        <>
-            <Button ref={btnRef} onClick={onOpen} variant="solid"
-                size="sm"
-                backgroundColor="primary.500"
-                _hover={{ background: "hover.500" }}
-                maxWidth={24}
-                my={4}
-                mx="auto"
-            >
-                {children}
-            </Button>
-            <Drawer
-                isOpen={isOpen}
-                placement="bottom"
-                onClose={onClose}
-                finalFocusRef={btnRef}
-            >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>Categories</DrawerHeader>
-
-                    <DrawerBody>
-                        <Input placeholder="Type here..." />
-                    </DrawerBody>
-
-                    <DrawerFooter>
-                        <Button variant="outline" mr={3} onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme="blue">Save</Button>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
-        </>
+        <ReactQuill theme="snow" />
     )
 }

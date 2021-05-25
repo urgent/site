@@ -35,6 +35,7 @@ export default function Messsage({ tags, edit, children }) {
         gridColumn="body / -1"
         px={4}
         pb={2}
+        overflowX="hidden"
       >
         {children}
       </Box>
