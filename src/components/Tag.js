@@ -3,6 +3,18 @@ import { Button, Box } from "@chakra-ui/react"
 function style(color, isActive) {
   if (isActive) {
     return {
+      color: "white",
+      bg: `#${color}`,
+      _active: {
+        bg: `#${color}`,
+      },
+      _hover: {
+        bg: `#${color}`,
+        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
+      }
+    }
+  } else {
+    return {
       color: `#${color}`,
       borderColor: `#${color}`,
       _active: {
@@ -13,16 +25,6 @@ function style(color, isActive) {
         boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
       }
     }
-  } else {
-    return {
-      color: "white",
-      bg: `#${color}`,
-      _hover: {
-        bg: `#${color}`,
-        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
-      }
-    }
-
   }
 }
 
