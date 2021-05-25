@@ -12,7 +12,8 @@ export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
                             tags {
                                 name
                             }
-                            name
+                            name,
+                            color
                         }
                     }
                 }

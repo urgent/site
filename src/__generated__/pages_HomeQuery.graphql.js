@@ -51,6 +51,7 @@ fragment SidebarFragment_categories on query_root {
           id
         }
         name
+        color
         id
       }
     }
@@ -101,6 +102,13 @@ v2 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
   "storageKey": null
 };
 return {
@@ -216,13 +224,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v2/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "kind": "ScalarField",
-                                "name": "color",
-                                "storageKey": null
-                              },
+                              (v3/*: any*/),
                               (v1/*: any*/)
                             ],
                             "storageKey": null
@@ -282,6 +284,7 @@ return {
                     "storageKey": null
                   },
                   (v2/*: any*/),
+                  (v3/*: any*/),
                   (v1/*: any*/)
                 ],
                 "storageKey": null
@@ -295,12 +298,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "466171c9e548a59d309ca91343274f5b",
+    "cacheID": "534567134babc2468f764b8cf9b3c7c8",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              color\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              color\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
