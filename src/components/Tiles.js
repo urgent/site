@@ -10,6 +10,7 @@ const InsertMessageMutation = graphql`
     insert_message(objects: $input) {
       affected_rows
       returning {
+        id
         content
       }
     }
@@ -98,37 +99,10 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
             message_tags: tagFilter
           },
         },
-        /**
-         * Relay merges data from the mutation result based on each response object's `id` value.
-         * In this case, however, we also want to add the new comment to the list of issues: Relay
-         * doesn't magically know where addComment.commentEdge should be added into the data graph.
-         * So we define an `updater` function to imperatively update thee store.
-         */
-        updater: store => {
-          // Get a reference to the issue
-          const issue = store.get(issueId);
-          if (issue == null) {
-            return;
-          }
-          // Get the list of comments using the same 'key' value as defined in
-          // IssueDetailComments
-          const comments = ConnectionHandler.getConnection(
-            issue,
-            'IssueDetailComments_comments', // See IssueDetailsComments @connection
-          );
-          if (comments == null) {
-            return;
-          }
-          // Insert the edge at the end of the list
-          ConnectionHandler.insertEdgeAfter(
-            comments,
-            store.getRootField('addComment').getLinkedRecord('commentEdge'),
-            null, // we can specify a cursor value here to insert the new edge after that  cursor
-          );
-        },
+        updater: store => { },
       });
       // Reset the comment text
-      setCommentText('');
+      setEditorText('');
     },
     [editorText, setEditorText, userId, tagFilter, insertMessage],
   );
@@ -147,7 +121,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
     >
       {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
-        <Editor value={editorText} onChange={setEditorText} />
+        <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} />
       </Message>
     </Grid>)
 }
