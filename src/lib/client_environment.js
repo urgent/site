@@ -1,20 +1,19 @@
 import { getRelaySerializedState } from 'relay-nextjs';
 import { withHydrateDatetime } from 'relay-nextjs/date';
 import { Environment, Network, Store, RecordSource } from 'relay-runtime';
+import { getSession } from 'next-auth/client'
 
-export function createClientNetwork(token) {
-  let authHeaders = {}
-  console.log('token is')
-  console.log(token)
-  //try reading from cookie
-  if (token) {
-    authHeaders = {
-      'Authorization': `Bearer ${token}`,
-      'X-Hasura-Role': 'user'
-    }
-  }
+export function createClientNetwork() {
 
   return Network.create(async (params, variables) => {
+    const session = await getSession()
+    let authHeaders = {}
+    if (session.token) {
+      authHeaders = {
+        'Authorization': `Bearer ${session.token}`,
+        'X-Hasura-Role': 'user'
+      }
+    }
     const response = await fetch('https://smooms.hasura.app/v1beta1/relay', {
       method: 'POST',
       credentials: 'include',
