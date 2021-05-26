@@ -27,8 +27,9 @@ export function filter(messages, tagFilter) {
       }
       else {
         // is one tag in filter?
-        return edge.node.message_tags.some((relation) => {
-          const comparison = tagFilter.includes(relation.tag.name)
+        const tags = edge.node.message_tags.map(relation => relation.tag.name)
+        return tagFilter.every((tag) => {
+          const comparison = tags.includes(tag)
           return comparison
         })
       }

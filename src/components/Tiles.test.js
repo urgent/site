@@ -38,10 +38,23 @@ const misMatch = {
     }
 }
 
+const partialMatch = {
+    node: {
+        content: 'partial-tag',
+        message_tags: [
+            {
+                tag: {
+                    name: 'test',
+                }
+            }
+        ]
+    }
+}
+
 const tagFilter = ['test', 'test2']
 
 test('filters tags', () => {
-    expect(filter(format([match, noMatch, misMatch]), tagFilter)).toEqual(format([match]));
+    expect(filter(format([match, noMatch, misMatch, partialMatch]), tagFilter)).toEqual(format([match]));
     expect(filter(format([match, misMatch]), tagFilter)).toEqual(format([match]));
     expect(filter(format([match, noMatch]), tagFilter)).toEqual(format([match]));
     expect(filter(format([noMatch, misMatch]), tagFilter)).toEqual(format([]));
