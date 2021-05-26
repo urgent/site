@@ -1,8 +1,27 @@
-import Message from "../components/Messsage"
+import React, { useState, useCallback } from "react";
+import Message from "./Messsage"
+import { Editor } from './Editor';
 import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
-import { Editor } from './Editor';
+import useMutation from './useMutation'
 
+const InsertMessageMutation = graphql`
+  mutation TilesInsertMessageMutation($input:[message_insert_input!]!) {
+    insert_message(objects: $input) {
+      affected_rows
+      returning {
+        content
+      }
+    }
+  }
+`;
+
+/**
+ * Format input as nodes consistent with Relay query
+ * 
+ * @param {*} nodes 
+ * @returns 
+ */
 export function format(nodes) {
   return {
     "message_connection": {
@@ -38,7 +57,9 @@ export function filter(messages, tagFilter) {
   }
 }
 
-export default function Tiles({ edit, messages, tagFilter }) {
+export default function Tiles({ edit, messages, userId, tagFilter }) {
+  const [editorText, setEditorText] = useState('');
+
 
   const data = useFragment(
     graphql`
@@ -61,6 +82,55 @@ export default function Tiles({ edit, messages, tagFilter }) {
             }
           }
         `, messages
+  );
+
+  const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
+
+  // Editor submit callback
+  const onSubmit = useCallback(
+    event => {
+      event.preventDefault();
+      insertMessage({
+        variables: {
+          input: {
+            content: editorText,
+            user_id: userId,
+            message_tags: tagFilter
+          },
+        },
+        /**
+         * Relay merges data from the mutation result based on each response object's `id` value.
+         * In this case, however, we also want to add the new comment to the list of issues: Relay
+         * doesn't magically know where addComment.commentEdge should be added into the data graph.
+         * So we define an `updater` function to imperatively update thee store.
+         */
+        updater: store => {
+          // Get a reference to the issue
+          const issue = store.get(issueId);
+          if (issue == null) {
+            return;
+          }
+          // Get the list of comments using the same 'key' value as defined in
+          // IssueDetailComments
+          const comments = ConnectionHandler.getConnection(
+            issue,
+            'IssueDetailComments_comments', // See IssueDetailsComments @connection
+          );
+          if (comments == null) {
+            return;
+          }
+          // Insert the edge at the end of the list
+          ConnectionHandler.insertEdgeAfter(
+            comments,
+            store.getRootField('addComment').getLinkedRecord('commentEdge'),
+            null, // we can specify a cursor value here to insert the new edge after that  cursor
+          );
+        },
+      });
+      // Reset the comment text
+      setCommentText('');
+    },
+    [editorText, setEditorText, userId, tagFilter, insertMessage],
   );
 
   return (
