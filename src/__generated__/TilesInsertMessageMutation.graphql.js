@@ -169,7 +169,8 @@ export type TilesInsertMessageMutationResponse = {|
   +insert_message: ?{|
     +affected_rows: number,
     +returning: $ReadOnlyArray<{|
-      +content: string
+      +id: string,
+      +content: string,
     |}>,
   |}
 |};
@@ -187,8 +188,8 @@ mutation TilesInsertMessageMutation(
   insert_message(objects: $input) {
     affected_rows
     returning {
-      content
       id
+      content
     }
   }
 }
@@ -204,57 +205,62 @@ var v0 = [
 ],
 v1 = [
   {
-    "kind": "Variable",
-    "name": "objects",
-    "variableName": "input"
-  }
-],
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "affected_rows",
-  "storageKey": null
-},
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "content",
-  "storageKey": null
-};
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "TilesInsertMessageMutation",
+    "alias": null,
+    "args": [
+      {
+        "kind": "Variable",
+        "name": "objects",
+        "variableName": "input"
+      }
+    ],
+    "concreteType": "message_mutation_response",
+    "kind": "LinkedField",
+    "name": "insert_message",
+    "plural": false,
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "message_mutation_response",
+        "args": null,
+        "kind": "ScalarField",
+        "name": "affected_rows",
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "message",
         "kind": "LinkedField",
-        "name": "insert_message",
-        "plural": false,
+        "name": "returning",
+        "plural": true,
         "selections": [
-          (v2/*: any*/),
           {
             "alias": null,
             "args": null,
-            "concreteType": "message",
-            "kind": "LinkedField",
-            "name": "returning",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/)
-            ],
+            "kind": "ScalarField",
+            "name": "id",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "content",
             "storageKey": null
           }
         ],
         "storageKey": null
       }
     ],
+    "storageKey": null
+  }
+];
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "TilesInsertMessageMutation",
+    "selections": (v1/*: any*/),
     "type": "mutation_root",
     "abstractKey": null
   },
@@ -263,51 +269,19 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "TilesInsertMessageMutation",
-    "selections": [
-      {
-        "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "message_mutation_response",
-        "kind": "LinkedField",
-        "name": "insert_message",
-        "plural": false,
-        "selections": [
-          (v2/*: any*/),
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "message",
-            "kind": "LinkedField",
-            "name": "returning",
-            "plural": true,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      }
-    ]
+    "selections": (v1/*: any*/)
   },
   "params": {
-    "cacheID": "32eb2b7d36d00bf036fa1aee3d42f4a6",
+    "cacheID": "0568a3543ad448c91ac1977f975ad6a6",
     "id": null,
     "metadata": {},
     "name": "TilesInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesInsertMessageMutation(\n  $input: [message_insert_input!]!\n) {\n  insert_message(objects: $input) {\n    affected_rows\n    returning {\n      content\n      id\n    }\n  }\n}\n"
+    "text": "mutation TilesInsertMessageMutation(\n  $input: [message_insert_input!]!\n) {\n  insert_message(objects: $input) {\n    affected_rows\n    returning {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ba3aa555c0c10a9a400b3fd4b2bdf25e';
+(node/*: any*/).hash = '1fe5a2523f570c0c647b5eade3039dfb';
 
 module.exports = node;
