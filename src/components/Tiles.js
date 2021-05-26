@@ -147,7 +147,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
     >
       {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
-        <Editor />
+        <Editor value={editorText} onChange={setEditorText} />
       </Message>
     </Grid>)
 }
