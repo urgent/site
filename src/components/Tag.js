@@ -17,6 +17,7 @@ function style(color, isActive) {
     return {
       color: `#${color}`,
       borderColor: `#${color}`,
+      bg: "white",
       _active: {
         bg: "white",
       },

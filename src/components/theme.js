@@ -53,7 +53,7 @@ const config = {
             "900": "#17171C"
         },
         background: {
-            "50": "#F1F1F1",
+            "50": "#FFFFFF",
             "100": "#DBDBDB",
             "200": "#C4C4C4",
             "300": "#ADADAD",
