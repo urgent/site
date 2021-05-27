@@ -96,7 +96,11 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
           input: {
             content: editorText,
             user_id: userId,
-            message_tags: tagFilter
+            message_tags: {
+              data: tagFilter.map((relation) => ({
+                tag_id: "df8121a3-f1d0-4ac3-b754-aa3686070b2e"
+              }))
+            }
           },
         },
         updater: store => { },
