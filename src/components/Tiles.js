@@ -4,6 +4,7 @@ import { Editor } from './Editor';
 import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:[message_insert_input!]!) {
@@ -60,14 +61,14 @@ export function filter(messages, tagFilter) {
 
 export default function Tiles({ edit, messages, userId, tagFilter }) {
   const [editorText, setEditorText] = useState('');
-
-
+  const [session] = useSession()
   const data = useFragment(
     graphql`
           fragment TilesFragment_messages on query_root {
             message_connection {
               edges {
                 node {
+                  id
                   content
                   message_tags {
                     tag {
@@ -84,7 +85,6 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
           }
         `, messages
   );
-
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
 
   // Editor submit callback
@@ -95,10 +95,10 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
         variables: {
           input: {
             content: editorText,
-            user_id: userId,
+            user_id: session?.id,
             message_tags: {
               data: tagFilter.map((relation) => ({
-                tag_id: "df8121a3-f1d0-4ac3-b754-aa3686070b2e"
+                tag_id: relation.tag.id
               }))
             }
           },

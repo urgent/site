@@ -15,6 +15,7 @@ export type TilesFragment_messages = {|
   +message_connection: {|
     +edges: $ReadOnlyArray<{|
       +node: {|
+        +id: string,
         +content: string,
         +message_tags: $ReadOnlyArray<{|
           +tag: {|
@@ -81,6 +82,13 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "content",
                   "storageKey": null
                 },
@@ -141,6 +149,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '43940c633130ef5c1f1df3f1c2b39e10';
+(node/*: any*/).hash = '3d88d20dedfc51383276fca76e97dd00';
 
 module.exports = node;
