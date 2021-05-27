@@ -62,6 +62,7 @@ fragment TilesFragment_messages on query_root {
   message_connection {
     edges {
       node {
+        id
         content
         message_tags {
           tag {
@@ -75,7 +76,6 @@ fragment TilesFragment_messages on query_root {
           }
           id
         }
-        id
       }
     }
   }
@@ -298,12 +298,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "534567134babc2468f764b8cf9b3c7c8",
+    "cacheID": "66e938cdb5d36a3604e804ce6df9dfe8",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              color\n              id\n            }\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        id\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              color\n              id\n            }\n            id\n          }\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

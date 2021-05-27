@@ -8,7 +8,7 @@ export function createClientNetwork() {
   return Network.create(async (params, variables) => {
     const session = await getSession()
     let authHeaders = {}
-    if (session.token) {
+    if (session?.token) {
       authHeaders = {
         'Authorization': `Bearer ${session.token}`,
         'X-Hasura-Role': 'user'

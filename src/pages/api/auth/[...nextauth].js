@@ -34,6 +34,7 @@ export default NextAuth({
         secret: process.env.SECRET,
         encode: async ({ secret, token, maxAge }) => {
             const jwtClaims = {
+                "id": token.id,
                 "sub": token.sub.toString(),
                 "name": token.name,
                 "email": token.email,
@@ -59,7 +60,7 @@ export default NextAuth({
             const encodedToken = jwt.sign(token, process.env.SECRET, { algorithm: 'HS256' });
             session.id = token.id;
             session.token = encodedToken;
-            return Promise.resolve(session);
+            return Promise.resolve({ ...session });
         },
         async jwt(token, user, account, profile, isNewUser) {
             const isUserSignedIn = user ? true : false;
