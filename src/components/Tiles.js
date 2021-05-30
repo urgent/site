@@ -7,11 +7,9 @@ import useMutation from './useMutation'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 const InsertMessageMutation = graphql`
-  mutation TilesInsertMessageMutation($input:[message_insert_input!]!) {
-    insert_message(objects: $input) {
-      affected_rows
-      returning {
-        id
+  mutation TilesInsertMessageMutation($input:CreateMessageInput!) {
+    createMessage(input: $input) {
+      message {
         content
       }
     }
@@ -64,18 +62,18 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
   const [session] = useSession()
   const data = useFragment(
     graphql`
-          fragment TilesFragment_messages on query_root {
-            message_connection {
+          fragment TilesFragment_messages on Query {
+            allMessages {
               edges {
                 node {
                   id
                   content
-                  message_tags {
-                    tag {
-                      name
-                      category {
-                        name
-                        color
+                  messageTagsByMessageId {
+                    edges {
+                      node {
+                        tagByTagId {
+                          name
+                        }
                       }
                     }
                   }
@@ -123,7 +121,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter).message_connection.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter).allMessages.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} />
       </Message>

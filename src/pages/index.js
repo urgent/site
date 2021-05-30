@@ -9,13 +9,6 @@ import { Grid } from '@chakra-ui/react'
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
-    message_connection {
-      edges {
-        node {
-          content
-        }
-      }
-    }
     ...SidebarFragment_categories
     ...TilesFragment_messages
   }

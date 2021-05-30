@@ -12,13 +12,17 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type SidebarFragment_categories$ref: FragmentReference;
 declare export opaque type SidebarFragment_categories$fragmentType: SidebarFragment_categories$ref;
 export type SidebarFragment_categories = {|
-  +category_connection: {|
+  +allCategories: ?{|
     +edges: $ReadOnlyArray<{|
-      +node: {|
-        +tags: $ReadOnlyArray<{|
-          +name: string
-        |}>,
-        +name: string,
+      +node: ?{|
+        +tagsByCategoryId: {|
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +name: ?string
+            |}
+          |}>
+        |},
+        +name: ?string,
         +color: ?string,
       |}
     |}>
@@ -51,15 +55,15 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": "categoryConnection",
+      "concreteType": "CategoriesConnection",
       "kind": "LinkedField",
-      "name": "category_connection",
+      "name": "allCategories",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "categoryEdge",
+          "concreteType": "CategoriesEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -67,7 +71,7 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "category",
+              "concreteType": "Category",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -75,12 +79,34 @@ return {
                 {
                   "alias": null,
                   "args": null,
-                  "concreteType": "tag",
+                  "concreteType": "TagsConnection",
                   "kind": "LinkedField",
-                  "name": "tags",
-                  "plural": true,
+                  "name": "tagsByCategoryId",
+                  "plural": false,
                   "selections": [
-                    (v0/*: any*/)
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "TagsEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "Tag",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": [
+                            (v0/*: any*/)
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
                   ],
                   "storageKey": null
                 },
@@ -102,11 +128,11 @@ return {
       "storageKey": null
     }
   ],
-  "type": "query_root",
+  "type": "Query",
   "abstractKey": null
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '6a606963ccf7dbcdb41f7e05227bcd80';
+(node/*: any*/).hash = 'c45d93ae1c183bc2d8e8765ca1fceeb7';
 
 module.exports = node;

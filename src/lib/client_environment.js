@@ -14,7 +14,7 @@ export function createClientNetwork() {
         'X-Hasura-Role': 'user'
       }
     }
-    const response = await fetch('https://smooms.hasura.app/v1beta1/relay', {
+    const response = await fetch('http://0.0.0.0:5433/graphql', {
       method: 'POST',
       credentials: 'include',
       headers: {

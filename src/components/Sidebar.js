@@ -5,15 +5,19 @@ import { graphql, useFragment } from 'react-relay';
 export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
   const data = useFragment(
     graphql`
-            fragment SidebarFragment_categories on query_root {
-                category_connection {
+            fragment SidebarFragment_categories on Query {
+                allCategories {
                     edges {
                         node {
-                            tags {
+                          tagsByCategoryId {
+                            edges {
+                              node {
                                 name
+                              }
                             }
-                            name,
-                            color
+                          }
+                          name,
+                          color
                         }
                     }
                 }
@@ -26,7 +30,7 @@ export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
       gridColumn="sidebar"
       gridRow="body"
     >
-      {data.category_connection.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagFilter={tagFilter} tagClick={tagClick} />)}
+      {data.allCategories.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagFilter={tagFilter} tagClick={tagClick} />)}
     </Box>
   )
 }

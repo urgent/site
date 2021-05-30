@@ -12,14 +12,7 @@ import type { SidebarFragment_categories$ref } from "./SidebarFragment_categorie
 import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +message_connection: {|
-    +edges: $ReadOnlyArray<{|
-      +node: {|
-        +content: string
-      |}
-    |}>
-  |},
-  +$fragmentRefs: SidebarFragment_categories$ref & TilesFragment_messages$ref,
+  +$fragmentRefs: SidebarFragment_categories$ref & TilesFragment_messages$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -30,51 +23,42 @@ export type pages_HomeQuery = {|
 
 /*
 query pages_HomeQuery {
-  message_connection {
-    edges {
-      node {
-        content
-        id
-      }
-    }
-  }
   ...SidebarFragment_categories
   ...TilesFragment_messages
 }
 
-fragment SidebarFragment_categories on query_root {
-  category_connection {
+fragment SidebarFragment_categories on Query {
+  allCategories {
     edges {
       node {
-        tags {
-          name
-          id
+        tagsByCategoryId {
+          edges {
+            node {
+              name
+            }
+          }
         }
         name
         color
-        id
       }
     }
   }
 }
 
-fragment TilesFragment_messages on query_root {
-  message_connection {
+fragment TilesFragment_messages on Query {
+  allMessages {
     edges {
       node {
         id
         content
-        message_tags {
-          tag {
-            name
-            category {
-              name
-              color
-              id
+        messageTagsByMessageId {
+          edges {
+            node {
+              tagByTagId {
+                name
+              }
             }
-            id
           }
-          id
         }
       }
     }
@@ -87,30 +71,12 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "content",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v2 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "color",
-  "storageKey": null
-};
+v1 = [
+  (v0/*: any*/)
+];
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -118,40 +84,6 @@ return {
     "metadata": null,
     "name": "pages_HomeQuery",
     "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "concreteType": "messageConnection",
-        "kind": "LinkedField",
-        "name": "message_connection",
-        "plural": false,
-        "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "messageEdge",
-            "kind": "LinkedField",
-            "name": "edges",
-            "plural": true,
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "message",
-                "kind": "LinkedField",
-                "name": "node",
-                "plural": false,
-                "selections": [
-                  (v0/*: any*/)
-                ],
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          }
-        ],
-        "storageKey": null
-      },
       {
         "args": null,
         "kind": "FragmentSpread",
@@ -163,7 +95,7 @@ return {
         "name": "TilesFragment_messages"
       }
     ],
-    "type": "query_root",
+    "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
@@ -175,15 +107,15 @@ return {
       {
         "alias": null,
         "args": null,
-        "concreteType": "messageConnection",
+        "concreteType": "CategoriesConnection",
         "kind": "LinkedField",
-        "name": "message_connection",
+        "name": "allCategories",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "messageEdge",
+            "concreteType": "CategoriesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -191,50 +123,49 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "message",
+                "concreteType": "Category",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
-                  (v1/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "message_tag",
+                    "concreteType": "TagsConnection",
                     "kind": "LinkedField",
-                    "name": "message_tags",
-                    "plural": true,
+                    "name": "tagsByCategoryId",
+                    "plural": false,
                     "selections": [
                       {
                         "alias": null,
                         "args": null,
-                        "concreteType": "tag",
+                        "concreteType": "TagsEdge",
                         "kind": "LinkedField",
-                        "name": "tag",
-                        "plural": false,
+                        "name": "edges",
+                        "plural": true,
                         "selections": [
-                          (v2/*: any*/),
                           {
                             "alias": null,
                             "args": null,
-                            "concreteType": "category",
+                            "concreteType": "Tag",
                             "kind": "LinkedField",
-                            "name": "category",
+                            "name": "node",
                             "plural": false,
-                            "selections": [
-                              (v2/*: any*/),
-                              (v3/*: any*/),
-                              (v1/*: any*/)
-                            ],
+                            "selections": (v1/*: any*/),
                             "storageKey": null
-                          },
-                          (v1/*: any*/)
+                          }
                         ],
                         "storageKey": null
-                      },
-                      (v1/*: any*/)
+                      }
                     ],
+                    "storageKey": null
+                  },
+                  (v0/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "color",
                     "storageKey": null
                   }
                 ],
@@ -249,15 +180,15 @@ return {
       {
         "alias": null,
         "args": null,
-        "concreteType": "categoryConnection",
+        "concreteType": "MessagesConnection",
         "kind": "LinkedField",
-        "name": "category_connection",
+        "name": "allMessages",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "categoryEdge",
+            "concreteType": "MessagesEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -265,7 +196,7 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "category",
+                "concreteType": "Message",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
@@ -273,19 +204,60 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "concreteType": "tag",
-                    "kind": "LinkedField",
-                    "name": "tags",
-                    "plural": true,
-                    "selections": [
-                      (v2/*: any*/),
-                      (v1/*: any*/)
-                    ],
+                    "kind": "ScalarField",
+                    "name": "id",
                     "storageKey": null
                   },
-                  (v2/*: any*/),
-                  (v3/*: any*/),
-                  (v1/*: any*/)
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "content",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "MessageTagsConnection",
+                    "kind": "LinkedField",
+                    "name": "messageTagsByMessageId",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "MessageTagsEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "MessageTag",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Tag",
+                                "kind": "LinkedField",
+                                "name": "tagByTagId",
+                                "plural": false,
+                                "selections": (v1/*: any*/),
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -298,16 +270,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "66e938cdb5d36a3604e804ce6df9dfe8",
+    "cacheID": "6177c709e4c9f083a379682ee61e8817",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  message_connection {\n    edges {\n      node {\n        content\n        id\n      }\n    }\n  }\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on query_root {\n  category_connection {\n    edges {\n      node {\n        tags {\n          name\n          id\n        }\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on query_root {\n  message_connection {\n    edges {\n      node {\n        id\n        content\n        message_tags {\n          tag {\n            name\n            category {\n              name\n              color\n              id\n            }\n            id\n          }\n          id\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n            }\n          }\n        }\n        name\n        color\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        id\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'fdac9f88820eaed61d2108f704c4254c';
+(node/*: any*/).hash = '94c81be56044e4bde25ae1f6185be8ed';
 
 module.exports = node;

@@ -1,1323 +1,1008 @@
-schema {
-  query: query_root
-  mutation: mutation_root
-  subscription: subscription_root
+# Exposes a URL that specifies the behaviour of this scalar.
+directive @specifiedBy(
+  # The URL that specifies the behaviour of this scalar.
+  url: String!
+) on SCALAR
+
+# A connection to a list of `Category` values.
+type CategoriesConnection {
+  # A list of `Category` objects.
+  nodes: [Category]!
+
+  # A list of edges which contains the `Category` and cursor to aid in pagination.
+  edges: [CategoriesEdge!]!
+
+  # Information to aid in pagination.
+  pageInfo: PageInfo!
+
+  # The count of *all* `Category` you could get from the connection.
+  totalCount: Int!
 }
 
-# columns and relationships of "category"
-type category implements Node {
-  color: String
-  id: ID!
-  name: String!
+# A `Category` edge in the connection.
+type CategoriesEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
 
-  # An array relationship
-  tags(
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): [tag!]!
-
-  # An aggregate relationship
-  tags_aggregate(
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tag_aggregate!
-
-  # An array relationship connection
-  tags_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tagConnection!
-  user_id: String!
+  # The `Category` at the end of the edge.
+  node: Category
 }
 
-# Boolean expression to filter rows from the table "category". All fields are combined with a logical 'AND'.
-input category_bool_exp {
-  _and: [category_bool_exp!]
-  _not: category_bool_exp
-  _or: [category_bool_exp!]
-  color: String_comparison_exp
-  id: uuid_comparison_exp
-  name: String_comparison_exp
-  tags: tag_bool_exp
-  user_id: String_comparison_exp
+# Methods to use when ordering `Category`.
+enum CategoriesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  NAME_ASC
+  NAME_DESC
+  COLOR_ASC
+  COLOR_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
-# unique or primary key constraints on table "category"
-enum category_constraint {
-  # unique or primary key constraint
-  category_pkey
-}
-
-# input type for inserting data into table "category"
-input category_insert_input {
-  color: String
-  id: uuid
+type Category implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  nodeId: ID!
+  id: Int!
+  userId: String
   name: String
-  tags: tag_arr_rel_insert_input
-  user_id: String
-}
-
-# response of any mutation on the table "category"
-type category_mutation_response {
-  # number of rows affected by the mutation
-  affected_rows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [category!]!
-}
-
-# input type for inserting object relation for remote table "category"
-input category_obj_rel_insert_input {
-  data: category_insert_input!
-
-  # on conflict condition
-  on_conflict: category_on_conflict
-}
-
-# on conflict condition type for table "category"
-input category_on_conflict {
-  constraint: category_constraint!
-  update_columns: [category_update_column!]! = []
-  where: category_bool_exp
-}
-
-# Ordering options when selecting data from "category".
-input category_order_by {
-  color: order_by
-  id: order_by
-  name: order_by
-  tags_aggregate: tag_aggregate_order_by
-  user_id: order_by
-}
-
-# primary key columns input for table: category
-input category_pk_columns_input {
-  id: uuid!
-}
-
-# select columns of table "category"
-enum category_select_column {
-  # column name
-  color
-
-  # column name
-  id
-
-  # column name
-  name
-
-  # column name
-  user_id
-}
-
-# input type for updating data in table "category"
-input category_set_input {
   color: String
-  id: uuid
+
+  # Reads and enables pagination through a set of `Tag`.
+  tagsByCategoryId(
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # The method to use when ordering `Tag`.
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: TagCondition
+  ): TagsConnection!
+}
+
+# A condition to be used against `Category` object types. All fields are tested
+# for equality and combined with a logical ‘and.’
+input CategoryCondition {
+  # Checks for equality with the object’s `id` field.
+  id: Int
+
+  # Checks for equality with the object’s `userId` field.
+  userId: String
+
+  # Checks for equality with the object’s `name` field.
   name: String
-  user_id: String
+
+  # Checks for equality with the object’s `color` field.
+  color: String
 }
 
-# update columns of table "category"
-enum category_update_column {
-  # column name
-  color
-
-  # column name
-  id
-
-  # column name
-  name
-
-  # column name
-  user_id
+# An input for mutations affecting `Category`
+input CategoryInput {
+  id: Int
+  userId: String
+  name: String
+  color: String
 }
 
-# A Relay connection object on "category"
-type categoryConnection {
-  edges: [categoryEdge!]!
-  pageInfo: PageInfo!
+# Represents an update to a `Category`. Fields that are set will be updated.
+input CategoryPatch {
+  id: Int
+  userId: String
+  name: String
+  color: String
 }
 
-type categoryEdge {
-  cursor: String!
-  node: category!
+# All input for the create `Category` mutation.
+input CreateCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Category` to be created by this mutation.
+  category: CategoryInput!
 }
 
-# columns and relationships of "message"
-type message implements Node {
-  content: String!
-  id: ID!
+# The output of our create `Category` mutation.
+type CreateCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
 
-  # An array relationship
-  message_tags(
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
+  # The `Category` that was created by this mutation.
+  category: Category
 
-    # limit the number of rows returned
-    limit: Int
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
 
-    # skip the first n rows. Use only with order_by
-    offset: Int
+  # An edge for our `Category`. May be used by Relay 1.
+  categoryEdge(
+    # The method to use when ordering `Category`.
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategoriesEdge
+}
 
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
+# All input for the create `Message` mutation.
+input CreateMessageInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
 
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): [message_tag!]!
+  # The `Message` to be created by this mutation.
+  message: MessageInput!
+}
 
-  # An aggregate relationship
-  message_tags_aggregate(
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
+# The output of our create `Message` mutation.
+type CreateMessagePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
 
-    # limit the number of rows returned
-    limit: Int
+  # The `Message` that was created by this mutation.
+  message: Message
 
-    # skip the first n rows. Use only with order_by
-    offset: Int
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
 
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
+  # An edge for our `Message`. May be used by Relay 1.
+  messageEdge(
+    # The method to use when ordering `Message`.
+    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MessagesEdge
+}
 
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tag_aggregate!
+# All input for the create `MessageTag` mutation.
+input CreateMessageTagInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
 
-  # An array relationship connection
-  message_tags_connection(
-    after: String
-    before: String
+  # The `MessageTag` to be created by this mutation.
+  messageTag: MessageTagInput!
+}
 
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
+# The output of our create `MessageTag` mutation.
+type CreateMessageTagPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `MessageTag` that was created by this mutation.
+  messageTag: MessageTag
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # Reads a single `Message` that is related to this `MessageTag`.
+  messageByMessageId: Message
+
+  # Reads a single `Tag` that is related to this `MessageTag`.
+  tagByTagId: Tag
+
+  # An edge for our `MessageTag`. May be used by Relay 1.
+  messageTagEdge(
+    # The method to use when ordering `MessageTag`.
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+  ): MessageTagsEdge
+}
+
+# All input for the create `Tag` mutation.
+input CreateTagInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The `Tag` to be created by this mutation.
+  tag: TagInput!
+}
+
+# The output of our create `Tag` mutation.
+type CreateTagPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Tag` that was created by this mutation.
+  tag: Tag
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # Reads a single `Category` that is related to this `Tag`.
+  categoryByCategoryId: Category
+
+  # An edge for our `Tag`. May be used by Relay 1.
+  tagEdge(
+    # The method to use when ordering `Tag`.
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TagsEdge
+}
+
+# A location in a connection that can be used for resuming pagination.
+scalar Cursor
+
+# All input for the `deleteCategoryById` mutation.
+input DeleteCategoryByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  id: Int!
+}
+
+# All input for the `deleteCategory` mutation.
+input DeleteCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Category` to be deleted.
+  nodeId: ID!
+}
+
+# The output of our delete `Category` mutation.
+type DeleteCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Category` that was deleted by this mutation.
+  category: Category
+  deletedCategoryId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # An edge for our `Category`. May be used by Relay 1.
+  categoryEdge(
+    # The method to use when ordering `Category`.
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategoriesEdge
+}
+
+# All input for the `deleteMessageById` mutation.
+input DeleteMessageByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  id: Int!
+}
+
+# All input for the `deleteMessage` mutation.
+input DeleteMessageInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Message` to be deleted.
+  nodeId: ID!
+}
+
+# The output of our delete `Message` mutation.
+type DeleteMessagePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Message` that was deleted by this mutation.
+  message: Message
+  deletedMessageId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # An edge for our `Message`. May be used by Relay 1.
+  messageEdge(
+    # The method to use when ordering `Message`.
+    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MessagesEdge
+}
+
+# All input for the `deleteTagById` mutation.
+input DeleteTagByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  id: Int!
+}
+
+# All input for the `deleteTag` mutation.
+input DeleteTagInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Tag` to be deleted.
+  nodeId: ID!
+}
+
+# The output of our delete `Tag` mutation.
+type DeleteTagPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Tag` that was deleted by this mutation.
+  tag: Tag
+  deletedTagId: ID
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # Reads a single `Category` that is related to this `Tag`.
+  categoryByCategoryId: Category
+
+  # An edge for our `Tag`. May be used by Relay 1.
+  tagEdge(
+    # The method to use when ordering `Tag`.
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TagsEdge
+}
+
+type Message implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  nodeId: ID!
+  id: Int!
+  userId: String
+  content: String
+
+  # Reads and enables pagination through a set of `MessageTag`.
+  messageTagsByMessageId(
+    # Only read the first `n` values of the set.
     first: Int
+
+    # Only read the last `n` values of the set.
     last: Int
 
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
-
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tagConnection!
-  user_id: String!
-}
-
-# aggregated selection of "message"
-type message_aggregate {
-  aggregate: message_aggregate_fields
-  nodes: [message!]!
-}
-
-# aggregate fields of "message"
-type message_aggregate_fields {
-  count(columns: [message_select_column!], distinct: Boolean): Int!
-  max: message_max_fields
-  min: message_min_fields
-}
-
-# order by aggregate values of table "message"
-input message_aggregate_order_by {
-  count: order_by
-  max: message_max_order_by
-  min: message_min_order_by
-}
-
-# input type for inserting array relation for remote table "message"
-input message_arr_rel_insert_input {
-  data: [message_insert_input!]!
-
-  # on conflict condition
-  on_conflict: message_on_conflict
-}
-
-# Boolean expression to filter rows from the table "message". All fields are combined with a logical 'AND'.
-input message_bool_exp {
-  _and: [message_bool_exp!]
-  _not: message_bool_exp
-  _or: [message_bool_exp!]
-  content: String_comparison_exp
-  id: uuid_comparison_exp
-  message_tags: message_tag_bool_exp
-  user_id: String_comparison_exp
-}
-
-# unique or primary key constraints on table "message"
-enum message_constraint {
-  # unique or primary key constraint
-  message_pkey
-}
-
-# input type for inserting data into table "message"
-input message_insert_input {
-  content: String
-  id: uuid
-  message_tags: message_tag_arr_rel_insert_input
-  user_id: String
-}
-
-# aggregate max on columns
-type message_max_fields {
-  content: String
-  id: uuid
-  user_id: String
-}
-
-# order by max() on columns of table "message"
-input message_max_order_by {
-  content: order_by
-  id: order_by
-  user_id: order_by
-}
-
-# aggregate min on columns
-type message_min_fields {
-  content: String
-  id: uuid
-  user_id: String
-}
-
-# order by min() on columns of table "message"
-input message_min_order_by {
-  content: order_by
-  id: order_by
-  user_id: order_by
-}
-
-# response of any mutation on the table "message"
-type message_mutation_response {
-  # number of rows affected by the mutation
-  affected_rows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [message!]!
-}
-
-# input type for inserting object relation for remote table "message"
-input message_obj_rel_insert_input {
-  data: message_insert_input!
-
-  # on conflict condition
-  on_conflict: message_on_conflict
-}
-
-# on conflict condition type for table "message"
-input message_on_conflict {
-  constraint: message_constraint!
-  update_columns: [message_update_column!]! = []
-  where: message_bool_exp
-}
-
-# Ordering options when selecting data from "message".
-input message_order_by {
-  content: order_by
-  id: order_by
-  message_tags_aggregate: message_tag_aggregate_order_by
-  user_id: order_by
-}
-
-# primary key columns input for table: message
-input message_pk_columns_input {
-  id: uuid!
-}
-
-# select columns of table "message"
-enum message_select_column {
-  # column name
-  content
-
-  # column name
-  id
-
-  # column name
-  user_id
-}
-
-# input type for updating data in table "message"
-input message_set_input {
-  content: String
-  id: uuid
-  user_id: String
-}
-
-# columns and relationships of "message_tag"
-type message_tag implements Node {
-  id: ID!
-
-  # An object relationship
-  message: message!
-  message_id: uuid!
-
-  # An array relationship
-  message_tag_message(
-    # distinct select on columns
-    distinct_on: [message_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
     offset: Int
 
-    # sort the rows by one or more columns
-    order_by: [message_order_by!]
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
 
-    # filter the rows returned
-    where: message_bool_exp
-  ): [message!]!
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
 
-  # An aggregate relationship
-  message_tag_message_aggregate(
-    # distinct select on columns
-    distinct_on: [message_select_column!]
+    # The method to use when ordering `MessageTag`.
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
 
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_order_by!]
-
-    # filter the rows returned
-    where: message_bool_exp
-  ): message_aggregate!
-
-  # An array relationship connection
-  message_tag_message_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_order_by!]
-
-    # filter the rows returned
-    where: message_bool_exp
-  ): messageConnection!
-
-  # An array relationship
-  message_tag_tag(
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): [tag!]!
-
-  # An aggregate relationship
-  message_tag_tag_aggregate(
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tag_aggregate!
-
-  # An array relationship connection
-  message_tag_tag_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tagConnection!
-
-  # An object relationship
-  tag: tag!
-  tag_id: uuid!
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: MessageTagCondition
+  ): MessageTagsConnection!
 }
 
-# aggregated selection of "message_tag"
-type message_tag_aggregate {
-  aggregate: message_tag_aggregate_fields
-  nodes: [message_tag!]!
+# A condition to be used against `Message` object types. All fields are tested for equality and combined with a logical ‘and.’
+input MessageCondition {
+  # Checks for equality with the object’s `id` field.
+  id: Int
+
+  # Checks for equality with the object’s `userId` field.
+  userId: String
+
+  # Checks for equality with the object’s `content` field.
+  content: String
 }
 
-# aggregate fields of "message_tag"
-type message_tag_aggregate_fields {
-  count(columns: [message_tag_select_column!], distinct: Boolean): Int!
-  max: message_tag_max_fields
-  min: message_tag_min_fields
+# An input for mutations affecting `Message`
+input MessageInput {
+  id: Int
+  userId: String
+  content: String
 }
 
-# order by aggregate values of table "message_tag"
-input message_tag_aggregate_order_by {
-  count: order_by
-  max: message_tag_max_order_by
-  min: message_tag_min_order_by
+# Represents an update to a `Message`. Fields that are set will be updated.
+input MessagePatch {
+  id: Int
+  userId: String
+  content: String
 }
 
-# input type for inserting array relation for remote table "message_tag"
-input message_tag_arr_rel_insert_input {
-  data: [message_tag_insert_input!]!
+# A connection to a list of `Message` values.
+type MessagesConnection {
+  # A list of `Message` objects.
+  nodes: [Message]!
 
-  # on conflict condition
-  on_conflict: message_tag_on_conflict
-}
+  # A list of edges which contains the `Message` and cursor to aid in pagination.
+  edges: [MessagesEdge!]!
 
-# Boolean expression to filter rows from the table "message_tag". All fields are combined with a logical 'AND'.
-input message_tag_bool_exp {
-  _and: [message_tag_bool_exp!]
-  _not: message_tag_bool_exp
-  _or: [message_tag_bool_exp!]
-  message: message_bool_exp
-  message_id: uuid_comparison_exp
-  message_tag_message: message_bool_exp
-  message_tag_tag: tag_bool_exp
-  tag: tag_bool_exp
-  tag_id: uuid_comparison_exp
-}
-
-# unique or primary key constraints on table "message_tag"
-enum message_tag_constraint {
-  # unique or primary key constraint
-  message_tag_pkey
-}
-
-# input type for inserting data into table "message_tag"
-input message_tag_insert_input {
-  message: message_obj_rel_insert_input
-  message_id: uuid
-  message_tag_message: message_arr_rel_insert_input
-  message_tag_tag: tag_arr_rel_insert_input
-  tag: tag_obj_rel_insert_input
-  tag_id: uuid
-}
-
-# aggregate max on columns
-type message_tag_max_fields {
-  message_id: uuid
-  tag_id: uuid
-}
-
-# order by max() on columns of table "message_tag"
-input message_tag_max_order_by {
-  message_id: order_by
-  tag_id: order_by
-}
-
-# aggregate min on columns
-type message_tag_min_fields {
-  message_id: uuid
-  tag_id: uuid
-}
-
-# order by min() on columns of table "message_tag"
-input message_tag_min_order_by {
-  message_id: order_by
-  tag_id: order_by
-}
-
-# response of any mutation on the table "message_tag"
-type message_tag_mutation_response {
-  # number of rows affected by the mutation
-  affected_rows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [message_tag!]!
-}
-
-# on conflict condition type for table "message_tag"
-input message_tag_on_conflict {
-  constraint: message_tag_constraint!
-  update_columns: [message_tag_update_column!]! = []
-  where: message_tag_bool_exp
-}
-
-# Ordering options when selecting data from "message_tag".
-input message_tag_order_by {
-  message: message_order_by
-  message_id: order_by
-  message_tag_message_aggregate: message_aggregate_order_by
-  message_tag_tag_aggregate: tag_aggregate_order_by
-  tag: tag_order_by
-  tag_id: order_by
-}
-
-# primary key columns input for table: message_tag
-input message_tag_pk_columns_input {
-  message_id: uuid!
-  tag_id: uuid!
-}
-
-# select columns of table "message_tag"
-enum message_tag_select_column {
-  # column name
-  message_id
-
-  # column name
-  tag_id
-}
-
-# input type for updating data in table "message_tag"
-input message_tag_set_input {
-  message_id: uuid
-  tag_id: uuid
-}
-
-# update columns of table "message_tag"
-enum message_tag_update_column {
-  # column name
-  message_id
-
-  # column name
-  tag_id
-}
-
-# A Relay connection object on "message_tag"
-type message_tagConnection {
-  edges: [message_tagEdge!]!
+  # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # The count of *all* `Message` you could get from the connection.
+  totalCount: Int!
 }
 
-type message_tagEdge {
-  cursor: String!
-  node: message_tag!
+# A `Message` edge in the connection.
+type MessagesEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Message` at the end of the edge.
+  node: Message
 }
 
-# update columns of table "message"
-enum message_update_column {
-  # column name
-  content
-
-  # column name
-  id
-
-  # column name
-  user_id
+# Methods to use when ordering `Message`.
+enum MessagesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  CONTENT_ASC
+  CONTENT_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
-# A Relay connection object on "message"
-type messageConnection {
-  edges: [messageEdge!]!
+type MessageTag {
+  messageId: Int!
+  tagId: Int!
+
+  # Reads a single `Message` that is related to this `MessageTag`.
+  messageByMessageId: Message
+
+  # Reads a single `Tag` that is related to this `MessageTag`.
+  tagByTagId: Tag
+}
+
+# A condition to be used against `MessageTag` object types. All fields are tested
+# for equality and combined with a logical ‘and.’
+input MessageTagCondition {
+  # Checks for equality with the object’s `messageId` field.
+  messageId: Int
+
+  # Checks for equality with the object’s `tagId` field.
+  tagId: Int
+}
+
+# An input for mutations affecting `MessageTag`
+input MessageTagInput {
+  messageId: Int!
+  tagId: Int!
+}
+
+# A connection to a list of `MessageTag` values.
+type MessageTagsConnection {
+  # A list of `MessageTag` objects.
+  nodes: [MessageTag]!
+
+  # A list of edges which contains the `MessageTag` and cursor to aid in pagination.
+  edges: [MessageTagsEdge!]!
+
+  # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # The count of *all* `MessageTag` you could get from the connection.
+  totalCount: Int!
 }
 
-type messageEdge {
-  cursor: String!
-  node: message!
+# A `MessageTag` edge in the connection.
+type MessageTagsEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `MessageTag` at the end of the edge.
+  node: MessageTag
 }
 
-# mutation root
-type mutation_root {
-  # delete data from the table: "category"
-  delete_category(
-    # filter the rows which have to be deleted
-    where: category_bool_exp!
-  ): category_mutation_response
-
-  # delete single row from the table: "category"
-  delete_category_by_pk(id: uuid!): category
-
-  # delete data from the table: "message"
-  delete_message(
-    # filter the rows which have to be deleted
-    where: message_bool_exp!
-  ): message_mutation_response
-
-  # delete single row from the table: "message"
-  delete_message_by_pk(id: uuid!): message
-
-  # delete data from the table: "message_tag"
-  delete_message_tag(
-    # filter the rows which have to be deleted
-    where: message_tag_bool_exp!
-  ): message_tag_mutation_response
-
-  # delete single row from the table: "message_tag"
-  delete_message_tag_by_pk(message_id: uuid!, tag_id: uuid!): message_tag
-
-  # delete data from the table: "tag"
-  delete_tag(
-    # filter the rows which have to be deleted
-    where: tag_bool_exp!
-  ): tag_mutation_response
-
-  # delete single row from the table: "tag"
-  delete_tag_by_pk(id: uuid!): tag
-
-  # insert data into the table: "category"
-  insert_category(
-    # the rows to be inserted
-    objects: [category_insert_input!]!
-
-    # on conflict condition
-    on_conflict: category_on_conflict
-  ): category_mutation_response
-
-  # insert a single row into the table: "category"
-  insert_category_one(
-    # the row to be inserted
-    object: category_insert_input!
-
-    # on conflict condition
-    on_conflict: category_on_conflict
-  ): category
-
-  # insert data into the table: "message"
-  insert_message(
-    # the rows to be inserted
-    objects: [message_insert_input!]!
-
-    # on conflict condition
-    on_conflict: message_on_conflict
-  ): message_mutation_response
-
-  # insert a single row into the table: "message"
-  insert_message_one(
-    # the row to be inserted
-    object: message_insert_input!
-
-    # on conflict condition
-    on_conflict: message_on_conflict
-  ): message
-
-  # insert data into the table: "message_tag"
-  insert_message_tag(
-    # the rows to be inserted
-    objects: [message_tag_insert_input!]!
-
-    # on conflict condition
-    on_conflict: message_tag_on_conflict
-  ): message_tag_mutation_response
-
-  # insert a single row into the table: "message_tag"
-  insert_message_tag_one(
-    # the row to be inserted
-    object: message_tag_insert_input!
-
-    # on conflict condition
-    on_conflict: message_tag_on_conflict
-  ): message_tag
-
-  # insert data into the table: "tag"
-  insert_tag(
-    # the rows to be inserted
-    objects: [tag_insert_input!]!
-
-    # on conflict condition
-    on_conflict: tag_on_conflict
-  ): tag_mutation_response
-
-  # insert a single row into the table: "tag"
-  insert_tag_one(
-    # the row to be inserted
-    object: tag_insert_input!
-
-    # on conflict condition
-    on_conflict: tag_on_conflict
-  ): tag
-
-  # update data of the table: "category"
-  update_category(
-    # sets the columns of the filtered rows to the given values
-    _set: category_set_input
-
-    # filter the rows which have to be updated
-    where: category_bool_exp!
-  ): category_mutation_response
-
-  # update single row of the table: "category"
-  update_category_by_pk(
-    # sets the columns of the filtered rows to the given values
-    _set: category_set_input
-    pk_columns: category_pk_columns_input!
-  ): category
-
-  # update data of the table: "message"
-  update_message(
-    # sets the columns of the filtered rows to the given values
-    _set: message_set_input
-
-    # filter the rows which have to be updated
-    where: message_bool_exp!
-  ): message_mutation_response
-
-  # update single row of the table: "message"
-  update_message_by_pk(
-    # sets the columns of the filtered rows to the given values
-    _set: message_set_input
-    pk_columns: message_pk_columns_input!
-  ): message
-
-  # update data of the table: "message_tag"
-  update_message_tag(
-    # sets the columns of the filtered rows to the given values
-    _set: message_tag_set_input
-
-    # filter the rows which have to be updated
-    where: message_tag_bool_exp!
-  ): message_tag_mutation_response
-
-  # update single row of the table: "message_tag"
-  update_message_tag_by_pk(
-    # sets the columns of the filtered rows to the given values
-    _set: message_tag_set_input
-    pk_columns: message_tag_pk_columns_input!
-  ): message_tag
-
-  # update data of the table: "tag"
-  update_tag(
-    # sets the columns of the filtered rows to the given values
-    _set: tag_set_input
-
-    # filter the rows which have to be updated
-    where: tag_bool_exp!
-  ): tag_mutation_response
-
-  # update single row of the table: "tag"
-  update_tag_by_pk(
-    # sets the columns of the filtered rows to the given values
-    _set: tag_set_input
-    pk_columns: tag_pk_columns_input!
-  ): tag
+# Methods to use when ordering `MessageTag`.
+enum MessageTagsOrderBy {
+  NATURAL
+  MESSAGE_ID_ASC
+  MESSAGE_ID_DESC
+  TAG_ID_ASC
+  TAG_ID_DESC
 }
 
-# An object with globally unique ID
+# The root mutation type which contains root level fields which mutate data.
+type Mutation {
+  # Creates a single `Category`.
+  createCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateCategoryInput!
+  ): CreateCategoryPayload
+
+  # Creates a single `Message`.
+  createMessage(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateMessageInput!
+  ): CreateMessagePayload
+
+  # Creates a single `MessageTag`.
+  createMessageTag(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateMessageTagInput!
+  ): CreateMessageTagPayload
+
+  # Creates a single `Tag`.
+  createTag(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: CreateTagInput!
+  ): CreateTagPayload
+
+  # Updates a single `Category` using its globally unique id and a patch.
+  updateCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryInput!
+  ): UpdateCategoryPayload
+
+  # Updates a single `Category` using a unique key and a patch.
+  updateCategoryById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateCategoryByIdInput!
+  ): UpdateCategoryPayload
+
+  # Updates a single `Message` using its globally unique id and a patch.
+  updateMessage(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateMessageInput!
+  ): UpdateMessagePayload
+
+  # Updates a single `Message` using a unique key and a patch.
+  updateMessageById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateMessageByIdInput!
+  ): UpdateMessagePayload
+
+  # Updates a single `Tag` using its globally unique id and a patch.
+  updateTag(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTagInput!
+  ): UpdateTagPayload
+
+  # Updates a single `Tag` using a unique key and a patch.
+  updateTagById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: UpdateTagByIdInput!
+  ): UpdateTagPayload
+
+  # Deletes a single `Category` using its globally unique id.
+  deleteCategory(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryInput!
+  ): DeleteCategoryPayload
+
+  # Deletes a single `Category` using a unique key.
+  deleteCategoryById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteCategoryByIdInput!
+  ): DeleteCategoryPayload
+
+  # Deletes a single `Message` using its globally unique id.
+  deleteMessage(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteMessageInput!
+  ): DeleteMessagePayload
+
+  # Deletes a single `Message` using a unique key.
+  deleteMessageById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteMessageByIdInput!
+  ): DeleteMessagePayload
+
+  # Deletes a single `Tag` using its globally unique id.
+  deleteTag(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTagInput!
+  ): DeleteTagPayload
+
+  # Deletes a single `Tag` using a unique key.
+  deleteTagById(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteTagByIdInput!
+  ): DeleteTagPayload
+}
+
+# An object with a globally unique `ID`.
 interface Node {
-  # A globally unique identifier
-  id: ID!
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  nodeId: ID!
 }
 
-# column ordering options
-enum order_by {
-  # in ascending order, nulls last
-  asc
-
-  # in ascending order, nulls first
-  asc_nulls_first
-
-  # in ascending order, nulls last
-  asc_nulls_last
-
-  # in descending order, nulls first
-  desc
-
-  # in descending order, nulls first
-  desc_nulls_first
-
-  # in descending order, nulls last
-  desc_nulls_last
-}
-
+# Information about pagination in a connection.
 type PageInfo {
-  endCursor: String!
+  # When paginating forwards, are there more items?
   hasNextPage: Boolean!
+
+  # When paginating backwards, are there more items?
   hasPreviousPage: Boolean!
-  startCursor: String!
+
+  # When paginating backwards, the cursor to continue.
+  startCursor: Cursor
+
+  # When paginating forwards, the cursor to continue.
+  endCursor: Cursor
 }
 
-type query_root {
-  # fetch data from the table: "category"
-  category_connection(
-    after: String
-    before: String
+# The root query type which gives access points into the data universe.
+type Query implements Node {
+  # Exposes the root query type nested one level down. This is helpful for Relay 1
+  # which can only query top level fields if they are in a particular form.
+  query: Query!
 
-    # distinct select on columns
-    distinct_on: [category_select_column!]
-    first: Int
-    last: Int
+  # The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
+  nodeId: ID!
 
-    # sort the rows by one or more columns
-    order_by: [category_order_by!]
-
-    # filter the rows returned
-    where: category_bool_exp
-  ): categoryConnection!
-
-  # fetch data from the table: "message"
-  message_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_order_by!]
-
-    # filter the rows returned
-    where: message_bool_exp
-  ): messageConnection!
-
-  # fetch data from the table: "message_tag"
-  message_tag_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
-
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tagConnection!
+  # Fetches an object given its globally unique `ID`.
   node(
-    # A globally unique id
-    id: ID!
+    # The globally unique `ID`.
+    nodeId: ID!
   ): Node
 
-  # fetch data from the table: "tag"
-  tag_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
+  # Reads and enables pagination through a set of `Category`.
+  allCategories(
+    # Only read the first `n` values of the set.
     first: Int
+
+    # Only read the last `n` values of the set.
     last: Int
 
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tagConnection!
-}
-
-# Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
-input String_comparison_exp {
-  _eq: String
-  _gt: String
-  _gte: String
-
-  # does the column match the given case-insensitive pattern
-  _ilike: String
-  _in: [String!]
-
-  # does the column match the given POSIX regular expression, case insensitive
-  _iregex: String
-  _is_null: Boolean
-
-  # does the column match the given pattern
-  _like: String
-  _lt: String
-  _lte: String
-  _neq: String
-
-  # does the column NOT match the given case-insensitive pattern
-  _nilike: String
-  _nin: [String!]
-
-  # does the column NOT match the given POSIX regular expression, case insensitive
-  _niregex: String
-
-  # does the column NOT match the given pattern
-  _nlike: String
-
-  # does the column NOT match the given POSIX regular expression, case sensitive
-  _nregex: String
-
-  # does the column NOT match the given SQL regular expression
-  _nsimilar: String
-
-  # does the column match the given POSIX regular expression, case sensitive
-  _regex: String
-
-  # does the column match the given SQL regular expression
-  _similar: String
-}
-
-type subscription_root {
-  # fetch data from the table: "category"
-  category_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [category_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [category_order_by!]
-
-    # filter the rows returned
-    where: category_bool_exp
-  ): categoryConnection!
-
-  # fetch data from the table: "message"
-  message_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_order_by!]
-
-    # filter the rows returned
-    where: message_bool_exp
-  ): messageConnection!
-
-  # fetch data from the table: "message_tag"
-  message_tag_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
-
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tagConnection!
-  node(
-    # A globally unique id
-    id: ID!
-  ): Node
-
-  # fetch data from the table: "tag"
-  tag_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [tag_select_column!]
-    first: Int
-    last: Int
-
-    # sort the rows by one or more columns
-    order_by: [tag_order_by!]
-
-    # filter the rows returned
-    where: tag_bool_exp
-  ): tagConnection!
-}
-
-# columns and relationships of "tag"
-type tag implements Node {
-  # An object relationship
-  category: category!
-  category_id: uuid!
-  id: ID!
-
-  # An array relationship
-  message_tags(
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
-
-    # limit the number of rows returned
-    limit: Int
-
-    # skip the first n rows. Use only with order_by
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
     offset: Int
 
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
 
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): [message_tag!]!
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
 
-  # An aggregate relationship
-  message_tags_aggregate(
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
+    # The method to use when ordering `Category`.
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
 
-    # limit the number of rows returned
-    limit: Int
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: CategoryCondition
+  ): CategoriesConnection
 
-    # skip the first n rows. Use only with order_by
-    offset: Int
-
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
-
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tag_aggregate!
-
-  # An array relationship connection
-  message_tags_connection(
-    after: String
-    before: String
-
-    # distinct select on columns
-    distinct_on: [message_tag_select_column!]
+  # Reads and enables pagination through a set of `Message`.
+  allMessages(
+    # Only read the first `n` values of the set.
     first: Int
+
+    # Only read the last `n` values of the set.
     last: Int
 
-    # sort the rows by one or more columns
-    order_by: [message_tag_order_by!]
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
 
-    # filter the rows returned
-    where: message_tag_bool_exp
-  ): message_tagConnection!
-  name: String!
-  user_id: String!
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # The method to use when ordering `Message`.
+    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: MessageCondition
+  ): MessagesConnection
+
+  # Reads and enables pagination through a set of `MessageTag`.
+  allMessageTags(
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # The method to use when ordering `MessageTag`.
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: MessageTagCondition
+  ): MessageTagsConnection
+
+  # Reads and enables pagination through a set of `Tag`.
+  allTags(
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # The method to use when ordering `Tag`.
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: TagCondition
+  ): TagsConnection
+  categoryById(id: Int!): Category
+  messageById(id: Int!): Message
+  tagById(id: Int!): Tag
+
+  # Reads a single `Category` using its globally unique `ID`.
+  category(
+    # The globally unique `ID` to be used in selecting a single `Category`.
+    nodeId: ID!
+  ): Category
+
+  # Reads a single `Message` using its globally unique `ID`.
+  message(
+    # The globally unique `ID` to be used in selecting a single `Message`.
+    nodeId: ID!
+  ): Message
+
+  # Reads a single `Tag` using its globally unique `ID`.
+  tag(
+    # The globally unique `ID` to be used in selecting a single `Tag`.
+    nodeId: ID!
+  ): Tag
 }
 
-# aggregated selection of "tag"
-type tag_aggregate {
-  aggregate: tag_aggregate_fields
-  nodes: [tag!]!
-}
-
-# aggregate fields of "tag"
-type tag_aggregate_fields {
-  count(columns: [tag_select_column!], distinct: Boolean): Int!
-  max: tag_max_fields
-  min: tag_min_fields
-}
-
-# order by aggregate values of table "tag"
-input tag_aggregate_order_by {
-  count: order_by
-  max: tag_max_order_by
-  min: tag_min_order_by
-}
-
-# input type for inserting array relation for remote table "tag"
-input tag_arr_rel_insert_input {
-  data: [tag_insert_input!]!
-
-  # on conflict condition
-  on_conflict: tag_on_conflict
-}
-
-# Boolean expression to filter rows from the table "tag". All fields are combined with a logical 'AND'.
-input tag_bool_exp {
-  _and: [tag_bool_exp!]
-  _not: tag_bool_exp
-  _or: [tag_bool_exp!]
-  category: category_bool_exp
-  category_id: uuid_comparison_exp
-  id: uuid_comparison_exp
-  message_tags: message_tag_bool_exp
-  name: String_comparison_exp
-  user_id: String_comparison_exp
-}
-
-# unique or primary key constraints on table "tag"
-enum tag_constraint {
-  # unique or primary key constraint
-  tag_pkey
-}
-
-# input type for inserting data into table "tag"
-input tag_insert_input {
-  category: category_obj_rel_insert_input
-  category_id: uuid
-  id: uuid
-  message_tags: message_tag_arr_rel_insert_input
+type Tag implements Node {
+  # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  nodeId: ID!
+  id: Int!
+  userId: String
   name: String
-  user_id: String
+  categoryId: Int!
+
+  # Reads a single `Category` that is related to this `Tag`.
+  categoryByCategoryId: Category
+
+  # Reads and enables pagination through a set of `MessageTag`.
+  messageTagsByTagId(
+    # Only read the first `n` values of the set.
+    first: Int
+
+    # Only read the last `n` values of the set.
+    last: Int
+
+    # Skip the first `n` values from our `after` cursor, an alternative to cursor
+    # based pagination. May not be used with `last`.
+    offset: Int
+
+    # Read all values in the set before (above) this cursor.
+    before: Cursor
+
+    # Read all values in the set after (below) this cursor.
+    after: Cursor
+
+    # The method to use when ordering `MessageTag`.
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+
+    # A condition to be used in determining which values should be returned by the collection.
+    condition: MessageTagCondition
+  ): MessageTagsConnection!
 }
 
-# aggregate max on columns
-type tag_max_fields {
-  category_id: uuid
-  id: uuid
+# A condition to be used against `Tag` object types. All fields are tested for equality and combined with a logical ‘and.’
+input TagCondition {
+  # Checks for equality with the object’s `id` field.
+  id: Int
+
+  # Checks for equality with the object’s `userId` field.
+  userId: String
+
+  # Checks for equality with the object’s `name` field.
   name: String
-  user_id: String
+
+  # Checks for equality with the object’s `categoryId` field.
+  categoryId: Int
 }
 
-# order by max() on columns of table "tag"
-input tag_max_order_by {
-  category_id: order_by
-  id: order_by
-  name: order_by
-  user_id: order_by
-}
-
-# aggregate min on columns
-type tag_min_fields {
-  category_id: uuid
-  id: uuid
+# An input for mutations affecting `Tag`
+input TagInput {
+  id: Int
+  userId: String
   name: String
-  user_id: String
+  categoryId: Int!
 }
 
-# order by min() on columns of table "tag"
-input tag_min_order_by {
-  category_id: order_by
-  id: order_by
-  name: order_by
-  user_id: order_by
-}
-
-# response of any mutation on the table "tag"
-type tag_mutation_response {
-  # number of rows affected by the mutation
-  affected_rows: Int!
-
-  # data from the rows affected by the mutation
-  returning: [tag!]!
-}
-
-# input type for inserting object relation for remote table "tag"
-input tag_obj_rel_insert_input {
-  data: tag_insert_input!
-
-  # on conflict condition
-  on_conflict: tag_on_conflict
-}
-
-# on conflict condition type for table "tag"
-input tag_on_conflict {
-  constraint: tag_constraint!
-  update_columns: [tag_update_column!]! = []
-  where: tag_bool_exp
-}
-
-# Ordering options when selecting data from "tag".
-input tag_order_by {
-  category: category_order_by
-  category_id: order_by
-  id: order_by
-  message_tags_aggregate: message_tag_aggregate_order_by
-  name: order_by
-  user_id: order_by
-}
-
-# primary key columns input for table: tag
-input tag_pk_columns_input {
-  id: uuid!
-}
-
-# select columns of table "tag"
-enum tag_select_column {
-  # column name
-  category_id
-
-  # column name
-  id
-
-  # column name
-  name
-
-  # column name
-  user_id
-}
-
-# input type for updating data in table "tag"
-input tag_set_input {
-  category_id: uuid
-  id: uuid
+# Represents an update to a `Tag`. Fields that are set will be updated.
+input TagPatch {
+  id: Int
+  userId: String
   name: String
-  user_id: String
+  categoryId: Int
 }
 
-# update columns of table "tag"
-enum tag_update_column {
-  # column name
-  category_id
+# A connection to a list of `Tag` values.
+type TagsConnection {
+  # A list of `Tag` objects.
+  nodes: [Tag]!
 
-  # column name
-  id
+  # A list of edges which contains the `Tag` and cursor to aid in pagination.
+  edges: [TagsEdge!]!
 
-  # column name
-  name
-
-  # column name
-  user_id
-}
-
-# A Relay connection object on "tag"
-type tagConnection {
-  edges: [tagEdge!]!
+  # Information to aid in pagination.
   pageInfo: PageInfo!
+
+  # The count of *all* `Tag` you could get from the connection.
+  totalCount: Int!
 }
 
-type tagEdge {
-  cursor: String!
-  node: tag!
+# A `Tag` edge in the connection.
+type TagsEdge {
+  # A cursor for use in pagination.
+  cursor: Cursor
+
+  # The `Tag` at the end of the edge.
+  node: Tag
 }
 
-scalar uuid
+# Methods to use when ordering `Tag`.
+enum TagsOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  USER_ID_ASC
+  USER_ID_DESC
+  NAME_ASC
+  NAME_DESC
+  CATEGORY_ID_ASC
+  CATEGORY_ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
 
-# Boolean expression to compare columns of type "uuid". All fields are combined with logical 'AND'.
-input uuid_comparison_exp {
-  _eq: uuid
-  _gt: uuid
-  _gte: uuid
-  _in: [uuid!]
-  _is_null: Boolean
-  _lt: uuid
-  _lte: uuid
-  _neq: uuid
-  _nin: [uuid!]
+# All input for the `updateCategoryById` mutation.
+input UpdateCategoryByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Category` being updated.
+  categoryPatch: CategoryPatch!
+  id: Int!
+}
+
+# All input for the `updateCategory` mutation.
+input UpdateCategoryInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Category` to be updated.
+  nodeId: ID!
+
+  # An object where the defined keys will be set on the `Category` being updated.
+  categoryPatch: CategoryPatch!
+}
+
+# The output of our update `Category` mutation.
+type UpdateCategoryPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Category` that was updated by this mutation.
+  category: Category
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # An edge for our `Category`. May be used by Relay 1.
+  categoryEdge(
+    # The method to use when ordering `Category`.
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategoriesEdge
+}
+
+# All input for the `updateMessageById` mutation.
+input UpdateMessageByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Message` being updated.
+  messagePatch: MessagePatch!
+  id: Int!
+}
+
+# All input for the `updateMessage` mutation.
+input UpdateMessageInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Message` to be updated.
+  nodeId: ID!
+
+  # An object where the defined keys will be set on the `Message` being updated.
+  messagePatch: MessagePatch!
+}
+
+# The output of our update `Message` mutation.
+type UpdateMessagePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Message` that was updated by this mutation.
+  message: Message
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # An edge for our `Message`. May be used by Relay 1.
+  messageEdge(
+    # The method to use when ordering `Message`.
+    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MessagesEdge
+}
+
+# All input for the `updateTagById` mutation.
+input UpdateTagByIdInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # An object where the defined keys will be set on the `Tag` being updated.
+  tagPatch: TagPatch!
+  id: Int!
+}
+
+# All input for the `updateTag` mutation.
+input UpdateTagInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+
+  # The globally unique `ID` which will identify a single `Tag` to be updated.
+  nodeId: ID!
+
+  # An object where the defined keys will be set on the `Tag` being updated.
+  tagPatch: TagPatch!
+}
+
+# The output of our update `Tag` mutation.
+type UpdateTagPayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+
+  # The `Tag` that was updated by this mutation.
+  tag: Tag
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # Reads a single `Category` that is related to this `Tag`.
+  categoryByCategoryId: Category
+
+  # An edge for our `Tag`. May be used by Relay 1.
+  tagEdge(
+    # The method to use when ordering `Tag`.
+    orderBy: [TagsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): TagsEdge
 }
 
