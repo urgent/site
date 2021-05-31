@@ -7,9 +7,10 @@ import useMutation from './useMutation'
 import { signIn, signOut, useSession } from 'next-auth/client'
 
 const InsertMessageMutation = graphql`
-  mutation TilesInsertMessageMutation($input:CreateMessageInput!) {
+  mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
     createMessage(input: $input) {
-      message {
+      message @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+        id
         content
       }
     }
@@ -64,9 +65,9 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
     graphql`
           fragment TilesFragment_messages on Query {
             allMessages {
+              __id
               edges {
                 node {
-                  id
                   content
                   messageTagsByMessageId {
                     edges {
@@ -92,14 +93,12 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       insertMessage({
         variables: {
           input: {
-            content: editorText,
-            user_id: session?.id,
-            message_tags: {
-              data: tagFilter.map((relation) => ({
-                tag_id: relation.tag.id
-              }))
-            }
+            message: {
+              content: editorText,
+              user_id: session?.id,
+            },
           },
+          connections: [data.allMessages.__id]
         },
         updater: store => { },
       });

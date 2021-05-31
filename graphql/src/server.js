@@ -1,12 +1,21 @@
-const http = require("http");
+const express = require('express')
+const cors = require('cors')
 const { postgraphile } = require("postgraphile");
 
-http
-    .createServer(
-        postgraphile(process.env.DATABASE_URL, "public", {
+const app = express()
+app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+
+app.use(
+    postgraphile(
+        process.env.DATABASE_URL,
+        "public",
+        {
             watchPg: true,
             graphiql: true,
             enhanceGraphiql: true,
-        })
+            classicIds: true,
+        }
     )
-    .listen(process.env.PORT);
+);
+
+app.listen(process.env.PORT || 3000);

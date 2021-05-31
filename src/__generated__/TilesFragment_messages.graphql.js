@@ -13,9 +13,9 @@ declare export opaque type TilesFragment_messages$ref: FragmentReference;
 declare export opaque type TilesFragment_messages$fragmentType: TilesFragment_messages$ref;
 export type TilesFragment_messages = {|
   +allMessages: ?{|
+    +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
-        +id: number,
         +content: ?string,
         +messageTagsByMessageId: {|
           +edges: $ReadOnlyArray<{|
@@ -27,7 +27,7 @@ export type TilesFragment_messages = {|
           |}>
         |},
       |}
-    |}>
+    |}>,
   |},
   +$refType: TilesFragment_messages$ref,
 |};
@@ -70,13 +70,6 @@ const node/*: ReaderFragment*/ = {
               "name": "node",
               "plural": false,
               "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "id",
-                  "storageKey": null
-                },
                 {
                   "alias": null,
                   "args": null,
@@ -140,6 +133,18 @@ const node/*: ReaderFragment*/ = {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -149,6 +154,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '08aca3056757c47dfe66e79a4072c617';
+(node/*: any*/).hash = '258095c3e0dc1b818721e0f2ddaab802';
 
 module.exports = node;

@@ -57,7 +57,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                 justify="center"
                 spacing={4}
             >
-                {category.tags.map((tag, index) => (
+                {category.tagsByCategoryId.edges.map((tag, index) => (
                     <WrapItem key={index}>
                         <Tag
                             click={tagClick}

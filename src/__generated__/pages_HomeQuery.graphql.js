@@ -49,7 +49,6 @@ fragment TilesFragment_messages on Query {
   allMessages {
     edges {
       node {
-        id
         content
         messageTagsByMessageId {
           edges {
@@ -205,13 +204,6 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
                     "name": "content",
                     "storageKey": null
                   },
@@ -263,6 +255,18 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "kind": "ClientExtension",
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "__id",
+                "storageKey": null
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -270,12 +274,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6177c709e4c9f083a379682ee61e8817",
+    "cacheID": "bfbdd658284d280725e51e0bbaeb273e",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n            }\n          }\n        }\n        name\n        color\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        id\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n            }\n          }\n        }\n        name\n        color\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();

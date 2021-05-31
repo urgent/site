@@ -18,12 +18,14 @@ export type MessageInput = {|
   content?: ?string,
 |};
 export type TilesInsertMessageMutationVariables = {|
-  input: CreateMessageInput
+  input: CreateMessageInput,
+  connections: $ReadOnlyArray<string>,
 |};
 export type TilesInsertMessageMutationResponse = {|
   +createMessage: ?{|
     +message: ?{|
-      +content: ?string
+      +id: number,
+      +content: ?string,
     |}
   |}
 |};
@@ -40,6 +42,7 @@ mutation TilesInsertMessageMutation(
 ) {
   createMessage(input: $input) {
     message {
+      id
       content
     }
   }
@@ -47,78 +50,129 @@ mutation TilesInsertMessageMutation(
 */
 
 const node/*: ConcreteRequest*/ = (function(){
-var v0 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
   }
 ],
-v1 = [
-  {
-    "alias": null,
-    "args": [
-      {
-        "kind": "Variable",
-        "name": "input",
-        "variableName": "input"
-      }
+v3 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "Message",
+  "kind": "LinkedField",
+  "name": "message",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "content",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
+return {
+  "fragment": {
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
     ],
-    "concreteType": "CreateMessagePayload",
-    "kind": "LinkedField",
-    "name": "createMessage",
-    "plural": false,
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "TilesInsertMessageMutation",
     "selections": [
       {
         "alias": null,
-        "args": null,
-        "concreteType": "Message",
+        "args": (v2/*: any*/),
+        "concreteType": "CreateMessagePayload",
         "kind": "LinkedField",
-        "name": "message",
+        "name": "createMessage",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "content",
-            "storageKey": null
-          }
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
     ],
-    "storageKey": null
-  }
-];
-return {
-  "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
-    "kind": "Fragment",
-    "metadata": null,
-    "name": "TilesInsertMessageMutation",
-    "selections": (v1/*: any*/),
     "type": "Mutation",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
     "name": "TilesInsertMessageMutation",
-    "selections": (v1/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": (v2/*: any*/),
+        "concreteType": "CreateMessagePayload",
+        "kind": "LinkedField",
+        "name": "createMessage",
+        "plural": false,
+        "selections": [
+          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "appendNode",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "message",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              },
+              {
+                "kind": "Literal",
+                "name": "edgeTypeName",
+                "value": "MessagesEdge"
+              }
+            ]
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "678296d77e6703307f001d877a2a9564",
+    "cacheID": "9d7b2c4c1531abe9413f0eb402c6b6b9",
     "id": null,
     "metadata": {},
     "name": "TilesInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    message {\n      content\n    }\n  }\n}\n"
+    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    message {\n      id\n      content\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '16d6b8fe3c5b195b0648dc0d8a810f7e';
+(node/*: any*/).hash = '96c776226a7af830a3b61d644d05637c';
 
 module.exports = node;
