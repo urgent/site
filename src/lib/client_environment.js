@@ -14,7 +14,7 @@ export function createClientNetwork() {
         'X-Hasura-Role': 'user'
       }
     }
-    const response = await fetch('http://0.0.0.0:5433/graphql', {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
       method: 'POST',
       credentials: 'include',
       headers: {
