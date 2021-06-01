@@ -35,17 +35,13 @@ export default NextAuth({
         encode: async ({ secret, token, maxAge }) => {
             const jwtClaims = {
                 "id": token.id,
-                "sub": token.sub.toString(),
+                "sub": "postgraphql",
                 "name": token.name,
                 "email": token.email,
                 "iat": Date.now() / 1000,
                 "exp": Math.floor(Date.now() / 1000) + (24 * 60 * 60),
-                "https://hasura.io/jwt/claims": {
-                    "x-hasura-allowed-roles": ["user"],
-                    "x-hasura-default-role": "user",
-                    "x-hasura-role": "user",
-                    "x-hasura-user-id": token.id,
-                }
+                "role": "user",
+                "user_id": token.id
             };
             const encodedToken = jwt.sign(jwtClaims, secret, { algorithm: 'HS256' });
             return encodedToken;
