@@ -1,0 +1,5 @@
+version: "3.3"
+services:
+  graphql:
+    labels:
+      - "traefik.http.routers.graphql.rule=Host(`api.smooms.io`)"

@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  db:
+    container_name: smooms-db
+    restart: always
+    image: smooms-db
+    build:
+      context: ./db
+    volumes:
+      - db:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    networks:
+      - network
+    ports:
+      - 5432:5432
+  graphql:
+    labels:
+      - "traefik.http.routers.graphql.rule=Host(`localhost`)"
