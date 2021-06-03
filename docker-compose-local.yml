@@ -15,5 +15,7 @@ services:
     ports:
       - 5432:5432
   graphql:
+    depends_on:
+      - db
     labels:
       - "traefik.http.routers.graphql.rule=Host(`localhost`)"
