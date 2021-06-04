@@ -1,5 +1,15 @@
-version: "3.3"
+version: "3"
 services:
+  traefik:
+    command:
+      - --entrypoints.websecure.address=:443
+      - --certificatesresolvers.le.acme.email=urgent.programmer@gmail.com
+      - --certificatesresolvers.le.acme.storage=/acme.json
+      - --certificatesresolvers.le.acme.tlschallenge=true
+    ports:
+      - 443:443
   graphql:
     labels:
-      - "traefik.http.routers.graphql.rule=Host(`api.smooms.io`)"
+      - traefik.http.routers.graphql.rule=Host(`api.smooms.io`)
+      - traefik.http.routers.my-app.tls.certresolver=le
+      - traefik.http.routers.my-app.entrypoints=websecure

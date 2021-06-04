@@ -1,17 +1,17 @@
-version: "3.3"
+version: "3"
 services:
   traefik:
-    image: "traefik:v2.4"
-    container_name: "traefik"
+    image: traefik:v2.4
+    container_name: traefik
     command:
-      #- "--log.level=DEBUG"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.web.address=:80"
+      #- --log.level=DEBUG
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
     ports:
-      - "8080:8080"
+      - 8080:8080
+      - 80:80
     volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
   graphql:
     container_name: smooms-graphql
     restart: always
@@ -20,15 +20,6 @@ services:
       context: ./graphql
     env_file:
       - ./.env
-    networks:
-      - network
-    ports:
-      - 80:80
     labels:
-      - "traefik.enable=true"
-
-networks:
-  network:
-
-volumes:
-  db:
+      - traefik.enable=true
+      - traefik.http.services.my-app.loadbalancer.server.port=5433
