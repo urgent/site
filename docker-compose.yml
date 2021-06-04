@@ -3,13 +3,6 @@ services:
   traefik:
     image: traefik:v2.4
     container_name: traefik
-    command:
-      #- --log.level=DEBUG
-      - --providers.docker=true
-      - --entrypoints.web.address=:80
-    ports:
-      - 8080:8080
-      - 80:80
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
   graphql:
@@ -20,6 +13,3 @@ services:
       context: ./graphql
     env_file:
       - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.http.services.my-app.loadbalancer.server.port=5433

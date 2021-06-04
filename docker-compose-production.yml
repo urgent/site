@@ -2,14 +2,21 @@ version: "3"
 services:
   traefik:
     command:
+      #- --log.level=DEBUG
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
       - --certificatesresolvers.le.acme.email=urgent.programmer@gmail.com
       - --certificatesresolvers.le.acme.storage=/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
     ports:
       - 443:443
+      - 8080:8080
+      - 80:80
   graphql:
     labels:
+      - traefik.enable=true
+      - traefik.http.services.my-app.loadbalancer.server.port=5433
       - traefik.http.routers.my-app.rule=Host(`api.smooms.io`)
       - traefik.http.routers.my-app.tls.certresolver=le
       - traefik.http.routers.my-app.entrypoints=websecure

@@ -1,5 +1,20 @@
 version: "3"
 services:
+  traefik:
+    command:
+      #- --log.level=DEBUG
+      - --providers.docker=true
+      - --entrypoints.web.address=:80
+    ports:
+      - 8080:8080
+      - 80:80
+  graphql:
+    depends_on:
+      - db
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.my-app.loadbalancer.server.port=5433
+      - traefik.http.routers.my-app.rule=Host(`localhost`)
   db:
     container_name: smooms-db
     restart: always
@@ -12,11 +27,6 @@ services:
       - ./.env
     ports:
       - 5432:5432
-  graphql:
-    depends_on:
-      - db
-    labels:
-      - traefik.http.routers.my-app.rule=Host(`localhost`)
 
 volumes:
   db:
