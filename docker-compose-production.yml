@@ -10,6 +10,6 @@ services:
       - 443:443
   graphql:
     labels:
-      - traefik.http.routers.graphql.rule=Host(`api.smooms.io`)
+      - traefik.http.routers.my-app.rule=Host(`api.smooms.io`)
       - traefik.http.routers.my-app.tls.certresolver=le
       - traefik.http.routers.my-app.entrypoints=websecure

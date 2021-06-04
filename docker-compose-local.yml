@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     labels:
-      - traefik.http.routers.graphql.rule=Host(`localhost`)
+      - traefik.http.routers.my-app.rule=Host(`localhost`)
 
 volumes:
   db:
