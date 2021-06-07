@@ -52,3 +52,9 @@ amplify-build-config.json
 amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
+
+#docker build files
+#next build
+app/
+#traefik ssl cert
+letsencrypt/
