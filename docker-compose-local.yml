@@ -5,16 +5,25 @@ services:
       #- --log.level=DEBUG
       - --providers.docker=true
       - --entrypoints.web.address=:80
+      - --entrypoints.graphql.address=:5433
     ports:
       - 8080:8080
       - 80:80
+      - 5433:5433
   graphql:
     depends_on:
       - db
     labels:
       - traefik.enable=true
-      - traefik.http.services.my-app.loadbalancer.server.port=5433
-      - traefik.http.routers.my-app.rule=Host(`localhost`)
+      - traefik.http.services.graphql.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql.rule=Host(`localhost`)
+      - traefik.http.routers.graphql.entrypoints=graphql
+  nextjs:
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nextjs.loadbalancer.server.port=3000
+      - traefik.http.routers.nextjs.rule=Host(`localhost`)
+      - traefik.http.routers.nextjs.entrypoints=web
   db:
     container_name: smooms-db
     restart: always

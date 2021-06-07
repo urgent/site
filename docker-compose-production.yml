@@ -16,7 +16,14 @@ services:
   graphql:
     labels:
       - traefik.enable=true
-      - traefik.http.services.my-app.loadbalancer.server.port=5433
-      - traefik.http.routers.my-app.rule=Host(`api.smooms.io`)
-      - traefik.http.routers.my-app.tls.certresolver=le
-      - traefik.http.routers.my-app.entrypoints=websecure
+      - traefik.http.services.graphql.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql.rule=Host(`api.smooms.io`)
+      - traefik.http.routers.graphql.tls.certresolver=le
+      - traefik.http.routers.graphql.entrypoints=websecure
+  nextjs:
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nextjs.loadbalancer.server.port=3000
+      - traefik.http.routers.nextjs.rule=Host(`app.smooms.io`)
+      - traefik.http.routers.nextjs.tls.certresolver=le
+      - traefik.http.routers.nextjs.entrypoints=websecure

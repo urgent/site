@@ -3,7 +3,7 @@ const cors = require('cors')
 const { postgraphile } = require("postgraphile");
 
 const app = express()
-app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
+app.use(cors({ credentials: true, origin: process.env.CORS }))
 
 app.use(
     postgraphile(

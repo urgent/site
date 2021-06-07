@@ -13,7 +13,7 @@ export function createServerNetwork(token) {
         }
 
 
-        const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_URL_SERVER, {
             method: 'POST',
             credentials: 'include',
             headers: {

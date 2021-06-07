@@ -14,7 +14,7 @@ export function createClientNetwork() {
         'X-Hasura-Role': 'user'
       }
     }
-    const response = await fetch(process.env.NEXT_PUBLIC_API_URL, {
+    const response = await fetch(process.env.NEXT_PUBLIC_API_URL_CLIENT, {
       method: 'POST',
       credentials: 'include',
       headers: {
