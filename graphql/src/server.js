@@ -18,4 +18,11 @@ app.use(
     )
 );
 
+app.get('/graphql', function (req, res) {
+    // Cookies that have not been signed
+    console.log('Cookies: ', req.cookies)
+
+    return res;
+})
+
 app.listen(process.env.PORT || 3000);
