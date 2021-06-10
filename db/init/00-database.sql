@@ -2,20 +2,20 @@
 
 CREATE TABLE public.category (
     id SERIAL PRIMARY KEY,
-    user_id TEXT,
+    user_id INT NOT NULL,
     name TEXT,
     color TEXT
 );
 
 CREATE TABLE public.message (
     id SERIAL PRIMARY KEY,
-    user_id TEXT,
+    user_id INT NOT NULL,
     content TEXT
 );
 
 CREATE TABLE public.tag (
     id SERIAL PRIMARY KEY,
-    user_id TEXT,
+    user_id INT NOT NULL,
     name TEXT,
     category_id INTEGER NOT NULL CONSTRAINT tag_category_id_fkey REFERENCES public.category(id)
 );

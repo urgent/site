@@ -21,6 +21,9 @@ services:
       - traefik.http.routers.graphql.tls.certresolver=le
       - traefik.http.routers.graphql.entrypoints=websecure
   nextjs:
+    container_name: nextjs
+    restart: always
+    build: .
     labels:
       - traefik.enable=true
       - traefik.http.services.nextjs.loadbalancer.server.port=3000

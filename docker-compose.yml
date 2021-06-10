@@ -14,7 +14,3 @@ services:
       context: ./graphql
     env_file:
       - ./.env
-  nextjs:
-    container_name: nextjs
-    restart: always
-    build: .

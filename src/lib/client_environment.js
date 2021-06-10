@@ -6,20 +6,11 @@ import { getSession } from 'next-auth/client'
 export function createClientNetwork() {
 
   return Network.create(async (params, variables) => {
-    const session = await getSession()
-    let authHeaders = {}
-    if (session?.token) {
-      authHeaders = {
-        'Authorization': `Bearer ${session.token}`,
-        'X-Hasura-Role': 'user'
-      }
-    }
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL_CLIENT, {
       method: 'POST',
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        ...authHeaders
       },
       body: JSON.stringify({
         query: params.text,

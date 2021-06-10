@@ -95,7 +95,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
           input: {
             message: {
               content: editorText,
-              user_id: session?.id,
+              userId: session?.id,
             },
           },
           connections: [data.allMessages.__id]
