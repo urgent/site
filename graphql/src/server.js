@@ -17,7 +17,7 @@ app.use(
                 if (req.headers.cookie) {
                     const cookies = cookie.parse(req.headers.cookie);
                     return {
-                        'user.id': cookies['next-auth.session-token']
+                        'user.id': cookies[process.env.COOKIE_NAME]
                     }
                 }
                 return;
