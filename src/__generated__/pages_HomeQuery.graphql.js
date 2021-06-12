@@ -35,11 +35,13 @@ fragment SidebarFragment_categories on Query {
           edges {
             node {
               name
+              id
             }
           }
         }
         name
         color
+        id
       }
     }
   }
@@ -55,10 +57,12 @@ fragment TilesFragment_messages on Query {
             node {
               tagByTagId {
                 name
+                id
               }
             }
           }
         }
+        id
       }
     }
   }
@@ -73,8 +77,16 @@ var v0 = {
   "name": "name",
   "storageKey": null
 },
-v1 = [
-  (v0/*: any*/)
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v2 = [
+  (v0/*: any*/),
+  (v1/*: any*/)
 ];
 return {
   "fragment": {
@@ -150,7 +162,7 @@ return {
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
-                            "selections": (v1/*: any*/),
+                            "selections": (v2/*: any*/),
                             "storageKey": null
                           }
                         ],
@@ -166,7 +178,8 @@ return {
                     "kind": "ScalarField",
                     "name": "color",
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -238,7 +251,7 @@ return {
                                 "kind": "LinkedField",
                                 "name": "tagByTagId",
                                 "plural": false,
-                                "selections": (v1/*: any*/),
+                                "selections": (v2/*: any*/),
                                 "storageKey": null
                               }
                             ],
@@ -249,7 +262,8 @@ return {
                       }
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -274,12 +288,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "bfbdd658284d280725e51e0bbaeb273e",
+    "cacheID": "68137de173649e2aa2c3d46cef655047",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n            }\n          }\n        }\n        name\n        color\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n              }\n            }\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n              id\n            }\n          }\n        }\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

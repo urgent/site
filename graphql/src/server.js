@@ -2,9 +2,6 @@ const express = require('express')
 const cors = require('cors')
 const { postgraphile } = require("postgraphile");
 const cookie = require('cookie');
-const AddCookiePlugin = require('./add-cookie-plugin');
-
-console.log(AddCookiePlugin);
 
 const app = express()
 app.use(cors({ credentials: true, origin: process.env.CORS }))
@@ -14,10 +11,8 @@ app.use(
         "public",
         {
             watchPg: true,
-            graphiql: true,
-            enhanceGraphiql: true,
             classicIds: true,
-            appendPlugins: [AddCookiePlugin],
+            disableDefaultMutations: true,
             pgSettings: (req) => {
                 if (req.headers.cookie) {
                     const cookies = cookie.parse(req.headers.cookie);

@@ -1,0 +1,7 @@
+CREATE FUNCTION public.create_message(content text)
+RETURNS public.message
+AS $$
+  INSERT INTO public.message (user_id, content)
+    SELECT a.user_id, content FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;

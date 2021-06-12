@@ -10,12 +10,7 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type CreateMessageInput = {|
   clientMutationId?: ?string,
-  message: MessageInput,
-|};
-export type MessageInput = {|
-  id?: ?number,
-  userId?: ?string,
-  content?: ?string,
+  content: string,
 |};
 export type TilesInsertMessageMutationVariables = {|
   input: CreateMessageInput,
@@ -24,7 +19,7 @@ export type TilesInsertMessageMutationVariables = {|
 export type TilesInsertMessageMutationResponse = {|
   +createMessage: ?{|
     +message: ?{|
-      +id: number,
+      +id: string,
       +content: ?string,
     |}
   |}
