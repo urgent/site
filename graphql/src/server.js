@@ -22,7 +22,8 @@ app.use(
                     }
                 }
                 return;
-            }
+            },
+            appendPlugins: [require('./add-cookie-plugin')]
         }
     )
 );

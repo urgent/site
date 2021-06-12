@@ -1,6 +1,6 @@
 ALTER TABLE public.message ENABLE ROW LEVEL SECURITY;
 
-create policy insert_delete_if_author
+create policy insert_if_author
   on message
   for insert
   with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
