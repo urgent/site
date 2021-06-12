@@ -8,20 +8,34 @@ module.exports = makeExtendSchemaPlugin(build => {
 
   return {
     typeDefs: gql`
-      extend type Query {
+      
+      type CreateMessageInput {
+        Content: String
+      }
+
+      type CreateMessagePayload {
         userId: Int
+      }
+    
+
+
+      extend type Mutation {
+        createMessage(input: CreateMessageInput):CreateMessagePayload
       }
     `,
     resolvers: {
-      Query: {
-        async userId() {
-          const { rows } = await context.pgClient.query(
-            `current_setting('user.id', true)`, // e.g. "select * from users where id = $1"
-          );
-          console.log(rows)
-          return // current_setting('user.id', true)
+      Mutation: {
+        createMessage: {
+          userId: async (parentObject, args, context, info) => {
+            const { rows } = await context.pgClient.query(
+              `current_setting('user.id', true)`, // e.g. "select * from users where id = $1"
+            );
+            console.log(rows)
+            return 2;
+            // current_setting('user.id', true)
+          },
         },
       },
-    },
+    }
   }
 });
