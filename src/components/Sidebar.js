@@ -2,6 +2,12 @@ import Category, { AddCategory } from "../components/Category"
 import { Box } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 
+function display(visible, connectionId) {
+  if (visible) {
+    return <AddCategory connectionId={connectionId} />;
+  }
+}
+
 export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
   const data = useFragment(
     graphql`
@@ -32,7 +38,7 @@ export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
       gridRow="body"
     >
       {data.allCategories.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} tagFilter={tagFilter} tagClick={tagClick} />)}
-      <AddCategory edgeId={data.allCategories.__id} />
+      {display(edit, data.allCategories.__id)}
     </Box>
   )
 }

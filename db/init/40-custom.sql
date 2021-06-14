@@ -13,3 +13,11 @@ AS $$
     SELECT a.user_id, name, color FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_tag(name text, category Int)
+RETURNS public.category
+AS $$
+  INSERT INTO public.category (user_id, name, color)
+    SELECT a.user_id, name, color FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;

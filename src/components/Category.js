@@ -23,7 +23,7 @@ function display(visible) {
     }
 }
 
-export function AddCategory({ text, edgeId }) {
+export function AddCategory({ connectionId }) {
     const [nameText, setNameText] = useState('');
     const [colorText, setColorText] = useState('');
     const [isCategoryPending, insertCategory] = useMutation(InsertCategoryMutation);
@@ -32,21 +32,13 @@ export function AddCategory({ text, edgeId }) {
     const onSubmit = useCallback(
         event => {
             event.preventDefault();
-            console.log(nameText)
-            console.log({
-                input: {
-                    name: nameText,
-                    color: colorText
-                },
-                connections: [edgeId]
-            });
             insertCategory({
                 variables: {
                     input: {
                         name: nameText,
                         color: colorText
                     },
-                    connections: [edgeId]
+                    connections: [connectionId]
                 },
                 updater: store => { },
             });
@@ -61,6 +53,10 @@ export function AddCategory({ text, edgeId }) {
         <VStack paddingX={2}>
             <Input
                 size={["sm", "sm", "sm", "md", "md"]}
+                maxWidth={28}
+                borderRadius={8}
+                paddingX={2}
+                paddingY={1}
                 isFullWidth={false}
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Name"
@@ -68,6 +64,10 @@ export function AddCategory({ text, edgeId }) {
             />
             <Input
                 size={["sm", "sm", "sm", "md", "md"]}
+                maxWidth={28}
+                borderRadius={8}
+                paddingX={2}
+                paddingY={1}
                 isFullWidth={false}
                 onChange={(e) => setColorText(e.target.value)}
                 placeholder="Color"
