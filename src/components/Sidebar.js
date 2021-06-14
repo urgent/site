@@ -17,12 +17,14 @@ export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
                     edges {
                         node {
                           tagsByCategoryId {
+                            __id
                             edges {
                               node {
                                 name
                               }
                             }
                           }
+                          rowId,
                           name,
                           color
                         }

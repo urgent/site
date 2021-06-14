@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import Tag from "../components/Tag"
 import Toolbar from "./Toolbar"
+import { AddTag } from "./Tag"
 import { Grid, VStack, Box, Wrap, WrapItem, Button, Input } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
 import useMutation from './useMutation'
@@ -17,9 +18,9 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-function display(visible) {
+function display(visible, element) {
     if (visible) {
-        return <Toolbar />
+        return element
     }
 }
 
@@ -97,7 +98,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                 gridRow="toolbar"
                 gridColumn="content"
             >
-                {display(edit)}
+                {display(edit, <Toolbar />)}
             </Box>
             <Box
                 gridRow="toolbar"
@@ -138,6 +139,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                         </Tag>
                     </WrapItem>
                 ))}
+                {display(edit, <AddTag connectionId={category.tagsByCategoryId.__id} categoryId={category.rowId} />)}
             </Wrap>
         </Grid>
     )

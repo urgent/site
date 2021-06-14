@@ -10,7 +10,6 @@ app.use(
         process.env.DATABASE_URL,
         "public",
         {
-            watchPg: true,
             classicIds: true,
             disableDefaultMutations: true,
             pgSettings: (req) => {

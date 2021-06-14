@@ -17,12 +17,14 @@ export type SidebarFragment_categories = {|
     +edges: $ReadOnlyArray<{|
       +node: ?{|
         +tagsByCategoryId: {|
+          +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
               +name: ?string
             |}
-          |}>
+          |}>,
         |},
+        +rowId: number,
         +name: ?string,
         +color: ?string,
       |}
@@ -46,6 +48,18 @@ var v0 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v1 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
 };
 return {
   "argumentDefinitions": [],
@@ -107,8 +121,16 @@ return {
                         }
                       ],
                       "storageKey": null
-                    }
+                    },
+                    (v1/*: any*/)
                   ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "rowId",
                   "storageKey": null
                 },
                 (v0/*: any*/),
@@ -125,18 +147,7 @@ return {
           ],
           "storageKey": null
         },
-        {
-          "kind": "ClientExtension",
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "__id",
-              "storageKey": null
-            }
-          ]
-        }
+        (v1/*: any*/)
       ],
       "storageKey": null
     }
@@ -146,6 +157,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '17e027af5f3636a9f677309b295989a7';
+(node/*: any*/).hash = '35bddffa1db9d3c30ef82ab022d7fcfe';
 
 module.exports = node;
