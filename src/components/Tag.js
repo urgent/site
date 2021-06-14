@@ -1,5 +1,15 @@
 import { Button, Box } from "@chakra-ui/react"
 
+const InsertTagMutation = graphql`
+  mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
+    createTag(input: $input) {
+      tag @appendNode(connections: $connections, edgeTypeName: "TagsEdge") {
+        name
+      }
+    }
+  }
+`;
+
 function style(color, isActive) {
   if (isActive) {
     return {
