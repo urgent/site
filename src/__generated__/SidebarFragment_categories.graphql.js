@@ -13,6 +13,7 @@ declare export opaque type SidebarFragment_categories$ref: FragmentReference;
 declare export opaque type SidebarFragment_categories$fragmentType: SidebarFragment_categories$ref;
 export type SidebarFragment_categories = {|
   +allCategories: ?{|
+    +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
         +tagsByCategoryId: {|
@@ -25,7 +26,7 @@ export type SidebarFragment_categories = {|
         +name: ?string,
         +color: ?string,
       |}
-    |}>
+    |}>,
   |},
   +$refType: SidebarFragment_categories$ref,
 |};
@@ -123,6 +124,18 @@ return {
             }
           ],
           "storageKey": null
+        },
+        {
+          "kind": "ClientExtension",
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "__id",
+              "storageKey": null
+            }
+          ]
         }
       ],
       "storageKey": null
@@ -133,6 +146,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'c45d93ae1c183bc2d8e8765ca1fceeb7';
+(node/*: any*/).hash = '17e027af5f3636a9f677309b295989a7';
 
 module.exports = node;

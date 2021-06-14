@@ -1,12 +1,81 @@
+import React, { useState, useCallback } from 'react'
 import Tag from "../components/Tag"
 import Toolbar from "./Toolbar"
-import { Grid, HStack, Box, Wrap, WrapItem } from "@chakra-ui/react"
+import { Grid, VStack, Box, Wrap, WrapItem, Button, Input } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
+import useMutation from './useMutation'
+
+const InsertCategoryMutation = graphql`
+  mutation CategoryInsertCategoryMutation($input:CreateCategoryInput!, $connections: [ID!]!) {
+    createCategory(input: $input) {
+      category @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
+        id
+        name
+        color
+      }
+    }
+  }
+`;
 
 function display(visible) {
     if (visible) {
         return <Toolbar />
     }
+}
+
+export function AddCategory({ text, edgeId }) {
+    const [nameText, setNameText] = useState('');
+    const [colorText, setColorText] = useState('');
+    const [isCategoryPending, insertCategory] = useMutation(InsertCategoryMutation);
+
+    // Editor submit callback
+    const onSubmit = useCallback(
+        event => {
+            event.preventDefault();
+            console.log(nameText)
+            console.log({
+                input: {
+                    name: nameText,
+                    color: colorText
+                },
+                connections: [edgeId]
+            });
+            insertCategory({
+                variables: {
+                    input: {
+                        name: nameText,
+                        color: colorText
+                    },
+                    connections: [edgeId]
+                },
+                updater: store => { },
+            });
+            // Reset form text
+            setNameText('');
+            setColorText('');
+        },
+        [nameText, setNameText, colorText, setColorText, insertCategory],
+    );
+
+    return (
+        <VStack paddingX={2}>
+            <Input
+                size={["sm", "sm", "sm", "md", "md"]}
+                isFullWidth={false}
+                onChange={(e) => setNameText(e.target.value)}
+                placeholder="Name"
+                value={nameText}
+            />
+            <Input
+                size={["sm", "sm", "sm", "md", "md"]}
+                isFullWidth={false}
+                onChange={(e) => setColorText(e.target.value)}
+                placeholder="Color"
+                value={colorText}
+            />
+            <Button onClick={(e) => onSubmit(e)}>Add</Button>
+        </VStack>
+    )
 }
 
 export default function Category({ edit, category, tagFilter, tagClick }) {
@@ -57,7 +126,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                 justify="center"
                 spacing={4}
             >
-                {category.tagsByCategoryId.edges.map((tag, index) => (
+                {category.tagsByCategoryId?.edges.map((tag, index) => (
                     <WrapItem key={index}>
                         <Tag
                             click={tagClick}

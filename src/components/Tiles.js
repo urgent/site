@@ -17,6 +17,28 @@ const InsertMessageMutation = graphql`
   }
 `;
 
+const TilesFragment = graphql`
+          fragment TilesFragment_messages on Query {
+            allMessages {
+              __id
+              edges {
+                node {
+                  content
+                  messageTagsByMessageId {
+                    edges {
+                      node {
+                        tagByTagId {
+                          name
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+
 /**
  * Format input as nodes consistent with Relay query
  * 
@@ -61,29 +83,7 @@ export function filter(messages, tagFilter) {
 export default function Tiles({ edit, messages, userId, tagFilter }) {
   const [editorText, setEditorText] = useState('');
   const [session] = useSession()
-  const data = useFragment(
-    graphql`
-          fragment TilesFragment_messages on Query {
-            allMessages {
-              __id
-              edges {
-                node {
-                  content
-                  messageTagsByMessageId {
-                    edges {
-                      node {
-                        tagByTagId {
-                          name
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `, messages
-  );
+  const data = useFragment(TilesFragment, messages);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
 
   // Editor submit callback

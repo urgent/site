@@ -87,7 +87,19 @@ v1 = {
 v2 = [
   (v0/*: any*/),
   (v1/*: any*/)
-];
+],
+v3 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
+};
 return {
   "fragment": {
     "argumentDefinitions": [],
@@ -185,7 +197,8 @@ return {
               }
             ],
             "storageKey": null
-          }
+          },
+          (v3/*: any*/)
         ],
         "storageKey": null
       },
@@ -270,18 +283,7 @@ return {
             ],
             "storageKey": null
           },
-          {
-            "kind": "ClientExtension",
-            "selections": [
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "__id",
-                "storageKey": null
-              }
-            ]
-          }
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
