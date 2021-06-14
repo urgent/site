@@ -139,8 +139,8 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                         </Tag>
                     </WrapItem>
                 ))}
-                {display(edit, <AddTag connectionId={category.tagsByCategoryId.__id} categoryId={category.rowId} />)}
             </Wrap>
+            {display(edit, <AddTag connectionId={category.tagsByCategoryId.__id} categoryId={category.rowId} />)}
         </Grid>
     )
 }
