@@ -9,6 +9,9 @@ const InsertMessageTagMutation = graphql`
       messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
         tagByTagId {
           name
+          categoryByCategoryId {
+            color
+          }
         }
       }
     }

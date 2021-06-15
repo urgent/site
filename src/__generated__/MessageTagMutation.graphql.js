@@ -21,7 +21,10 @@ export type MessageTagMutationResponse = {|
   +createMessageTag: ?{|
     +messageTag: ?{|
       +tagByTagId: ?{|
-        +name: ?string
+        +name: ?string,
+        +categoryByCategoryId: ?{|
+          +color: ?string
+        |},
       |}
     |}
   |}
@@ -41,6 +44,10 @@ mutation MessageTagMutation(
     messageTag {
       tagByTagId {
         name
+        categoryByCategoryId {
+          color
+          id
+        }
         id
       }
     }
@@ -71,6 +78,20 @@ v3 = {
   "args": null,
   "kind": "ScalarField",
   "name": "name",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
   "storageKey": null
 };
 return {
@@ -107,7 +128,19 @@ return {
                 "name": "tagByTagId",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/)
+                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "Category",
+                    "kind": "LinkedField",
+                    "name": "categoryByCategoryId",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
                 ],
                 "storageKey": null
               }
@@ -158,10 +191,17 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
+                    "concreteType": "Category",
+                    "kind": "LinkedField",
+                    "name": "categoryByCategoryId",
+                    "plural": false,
+                    "selections": [
+                      (v4/*: any*/),
+                      (v5/*: any*/)
+                    ],
                     "storageKey": null
-                  }
+                  },
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -195,16 +235,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "51cb77fd507d96434cae0d212970e364",
+    "cacheID": "baac03fe6364f41125c53174206211cd",
     "id": null,
     "metadata": {},
     "name": "MessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation MessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation MessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '53b2f282eced694c6b58aede50e12abd';
+(node/*: any*/).hash = '4798c9825e2a3f167f3eb0aa16298172';
 
 module.exports = node;
