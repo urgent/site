@@ -23,13 +23,18 @@ const TilesFragment = graphql`
               __id
               edges {
                 node {
+                  rowId
                   content
                   messageTagsByMessageId {
                     __id
                     edges {
                       node {
                         tagByTagId {
+                          rowId
                           name
+                          categoryByCategoryId {
+                            color
+                          }
                         }
                       }
                     }
@@ -59,20 +64,20 @@ export function filter(messages, tagFilter, edit) {
     // no tag filter or in edit mode, display all
     return messages
   } else {
-    const nodes = messages.message_connection?.edges.filter((edge) => {
-      if (!Array.isArray(edge.node.message_tags)) {
+    const nodes = messages.allMessages?.edges.filter((edge) => {
+      if (!Array.isArray(edge.node.messageTagsByMessageId)) {
         // no tags, can't match tagFilter
         return false;
       }
-      else if (edge.node.message_tags === []) {
+      else if (edge.node.messageTagsByMessageId === []) {
         // empty tags, can't match tagFilter
         return false;
       }
       else {
         // is one tag in filter?
-        const tags = edge.node.message_tags.map(relation => relation.tag.name)
-        return tagFilter.every((tag) => {
-          const comparison = tags.includes(tag)
+        const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId.rowId)
+        return tagFilter.every((filter) => {
+          const comparison = tags.includes(filter)
           return comparison
         })
       }
@@ -86,7 +91,6 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
   const [session] = useSession()
   const data = useFragment(TilesFragment, messages);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
-
   // Editor submit callback
   const onSubmit = useCallback(
     event => {
@@ -118,7 +122,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags} tagFilter={tagFilter}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.messageTagsByMessageId} tagFilter={tagFilter} id={edge.node.rowId}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
         </Editor>

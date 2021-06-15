@@ -16,13 +16,18 @@ export type TilesFragment_messages = {|
     +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
+        +rowId: number,
         +content: ?string,
         +messageTagsByMessageId: {|
           +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
               +tagByTagId: ?{|
-                +name: ?string
+                +rowId: number,
+                +name: ?string,
+                +categoryByCategoryId: ?{|
+                  +color: ?string
+                |},
               |}
             |}
           |}>,
@@ -43,6 +48,13 @@ export type TilesFragment_messages$key = {
 
 const node/*: ReaderFragment*/ = (function(){
 var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v1 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -84,6 +96,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -123,11 +136,30 @@ return {
                               "name": "tagByTagId",
                               "plural": false,
                               "selections": [
+                                (v0/*: any*/),
                                 {
                                   "alias": null,
                                   "args": null,
                                   "kind": "ScalarField",
                                   "name": "name",
+                                  "storageKey": null
+                                },
+                                {
+                                  "alias": null,
+                                  "args": null,
+                                  "concreteType": "Category",
+                                  "kind": "LinkedField",
+                                  "name": "categoryByCategoryId",
+                                  "plural": false,
+                                  "selections": [
+                                    {
+                                      "alias": null,
+                                      "args": null,
+                                      "kind": "ScalarField",
+                                      "name": "color",
+                                      "storageKey": null
+                                    }
+                                  ],
                                   "storageKey": null
                                 }
                               ],
@@ -139,7 +171,7 @@ return {
                       ],
                       "storageKey": null
                     },
-                    (v0/*: any*/)
+                    (v1/*: any*/)
                   ],
                   "storageKey": null
                 }
@@ -149,7 +181,7 @@ return {
           ],
           "storageKey": null
         },
-        (v0/*: any*/)
+        (v1/*: any*/)
       ],
       "storageKey": null
     }
@@ -159,6 +191,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'e1d2a95962ed14f07d0c9f6c84ebe771';
+(node/*: any*/).hash = '66c41a786d11324f4c4a4996ddb326c8';
 
 module.exports = node;

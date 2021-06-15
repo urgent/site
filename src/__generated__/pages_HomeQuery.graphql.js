@@ -34,6 +34,7 @@ fragment SidebarFragment_categories on Query {
         tagsByCategoryId {
           edges {
             node {
+              rowId
               name
               id
             }
@@ -52,12 +53,18 @@ fragment TilesFragment_messages on Query {
   allMessages {
     edges {
       node {
+        rowId
         content
         messageTagsByMessageId {
           edges {
             node {
               tagByTagId {
+                rowId
                 name
+                categoryByCategoryId {
+                  color
+                  id
+                }
                 id
               }
             }
@@ -75,20 +82,23 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "rowId",
   "storageKey": null
 },
 v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v2 = [
-  (v0/*: any*/),
-  (v1/*: any*/)
-],
 v3 = {
   "kind": "ClientExtension",
   "selections": [
@@ -100,6 +110,13 @@ v3 = {
       "storageKey": null
     }
   ]
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -175,7 +192,11 @@ return {
                             "kind": "LinkedField",
                             "name": "node",
                             "plural": false,
-                            "selections": (v2/*: any*/),
+                            "selections": [
+                              (v0/*: any*/),
+                              (v1/*: any*/),
+                              (v2/*: any*/)
+                            ],
                             "storageKey": null
                           }
                         ],
@@ -185,22 +206,10 @@ return {
                     ],
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "rowId",
-                    "storageKey": null
-                  },
                   (v0/*: any*/),
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "color",
-                    "storageKey": null
-                  },
-                  (v1/*: any*/)
+                  (v1/*: any*/),
+                  (v4/*: any*/),
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -235,6 +244,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v0/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -273,7 +283,24 @@ return {
                                 "kind": "LinkedField",
                                 "name": "tagByTagId",
                                 "plural": false,
-                                "selections": (v2/*: any*/),
+                                "selections": [
+                                  (v0/*: any*/),
+                                  (v1/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Category",
+                                    "kind": "LinkedField",
+                                    "name": "categoryByCategoryId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v4/*: any*/),
+                                      (v2/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  (v2/*: any*/)
+                                ],
                                 "storageKey": null
                               }
                             ],
@@ -286,7 +313,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v1/*: any*/)
+                  (v2/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -300,12 +327,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "09dc2c5655e5beb76e6417715eaeb72b",
+    "cacheID": "5bd5541985e1e502bf69921ab167f037",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                name\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

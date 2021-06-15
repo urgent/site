@@ -33,11 +33,11 @@ function Home({ preloadedQuery }) {
       }} />
       <Sidebar
         tagFilter={tagFilter}
-        tagClick={(name, tagFilter) => {
-          if (tagFilter.includes(name)) {
-            setTagFilter(tagFilter.filter(active => active !== name))
+        tagClick={(id, tagFilter) => {
+          if (tagFilter.includes(id)) {
+            setTagFilter(tagFilter.filter(active => active !== id))
           } else {
-            setTagFilter([...tagFilter, name])
+            setTagFilter([...tagFilter, id])
           }
         }}
         edit={mode === 'edit'}

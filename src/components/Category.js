@@ -58,7 +58,6 @@ export function AddCategory({ connectionId }) {
                 borderRadius={8}
                 paddingX={2}
                 paddingY={1}
-                isFullWidth={false}
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Name"
                 value={nameText}
@@ -69,7 +68,6 @@ export function AddCategory({ connectionId }) {
                 borderRadius={8}
                 paddingX={2}
                 paddingY={1}
-                isFullWidth={false}
                 onChange={(e) => setColorText(e.target.value)}
                 placeholder="Color"
                 value={colorText}
@@ -133,6 +131,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                             <Tag
                                 click={tagClick}
                                 name={edge.node.name}
+                                id={edge.node.rowId}
                                 tagFilter={tagFilter}
                                 color={category.color}
                             >

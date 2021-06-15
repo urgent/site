@@ -20,6 +20,7 @@ export default function Sidebar({ edit, categories, tagFilter, tagClick }) {
                             __id
                             edges {
                               node {
+                                rowId
                                 name
                               }
                             }

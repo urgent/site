@@ -43,7 +43,6 @@ export function AddTag({ connectionId, categoryId }) {
       borderRadius={8}
       paddingX={2}
       paddingY={1}
-      isFullWidth={false}
       onChange={(e) => setName(e.target.value)}
       placeholder="Tag Name"
       value={name}
@@ -81,7 +80,7 @@ function style(color, isActive) {
   }
 }
 
-export default function Tag({ click, name, tagFilter, color, children }) {
+export default function Tag({ click, name, id, tagFilter, color, children }) {
   const isActive = tagFilter.includes(name);
   const styles = style(color, isActive)
   return (
@@ -91,7 +90,7 @@ export default function Tag({ click, name, tagFilter, color, children }) {
       minWidth="inherit"
       height="inherit"
       border="2px"
-      onClick={() => click(name, tagFilter)}
+      onClick={() => click(id, tagFilter)}
       isActive={isActive}
       {...styles}
     >

@@ -26,7 +26,7 @@ export function AddTagToMessage({ messageId, tagId, connectionId }) {
         variables: {
           input: {
             messageId,
-            tagId
+            tagId: tagId[0]
           },
           connections: [connectionId]
         },
@@ -47,7 +47,7 @@ function display(visible, element) {
 
 function list(tags) {
   if (tags) {
-    return tags.map((relation, index) => <Badge key={index} color="white" mr={1} bg={`#${relation.tag.category.color}`}>{relation.tag.name}</Badge>)
+    return tags.edges.map((edge, index) => <Badge key={index} color="white" mr={1} bg={`#${edge.node.tagByTagId.categoryByCategoryId.color}`}>{edge.node.tagByTagId.name}</Badge>)
   }
 }
 
