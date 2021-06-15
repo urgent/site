@@ -127,18 +127,20 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                 justify="center"
                 spacing={4}
             >
-                {category.tagsByCategoryId?.edges.map((tag, index) => (
-                    <WrapItem key={index}>
-                        <Tag
-                            click={tagClick}
-                            name={tag.name}
-                            tagFilter={tagFilter}
-                            color={category.color}
-                        >
-                            {tag.name}
-                        </Tag>
-                    </WrapItem>
-                ))}
+                {category.tagsByCategoryId?.edges.map((edge, index) => {
+                    return (
+                        <WrapItem key={index}>
+                            <Tag
+                                click={tagClick}
+                                name={edge.node.name}
+                                tagFilter={tagFilter}
+                                color={category.color}
+                            >
+                                {edge.node.name}
+                            </Tag>
+                        </WrapItem>
+                    )
+                })}
             </Wrap>
             {display(edit, <AddTag connectionId={category.tagsByCategoryId.__id} categoryId={category.rowId} />)}
         </Grid>

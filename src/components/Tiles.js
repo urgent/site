@@ -54,9 +54,9 @@ export function format(nodes) {
   }
 }
 
-export function filter(messages, tagFilter) {
-  if (tagFilter.length === 0) {
-    // no tag filter, display all
+export function filter(messages, tagFilter, edit) {
+  if (tagFilter.length === 0 || edit) {
+    // no tag filter or in edit mode, display all
     return messages
   } else {
     const nodes = messages.message_connection?.edges.filter((edge) => {
@@ -118,7 +118,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags} tagFilter={tagFilter}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags} tagFilter={tagFilter}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
         </Editor>
