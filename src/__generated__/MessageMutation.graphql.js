@@ -8,37 +8,41 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type CreateTagInput = {|
+export type CreateMessageTagInput = {|
   clientMutationId?: ?string,
-  name: string,
-  categoryId: number,
+  messageId: number,
+  tagId: number,
 |};
-export type TagInsertTagMutationVariables = {|
-  input: CreateTagInput,
+export type MessageMutationVariables = {|
+  input: CreateMessageTagInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type TagInsertTagMutationResponse = {|
-  +createTag: ?{|
-    +tag: ?{|
-      +name: ?string
+export type MessageMutationResponse = {|
+  +createMessageTag: ?{|
+    +messageTag: ?{|
+      +tagByTagId: ?{|
+        +name: ?string
+      |}
     |}
   |}
 |};
-export type TagInsertTagMutation = {|
-  variables: TagInsertTagMutationVariables,
-  response: TagInsertTagMutationResponse,
+export type MessageMutation = {|
+  variables: MessageMutationVariables,
+  response: MessageMutationResponse,
 |};
 */
 
 
 /*
-mutation TagInsertTagMutation(
-  $input: CreateTagInput!
+mutation MessageMutation(
+  $input: CreateMessageTagInput!
 ) {
-  createTag(input: $input) {
-    tag {
-      name
-      id
+  createMessageTag(input: $input) {
+    messageTag {
+      tagByTagId {
+        name
+        id
+      }
     }
   }
 }
@@ -77,25 +81,36 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TagInsertTagMutation",
+    "name": "MessageMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "CreateTagPayload",
+        "concreteType": "CreateMessageTagPayload",
         "kind": "LinkedField",
-        "name": "createTag",
+        "name": "createMessageTag",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Tag",
+            "concreteType": "MessageTag",
             "kind": "LinkedField",
-            "name": "tag",
+            "name": "messageTag",
             "plural": false,
             "selections": [
-              (v3/*: any*/)
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Tag",
+                "kind": "LinkedField",
+                "name": "tagByTagId",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/)
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           }
@@ -113,30 +128,41 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "TagInsertTagMutation",
+    "name": "MessageMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "CreateTagPayload",
+        "concreteType": "CreateMessageTagPayload",
         "kind": "LinkedField",
-        "name": "createTag",
+        "name": "createMessageTag",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Tag",
+            "concreteType": "MessageTag",
             "kind": "LinkedField",
-            "name": "tag",
+            "name": "messageTag",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "id",
+                "concreteType": "Tag",
+                "kind": "LinkedField",
+                "name": "tagByTagId",
+                "plural": false,
+                "selections": [
+                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "id",
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -149,7 +175,7 @@ return {
             "handle": "appendNode",
             "key": "",
             "kind": "LinkedHandle",
-            "name": "tag",
+            "name": "messageTag",
             "handleArgs": [
               {
                 "kind": "Variable",
@@ -159,7 +185,7 @@ return {
               {
                 "kind": "Literal",
                 "name": "edgeTypeName",
-                "value": "TagsEdge"
+                "value": "MessageTagsEdge"
               }
             ]
           }
@@ -169,16 +195,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "85744b6d3882739d9956eb1b7ae11c93",
+    "cacheID": "498e8194df19bd72363c337f710ddb4c",
     "id": null,
     "metadata": {},
-    "name": "TagInsertTagMutation",
+    "name": "MessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TagInsertTagMutation(\n  $input: CreateTagInput!\n) {\n  createTag(input: $input) {\n    tag {\n      name\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'a0d546ffcedd9c63f35867a496cc1f5f';
+(node/*: any*/).hash = '56c68f4e1d728b184b6ab53de120cf16';
 
 module.exports = node;

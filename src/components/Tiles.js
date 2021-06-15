@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react";
-import Message from "./Messsage"
+import Message from "./Message"
 import { Editor } from './Editor';
 import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';

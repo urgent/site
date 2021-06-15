@@ -1,6 +1,19 @@
 import React from "react";
 import Toolbar from "./Toolbar"
 import { Grid, Box, Badge } from "@chakra-ui/react"
+import useMutation from './useMutation'
+
+const MessageMutation = graphql`
+  mutation MessageMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
+    createMessageTag(input: $input) {
+      messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
+        tagByTagId {
+          name
+        }
+      }
+    }
+  }
+`;
 
 function display(visible) {
   if (visible) {
@@ -15,7 +28,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Messsage({ tags, edit, gridColumn, gridRow, children }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
