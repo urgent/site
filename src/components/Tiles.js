@@ -58,7 +58,7 @@ export function filter(messages, tagFilter) {
     // no tag filter, display all
     return messages
   } else {
-    const nodes = messages.message_connection.edges.filter((edge) => {
+    const nodes = messages.message_connection?.edges.filter((edge) => {
       if (!Array.isArray(edge.node.message_tags)) {
         // no tags, can't match tagFilter
         return false;
@@ -117,7 +117,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter).allMessages.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
         </Editor>
