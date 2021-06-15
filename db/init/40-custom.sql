@@ -21,3 +21,11 @@ AS $$
     SELECT a.user_id, name, category_id FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_message_tag(message_id Int, tag_id Int)
+RETURNS public.message_tag
+AS $$
+  INSERT INTO public.message_tag(message_id, tag_id)
+    VALUES(message_id, tag_id)
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
