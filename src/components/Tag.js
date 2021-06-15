@@ -81,7 +81,7 @@ function style(color, isActive) {
 }
 
 export default function Tag({ click, name, id, tagFilter, color, children }) {
-  const isActive = tagFilter.includes(name);
+  const isActive = tagFilter.includes(id);
   const styles = style(color, isActive)
   return (
     <Button

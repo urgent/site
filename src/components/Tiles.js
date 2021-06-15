@@ -53,7 +53,7 @@ const TilesFragment = graphql`
  */
 export function format(nodes) {
   return {
-    "message_connection": {
+    "allMessages": {
       "edges": nodes
     }
   }
@@ -65,11 +65,11 @@ export function filter(messages, tagFilter, edit) {
     return messages
   } else {
     const nodes = messages.allMessages?.edges.filter((edge) => {
-      if (!Array.isArray(edge.node.messageTagsByMessageId)) {
+      if (!Array.isArray(edge.node.messageTagsByMessageId.edges)) {
         // no tags, can't match tagFilter
         return false;
       }
-      else if (edge.node.messageTagsByMessageId === []) {
+      else if (edge.node.messageTagsByMessageId.edges === []) {
         // empty tags, can't match tagFilter
         return false;
       }
@@ -82,6 +82,8 @@ export function filter(messages, tagFilter, edit) {
         })
       }
     })
+
+    // so filtered data has same structure as unfiltered data
     return format(nodes)
   }
 }
