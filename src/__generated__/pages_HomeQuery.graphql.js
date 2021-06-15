@@ -281,7 +281,8 @@ return {
                           }
                         ],
                         "storageKey": null
-                      }
+                      },
+                      (v3/*: any*/)
                     ],
                     "storageKey": null
                   },

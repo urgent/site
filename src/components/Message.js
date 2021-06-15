@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Toolbar from "./Toolbar"
-import { Grid, Box, Badge } from "@chakra-ui/react"
+import { Grid, Box, Badge, Button } from "@chakra-ui/react"
 import useMutation from './useMutation'
 
-const MessageTagMutation = graphql`
+const InsertMessageTagMutation = graphql`
   mutation MessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
     createMessageTag(input: $input) {
       messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
@@ -15,9 +15,33 @@ const MessageTagMutation = graphql`
   }
 `;
 
-function display(visible) {
+export function AddTagToMessage({ messageId, tagId, connectionId }) {
+  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
+
+  // Editor submit callback
+  const onSubmit = useCallback(
+    event => {
+      event.preventDefault();
+      insertMessageTag({
+        variables: {
+          input: {
+            messageId,
+            tagId
+          },
+          connections: [connectionId]
+        },
+        updater: store => { },
+      });
+    },
+    [messageId, tagId, connectionId],
+  );
+
+  return <Button onClick={onSubmit}>+</Button>;
+}
+
+function display(visible, element) {
   if (visible) {
-    return <Toolbar />
+    return element
   }
 }
 
@@ -28,7 +52,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Message({ tags, edit, gridColumn, gridRow, children }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children, id, tagFilter }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -43,7 +67,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children }) {
         gridRow="menu"
         gridColumn="menu"
       >
-        {display(edit)}
+        {display(edit, <Toolbar />)}
       </Box>
       <Box
         gridRow="body"
@@ -62,6 +86,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children }) {
         pb={2}
       >
         {list(tags)}
+        {display(edit, <AddTagToMessage messageId={id} tagId={tagFilter} connectionId={tags?.__id} />)}
       </Box>
     </Grid>
   );

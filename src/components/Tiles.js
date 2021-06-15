@@ -25,6 +25,7 @@ const TilesFragment = graphql`
                 node {
                   content
                   messageTagsByMessageId {
+                    __id
                     edges {
                       node {
                         tagByTagId {
@@ -117,7 +118,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.message_tags} tagFilter={tagFilter}>{edge.node.content}</Message>)}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
         </Editor>

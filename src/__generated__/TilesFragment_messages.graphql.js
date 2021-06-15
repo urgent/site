@@ -18,13 +18,14 @@ export type TilesFragment_messages = {|
       +node: ?{|
         +content: ?string,
         +messageTagsByMessageId: {|
+          +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
               +tagByTagId: ?{|
                 +name: ?string
               |}
             |}
-          |}>
+          |}>,
         |},
       |}
     |}>,
@@ -40,7 +41,20 @@ export type TilesFragment_messages$key = {
 */
 
 
-const node/*: ReaderFragment*/ = {
+const node/*: ReaderFragment*/ = (function(){
+var v0 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -124,7 +138,8 @@ const node/*: ReaderFragment*/ = {
                         }
                       ],
                       "storageKey": null
-                    }
+                    },
+                    (v0/*: any*/)
                   ],
                   "storageKey": null
                 }
@@ -134,18 +149,7 @@ const node/*: ReaderFragment*/ = {
           ],
           "storageKey": null
         },
-        {
-          "kind": "ClientExtension",
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "__id",
-              "storageKey": null
-            }
-          ]
-        }
+        (v0/*: any*/)
       ],
       "storageKey": null
     }
@@ -153,7 +157,8 @@ const node/*: ReaderFragment*/ = {
   "type": "Query",
   "abstractKey": null
 };
+})();
 // prettier-ignore
-(node/*: any*/).hash = '258095c3e0dc1b818721e0f2ddaab802';
+(node/*: any*/).hash = 'e1d2a95962ed14f07d0c9f6c84ebe771';
 
 module.exports = node;
