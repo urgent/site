@@ -13,11 +13,11 @@ export type CreateMessageTagInput = {|
   messageId: number,
   tagId: number,
 |};
-export type MessageMutationVariables = {|
+export type MessageTagMutationVariables = {|
   input: CreateMessageTagInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type MessageMutationResponse = {|
+export type MessageTagMutationResponse = {|
   +createMessageTag: ?{|
     +messageTag: ?{|
       +tagByTagId: ?{|
@@ -26,15 +26,15 @@ export type MessageMutationResponse = {|
     |}
   |}
 |};
-export type MessageMutation = {|
-  variables: MessageMutationVariables,
-  response: MessageMutationResponse,
+export type MessageTagMutation = {|
+  variables: MessageTagMutationVariables,
+  response: MessageTagMutationResponse,
 |};
 */
 
 
 /*
-mutation MessageMutation(
+mutation MessageTagMutation(
   $input: CreateMessageTagInput!
 ) {
   createMessageTag(input: $input) {
@@ -81,7 +81,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "MessageMutation",
+    "name": "MessageTagMutation",
     "selections": [
       {
         "alias": null,
@@ -128,7 +128,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "MessageMutation",
+    "name": "MessageTagMutation",
     "selections": [
       {
         "alias": null,
@@ -195,16 +195,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "498e8194df19bd72363c337f710ddb4c",
+    "cacheID": "51cb77fd507d96434cae0d212970e364",
     "id": null,
     "metadata": {},
-    "name": "MessageMutation",
+    "name": "MessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation MessageMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation MessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '56c68f4e1d728b184b6ab53de120cf16';
+(node/*: any*/).hash = '53b2f282eced694c6b58aede50e12abd';
 
 module.exports = node;

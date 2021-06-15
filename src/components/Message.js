@@ -3,8 +3,8 @@ import Toolbar from "./Toolbar"
 import { Grid, Box, Badge } from "@chakra-ui/react"
 import useMutation from './useMutation'
 
-const MessageMutation = graphql`
-  mutation MessageMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
+const MessageTagMutation = graphql`
+  mutation MessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
     createMessageTag(input: $input) {
       messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
         tagByTagId {
