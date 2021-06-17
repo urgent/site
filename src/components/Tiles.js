@@ -88,7 +88,7 @@ export function filter(messages, tagFilter, edit) {
   }
 }
 
-export default function Tiles({ edit, messages, userId, tagFilter }) {
+export default function Tiles({ edit, messages, tagFilter, setFocusedMessage }) {
   const [editorText, setEditorText] = useState('');
   const [session] = useSession()
   const data = useFragment(TilesFragment, messages);
@@ -109,7 +109,7 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       // Reset the comment text
       setEditorText('');
     },
-    [editorText, setEditorText, userId, tagFilter, insertMessage],
+    [editorText, setEditorText, insertMessage],
   );
 
   return (
@@ -124,7 +124,18 @@ export default function Tiles({ edit, messages, userId, tagFilter }) {
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => <Message key={index} edit={edit} tags={edge.node.messageTagsByMessageId} tagFilter={tagFilter} id={edge.node.rowId}>{edge.node.content}</Message>)}
+      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => (
+        <Message
+          key={index}
+          edit={edit}
+          tags={edge.node.messageTagsByMessageId}
+          tagFilter={tagFilter}
+          id={edge.node.rowId}
+          setFocusedMessage={setFocusedMessage}
+        >
+          {edge.node.content}
+        </Message>
+      ))}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
         </Editor>

@@ -1,45 +1,10 @@
 import React, { useCallback } from "react";
 import Toolbar from "./Toolbar"
 import { Grid, Box, Badge, Button } from "@chakra-ui/react"
-import useMutation from './useMutation'
 
-const InsertMessageTagMutation = graphql`
-  mutation MessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
-    createMessageTag(input: $input) {
-      messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
-        tagByTagId {
-          name
-          categoryByCategoryId {
-            color
-          }
-        }
-      }
-    }
-  }
-`;
 
-export function AddTagToMessage({ messageId, tagId, connectionId }) {
-  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
-
-  // Editor submit callback
-  const onSubmit = useCallback(
-    event => {
-      event.preventDefault();
-      insertMessageTag({
-        variables: {
-          input: {
-            messageId,
-            tagId: tagId[0]
-          },
-          connections: [connectionId]
-        },
-        updater: store => { },
-      });
-    },
-    [messageId, tagId, connectionId],
-  );
-
-  return <Button onClick={onSubmit}>+</Button>;
+export function AddTagToMessage({ click }) {
+  return <Button onClick={click}>+</Button>;
 }
 
 function display(visible, element) {
@@ -55,7 +20,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Message({ tags, edit, gridColumn, gridRow, children, id, tagFilter }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children, id, tagFilter, setFocusedMessage }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -89,7 +54,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         pb={2}
       >
         {list(tags)}
-        {display(edit, <AddTagToMessage messageId={id} tagId={tagFilter} connectionId={tags?.__id} />)}
+        {display(edit, <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />)}
       </Box>
     </Grid>
   );

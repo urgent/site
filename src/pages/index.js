@@ -5,6 +5,7 @@ import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
+import useMutation from '../components/useMutation'
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
@@ -14,12 +15,30 @@ const HomeQuery = graphql`
   }
 `;
 
+const InsertMessageTagMutation = graphql`
+  mutation MessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
+    createMessageTag(input: $input) {
+      messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
+        tagByTagId {
+          name
+          categoryByCategoryId {
+            color
+          }
+        }
+      }
+    }
+  }
+`;
+
 function Home({ preloadedQuery }) {
   const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
   // show editor
   const [mode, setMode] = useState('view')
   // filter based on tags
   const [tagFilter, setTagFilter] = useState([])
+  // add action button in message card, "+ button"
+  const [focusedMessage, setFocusedMessage] = useState(false)
+  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   return (
     <>
@@ -33,12 +52,31 @@ function Home({ preloadedQuery }) {
       }} />
       <Sidebar
         tagFilter={tagFilter}
-        tagClick={(id, tagFilter) => {
-          if (tagFilter.includes(id)) {
-            setTagFilter(tagFilter.filter(active => active !== id))
+        tagClick={(tagId, tagFilter) => {
+          // add message to tag if in edit mode, and a message is focused.
+          if (mode === "edit") {
+            const [messageId, connectionId] = focusedMessage;
+
+            insertMessageTag({
+              variables: {
+                input: {
+                  messageId,
+                  tagId: tagId
+                },
+                connections: [connectionId]
+              },
+              updater: store => { },
+            });
+            setFocusedMessage(false)
+            // filter messages if not in edit mode
           } else {
-            setTagFilter([...tagFilter, id])
+            if (tagFilter.includes(tagId)) {
+              setTagFilter(tagFilter.filter(active => active !== tagId))
+            } else {
+              setTagFilter([...tagFilter, tagId])
+            }
           }
+
         }}
         edit={mode === 'edit'}
         categories={messages}
@@ -52,7 +90,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} setFocusedMessage={setFocusedMessage} />
       </Grid>
     </>
   )
