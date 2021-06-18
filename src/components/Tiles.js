@@ -141,6 +141,8 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           tagFilter={tagFilter}
           id={edge.node.rowId}
           setFocusedMessage={setFocusedMessage}
+          gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
+          gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
           editClick={(messageId, collectionId, content) => {
             if (messageMode === 'edit') {
               // turn off edit mode
