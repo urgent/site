@@ -59,37 +59,46 @@ export function format(nodes) {
   }
 }
 
-export function filter(messages, tagFilter, edit) {
+export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
+  if (messageMode === "edit") {
+    // message in edit mode. hide all messages not being edited
+    const [messageId] = focusedMessage;
+    const nodes = messages.allMessages?.edges.filter((edge) => edge.node.rowId === messageId)
+    return format(nodes)
+  }
+
+
   if (tagFilter.length === 0 || edit) {
     // no tag filter or in edit mode, display all
     return messages
-  } else {
-    const nodes = messages.allMessages?.edges.filter((edge) => {
-      if (!Array.isArray(edge.node.messageTagsByMessageId.edges)) {
-        // no tags, can't match tagFilter
-        return false;
-      }
-      else if (edge.node.messageTagsByMessageId.edges === []) {
-        // empty tags, can't match tagFilter
-        return false;
-      }
-      else {
-        // is one tag in filter?
-        const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId.rowId)
-        return tagFilter.every((filter) => {
-          const comparison = tags.includes(filter)
-          return comparison
-        })
-      }
-    })
-
-    // so filtered data has same structure as unfiltered data
-    return format(nodes)
   }
+
+  const nodes = messages.allMessages?.edges.filter((edge) => {
+    if (!Array.isArray(edge.node.messageTagsByMessageId.edges)) {
+      // no tags, can't match tagFilter
+      return false;
+    }
+    else if (edge.node.messageTagsByMessageId.edges === []) {
+      // empty tags, can't match tagFilter
+      return false;
+    }
+    else {
+      // is one tag in filter?
+      const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId.rowId)
+      return tagFilter.every((filter) => {
+        const comparison = tags.includes(filter)
+        return comparison
+      })
+    }
+  })
+
+  // so filtered data has same structure as unfiltered data
+  return format(nodes)
 }
 
-export default function Tiles({ edit, messages, tagFilter, setFocusedMessage }) {
+export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage }) {
   const [editorText, setEditorText] = useState('');
+  const [messageMode, setMessageMode] = useState('view')
   const [session] = useSession()
   const data = useFragment(TilesFragment, messages);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
@@ -124,7 +133,7 @@ export default function Tiles({ edit, messages, tagFilter, setFocusedMessage }) 
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter, edit).allMessages?.edges.map((edge, index) => (
+      {filter(data, tagFilter, edit, focusedMessage, messageMode).allMessages?.edges.map((edge, index) => (
         <Message
           key={index}
           edit={edit}
@@ -132,6 +141,18 @@ export default function Tiles({ edit, messages, tagFilter, setFocusedMessage }) 
           tagFilter={tagFilter}
           id={edge.node.rowId}
           setFocusedMessage={setFocusedMessage}
+          editClick={(messageId, collectionId, content) => {
+            if (messageMode === 'edit') {
+              // turn off edit mode
+              setMessageMode('view')
+              setEditorText('')
+            } else {
+              // run edit
+              setMessageMode('edit')
+              setFocusedMessage([messageId, collectionId])
+              setEditorText(content)
+            }
+          }}
         >
           {edge.node.content}
         </Message>

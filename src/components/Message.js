@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useState } from "react";
 import Toolbar from "./Toolbar"
 import { Grid, Box, Badge, Button } from "@chakra-ui/react"
 
@@ -20,7 +20,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Message({ tags, edit, gridColumn, gridRow, children, id, tagFilter, setFocusedMessage }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, editClick }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -35,7 +35,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {display(edit, <Toolbar />)}
+        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} />)}
       </Box>
       <Box
         gridRow="body"

@@ -90,7 +90,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} setFocusedMessage={setFocusedMessage} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} />
       </Grid>
     </>
   )
