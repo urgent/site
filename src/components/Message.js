@@ -20,7 +20,7 @@ function list(tags) {
 }
 
 // this component displays an individual message
-export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, editClick }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, editClick, deleteClick }) {
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -35,7 +35,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} />)}
+        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id, children)} />)}
       </Box>
       <Box
         gridRow="body"

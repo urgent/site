@@ -317,6 +317,31 @@ scalar Cursor
 # 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 scalar Datetime
 
+# All input for the `deleteMessage` mutation.
+input DeleteMessageInput {
+  # An arbitrary string value with no semantic meaning. Will be included in the
+  # payload verbatim. May be used to track mutations by the client.
+  clientMutationId: String
+  messageId: Int!
+}
+
+# The output of our `deleteMessage` mutation.
+type DeleteMessagePayload {
+  # The exact same `clientMutationId` that was provided in the mutation input,
+  # unchanged and unused. May be used by a client to track mutations.
+  clientMutationId: String
+  message: Message
+
+  # Our root query field type. Allows us to run any query from our mutation payload.
+  query: Query
+
+  # An edge for our `Message`. May be used by Relay 1.
+  messageEdge(
+    # The method to use when ordering `Message`.
+    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MessagesEdge
+}
+
 type Message implements Node {
   # A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   id: ID!
@@ -471,6 +496,10 @@ type Mutation {
     # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
     input: CreateTagInput!
   ): CreateTagPayload
+  deleteMessage(
+    # The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    input: DeleteMessageInput!
+  ): DeleteMessagePayload
 }
 
 # An object with a globally unique `ID`.

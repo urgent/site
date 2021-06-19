@@ -16,7 +16,7 @@ const HomeQuery = graphql`
 `;
 
 const InsertMessageTagMutation = graphql`
-  mutation MessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
+  mutation pagesMessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
     createMessageTag(input: $input) {
       messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
         tagByTagId {

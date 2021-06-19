@@ -29,3 +29,13 @@ AS $$
     VALUES(message_id, tag_id)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.delete_message(message_id Int)
+RETURNS public.message
+AS $$
+  DELETE FROM public.message
+    WHERE id=message_id
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
+
+ALTER TABLE message_tag ADD CONSTRAINT messagefk FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE;

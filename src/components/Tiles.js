@@ -17,6 +17,16 @@ const InsertMessageMutation = graphql`
   }
 `;
 
+const DeleteMessageMutation = graphql`
+  mutation TilesDeleteMessageMutation($input:DeleteMessageInput!, $connections: [ID!]!) {
+    deleteMessage(input: $input) {
+      message {
+        id @deleteEdge(connections: $connections)
+      }
+    }
+  }
+`;
+
 const TilesFragment = graphql`
           fragment TilesFragment_messages on Query {
             allMessages {
@@ -102,6 +112,8 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   const [session] = useSession()
   const data = useFragment(TilesFragment, messages);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
+  const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
+
   // Editor submit callback
   const onSubmit = useCallback(
     event => {
@@ -154,6 +166,17 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
               setFocusedMessage([messageId, collectionId])
               setEditorText(content)
             }
+          }}
+          deleteClick={(messageId, collectionId) => {
+            deleteMessage({
+              variables: {
+                input: {
+                  messageId: messageId,
+                },
+                connections: collectionId
+              },
+              updater: store => { },
+            });
           }}
         >
           {edge.node.content}
