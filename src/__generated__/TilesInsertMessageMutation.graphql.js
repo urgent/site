@@ -19,7 +19,7 @@ export type TilesInsertMessageMutationVariables = {|
 export type TilesInsertMessageMutationResponse = {|
   +createMessage: ?{|
     +message: ?{|
-      +id: string,
+      +rowId: number,
       +content: ?string,
     |}
   |}
@@ -37,8 +37,9 @@ mutation TilesInsertMessageMutation(
 ) {
   createMessage(input: $input) {
     message {
-      id
+      rowId
       content
+      id
     }
   }
 }
@@ -65,26 +66,15 @@ v2 = [
 v3 = {
   "alias": null,
   "args": null,
-  "concreteType": "Message",
-  "kind": "LinkedField",
-  "name": "message",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "content",
-      "storageKey": null
-    }
-  ],
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "content",
   "storageKey": null
 };
 return {
@@ -105,7 +95,19 @@ return {
         "name": "createMessage",
         "plural": false,
         "selections": [
-          (v3/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Message",
+            "kind": "LinkedField",
+            "name": "message",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/)
+            ],
+            "storageKey": null
+          }
         ],
         "storageKey": null
       }
@@ -130,7 +132,26 @@ return {
         "name": "createMessage",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Message",
+            "kind": "LinkedField",
+            "name": "message",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "id",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -158,16 +179,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9d7b2c4c1531abe9413f0eb402c6b6b9",
+    "cacheID": "63cae9354622298f587ab092d5c4b2e2",
     "id": null,
     "metadata": {},
     "name": "TilesInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    message {\n      id\n      content\n    }\n  }\n}\n"
+    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    message {\n      rowId\n      content\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '96c776226a7af830a3b61d644d05637c';
+(node/*: any*/).hash = '79f53826bb10e03950a6e0963fee678d';
 
 module.exports = node;

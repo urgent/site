@@ -10,7 +10,7 @@ const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
     createMessage(input: $input) {
       message @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
-        id
+        rowId
         content
       }
     }
@@ -173,7 +173,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
                 input: {
                   messageId: messageId,
                 },
-                connections: collectionId
+                connections: [data.allMessages.__id]
               },
               updater: store => { },
             });
