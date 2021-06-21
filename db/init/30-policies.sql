@@ -64,9 +64,9 @@ create policy insert_message_tag_if_author
 create policy update_message_tag_if_author
   on message_tag
   for update
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE message.user_id = sessions.user_id AND message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM a\!ccounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) INNER JOIN message ON(message.user_id = sessions.user_id) WHERE message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
 
 create policy delete_message_tag_if_author
   on message_tag
   for delete
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE message.user_id = sessions.user_id AND message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) INNER JOIN message ON(message.user_id = sessions.user_id) WHERE message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
