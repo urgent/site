@@ -37,5 +37,3 @@ AS $$
     WHERE id=message_id
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
-
-ALTER TABLE message_tag ADD CONSTRAINT messagefk FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE;
