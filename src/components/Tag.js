@@ -12,6 +12,16 @@ const InsertTagMutation = graphql`
   }
 `;
 
+const DeleteTagMutation = graphql`
+  mutation TagDeleteTagMutation($input:DeleteTagInput!, $connections: [ID!]!) {
+    deleteTag(input: $input) {
+      tag {
+        id @deleteEdge(connections: $connections)
+      }
+    }
+  }
+`;
+
 export function AddTag({ connectionId, categoryId }) {
   const [name, setName] = useState('')
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
