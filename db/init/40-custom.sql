@@ -37,3 +37,11 @@ AS $$
     WHERE id=message_id
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.delete_tag(tag_id Int)
+RETURNS public.tag
+AS $$
+  DELETE FROM public.tag
+    WHERE id=tag_id
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
