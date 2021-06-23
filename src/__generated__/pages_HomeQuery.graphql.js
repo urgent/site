@@ -9,10 +9,10 @@
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
 import type { SidebarFragment_categories$ref } from "./SidebarFragment_categories.graphql";
-import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
+import type { pagesFragment_messages$ref } from "./pagesFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +$fragmentRefs: SidebarFragment_categories$ref & TilesFragment_messages$ref
+  +$fragmentRefs: SidebarFragment_categories$ref & pagesFragment_messages$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -24,7 +24,7 @@ export type pages_HomeQuery = {|
 /*
 query pages_HomeQuery {
   ...SidebarFragment_categories
-  ...TilesFragment_messages
+  ...pagesFragment_messages
 }
 
 fragment SidebarFragment_categories on Query {
@@ -49,7 +49,7 @@ fragment SidebarFragment_categories on Query {
   }
 }
 
-fragment TilesFragment_messages on Query {
+fragment pagesFragment_messages on Query {
   allMessages {
     edges {
       node {
@@ -133,7 +133,7 @@ return {
       {
         "args": null,
         "kind": "FragmentSpread",
-        "name": "TilesFragment_messages"
+        "name": "pagesFragment_messages"
       }
     ],
     "type": "Query",
@@ -327,16 +327,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5bd5541985e1e502bf69921ab167f037",
+    "cacheID": "40eabc70d0057e180a15d3d15edf938d",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...TilesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...pagesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment pagesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '94c81be56044e4bde25ae1f6185be8ed';
+(node/*: any*/).hash = '1861412dae59f0cfad69932fd40cbeb8';
 
 module.exports = node;

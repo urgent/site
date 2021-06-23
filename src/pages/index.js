@@ -3,7 +3,7 @@ import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
-import { graphql, usePreloadedQuery } from 'react-relay/hooks';
+import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
 import useMutation from '../components/useMutation'
 
@@ -11,7 +11,7 @@ import useMutation from '../components/useMutation'
 const HomeQuery = graphql`
   query pages_HomeQuery {
     ...SidebarFragment_categories
-    ...TilesFragment_messages
+    ...pagesFragment_messages
   }
 `;
 
@@ -30,8 +30,37 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
+const pagesFragment = graphql`
+          fragment pagesFragment_messages on Query {
+            allMessages {
+              __id
+              edges {
+                node {
+                  rowId
+                  content
+                  messageTagsByMessageId {
+                    __id
+                    edges {
+                      node {
+                        tagByTagId {
+                          rowId
+                          name
+                          categoryByCategoryId {
+                            color
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+
 function Home({ preloadedQuery }) {
-  const messages = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const data = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const messages = useFragment(pagesFragment, data);
   // show editor
   const [mode, setMode] = useState('view')
   // filter based on tags
@@ -79,7 +108,7 @@ function Home({ preloadedQuery }) {
 
         }}
         edit={mode === 'edit'}
-        categories={messages}
+        categories={data}
       />
       <Grid
         as="main"
@@ -90,7 +119,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} />
       </Grid>
     </>
   )

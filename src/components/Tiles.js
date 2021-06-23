@@ -27,34 +27,6 @@ const DeleteMessageMutation = graphql`
   }
 `;
 
-const TilesFragment = graphql`
-          fragment TilesFragment_messages on Query {
-            allMessages {
-              __id
-              edges {
-                node {
-                  rowId
-                  content
-                  messageTagsByMessageId {
-                    __id
-                    edges {
-                      node {
-                        tagByTagId {
-                          rowId
-                          name
-                          categoryByCategoryId {
-                            color
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        `
-
 /**
  * Format input as nodes consistent with Relay query
  * 
@@ -63,9 +35,7 @@ const TilesFragment = graphql`
  */
 export function format(nodes) {
   return {
-    "allMessages": {
-      "edges": nodes
-    }
+    "edges": nodes
   }
 }
 
@@ -83,7 +53,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
   if (messageMode === "edit") {
     // message in edit mode. hide all messages not being edited
     const [messageId] = focusedMessage;
-    const nodes = messages.allMessages?.edges.filter((edge) => edge.node.rowId === messageId)
+    const nodes = messages.edges.filter((edge) => edge.node.rowId === messageId)
     return format(nodes)
   }
 
@@ -93,7 +63,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
     return messages
   }
 
-  const nodes = messages.allMessages?.edges.filter((edge) => {
+  const nodes = messages.edges.filter((edge) => {
     if (!Array.isArray(edge.node.messageTagsByMessageId.edges)) {
       // no tags, can't match tagFilter
       return false;
@@ -120,7 +90,6 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   const [editorText, setEditorText] = useState('');
   const [messageMode, setMessageMode] = useState('view')
   const [session] = useSession()
-  const data = useFragment(TilesFragment, messages);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
 
@@ -133,7 +102,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           input: {
             content: editorText,
           },
-          connections: [data.allMessages.__id]
+          connections: [messages.__id]
         },
         updater: store => { },
       });
@@ -155,7 +124,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(data, tagFilter, edit, focusedMessage, messageMode).allMessages?.edges.map((edge, index) => (
+      {filter(messages, tagFilter, edit, focusedMessage, messageMode).edges.map((edge, index) => (
         <Message
           key={index}
           edit={edit}
@@ -183,7 +152,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
                 input: {
                   messageId: messageId,
                 },
-                connections: [data.allMessages.__id]
+                connections: [messages.__id]
               },
               updater: store => { },
             });
