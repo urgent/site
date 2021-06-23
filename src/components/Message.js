@@ -35,7 +35,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id, children)} />)}
+        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id)} />)}
       </Box>
       <Box
         gridRow="body"

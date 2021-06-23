@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react"
 import { Button, Box, VStack, Input } from "@chakra-ui/react"
 import useMutation from './useMutation'
+import Toolbar from './Toolbar';
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
@@ -90,23 +91,50 @@ function style(color, isActive) {
   }
 }
 
-export default function Tag({ click, name, id, tagFilter, color, children }) {
+function display(visible) {
+  if (visible) {
+    return 'inherit'
+  }
+  return 'none'
+}
+
+export default function Tag({ click, name, id, tagFilter, color, edit, children }) {
   const isActive = tagFilter.includes(id);
   const styles = style(color, isActive)
+
+  const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
+
+
+
+
+
   return (
-    <Button
-      fontSize={[10, 10, 12, 12, 12]}
-      p={2}
-      minWidth="inherit"
-      height="inherit"
-      border="2px"
-      onClick={() => click(id, tagFilter)}
-      isActive={isActive}
-      {...styles}
-    >
-      <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
-        {children}
+    <>
+      <Box display={display(edit)}>
+        <Toolbar deleteClick={() => deleteTag({
+          variables: {
+            input: {
+              tagId: id,
+            },
+            connections: [data.allMessages.__id]
+          },
+          updater: store => { },
+        })} />
       </Box>
-    </Button>
+      <Button
+        fontSize={[10, 10, 12, 12, 12]}
+        p={2}
+        minWidth="inherit"
+        height="inherit"
+        border="2px"
+        onClick={() => click(id, tagFilter)}
+        isActive={isActive}
+        {...styles}
+      >
+        <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+          {children}
+        </Box>
+      </Button>
+    </>
   )
 }

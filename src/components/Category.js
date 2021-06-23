@@ -134,6 +134,7 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                                 id={edge.node.rowId}
                                 tagFilter={tagFilter}
                                 color={category.color}
+                                edit={edit}
                             >
                                 {edge.node.name}
                             </Tag>
