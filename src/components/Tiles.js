@@ -69,6 +69,16 @@ export function format(nodes) {
   }
 }
 
+
+/**
+ * Filter messages per selected tags, app edit mode, message edit mode
+ * @param { Object[] } messages Relay result
+ * @param { Number[] } tagFilter Tag IDs 
+ * @param { Boolean } edit App edit mode status
+ * @param { Number } focusedMessage ID of message where edit button was clicked
+ * @param { Boolean } messageMode Message edit mode status
+ * @returns { Object[] } Relay result filtered per app controls
+ */
 export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
   if (messageMode === "edit") {
     // message in edit mode. hide all messages not being edited
@@ -93,8 +103,8 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
       return false;
     }
     else {
-      // is one tag in filter?
       const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId.rowId)
+      // is one tag in filter?
       return tagFilter.every((filter) => {
         const comparison = tags.includes(filter)
         return comparison
