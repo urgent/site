@@ -98,28 +98,41 @@ function display(visible) {
   return 'none'
 }
 
-export default function Tag({ click, name, id, tagFilter, color, edit, children }) {
+export default function Tag({ click, id, tagFilter, color, edit, messages, connectionId, children }) {
   const isActive = tagFilter.includes(id);
   const styles = style(color, isActive)
-
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
-
-
-
-
 
   return (
     <>
       <Box display={display(edit)}>
-        <Toolbar deleteClick={() => deleteTag({
-          variables: {
-            input: {
-              tagId: id,
+        <Toolbar deleteClick={() => {
+          // need connections to update
+          let connections = [];
+          messages.edges.forEach(edge => {
+            // if one message tag matches deleted tag ...
+            const match = edge.node.messageTagsByMessageId.edges.some(edge => {
+              return edge.node.tagByTagId.rowId === id;
+            })
+            // ... add connection ID to Relay @deleteEdge directive
+            if (match) {
+              connections = [...connections, edge.node.messageTagsByMessageId.__id]
+            }
+          })
+
+          console.log(connections)
+
+          deleteTag({
+            variables: {
+              input: {
+                tagId: id,
+              },
+              connections: [...connections, connectionId],
             },
-            connections: [data.allMessages.__id]
-          },
-          updater: store => { },
-        })} />
+            updater: store => { },
+          })
+        }
+        } />
       </Box>
       <Button
         fontSize={[10, 10, 12, 12, 12]}

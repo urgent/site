@@ -22,13 +22,15 @@ export type pagesFragment_messages = {|
           +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
+              +tagId: number,
               +tagByTagId: ?{|
+                +__id: string,
                 +rowId: number,
                 +name: ?string,
                 +categoryByCategoryId: ?{|
                   +color: ?string
                 |},
-              |}
+              |},
             |}
           |}>,
         |},
@@ -131,6 +133,13 @@ return {
                             {
                               "alias": null,
                               "args": null,
+                              "kind": "ScalarField",
+                              "name": "tagId",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
                               "concreteType": "Tag",
                               "kind": "LinkedField",
                               "name": "tagByTagId",
@@ -161,7 +170,8 @@ return {
                                     }
                                   ],
                                   "storageKey": null
-                                }
+                                },
+                                (v1/*: any*/)
                               ],
                               "storageKey": null
                             }
@@ -191,6 +201,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '89d2c6ee2352d0ff0f79d34d3d8c1efb';
+(node/*: any*/).hash = 'd0b82df30008c84d6e727f813372a5e4';
 
 module.exports = node;

@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const { postgraphile } = require("postgraphile");
 const cookie = require('cookie');
+const PgManyToManyPlugin = require("@graphile-contrib/pg-many-to-many");
 
 const app = express()
 app.use(cors({ credentials: true, origin: process.env.CORS }))
@@ -12,6 +13,7 @@ app.use(
         {
             classicIds: true,
             disableDefaultMutations: true,
+            appendPlugins: [PgManyToManyPlugin],
             pgSettings: (req) => {
                 if (req.headers.cookie) {
                     const cookies = cookie.parse(req.headers.cookie);

@@ -50,6 +50,7 @@ mutation pagesMessageTagMutation(
         }
         id
       }
+      id
     }
   }
 }
@@ -204,7 +205,8 @@ return {
                   (v5/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v5/*: any*/)
             ],
             "storageKey": null
           },
@@ -235,12 +237,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3ff0d4948122a75af2a93d1ef67813c4",
+    "cacheID": "a0c4bc8f0290d6f83f43b1725229af2b",
     "id": null,
     "metadata": {},
     "name": "pagesMessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation pagesMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation pagesMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();

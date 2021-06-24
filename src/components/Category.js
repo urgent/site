@@ -77,7 +77,7 @@ export function AddCategory({ connectionId }) {
     )
 }
 
-export default function Category({ edit, category, tagFilter, tagClick }) {
+export default function Category({ edit, category, messages, tagFilter, tagClick }) {
     return (
         <Grid
             maxWidth={[16, 24, 36, 48, 48]}
@@ -135,6 +135,8 @@ export default function Category({ edit, category, tagFilter, tagClick }) {
                                 tagFilter={tagFilter}
                                 color={category.color}
                                 edit={edit}
+                                messages={messages}
+                                connectionId={category.tagsByCategoryId.__id}
                             >
                                 {edge.node.name}
                             </Tag>

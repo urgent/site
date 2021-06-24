@@ -42,7 +42,9 @@ const pagesFragment = graphql`
                     __id
                     edges {
                       node {
+                        tagId
                         tagByTagId {
+                          __id
                           rowId
                           name
                           categoryByCategoryId {
@@ -56,7 +58,7 @@ const pagesFragment = graphql`
               }
             }
           }
-        `
+`;
 
 function Home({ preloadedQuery }) {
   const data = usePreloadedQuery(HomeQuery, preloadedQuery);
@@ -105,10 +107,10 @@ function Home({ preloadedQuery }) {
               setTagFilter([...tagFilter, tagId])
             }
           }
-
         }}
         edit={mode === 'edit'}
         categories={data}
+        messages={messages.allMessages}
       />
       <Grid
         as="main"

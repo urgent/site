@@ -58,6 +58,7 @@ fragment pagesFragment_messages on Query {
         messageTagsByMessageId {
           edges {
             node {
+              tagId
               tagByTagId {
                 rowId
                 name
@@ -67,6 +68,7 @@ fragment pagesFragment_messages on Query {
                 }
                 id
               }
+              id
             }
           }
         }
@@ -279,6 +281,13 @@ return {
                               {
                                 "alias": null,
                                 "args": null,
+                                "kind": "ScalarField",
+                                "name": "tagId",
+                                "storageKey": null
+                              },
+                              {
+                                "alias": null,
+                                "args": null,
                                 "concreteType": "Tag",
                                 "kind": "LinkedField",
                                 "name": "tagByTagId",
@@ -299,10 +308,12 @@ return {
                                     ],
                                     "storageKey": null
                                   },
-                                  (v2/*: any*/)
+                                  (v2/*: any*/),
+                                  (v3/*: any*/)
                                 ],
                                 "storageKey": null
-                              }
+                              },
+                              (v2/*: any*/)
                             ],
                             "storageKey": null
                           }
@@ -327,12 +338,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "40eabc70d0057e180a15d3d15edf938d",
+    "cacheID": "14e381ba4ce12318f40ed5cde5934e74",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...pagesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment pagesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...pagesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment pagesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
