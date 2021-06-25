@@ -126,8 +126,6 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
             }
           })
 
-          console.log(connections)
-
           deleteTag({
             variables: {
               tag: {

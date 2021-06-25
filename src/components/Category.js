@@ -136,7 +136,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                                 color={category.color}
                                 edit={edit}
                                 messages={messages}
-                                connectionId={category.tagsByCategoryId.__id}
+                                connectionId={category.tagsByCategoryId?.__id}
                             >
                                 {edge.node.name}
                             </Tag>
@@ -144,7 +144,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     )
                 })}
             </Wrap>
-            {display(edit, <AddTag connectionId={category.tagsByCategoryId.__id} categoryId={category.rowId} />)}
+            {display(edit, <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} />)}
         </Grid>
     )
 }
