@@ -57,8 +57,8 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
     return format(nodes)
   }
 
-  if (tagFilter.length === 0 || edit) {
-    // no tag filter or in edit mode, display all
+  if (tagFilter.length === 0) {
+    // no tag filter, display all
     return messages
   }
 
