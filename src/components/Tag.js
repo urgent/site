@@ -15,12 +15,18 @@ const InsertTagMutation = graphql`
 `;
 
 const DeleteTagMutation = graphql`
-  mutation TagDeleteTagMutation($input:DeleteTagInput!, $connections: [ID!]!) {
-    deleteTag(input: $input) {
+  mutation TagDeleteTagMutation($tag:DeleteTagInput!, $messageTag:DeleteMessageTagInput!, $connections: [ID!]!) {
+    deleteMessageTag(input: $messageTag) {
+        messageTag {
+          id @deleteEdge(connections: $connections)
+      }
+    }
+    deleteTag(input: $tag) {
       tag {
         id @deleteEdge(connections: $connections)
+      }
     }
-  }
+}
 `;
 
 export function AddTag({ connectionId, categoryId }) {
@@ -124,7 +130,10 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
 
           deleteTag({
             variables: {
-              input: {
+              tag: {
+                tagId: id,
+              },
+              messageTag: {
                 tagId: id,
               },
               connections: [...connections, connectionId],
