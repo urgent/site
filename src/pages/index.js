@@ -34,6 +34,7 @@ const pagesFragment = graphql`
           fragment pagesFragment_messages on Query {
             allMessages {
               __id
+              @connection(key: "pagesFragment_allMessages")
               edges {
                 node {
                   rowId
@@ -42,6 +43,7 @@ const pagesFragment = graphql`
                     __id
                     edges {
                       node {
+                        __id
                         tagId
                         tagByTagId {
                           __id

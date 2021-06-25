@@ -14,6 +14,7 @@ export default function Sidebar({ edit, categories, messages, tagFilter, tagClic
             fragment SidebarFragment_categories on Query {
                 allCategories {
                     __id
+                    @connection(key: "SidebarFragment_allCategories")
                     edges {
                         node {
                           tagsByCategoryId {

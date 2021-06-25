@@ -20,7 +20,8 @@ export type TagInsertTagMutationVariables = {|
 export type TagInsertTagMutationResponse = {|
   +createTag: ?{|
     +tag: ?{|
-      +name: ?string
+      +id: string,
+      +name: ?string,
     |}
   |}
 |};
@@ -37,8 +38,8 @@ mutation TagInsertTagMutation(
 ) {
   createTag(input: $input) {
     tag {
-      name
       id
+      name
     }
   }
 }
@@ -65,8 +66,26 @@ v2 = [
 v3 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "name",
+  "concreteType": "Tag",
+  "kind": "LinkedField",
+  "name": "tag",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "name",
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 };
 return {
@@ -87,18 +106,7 @@ return {
         "name": "createTag",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Tag",
-            "kind": "LinkedField",
-            "name": "tag",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/)
-            ],
-            "storageKey": null
-          }
+          (v3/*: any*/)
         ],
         "storageKey": null
       }
@@ -123,25 +131,7 @@ return {
         "name": "createTag",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Tag",
-            "kind": "LinkedField",
-            "name": "tag",
-            "plural": false,
-            "selections": [
-              (v3/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "kind": "ScalarField",
-                "name": "id",
-                "storageKey": null
-              }
-            ],
-            "storageKey": null
-          },
+          (v3/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -169,16 +159,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "85744b6d3882739d9956eb1b7ae11c93",
+    "cacheID": "94cf6442b8a7504b24ef94203e03affd",
     "id": null,
     "metadata": {},
     "name": "TagInsertTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagInsertTagMutation(\n  $input: CreateTagInput!\n) {\n  createTag(input: $input) {\n    tag {\n      name\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagInsertTagMutation(\n  $input: CreateTagInput!\n) {\n  createTag(input: $input) {\n    tag {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'a0d546ffcedd9c63f35867a496cc1f5f';
+(node/*: any*/).hash = '82e39ed00cafae27b5a34173b3faa174';
 
 module.exports = node;

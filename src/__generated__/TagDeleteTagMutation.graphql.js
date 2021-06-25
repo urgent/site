@@ -19,7 +19,12 @@ export type TagDeleteTagMutationVariables = {|
 export type TagDeleteTagMutationResponse = {|
   +deleteTag: ?{|
     +tag: ?{|
-      +id: string
+      +id: string,
+      +messageTagsByTagId: {|
+        +nodes: $ReadOnlyArray<?{|
+          +id: string
+        |}>
+      |},
     |}
   |}
 |};
@@ -37,6 +42,11 @@ mutation TagDeleteTagMutation(
   deleteTag(input: $input) {
     tag {
       id
+      messageTagsByTagId {
+        nodes {
+          id
+        }
+      }
     }
   }
 }
@@ -66,6 +76,22 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "filters": null,
+  "handle": "deleteEdge",
+  "key": "",
+  "kind": "ScalarHandle",
+  "name": "id",
+  "handleArgs": [
+    {
+      "kind": "Variable",
+      "name": "connections",
+      "variableName": "connections"
+    }
+  ]
 };
 return {
   "fragment": {
@@ -93,7 +119,30 @@ return {
             "name": "tag",
             "plural": false,
             "selections": [
-              (v3/*: any*/)
+              (v3/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "MessageTagsConnection",
+                "kind": "LinkedField",
+                "name": "messageTagsByTagId",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "MessageTag",
+                    "kind": "LinkedField",
+                    "name": "nodes",
+                    "plural": true,
+                    "selections": [
+                      (v3/*: any*/)
+                    ],
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           }
@@ -130,21 +179,30 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "filters": null,
-                "handle": "deleteEdge",
-                "key": "",
-                "kind": "ScalarHandle",
-                "name": "id",
-                "handleArgs": [
+                "concreteType": "MessageTagsConnection",
+                "kind": "LinkedField",
+                "name": "messageTagsByTagId",
+                "plural": false,
+                "selections": [
                   {
-                    "kind": "Variable",
-                    "name": "connections",
-                    "variableName": "connections"
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "MessageTag",
+                    "kind": "LinkedField",
+                    "name": "nodes",
+                    "plural": true,
+                    "selections": [
+                      (v3/*: any*/),
+                      (v4/*: any*/)
+                    ],
+                    "storageKey": null
                   }
-                ]
+                ],
+                "storageKey": null
               }
             ],
             "storageKey": null
@@ -155,16 +213,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "75aa2a5c3050972fd86883512356980e",
+    "cacheID": "4081b7c55b450a80220d9a37a7808c30",
     "id": null,
     "metadata": {},
     "name": "TagDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagDeleteTagMutation(\n  $input: DeleteTagInput!\n) {\n  deleteTag(input: $input) {\n    tag {\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagDeleteTagMutation(\n  $input: DeleteTagInput!\n) {\n  deleteTag(input: $input) {\n    tag {\n      id\n      messageTagsByTagId {\n        nodes {\n          id\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '779b83a5b9adf86e6933742ac57cd3c3';
+(node/*: any*/).hash = '46c346261a2f914f7acbd20e09e110e6';
 
 module.exports = node;

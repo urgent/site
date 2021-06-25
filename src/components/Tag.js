@@ -7,6 +7,7 @@ const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
     createTag(input: $input) {
       tag @appendNode(connections: $connections, edgeTypeName: "TagsEdge") {
+        id
         name
       }
     }
@@ -18,7 +19,6 @@ const DeleteTagMutation = graphql`
     deleteTag(input: $input) {
       tag {
         id @deleteEdge(connections: $connections)
-      }
     }
   }
 `;

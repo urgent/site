@@ -22,6 +22,7 @@ export type pagesFragment_messages = {|
           +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
+              +__id: string,
               +tagId: number,
               +tagByTagId: ?{|
                 +__id: string,
@@ -174,7 +175,8 @@ return {
                                 (v1/*: any*/)
                               ],
                               "storageKey": null
-                            }
+                            },
+                            (v1/*: any*/)
                           ],
                           "storageKey": null
                         }
@@ -201,6 +203,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'd0b82df30008c84d6e727f813372a5e4';
+(node/*: any*/).hash = '96a1e81abf62bc69e5c23413a9e82942';
 
 module.exports = node;

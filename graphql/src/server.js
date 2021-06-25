@@ -3,6 +3,7 @@ const cors = require('cors')
 const { postgraphile } = require("postgraphile");
 const cookie = require('cookie');
 const PgManyToManyPlugin = require("@graphile-contrib/pg-many-to-many");
+const PostGraphileNestedMutations = require('postgraphile-plugin-nested-mutations');
 
 const app = express()
 app.use(cors({ credentials: true, origin: process.env.CORS }))
@@ -13,7 +14,7 @@ app.use(
         {
             classicIds: true,
             disableDefaultMutations: true,
-            appendPlugins: [PgManyToManyPlugin],
+            appendPlugins: [PgManyToManyPlugin, PostGraphileNestedMutations],
             pgSettings: (req) => {
                 if (req.headers.cookie) {
                     const cookies = cookie.parse(req.headers.cookie);
