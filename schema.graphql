@@ -230,6 +230,7 @@ input CreateMessageInput {
   # payload verbatim. May be used to track mutations by the client.
   clientMutationId: String
   content: String!
+  tags: [Int]!
 }
 
 # The output of our `createMessage` mutation.
@@ -237,16 +238,10 @@ type CreateMessagePayload {
   # The exact same `clientMutationId` that was provided in the mutation input,
   # unchanged and unused. May be used by a client to track mutations.
   clientMutationId: String
-  message: Message
+  messages: [Message]
 
   # Our root query field type. Allows us to run any query from our mutation payload.
   query: Query
-
-  # An edge for our `Message`. May be used by Relay 1.
-  messageEdge(
-    # The method to use when ordering `Message`.
-    orderBy: [MessagesOrderBy!] = [PRIMARY_KEY_ASC]
-  ): MessagesEdge
 }
 
 # All input for the `createMessageTag` mutation.

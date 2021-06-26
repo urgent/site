@@ -9,12 +9,29 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
     createMessage(input: $input) {
-      message @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+      messages @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
         rowId
         content
+        messageTagsByMessageId {
+            __id
+            edges {
+              node {
+                __id
+                tagId
+                tagByTagId {
+                  __id
+                  rowId
+                  name
+                  categoryByCategoryId {
+                    color
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
-  }
 `;
 
 const DeleteMessageMutation = graphql`
@@ -63,7 +80,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
   }
 
   const nodes = messages.edges.filter((edge) => {
-    if (!Array.isArray(edge.node.messageTagsByMessageId.edges)) {
+    if (!Array.isArray(edge.node.messageTagsByMessageId?.edges)) {
       // no tags, can't match tagFilter
       return false;
     }
@@ -100,6 +117,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
         variables: {
           input: {
             content: editorText,
+            tags: tagFilter,
           },
           connections: [messages.__id]
         },

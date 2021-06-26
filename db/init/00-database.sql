@@ -173,7 +173,7 @@ create policy delete_tag_if_author
 
 -- RLS message_tag
 
-create policy insert_message_tag_if_author
+create policy insert_message_tagwith_if_author
   on message_tag
   for insert
   with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
@@ -244,4 +244,27 @@ AS $$
   DELETE FROM public.message_tag
     WHERE tag_id=tag_id
   RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_message(content text, tags Int[])
+RETURNS setof public.message
+AS $$
+
+-- insert to get primary key of message, for many to many message_id
+WITH moved_rows AS (
+  INSERT INTO public.message (user_id, content)
+    SELECT a.user_id, content FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  RETURNING *
+),
+-- many to many relation
+
+moved_tags AS (
+  INSERT INTO public.message_tag (message_id, tag_id)
+  SELECT moved_rows.id, tagInput.tag_id
+  FROM moved_rows, UNNEST($2) as tagInput(tag_id)
+  RETURNING *
+)
+
+SELECT moved_rows.* FROM moved_rows, moved_tags
+
 $$ LANGUAGE sql VOLATILE STRICT;
