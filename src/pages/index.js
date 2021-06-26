@@ -87,7 +87,7 @@ function Home({ preloadedQuery }) {
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {
           // add message to tag if in edit mode, and a message is focused.
-          if (mode === "edit") {
+          if (mode === "edit" && focusedMessage) {
             const [messageId, connectionId] = focusedMessage;
 
             insertMessageTag({
