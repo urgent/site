@@ -141,7 +141,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(messages, tagFilter, edit, focusedMessage, messageMode).edges.map((edge, index) => (
+      {filter(messages, tagFilter, edit, focusedMessage, messageMode)?.edges.map((edge, index) => (
         <Message
           key={index}
           edit={edit}

@@ -3,22 +3,12 @@ import { Network, Environment, Store, RecordSource } from 'relay-runtime';
 
 export function createServerNetwork(token) {
     return Network.create(async (params, variables) => {
-        let authHeaders = {}
-        //try reading from cookie
-        if (token) {
-            authHeaders = {
-                'Authorization': `Bearer ${token}`,
-                'X-Hasura-Role': 'user'
-            }
-        }
-
-
         const response = await fetch(process.env.NEXT_PUBLIC_API_URL_SERVER, {
             method: 'POST',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                ...authHeaders
+                'cookie': `${process.env.COOKIE_NAME}=${token}`
             },
             body: JSON.stringify({
                 query: params.text,

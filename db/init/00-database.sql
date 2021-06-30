@@ -21,16 +21,30 @@ CREATE TABLE public.tag (
 );
 
 CREATE TABLE public.message_tag (
-    id SERIAL PRIMARY KEY,
     message_id INTEGER NOT NULL CONSTRAINT message_tag_message_id_fkey REFERENCES public.message(id) ON DELETE CASCADE,
     tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
 );
 
-ALTER TABLE message_tag ADD CONSTRAINT messagefk FOREIGN KEY (message_id) REFERENCES message (id) ON DELETE CASCADE;
+-- User that owns the organization
+CREATE TABLE public.organization (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE
+);
 
-ALTER TABLE message_tag ADD CONSTRAINT tagfk FOREIGN KEY (tag_id) REFERENCES tag (id) ON DELETE CASCADE;
+-- Filter messages shown to user based on organization
+-- Note that owner of organization must appear in this table, to limit joins 
+-- No foreign keys. Want to keep messages on user delete
+CREATE TABLE public.organization_user (
+  organization_id INTEGER NOT NULL CONSTRAINT organization_user_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE
+)
 
-ALTER TABLE tag ADD CONSTRAINT categoryfk FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE CASCADE;
+-- Filter based on tag. 
+-- Allows organization to be created based on tag query, default app interface
+CREATE TABLE public.organization_tag (
+  organization_id INTEGER NOT NULL CONSTRAINT organization_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  tag_id INTEGER NOT NULL CONSTRAINT organization_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
+)
 
 -- nextauth
 
@@ -117,7 +131,112 @@ $$ language sql stable;
 
 ALTER TABLE public.message ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY select_public on message for select USING (true);
+ALTER TABLE public.tag ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.category ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.message_tag ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.organization_user ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.organization_tag ENABLE ROW LEVEL SECURITY;
+
+ALTER TABLE public.organization ENABLE ROW LEVEL SECURITY;
+
+-- these selects might be creating errors with create message function. Can't select ID.
+
+CREATE POLICY select_if_organization
+  on message
+  for select 
+  USING ( id IN (
+    SELECT message_tag.message_id 
+      FROM message_tag 
+      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
+      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+      WHERE sessions.session_token = current_user_id()
+  ));
+
+-- messages without message_tags are blocked by select_if_organization policy
+-- allow untagged messages to be selected
+-- needed to insert message, then select the id for message tag insert
+CREATE POLICY select_for_insert
+  on message
+  for select 
+  USING ( id IN (
+    SELECT message_tag.message_id
+      FROM message_tag
+      WHERE message_tag.message_id IS NULL
+  ));
+
+CREATE POLICY select_for_user
+  on message
+  for select 
+  USING (EXISTS (
+    SELECT * 
+      FROM accounts 
+      INNER JOIN sessions ON (accounts.user_id = sessions.user_id) 
+      WHERE sessions.session_token = current_user_id()));
+
+CREATE POLICY select_if_organization
+  on category
+  for select 
+  USING ( id IN (
+    SELECT tag.category_id 
+      FROM tag 
+      INNER JOIN message_tag ON (message_tag.tag_id = tag.id)
+      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
+      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+      WHERE sessions.session_token = current_user_id()
+  ));
+
+  CREATE POLICY select_if_organization
+  on tag
+  for select 
+  USING ( id IN (
+    SELECT message_tag.tag_id 
+      FROM message_tag 
+      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
+      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+      WHERE sessions.session_token = current_user_id()
+  ));
+
+CREATE POLICY select_if_organization
+  on message_tag
+  for select 
+  USING ( tag_id IN (
+    SELECT organization_tag.tag_id 
+      FROM organization_tag 
+      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+      WHERE sessions.session_token = current_user_id()))
+
+CREATE POLICY select_if_organization
+  on organization_tag
+  for select 
+  USING ( organization_id IN (
+    SELECT organization_user.organization_id 
+      FROM organization_user 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+      WHERE sessions.session_token = current_user_id()))
+
+CREATE POLICY select_if_organization
+  on organization_user
+  for select 
+  USING ( organization_user.user_id IN (
+    SELECT sessions.user_id 
+      FROM sessions     
+      WHERE sessions.session_token = current_user_id()))
+
+CREATE POLICY select_if_organization
+  on organization
+  for select 
+  USING ( organization.user_id IN (
+    SELECT sessions.user_id 
+      FROM sessions     
+      WHERE sessions.session_token = current_user_id()))
 
 -- RLS message
 
@@ -190,14 +309,6 @@ create policy delete_message_tag_if_author
 
 -- graphile mutations
 
-CREATE FUNCTION public.create_message(content text)
-RETURNS public.message
-AS $$
-  INSERT INTO public.message (user_id, content)
-    SELECT a.user_id, content FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
-  RETURNING *;
-$$ LANGUAGE sql VOLATILE STRICT;
-
 CREATE FUNCTION public.create_category(name text, color text)
 RETURNS public.category
 AS $$
@@ -265,6 +376,6 @@ moved_tags AS (
   RETURNING *
 )
 
-SELECT moved_rows.* FROM moved_rows, moved_tags
+SELECT moved_rows.* FROM moved_rows LEFT JOIN moved_tags ON moved_rows.id = moved_tags.message_id
 
 $$ LANGUAGE sql VOLATILE STRICT;

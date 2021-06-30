@@ -18,7 +18,7 @@ const DeleteTagMutation = graphql`
   mutation TagDeleteTagMutation($tag:DeleteTagInput!, $messageTag:DeleteMessageTagInput!, $connections: [ID!]!) {
     deleteMessageTag(input: $messageTag) {
         messageTag {
-          id @deleteEdge(connections: $connections)
+          __id @deleteEdge(connections: $connections)
       }
     }
     deleteTag(input: $tag) {

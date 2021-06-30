@@ -15,7 +15,7 @@ function display(visible, element) {
 
 function list(tags) {
   if (tags) {
-    return tags.edges.map((edge, index) => <Badge key={index} color="white" mr={1} bg={`#${edge.node.tagByTagId.categoryByCategoryId.color}`}>{edge.node.tagByTagId.name}</Badge>)
+    return tags.edges.map((edge, index) => <Badge key={index} color="white" mr={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>{edge.node.tagByTagId?.name}</Badge>)
   }
 }
 

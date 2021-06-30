@@ -70,7 +70,6 @@ mutation TilesInsertMessageMutation(
               }
               id
             }
-            id
           }
         }
       }
@@ -332,7 +331,6 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/),
                           (v8/*: any*/)
                         ],
                         "storageKey": null
@@ -375,12 +373,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "9620bc096ab8430e4950629f48edee4e",
+    "cacheID": "a8997a6c265b7d6fce6233fe5c7ae882",
     "id": null,
     "metadata": {},
     "name": "TilesInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
