@@ -1,31 +1,28 @@
 import React from "react";
+import { Pool } from 'pg';
 
 function Page({ data }) {
+  console.log(data)
   return (
     <div style={{ display: "block", }}>
-      <p>
-
-        <form action="/api/">
-          <div style={{ display: "flex", margin: "10px" }}>
-            <label style={{ margin: "10px" }}>Email</label>
-            <input type="email" name="email" style={{ margin: "10px", border: "1px solid #CCC", padding: "4px 12px" }} />
-          </div>
-        </form>
-      </p>
+      <form action="/api/">
+        <div style={{ display: "flex", margin: "10px" }}>
+          <label style={{ margin: "10px" }}>Email</label>
+          <input type="email" name="email" style={{ margin: "10px", border: "1px solid #CCC", padding: "4px 12px" }} />
+        </div>
+      </form>
     </div>
   )
 }
 
 // This gets called on every request
-export async function getServerSideProps() {
+export async function getServerSideProps({ req, res, params }) {
   // Lookup ID
-
-  // if no ID, return error
-
-  // if ID, return form
-
+  const pool = new Pool()
+  const dbRes = await pool.query(`SELECT id FROM organization WHERE slug=$1`, [params.id])
+  await pool.end()
   // Pass data to the page via props
-  return { props: { data: 1 } }
+  return { props: { data: JSON.stringify(dbRes.rows) } }
 }
 
 export default Page
