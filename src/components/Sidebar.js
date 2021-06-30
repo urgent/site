@@ -42,7 +42,7 @@ export default function Sidebar({ edit, categories, messages, tagFilter, tagClic
       gridRow="body"
     >
       {data.allCategories?.edges.map((edge, index) => <Category key={index} edit={edit} category={edge.node} messages={messages} tagFilter={tagFilter} tagClick={tagClick} />)}
-      {display(edit, data.allCategories.__id)}
+      {display(edit, data.allCategories?.__id)}
     </Box>
   )
 }
