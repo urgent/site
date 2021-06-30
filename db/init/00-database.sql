@@ -28,7 +28,8 @@ CREATE TABLE public.message_tag (
 -- User that owns the organization
 CREATE TABLE public.organization (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE
+    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE,
+    slug TEXT
 );
 
 -- Filter messages shown to user based on organization
@@ -44,6 +45,14 @@ CREATE TABLE public.organization_user (
 CREATE TABLE public.organization_tag (
   organization_id INTEGER NOT NULL CONSTRAINT organization_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
   tag_id INTEGER NOT NULL CONSTRAINT organization_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
+)
+
+-- email to organization
+-- first step of invite. User enters email on organization invite page.
+CREATE TABLE public.invite (
+  id SERIAL PRIMARY KEY,
+  organization_id INTEGER NOT NULL CONSTRAINT organization_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  email TEXT
 )
 
 -- nextauth
