@@ -1,7 +1,11 @@
 import React from "react";
 import { Pool } from 'pg';
+import { isCompositeType } from "graphql";
 
-function Page({ slug }) {
+function Page({ slug, error }) {
+  if (error) {
+    return <p>Invite not found</p>
+  }
   return (
     <div style={{ display: "block", }}>
       <form action="/api/invite">
@@ -20,11 +24,15 @@ function Page({ slug }) {
 export async function getServerSideProps({ req, res, params }) {
   // Lookup ID
   const pool = new Pool()
+  await pool.query(`SELECT set_config('user.id', 'server', false)`);
   const dbRes = await pool.query(`SELECT slug FROM organization WHERE slug=$1`, [params.id])
   await pool.end()
-  //dbRes.rows[0]?.slug
-  // Pass data to the page via props
-  return { props: { slug: 1 } }
+  if (dbRes.rows.length > 0) {
+    return { props: { slug: dbRes.rows[0].slug, error: false } }
+  }
+  else {
+    return { props: { error: "Invite not found" } }
+  }
 }
 
 export default Page

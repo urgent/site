@@ -247,6 +247,11 @@ CREATE POLICY select_if_organization
       FROM sessions     
       WHERE sessions.session_token = current_user_id()))
 
+CREATE POLICY select_if_server
+  on organization
+  for select
+  USING ( (SELECT current_user_id() = 'server'))
+
 -- RLS message
 
 create policy insert_if_author
