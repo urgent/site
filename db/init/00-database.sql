@@ -2,20 +2,19 @@
 
 CREATE TABLE public.category (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
+    organization_id INT NOT NULL CONSTRAINT category_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
     name TEXT,
     color TEXT
 );
 
 CREATE TABLE public.message (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
+    organization_id INT NOT NULL CONSTRAINT message_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
     content TEXT
 );
 
 CREATE TABLE public.tag (
     id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
     name TEXT,
     category_id INTEGER NOT NULL CONSTRAINT tag_category_id_fkey REFERENCES public.category(id) ON DELETE CASCADE
 );
@@ -40,18 +39,11 @@ CREATE TABLE public.organization_user (
   user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE
 )
 
--- Filter based on tag. 
--- Allows organization to be created based on tag query, default app interface
-CREATE TABLE public.organization_tag (
-  organization_id INTEGER NOT NULL CONSTRAINT organization_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-  tag_id INTEGER NOT NULL CONSTRAINT organization_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
-)
-
 -- email to organization
 -- first step of invite. User enters email on organization invite page.
 CREATE TABLE public.invite (
   id SERIAL PRIMARY KEY,
-  organization_id INTEGER NOT NULL CONSTRAINT organization_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  organization_id INTEGER NOT NULL CONSTRAINT invite_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
   email TEXT
 )
 
@@ -148,8 +140,6 @@ ALTER TABLE public.message_tag ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.organization_user ENABLE ROW LEVEL SECURITY;
 
-ALTER TABLE public.organization_tag ENABLE ROW LEVEL SECURITY;
-
 ALTER TABLE public.organization ENABLE ROW LEVEL SECURITY;
 
 -- these selects might be creating errors with create message function. Can't select ID.
@@ -157,11 +147,9 @@ ALTER TABLE public.organization ENABLE ROW LEVEL SECURITY;
 CREATE POLICY select_if_organization
   on message
   for select 
-  USING ( id IN (
-    SELECT message_tag.message_id 
-      FROM message_tag 
-      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
-      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+  USING ( organization_id IN (
+    SELECT organization_id 
+      FROM organization_user
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
       WHERE sessions.session_token = current_user_id()
   ));
@@ -178,36 +166,25 @@ CREATE POLICY select_for_insert
       WHERE message_tag.message_id IS NULL
   ));
 
-CREATE POLICY select_for_user
-  on message
-  for select 
-  USING (EXISTS (
-    SELECT * 
-      FROM accounts 
-      INNER JOIN sessions ON (accounts.user_id = sessions.user_id) 
-      WHERE sessions.session_token = current_user_id()));
+DROP POLICY select_for_user
 
 CREATE POLICY select_if_organization
   on category
   for select 
-  USING ( id IN (
-    SELECT tag.category_id 
-      FROM tag 
-      INNER JOIN message_tag ON (message_tag.tag_id = tag.id)
-      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
-      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+  USING ( organization_id IN (
+    SELECT organization_id
+      FROM organization_user
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
       WHERE sessions.session_token = current_user_id()
   ));
 
+-- join category to get org id
   CREATE POLICY select_if_organization
   on tag
   for select 
   USING ( id IN (
-    SELECT message_tag.tag_id 
-      FROM message_tag 
-      INNER JOIN organization_tag ON (organization_tag.tag_id = message_tag.tag_id)
-      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
+    SELECT organization_id
+      FROM organization_user
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
       WHERE sessions.session_token = current_user_id()
   ));
@@ -215,20 +192,11 @@ CREATE POLICY select_if_organization
 CREATE POLICY select_if_organization
   on message_tag
   for select 
-  USING ( tag_id IN (
-    SELECT organization_tag.tag_id 
-      FROM organization_tag 
-      INNER JOIN organization_user ON (organization_user.organization_id = organization_tag.organization_id) 
-      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
-      WHERE sessions.session_token = current_user_id()))
-
-CREATE POLICY select_if_organization
-  on organization_tag
-  for select 
-  USING ( organization_id IN (
-    SELECT organization_user.organization_id 
-      FROM organization_user 
-      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
+  USING ( message_id IN (
+    SELECT message.id 
+      FROM message
+      INNER JOIN organization_user ON (organization_user.organization_id = message.organization_id) 
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)
       WHERE sessions.session_token = current_user_id()))
 
 CREATE POLICY select_if_organization
@@ -239,35 +207,42 @@ CREATE POLICY select_if_organization
       FROM sessions     
       WHERE sessions.session_token = current_user_id()))
 
-CREATE POLICY select_if_organization
-  on organization
-  for select 
-  USING ( organization.user_id IN (
-    SELECT sessions.user_id 
-      FROM sessions     
-      WHERE sessions.session_token = current_user_id()))
-
 CREATE POLICY select_if_server
   on organization
   for select
   USING ( (SELECT current_user_id() = 'server'))
+
+CREATE POLICY insert_if_server
+  ON organization
+  FOR INSERT
+  WITH CHECK ( (SELECT current_user_id() = 'server'))
+
+CREATE POLICY select_if_server
+  on organization_user
+  for select
+  USING ( (SELECT current_user_id() = 'server'))
+
+CREATE POLICY insert_if_server
+  ON organization_user
+  FOR INSERT
+  WITH CHECK ( (SELECT current_user_id() = 'server'))
 
 -- RLS message
 
 create policy insert_if_author
   on message
   for insert
-  with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
 
 create policy update_if_author
   on message
   for update
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE message.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_if_author
   on message
   for delete
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE message.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 
 -- RLS category
@@ -275,67 +250,67 @@ create policy delete_if_author
 create policy insert_category_if_author
   on category
   for insert
-  with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
 
 create policy update_category_if_author
   on category
   for update
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE category.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_category_if_author
   on category
   for delete
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE category.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 -- RLS tag
 
 create policy insert_tag_if_author
   on tag
   for insert
-  with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
 
 create policy update_tag_if_author
   on tag
   for update
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE tag.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN category ON (tag.category_id = category.id) INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_tag_if_author
   on tag
   for delete
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE tag.user_id = sessions.user_id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN category ON (tag.category_id = category.id) INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 -- RLS message_tag
 
-create policy insert_message_tagwith_if_author
+create policy insert_message_tag_if_author
   on message_tag
   for insert
-  with check (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
 
 create policy update_message_tag_if_author
   on message_tag
   for update
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) INNER JOIN message ON(message.user_id = sessions.user_id) WHERE message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN message ON (message.id = message_tag.message_id) INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_message_tag_if_author
   on message_tag
   for delete
-  using (EXISTS (SELECT * FROM accounts INNER JOIN sessions ON (accounts.user_id = sessions.user_id) INNER JOIN message ON(message.user_id = sessions.user_id) WHERE message_tag.message_id = message.id AND sessions.session_token = current_user_id()));
+  using (EXISTS (SELECT * FROM sessions INNER JOIN message ON (message.id = message_tag.message_id) INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
 
 -- graphile mutations
 
-CREATE FUNCTION public.create_category(name text, color text)
+CREATE FUNCTION public.create_category(organization_id int, name text, color text)
 RETURNS public.category
 AS $$
-  INSERT INTO public.category (user_id, name, color)
-    SELECT a.user_id, name, color FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  INSERT INTO public.category (organization_id, name, color)
+    VALUES(organization_id, name, color)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
 
-CREATE FUNCTION public.create_tag(name text, category_id Int)
+CREATE FUNCTION public.create_tag(name text, category_id int)
 RETURNS public.tag
 AS $$
-  INSERT INTO public.tag (user_id, name, category_id)
-    SELECT a.user_id, name, category_id FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  INSERT INTO public.tag (name, category_id)
+    VALUES(name, category_id)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
 
@@ -371,14 +346,14 @@ AS $$
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
 
-CREATE FUNCTION public.create_message(content text, tags Int[])
+CREATE FUNCTION public.create_message(organization_id int, content text, tags Int[])
 RETURNS setof public.message
 AS $$
 
 -- insert to get primary key of message, for many to many message_id
 WITH moved_rows AS (
-  INSERT INTO public.message (user_id, content)
-    SELECT a.user_id, content FROM accounts a JOIN sessions s ON a.user_id=s.user_id WHERE s.session_token = current_setting('user.id', true)
+  INSERT INTO public.message (organization_id, content)
+    VALUES(organization_id, content)
   RETURNING *
 ),
 -- many to many relation
@@ -393,3 +368,26 @@ moved_tags AS (
 SELECT moved_rows.* FROM moved_rows LEFT JOIN moved_tags ON moved_rows.id = moved_tags.message_id
 
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_organization(user_id Int, slug Text)
+RETURNS public.organization AS
+$$
+
+ -- insert for organization ID
+  WITH moved_rows AS (
+    INSERT INTO public.organization(user_id, slug) VALUES(user_id, slug)
+    RETURNING *
+  ),
+
+  -- insert into organization_user
+  moved_org_user AS (
+    INSERT INTO public.organization_user (organization_id, user_id)
+    SELECT moved_rows.id, user_id
+    FROM moved_rows
+    RETURNING *
+  )
+
+  SELECT * FROM moved_rows
+$$ LANGUAGE sql VOLATILE STRICT;
+
+DROP TABLE organization_tag;
