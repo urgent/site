@@ -166,8 +166,6 @@ CREATE POLICY select_for_insert
       WHERE message_tag.message_id IS NULL
   ));
 
-DROP POLICY select_for_user
-
 CREATE POLICY select_if_organization
   on category
   for select 
@@ -197,7 +195,7 @@ CREATE POLICY select_if_organization
       FROM message
       INNER JOIN organization_user ON (organization_user.organization_id = message.organization_id) 
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)
-      WHERE sessions.session_token = current_user_id()))
+      WHERE sessions.session_token = current_user_id()));
 
 CREATE POLICY select_if_organization
   on organization_user
@@ -205,7 +203,7 @@ CREATE POLICY select_if_organization
   USING ( organization_user.user_id IN (
     SELECT sessions.user_id 
       FROM sessions     
-      WHERE sessions.session_token = current_user_id()))
+      WHERE sessions.session_token = current_user_id()));
 
 CREATE POLICY select_if_server
   on organization
@@ -353,7 +351,7 @@ AS $$
 -- insert to get primary key of message, for many to many message_id
 WITH moved_rows AS (
   INSERT INTO public.message (organization_id, content)
-    VALUES(organization_id, content)
+    VALUES($1, $2)
   RETURNING *
 ),
 -- many to many relation
@@ -361,7 +359,7 @@ WITH moved_rows AS (
 moved_tags AS (
   INSERT INTO public.message_tag (message_id, tag_id)
   SELECT moved_rows.id, tagInput.tag_id
-  FROM moved_rows, UNNEST($2) as tagInput(tag_id)
+  FROM moved_rows, UNNEST($3) as tagInput(tag_id)
   RETURNING *
 )
 
@@ -389,5 +387,3 @@ $$
 
   SELECT * FROM moved_rows
 $$ LANGUAGE sql VOLATILE STRICT;
-
-DROP TABLE organization_tag;

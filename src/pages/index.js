@@ -149,7 +149,7 @@ export default withRelay(Home, HomeQuery, {
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
 
-    return { token: ctx.req.cookies['next-auth.session-token'] };
+    return { token: ctx.req.cookies[process.env.COOKIE_NAME] };
   },
   // Server-side props can be accessed as the second argument
   // to this function.
