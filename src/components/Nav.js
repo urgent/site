@@ -11,13 +11,18 @@ export default function Nav({ editClick }) {
     return (
         <Grid
             as="nav"
-            gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [signin] 176px [config] 64px [navRightMargin] 10px"
+            gridTemplateColumns={[
+                ["[navLeftMargin] 10px [logo] 48px [edit] 112px [signin] 176px [config] 64px [navRightMargin] 10px"],
+                ["[navLeftMargin] 10px [logo] 48px [edit] 112px [signin] 176px [config] 64px [navRightMargin] 10px"],
+                ["[navLeftMargin] 10px [logo] 48px [edit] auto [signin] 176px [config] 64px [navRightMargin] 10px"]
+            ]
+            }
             gridRow="nav"
             gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
             pt={4}
         >
             <Image gridColumn="logo" width={12} src="/images/smooms.io.svg" alt="smooms.io" />
-            <Box gridColumn="menu" ml={8} mt={2}>
+            <Box gridColumn="edit" ml={8} mt={2}>
                 <Edit click={editClick}><Text>Edit</Text></Edit>
             </Box>
             <Box gridColumn="signin" mt={2} >
