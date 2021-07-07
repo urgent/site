@@ -10,6 +10,7 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type CreateMessageInput = {|
   clientMutationId?: ?string,
+  organizationId: number,
   content: string,
   tags: $ReadOnlyArray<?number>,
 |};

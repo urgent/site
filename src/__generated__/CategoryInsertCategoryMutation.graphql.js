@@ -10,6 +10,7 @@
 import type { ConcreteRequest } from 'relay-runtime';
 export type CreateCategoryInput = {|
   clientMutationId?: ?string,
+  organizationId: number,
   name: string,
   color: string,
 |};

@@ -4,7 +4,7 @@ import Edit from "../components/Edit"
 import { Grid, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
 import { BsGear } from 'react-icons/bs';
 
-export default function Nav({ editClick, navOrgClick }) {
+export default function Nav({ organizations, editClick, navOrgClick, focusedOrganization }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
 
@@ -45,13 +45,17 @@ export default function Nav({ editClick, navOrgClick }) {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Config</DrawerHeader>
+                    <DrawerHeader>Organization</DrawerHeader>
 
                     <DrawerBody>
                         <Select onChange={navOrgClick}>
-                            <option value="option1">Option 1</option>
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option>
+                            {organizations.edges.map((edge) => {
+                                if (focusedOrganization == edge.node.rowId) {
+                                    return <option value={edge.node.rowId} selected="selected">{edge.node.slug}</option>
+                                } else {
+                                    return <option value={edge.node.rowId}>{edge.node.slug}</option>
+                                }
+                            })}
                         </Select>
                     </DrawerBody>
 

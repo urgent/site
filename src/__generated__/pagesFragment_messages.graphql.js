@@ -12,6 +12,15 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type pagesFragment_messages$ref: FragmentReference;
 declare export opaque type pagesFragment_messages$fragmentType: pagesFragment_messages$ref;
 export type pagesFragment_messages = {|
+  +allOrganizations: ?{|
+    +__id: string,
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +rowId: number,
+        +slug: ?string,
+      |}
+    |}>,
+  |},
   +allMessages: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -75,6 +84,48 @@ return {
   "metadata": null,
   "name": "pagesFragment_messages",
   "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "OrganizationsConnection",
+      "kind": "LinkedField",
+      "name": "allOrganizations",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "OrganizationsEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Organization",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "slug",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        },
+        (v1/*: any*/)
+      ],
+      "storageKey": null
+    },
     {
       "alias": null,
       "args": null,
@@ -203,6 +254,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '96a1e81abf62bc69e5c23413a9e82942';
+(node/*: any*/).hash = '907ac7a1ede6500d0238e1d86e3b7fb2';
 
 module.exports = node;

@@ -32,6 +32,15 @@ const InsertMessageTagMutation = graphql`
 
 const pagesFragment = graphql`
           fragment pagesFragment_messages on Query {
+            allOrganizations {
+              __id
+              edges {
+                node {
+                  rowId
+                  slug
+                }
+              }
+            }
             allMessages {
               __id
               @connection(key: "pagesFragment_allMessages")
@@ -63,8 +72,8 @@ const pagesFragment = graphql`
 `;
 
 function Home({ preloadedQuery }) {
-  const data = usePreloadedQuery(HomeQuery, preloadedQuery);
-  const messages = useFragment(pagesFragment, data);
+  const query = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const data = useFragment(pagesFragment, query);
   // show editor
   const [mode, setMode] = useState('view')
   // filter based on tags
@@ -89,7 +98,7 @@ function Home({ preloadedQuery }) {
 
   return (
     <>
-      <Nav editClick={navEditClick} navOrgClick={navOrgClick} focusedOrganization={focusedOrganization} />
+      <Nav organizations={data.allOrganizations} editClick={navEditClick} navOrgClick={navOrgClick} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {
@@ -118,8 +127,8 @@ function Home({ preloadedQuery }) {
           }
         }}
         edit={mode === 'edit'}
-        categories={data}
-        messages={messages.allMessages}
+        categories={query}
+        messages={data.allMessages}
       />
       <Grid
         as="main"
@@ -130,7 +139,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={data.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
       </Grid>
     </>
   )
