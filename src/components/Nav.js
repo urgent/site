@@ -1,28 +1,61 @@
+import React from 'react'
 import SignIn from "../components/SignIn"
 import Edit from "../components/Edit"
-import { Grid, Box, Image, Icon, Text } from '@chakra-ui/react'
-import { FaGithub } from 'react-icons/fa';
+import { Grid, Box, Image, Icon, Text, Button, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
+import { BsGear } from 'react-icons/bs';
 
-export default function Nav({ click }) {
+export default function Nav({ editClick }) {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef()
+
     return (
         <Grid
             as="nav"
-            gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [button] 128px [navRightMargin] 10px"
+            gridTemplateColumns="[navLeftMargin] 10px [logo] 48px [menu] auto [signin] 176px [config] 64px [navRightMargin] 10px"
             gridRow="nav"
             gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
             pt={4}
         >
             <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />
-            <Box gridColumn="menu" ml={8} mt={2}>
-                <Edit click={click}>Edit</Edit>
+            <Box sx={{ gridColumn: "menu" }} ml={8} mt={2}>
+                <Edit click={editClick}><Text>Edit</Text></Edit>
             </Box>
-            <Box sx={{ gridColumn: "button" }} mt={2} >
+            <Box sx={{ gridColumn: "signin" }} mt={2} >
                 <SignIn>
-                    <>
-                        <Icon as={FaGithub} color="text.50" /><Text mx={2} color="text.50">Sign in</Text>
-                    </>
+                    <Text color="text.50">Sign in</Text>
                 </SignIn>
             </Box>
+            <Box sx={{ gridColumn: "config" }} mt={2} >
+                <Button bg="none" ref={btnRef} onClick={onOpen} >
+                    <Icon as={BsGear} w={6} h={6} />
+                </Button>
+            </Box>
+
+            <Drawer
+                isOpen={isOpen}
+                placement="bottom"
+                onClose={onClose}
+                finalFocusRef={btnRef}
+            >
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerCloseButton />
+                    <DrawerHeader>Categories</DrawerHeader>
+
+                    <DrawerBody>
+                        <Text>Body</Text>
+                    </DrawerBody>
+
+                    <DrawerFooter>
+                        <Button variant="outline" mr={3} onClick={onClose}>
+                            Cancel
+                        </Button>
+                        <Button colorScheme="blue">Save</Button>
+                    </DrawerFooter>
+                </DrawerContent>
+            </Drawer>
+
+
         </Grid >
     )
 }

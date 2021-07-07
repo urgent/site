@@ -15,7 +15,7 @@ export default function SignIn({ children }) {
             <Button
                 onClick={() => signIn(1)}
                 variant="solid"
-                size="sm"
+                size="md"
                 backgroundColor="primary.500"
                 _hover={{ background: "hover.500" }}
             >

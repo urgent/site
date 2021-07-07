@@ -76,7 +76,7 @@ function Home({ preloadedQuery }) {
 
   return (
     <>
-      <Nav click={() => {
+      <Nav editClick={() => {
         if (mode === "edit") {
           setMode('view')
         }
