@@ -102,7 +102,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
   return format(nodes)
 }
 
-export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage }) {
+export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization }) {
   const [editorText, setEditorText] = useState('');
   const [messageMode, setMessageMode] = useState('view')
   const [session] = useSession()
@@ -116,7 +116,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       insertMessage({
         variables: {
           input: {
-            organizationId: 2,
+            organizationId: focusedOrganization,
             content: editorText,
             tags: tagFilter,
           },

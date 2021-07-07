@@ -71,6 +71,7 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
+  const [focusedOrganization, setFocusedOrganization] = useState(2)
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   return (
@@ -123,7 +124,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
       </Grid>
     </>
   )
