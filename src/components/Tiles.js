@@ -105,7 +105,6 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
 export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization }) {
   const [editorText, setEditorText] = useState('');
   const [messageMode, setMessageMode] = useState('view')
-  const [session] = useSession()
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
 
