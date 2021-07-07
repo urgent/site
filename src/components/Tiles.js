@@ -116,6 +116,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       insertMessage({
         variables: {
           input: {
+            organizationId: 2,
             content: editorText,
             tags: tagFilter,
           },
