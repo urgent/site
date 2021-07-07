@@ -16,16 +16,16 @@ export default function Nav({ editClick }) {
             gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
             pt={4}
         >
-            <Image width={12} src="/images/smooms.io.svg" alt="smooms.io" sx={{ gridColumn: "logo" }} />
-            <Box sx={{ gridColumn: "menu" }} ml={8} mt={2}>
+            <Image gridColumn="logo" width={12} src="/images/smooms.io.svg" alt="smooms.io" />
+            <Box gridColumn="menu" ml={8} mt={2}>
                 <Edit click={editClick}><Text>Edit</Text></Edit>
             </Box>
-            <Box sx={{ gridColumn: "signin" }} mt={2} >
+            <Box gridColumn="signin" mt={2} >
                 <SignIn>
                     <Text color="text.50">Sign in</Text>
                 </SignIn>
             </Box>
-            <Box sx={{ gridColumn: "config" }} mt={2} >
+            <Box gridColumn="config" mt={2} >
                 <Button bg="none" ref={btnRef} onClick={onOpen} >
                     <Icon as={BsGear} w={6} h={6} />
                 </Button>
