@@ -80,7 +80,7 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  const [focusedOrganization, setFocusedOrganization] = useState(2)
+  const [focusedOrganization, setFocusedOrganization] = useState(data.allOrganizations?.edges[0].node.rowId)
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   function navEditClick() {
