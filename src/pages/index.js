@@ -74,16 +74,22 @@ function Home({ preloadedQuery }) {
   const [focusedOrganization, setFocusedOrganization] = useState(2)
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
+  function navEditClick() {
+    if (mode === "edit") {
+      setMode('view')
+    }
+    else {
+      setMode('edit')
+    }
+  }
+
+  function navOrgClick(e) {
+    setFocusedOrganization(e.target.value)
+  }
+
   return (
     <>
-      <Nav editClick={() => {
-        if (mode === "edit") {
-          setMode('view')
-        }
-        else {
-          setMode('edit')
-        }
-      }} />
+      <Nav editClick={navEditClick} navOrgClick={navOrgClick} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {

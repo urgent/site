@@ -1,10 +1,10 @@
 import React from 'react'
 import SignIn from "../components/SignIn"
 import Edit from "../components/Edit"
-import { Grid, Box, Image, Icon, Text, Button, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
+import { Grid, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
 import { BsGear } from 'react-icons/bs';
 
-export default function Nav({ editClick }) {
+export default function Nav({ editClick, navOrgClick }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
 
@@ -45,17 +45,20 @@ export default function Nav({ editClick }) {
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerCloseButton />
-                    <DrawerHeader>Categories</DrawerHeader>
+                    <DrawerHeader>Config</DrawerHeader>
 
                     <DrawerBody>
-                        <Text>Body</Text>
+                        <Select onChange={navOrgClick}>
+                            <option value="option1">Option 1</option>
+                            <option value="option2">Option 2</option>
+                            <option value="option3">Option 3</option>
+                        </Select>
                     </DrawerBody>
 
                     <DrawerFooter>
                         <Button variant="outline" mr={3} onClick={onClose}>
-                            Cancel
+                            Close
                         </Button>
-                        <Button colorScheme="blue">Save</Button>
                     </DrawerFooter>
                 </DrawerContent>
             </Drawer>
