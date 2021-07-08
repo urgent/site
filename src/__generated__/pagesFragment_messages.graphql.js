@@ -23,6 +23,13 @@ export type pagesFragment_messages = {|
       |}
     |}>,
   |},
+  +allUserConfigs: ?{|
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +defaultOrganization: number
+      |}
+    |}>
+  |},
   +allMessages: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -136,6 +143,46 @@ return {
           "storageKey": null
         },
         (v1/*: any*/)
+      ],
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "UserConfigsConnection",
+      "kind": "LinkedField",
+      "name": "allUserConfigs",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "UserConfigsEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "UserConfig",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "defaultOrganization",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
       ],
       "storageKey": null
     },
@@ -267,6 +314,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'c3d8473cd33cb1a56bb984e1b834d11f';
+(node/*: any*/).hash = 'deb6706310e7e62cfcf22ab7ae517df8';
 
 module.exports = node;

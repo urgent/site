@@ -43,6 +43,13 @@ const pagesFragment = graphql`
                 }
               }
             }
+            allUserConfigs {
+              edges {
+                node {
+                  defaultOrganization
+                }
+              }
+            }
             allMessages {
               __id
               @connection(key: "pagesFragment_allMessages")
@@ -73,6 +80,15 @@ const pagesFragment = graphql`
           }
 `;
 
+function defaultFocusedOrganization(data) {
+  // if user config is set in database, use user config
+  if (data.allUserConfigs.edges[0]?.node.defaultOrganization > 0) {
+    return data.allUserConfigs.edges[0]?.node.defaultOrganization;
+  }
+  // if not, use first row in query result
+  return data.allOrganizations?.edges[0]?.node.rowId
+}
+
 function Home({ preloadedQuery }) {
   const query = usePreloadedQuery(HomeQuery, preloadedQuery);
   const data = useFragment(pagesFragment, query);
@@ -82,7 +98,10 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  const [focusedOrganization, setFocusedOrganization] = useState(data.allOrganizations?.edges[0]?.node.rowId)
+
+
+
+  const [focusedOrganization, setFocusedOrganization] = useState(defaultFocusedOrganization(data))
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   function navEditClick() {

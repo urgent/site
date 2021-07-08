@@ -15,7 +15,7 @@ const InsertConfigMutation = graphql`
     }
 `;
 
-export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization }) {
+export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization, userConfigOrganization }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
@@ -72,21 +72,12 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
                             setFocusedOrganization(e.target.value);
                         }}>
                             {organizations.edges.map((edge) => {
-                                if (focusedOrganization == edge.node?.organizationByOrganizationId.rowId) {
-                                    return <option
-                                        key={edge.node?.organizationByOrganizationId.rowId}
-                                        value={edge.node?.organizationByOrganizationId.rowId}
-                                        selected="selected"
-                                    >
-                                        {edge.node?.organizationByOrganizationId.slug}
-                                    </option>
-                                } else {
-                                    return <option
-                                        key={edge.node?.organizationByOrganizationId.rowId}
-                                        value={edge.node?.organizationByOrganizationId.rowId}
-                                    >
-                                        {edge.node?.organizationByOrganizationId.slug}
-                                    </option>
+                                const { rowId, slug } = edge.node?.organizationByOrganizationId;
+                                if (focusedOrganization === rowId) {
+                                    return <option key={rowId} value={rowId} selected="selected">{slug}</option>
+                                }
+                                else {
+                                    return <option key={rowId} value={rowId}>{slug}</option>
                                 }
                             })}
                         </Select>
