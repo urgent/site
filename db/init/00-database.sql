@@ -27,7 +27,7 @@ CREATE TABLE public.message_tag (
 -- User that owns the organization
 CREATE TABLE public.organization (
     id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE,
+    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
     slug TEXT
 );
 
@@ -36,7 +36,7 @@ CREATE TABLE public.organization (
 -- No foreign keys. Want to keep messages on user delete
 CREATE TABLE public.organization_user (
   organization_id INTEGER NOT NULL CONSTRAINT organization_user_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.user(id) ON DELETE CASCADE
+  user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE
 )
 
 -- email to organization
@@ -45,6 +45,13 @@ CREATE TABLE public.invite (
   id SERIAL PRIMARY KEY,
   organization_id INTEGER NOT NULL CONSTRAINT invite_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
   email TEXT
+)
+
+-- Saved user config values, gear icon in app
+CREATE TABLE public.user_config (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT UNIQUE NULL CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
+  default_organization INTEGER NOT NULL CONSTRAINT user_config_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
 )
 
 -- nextauth
@@ -213,6 +220,17 @@ CREATE POLICY select_if_organization
       FROM sessions     
       WHERE sessions.session_token = current_user_id()));
 
+-- needed for dropdown, to get slug
+
+CREATE POLICY select_if_organization_invited
+  on organization
+  for select 
+  USING ( organization.id IN (
+    SELECT organization_user.organization_id
+      FROM organization_user
+      INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)
+      WHERE sessions.session_token = current_user_id()));
+
 CREATE POLICY select_if_server
   on organization
   for select
@@ -301,6 +319,23 @@ create policy delete_message_tag_if_author
   on message_tag
   for delete
   using (EXISTS (SELECT * FROM sessions INNER JOIN message ON (message.id = message_tag.message_id) INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+
+-- RLS user_config
+
+create policy insert_user_config_if_author
+  on user_config
+  for insert
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
+
+create policy update_user_config_if_author
+  on user_config
+  for update
+  using (user_config.user_id in (SELECT sessions.user_id FROM sessions WHERE sessions.session_token = current_user_id()));
+
+create policy delete_user_config_if_author
+  on user_config
+  for delete
+  using (user_config.user_id in (SELECT sessions.user_id FROM sessions WHERE sessions.session_token = current_user_id()));
 
 -- graphile mutations
 
@@ -394,4 +429,16 @@ $$
   )
 
   SELECT * FROM moved_rows
+$$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_user_config(default_organization Int)
+RETURNS public.user_config
+AS $$
+  INSERT INTO public.user_config(user_id, default_organization)
+    SELECT sessions.user_id, $1 FROM sessions WHERE sessions.session_token = current_user_id()
+  ON CONFLICT (user_id) 
+  DO 
+    UPDATE SET default_organization = $1
+  RETURNING *;
+   
 $$ LANGUAGE sql VOLATILE STRICT;

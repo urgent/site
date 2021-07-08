@@ -11,7 +11,9 @@ app.use(
         "public",
         {
             classicIds: true,
+            exportSchemaGraphql: './schema.graphql',
             disableDefaultMutations: true,
+            graphiql: true,
             pgSettings: (req) => {
                 if (req.headers.cookie) {
                     const cookies = cookie.parse(req.headers.cookie);

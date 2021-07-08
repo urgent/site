@@ -32,12 +32,14 @@ const InsertMessageTagMutation = graphql`
 
 const pagesFragment = graphql`
           fragment pagesFragment_messages on Query {
-            allOrganizations {
+            allOrganizationUsers {
               __id
               edges {
                 node {
-                  rowId
-                  slug
+                  organizationByOrganizationId {
+                    rowId
+                    slug
+                  }
                 }
               }
             }
@@ -80,7 +82,7 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  const [focusedOrganization, setFocusedOrganization] = useState(data.allOrganizations?.edges[0].node.rowId)
+  const [focusedOrganization, setFocusedOrganization] = useState(data.allOrganizations?.edges[0]?.node.rowId)
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   function navEditClick() {
@@ -92,13 +94,9 @@ function Home({ preloadedQuery }) {
     }
   }
 
-  function navOrgClick(e) {
-    setFocusedOrganization(e.target.value)
-  }
-
   return (
     <>
-      <Nav organizations={data.allOrganizations} editClick={navEditClick} navOrgClick={navOrgClick} focusedOrganization={focusedOrganization} />
+      <Nav organizations={data.allOrganizationUsers} editClick={navEditClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {

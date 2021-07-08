@@ -12,12 +12,14 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type pagesFragment_messages$ref: FragmentReference;
 declare export opaque type pagesFragment_messages$fragmentType: pagesFragment_messages$ref;
 export type pagesFragment_messages = {|
-  +allOrganizations: ?{|
+  +allOrganizationUsers: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
-        +rowId: number,
-        +slug: ?string,
+        +organizationByOrganizationId: ?{|
+          +rowId: number,
+          +slug: ?string,
+        |}
       |}
     |}>,
   |},
@@ -87,15 +89,15 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": "OrganizationsConnection",
+      "concreteType": "OrganizationUsersConnection",
       "kind": "LinkedField",
-      "name": "allOrganizations",
+      "name": "allOrganizationUsers",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "OrganizationsEdge",
+          "concreteType": "OrganizationUsersEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -103,17 +105,28 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Organization",
+              "concreteType": "OrganizationUser",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
               "selections": [
-                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
+                  "concreteType": "Organization",
+                  "kind": "LinkedField",
+                  "name": "organizationByOrganizationId",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/),
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "slug",
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 }
               ],
@@ -254,6 +267,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '907ac7a1ede6500d0238e1d86e3b7fb2';
+(node/*: any*/).hash = 'c3d8473cd33cb1a56bb984e1b834d11f';
 
 module.exports = node;

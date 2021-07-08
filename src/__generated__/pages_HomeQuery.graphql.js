@@ -50,12 +50,14 @@ fragment SidebarFragment_categories on Query {
 }
 
 fragment pagesFragment_messages on Query {
-  allOrganizations {
+  allOrganizationUsers {
     edges {
       node {
-        rowId
-        slug
-        id
+        organizationByOrganizationId {
+          rowId
+          slug
+          id
+        }
       }
     }
   }
@@ -233,15 +235,15 @@ return {
       {
         "alias": null,
         "args": null,
-        "concreteType": "OrganizationsConnection",
+        "concreteType": "OrganizationUsersConnection",
         "kind": "LinkedField",
-        "name": "allOrganizations",
+        "name": "allOrganizationUsers",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "OrganizationsEdge",
+            "concreteType": "OrganizationUsersEdge",
             "kind": "LinkedField",
             "name": "edges",
             "plural": true,
@@ -249,20 +251,31 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "Organization",
+                "concreteType": "OrganizationUser",
                 "kind": "LinkedField",
                 "name": "node",
                 "plural": false,
                 "selections": [
-                  (v0/*: any*/),
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "slug",
+                    "concreteType": "Organization",
+                    "kind": "LinkedField",
+                    "name": "organizationByOrganizationId",
+                    "plural": false,
+                    "selections": [
+                      (v0/*: any*/),
+                      {
+                        "alias": null,
+                        "args": null,
+                        "kind": "ScalarField",
+                        "name": "slug",
+                        "storageKey": null
+                      },
+                      (v2/*: any*/)
+                    ],
                     "storageKey": null
-                  },
-                  (v2/*: any*/)
+                  }
                 ],
                 "storageKey": null
               }
@@ -389,12 +402,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0347f133f56a96b676ef87d507f14f46",
+    "cacheID": "3fd7e1ecf1c3710e72ed935a0ad810f6",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...pagesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment pagesFragment_messages on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...SidebarFragment_categories\n  ...pagesFragment_messages\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        id\n      }\n    }\n  }\n}\n\nfragment pagesFragment_messages on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

@@ -3,10 +3,22 @@ import SignIn from "../components/SignIn"
 import Edit from "../components/Edit"
 import { Grid, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter } from '@chakra-ui/react'
 import { BsGear } from 'react-icons/bs';
+import useMutation from './useMutation'
 
-export default function Nav({ organizations, editClick, navOrgClick, focusedOrganization }) {
+const InsertConfigMutation = graphql`
+  mutation NavInsertConfigMutation($input:CreateUserConfigInput!) {
+    createUserConfig(input: $input) {
+        userConfig {
+            defaultOrganization
+        }
+      }
+    }
+`;
+
+export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
+    const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
 
     return (
         <Grid
@@ -48,12 +60,33 @@ export default function Nav({ organizations, editClick, navOrgClick, focusedOrga
                     <DrawerHeader>Organization</DrawerHeader>
 
                     <DrawerBody>
-                        <Select onChange={navOrgClick}>
+                        <Select onChange={(e) => {
+                            insertConfig({
+                                variables: {
+                                    input: {
+                                        defaultOrganization: parseInt(e.target.value),
+                                    },
+                                },
+                                updater: store => { },
+                            });
+                            setFocusedOrganization(e.target.value);
+                        }}>
                             {organizations.edges.map((edge) => {
-                                if (focusedOrganization == edge.node.rowId) {
-                                    return <option value={edge.node.rowId} selected="selected">{edge.node.slug}</option>
+                                if (focusedOrganization == edge.node?.organizationByOrganizationId.rowId) {
+                                    return <option
+                                        key={edge.node?.organizationByOrganizationId.rowId}
+                                        value={edge.node?.organizationByOrganizationId.rowId}
+                                        selected="selected"
+                                    >
+                                        {edge.node?.organizationByOrganizationId.slug}
+                                    </option>
                                 } else {
-                                    return <option value={edge.node.rowId}>{edge.node.slug}</option>
+                                    return <option
+                                        key={edge.node?.organizationByOrganizationId.rowId}
+                                        value={edge.node?.organizationByOrganizationId.rowId}
+                                    >
+                                        {edge.node?.organizationByOrganizationId.slug}
+                                    </option>
                                 }
                             })}
                         </Select>

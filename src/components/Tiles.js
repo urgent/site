@@ -2,9 +2,8 @@ import React, { useState, useCallback } from "react";
 import Message from "./Message"
 import { Editor } from './Editor';
 import { Grid } from "@chakra-ui/react"
-import { graphql, useFragment } from 'react-relay';
+import { graphql } from 'react-relay';
 import useMutation from './useMutation'
-import { signIn, signOut, useSession } from 'next-auth/client'
 
 const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
