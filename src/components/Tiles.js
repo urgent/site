@@ -73,7 +73,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode, f
     return format(nodes)
   }
 
-  const nodes = messages.edges?.filter((edge) => {
+  const nodes = messages?.edges?.filter((edge) => {
     if (edge.node.organizationId !== focusedOrganization) {
       // different organization
       return false;
@@ -82,12 +82,12 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode, f
       // no tags, can't match tagFilter
       return false;
     }
-    else if (edge.node.messageTagsByMessageId.edges === []) {
+    else if (edge.node.messageTagsByMessageId?.edges === []) {
       // empty tags, can't match tagFilter
       return false;
     }
     else {
-      const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId?.rowId)
+      const tags = edge.node.messageTagsByMessageId?.edges.map(edge => edge.node.tagByTagId?.rowId)
       // is one tag in filter?
       return tagFilter.every((filter) => {
         const comparison = tags.includes(filter)
