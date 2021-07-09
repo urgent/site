@@ -57,6 +57,7 @@ const pagesFragment = graphql`
                 node {
                   rowId
                   content
+                  organizationId
                   messageTagsByMessageId {
                     __id
                     edges {
@@ -82,8 +83,8 @@ const pagesFragment = graphql`
 
 function defaultFocusedOrganization(data) {
   // if user config is set in database, use user config
-  if (data.allUserConfigs.edges[0]?.node.defaultOrganization > 0) {
-    return data.allUserConfigs.edges[0]?.node.defaultOrganization;
+  if (data.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
+    return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
   }
   // if not, use first row in query result
   return data.allOrganizations?.edges[0]?.node.rowId
