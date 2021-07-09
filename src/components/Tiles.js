@@ -73,7 +73,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode, f
     return format(nodes)
   }
 
-  const nodes = messages.edges.filter((edge) => {
+  const nodes = messages.edges?.filter((edge) => {
     if (edge.node.organizationId !== focusedOrganization) {
       // different organization
       return false;
@@ -139,7 +139,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
       gridAutoFlow="dense"
     >
-      {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges.map((edge, index) => (
+      {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => (
         <Message
           key={index}
           edit={edit}
