@@ -118,7 +118,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
             content: editorText,
             tags: tagFilter,
           },
-          connections: [messages.__id]
+          connections: [messages?.__id]
         },
         updater: store => { },
       });
@@ -168,7 +168,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
                 input: {
                   messageId: messageId,
                 },
-                connections: [messages.__id]
+                connections: [messages?.__id]
               },
               updater: store => { },
             });
