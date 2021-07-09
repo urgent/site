@@ -87,7 +87,7 @@ function defaultFocusedOrganization(data) {
     return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
   }
   // if not, use first row in query result
-  return data.allOrganizationUsers?.edges[0]?.node.organizationByOrganizationId.rowId
+  return data.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId
 }
 
 function Home({ preloadedQuery }) {
