@@ -86,7 +86,9 @@ function defaultFocusedOrganization(data) {
   if (data.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
     return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
   }
+  console.log(`default ${data.allUserConfigs?.edges[0]?.node.defaultOrganization}`)
   // if not, use first row in query result
+  console.log(`first org ${data.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId}`)
   return data.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId
 }
 
