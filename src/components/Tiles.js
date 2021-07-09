@@ -110,6 +110,11 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   // Editor submit callback
   const onSubmit = useCallback(
     event => {
+      if (messageMode === 'edit') {
+        console.log('edit message')
+      } else {
+        console.log('insert message')
+      }
       event.preventDefault();
       insertMessage({
         variables: {

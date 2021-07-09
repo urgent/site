@@ -1,59 +1,5 @@
 \connect smooms;
 
-CREATE TABLE public.category (
-    id SERIAL PRIMARY KEY,
-    organization_id INT NOT NULL CONSTRAINT category_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-    name TEXT,
-    color TEXT
-);
-
-CREATE TABLE public.message (
-    id SERIAL PRIMARY KEY,
-    organization_id INT NOT NULL CONSTRAINT message_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-    content TEXT
-);
-
-CREATE TABLE public.tag (
-    id SERIAL PRIMARY KEY,
-    name TEXT,
-    category_id INTEGER NOT NULL CONSTRAINT tag_category_id_fkey REFERENCES public.category(id) ON DELETE CASCADE
-);
-
-CREATE TABLE public.message_tag (
-    message_id INTEGER NOT NULL CONSTRAINT message_tag_message_id_fkey REFERENCES public.message(id) ON DELETE CASCADE,
-    tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
-);
-
--- User that owns the organization
-CREATE TABLE public.organization (
-    id SERIAL PRIMARY KEY,
-    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
-    slug TEXT
-);
-
--- Filter messages shown to user based on organization
--- Note that owner of organization must appear in this table, to limit joins 
--- No foreign keys. Want to keep messages on user delete
-CREATE TABLE public.organization_user (
-  organization_id INTEGER NOT NULL CONSTRAINT organization_user_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-  user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE
-)
-
--- email to organization
--- first step of invite. User enters email on organization invite page.
-CREATE TABLE public.invite (
-  id SERIAL PRIMARY KEY,
-  organization_id INTEGER NOT NULL CONSTRAINT invite_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
-  email TEXT
-)
-
--- Saved user config values, gear icon in app
-CREATE TABLE public.user_config (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT UNIQUE NULL CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
-  default_organization INTEGER NOT NULL CONSTRAINT user_config_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
-)
-
 -- nextauth
 
 CREATE TABLE accounts
@@ -130,6 +76,62 @@ CREATE UNIQUE INDEX email
 
 CREATE UNIQUE INDEX token
   ON verification_requests(token);
+
+-- smooms tables
+
+-- User that owns the organization
+CREATE TABLE public.organization (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL CONSTRAINT organization_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
+    slug TEXT
+);
+
+CREATE TABLE public.category (
+    id SERIAL PRIMARY KEY,
+    organization_id INT NOT NULL CONSTRAINT category_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+    name TEXT,
+    color TEXT
+);
+
+CREATE TABLE public.message (
+    id SERIAL PRIMARY KEY,
+    organization_id INT NOT NULL CONSTRAINT message_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+    content TEXT
+);
+
+CREATE TABLE public.tag (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    category_id INTEGER NOT NULL CONSTRAINT tag_category_id_fkey REFERENCES public.category(id) ON DELETE CASCADE
+);
+
+CREATE TABLE public.message_tag (
+    message_id INTEGER NOT NULL CONSTRAINT message_tag_message_id_fkey REFERENCES public.message(id) ON DELETE CASCADE,
+    tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
+);
+
+-- Filter messages shown to user based on organization
+-- Note that owner of organization must appear in this table, to limit joins 
+-- No foreign keys. Want to keep messages on user delete
+CREATE TABLE public.organization_user (
+  organization_id INTEGER NOT NULL CONSTRAINT organization_user_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL CONSTRAINT organization_user_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE
+);
+
+-- email to organization
+-- first step of invite. User enters email on organization invite page.
+CREATE TABLE public.invite (
+  id SERIAL PRIMARY KEY,
+  organization_id INTEGER NOT NULL CONSTRAINT invite_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+  email TEXT
+);
+
+-- Saved user config values, gear icon in app
+CREATE TABLE public.user_config (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL UNIQUE CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
+  default_organization INTEGER NOT NULL CONSTRAINT user_config_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
+);
 
 -- RLS
 
@@ -234,22 +236,22 @@ CREATE POLICY select_if_organization_invited
 CREATE POLICY select_if_server
   on organization
   for select
-  USING ( (SELECT current_user_id() = 'server'))
+  USING ( (SELECT current_user_id() = 'server'));
 
 CREATE POLICY insert_if_server
   ON organization
   FOR INSERT
-  WITH CHECK ( (SELECT current_user_id() = 'server'))
+  WITH CHECK ( (SELECT current_user_id() = 'server'));
 
 CREATE POLICY select_if_server
   on organization_user
   for select
-  USING ( (SELECT current_user_id() = 'server'))
+  USING ( (SELECT current_user_id() = 'server'));
 
 CREATE POLICY insert_if_server
   ON organization_user
   FOR INSERT
-  WITH CHECK ( (SELECT current_user_id() = 'server'))
+  WITH CHECK ( (SELECT current_user_id() = 'server'));
 
 -- RLS message
 
