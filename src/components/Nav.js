@@ -71,7 +71,9 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
                             });
                             setFocusedOrganization(e.target.value);
                         }}>
-                            {organizations.edges.map((edge) => {
+                            {organizations.edges.filter((edge) => {
+                                return edge.node?.hasOwnProperty('organizationByOrganizationId')
+                            }).map((edge) => {
                                 const { rowId, slug } = edge.node?.organizationByOrganizationId;
                                 if (focusedOrganization === rowId) {
                                     return <option key={rowId} value={rowId} selected="selected">{slug}</option>
