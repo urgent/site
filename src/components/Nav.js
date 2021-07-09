@@ -69,7 +69,7 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
                                 },
                                 updater: store => { },
                             });
-                            setFocusedOrganization(e.target.value);
+                            setFocusedOrganization(parseInt(e.target.value));
                         }}>
                             {organizations.edges.filter((edge) => {
                                 return edge.node?.hasOwnProperty('organizationByOrganizationId')

@@ -65,7 +65,7 @@ export function format(nodes) {
  * @param { Boolean } messageMode Message edit mode status
  * @returns { Object[] } Relay result filtered per app controls
  */
-export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
+export function filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization) {
   if (messageMode === "edit") {
     // message in edit mode. hide all messages not being edited
     const [messageId] = focusedMessage;
@@ -73,12 +73,11 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
     return format(nodes)
   }
 
-  if (tagFilter.length === 0) {
-    // no tag filter, display all
-    return messages
-  }
-
   const nodes = messages.edges.filter((edge) => {
+    if (edge.node.organizationId !== focusedOrganization) {
+      // different organization
+      return false;
+    }
     if (!Array.isArray(edge.node.messageTagsByMessageId?.edges)) {
       // no tags, can't match tagFilter
       return false;
@@ -88,7 +87,7 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode) {
       return false;
     }
     else {
-      const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId.rowId)
+      const tags = edge.node.messageTagsByMessageId.edges.map(edge => edge.node.tagByTagId?.rowId)
       // is one tag in filter?
       return tagFilter.every((filter) => {
         const comparison = tags.includes(filter)
@@ -174,7 +173,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
             });
           }}
         >
-          {edge.node.content}
+          {`${edge.node.content} ${edge.node.organizationId} ${focusedOrganization} `}
         </Message>
       ))}
       <Message gridColumn="span 2" gridRow="span 2">
