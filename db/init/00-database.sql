@@ -444,3 +444,12 @@ AS $$
   RETURNING *;
    
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.update_message(id int, content text)
+RETURNS setof public.message
+AS $$
+
+  UPDATE public.message SET content=$2 WHERE id=$1
+  RETURNING *
+
+$$ LANGUAGE sql VOLATILE STRICT;
