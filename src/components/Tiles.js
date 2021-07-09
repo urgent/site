@@ -110,25 +110,25 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   // Editor submit callback
   const onSubmit = useCallback(
     event => {
+      event.preventDefault();
+
       if (messageMode === 'edit') {
         console.log('edit message')
       } else {
-        console.log('insert message')
-      }
-      event.preventDefault();
-      insertMessage({
-        variables: {
-          input: {
-            organizationId: focusedOrganization,
-            content: editorText,
-            tags: tagFilter,
+        insertMessage({
+          variables: {
+            input: {
+              organizationId: focusedOrganization,
+              content: editorText,
+              tags: tagFilter,
+            },
+            connections: [messages?.__id]
           },
-          connections: [messages?.__id]
-        },
-        updater: store => { },
-      });
-      // Reset the comment text
-      setEditorText('');
+          updater: store => { },
+        });
+        // Reset the comment text
+        setEditorText('');
+      }
     },
     [editorText, setEditorText, insertMessage],
   );
