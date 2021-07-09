@@ -44,6 +44,35 @@ const DeleteMessageMutation = graphql`
   }
 `;
 
+const UpdateMessageMutation = graphql`
+  mutation TilesUpdateMessageMutation($input:UpdateMessageInput!) {
+    updateMessage(input: $input) {
+      messages {
+        rowId
+        content
+        organizationId
+        messageTagsByMessageId {
+            __id
+            edges {
+              node {
+                __id
+                tagId
+                tagByTagId {
+                  __id
+                  rowId
+                  name
+                  categoryByCategoryId {
+                    color
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+`;
+
 /**
  * Format input as nodes consistent with Relay query
  * 
@@ -105,6 +134,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   const [editorText, setEditorText] = useState('');
   const [messageMode, setMessageMode] = useState('view')
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
+  const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
 
   // Editor submit callback
@@ -113,7 +143,17 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       event.preventDefault();
 
       if (messageMode === 'edit') {
-        console.log('edit message')
+        const [messageId] = focusedMessage;
+        updateMessage({
+          variables: {
+            input: {
+              id: messageId,
+              content: editorText,
+            },
+          },
+          updater: store => { },
+        });
+
       } else {
         insertMessage({
           variables: {
