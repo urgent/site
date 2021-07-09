@@ -11,6 +11,7 @@ const InsertMessageMutation = graphql`
       messages @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
         rowId
         content
+        organizationId
         messageTagsByMessageId {
             __id
             edges {
@@ -173,7 +174,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
             });
           }}
         >
-          {`${edge.node.content} ${edge.node.organizationId} ${focusedOrganization} `}
+          {edge.node.content}
         </Message>
       ))}
       <Message gridColumn="span 2" gridRow="span 2">
