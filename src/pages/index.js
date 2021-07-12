@@ -99,8 +99,6 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  console.log(data)
-
 
   const [focusedOrganization, setFocusedOrganization] = useState(defaultFocusedOrganization(data))
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
@@ -147,6 +145,7 @@ function Home({ preloadedQuery }) {
         edit={mode === 'edit'}
         categories={query}
         messages={data.allMessages}
+        focusedOrganization={focusedOrganization}
       />
       <Grid
         as="main"

@@ -24,7 +24,7 @@ function display(visible, element) {
     }
 }
 
-export function AddCategory({ connectionId }) {
+export function AddCategory({ connectionId, focusedOrganization }) {
     const [nameText, setNameText] = useState('');
     const [colorText, setColorText] = useState('');
     const [isCategoryPending, insertCategory] = useMutation(InsertCategoryMutation);
@@ -36,6 +36,7 @@ export function AddCategory({ connectionId }) {
             insertCategory({
                 variables: {
                     input: {
+                        organizationId: focusedOrganization,
                         name: nameText,
                         color: colorText
                     },
@@ -47,7 +48,7 @@ export function AddCategory({ connectionId }) {
             setNameText('');
             setColorText('');
         },
-        [nameText, setNameText, colorText, setColorText, insertCategory],
+        [nameText, setNameText, colorText, setColorText, insertCategory, focusedOrganization],
     );
 
     return (
@@ -77,7 +78,7 @@ export function AddCategory({ connectionId }) {
     )
 }
 
-export default function Category({ edit, category, messages, tagFilter, tagClick }) {
+export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization }) {
     return (
         <Grid
             maxWidth={[16, 24, 36, 48, 48]}
@@ -144,7 +145,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     )
                 })}
             </Wrap>
-            {display(edit, <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} />)}
+            {display(edit, <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />)}
         </Grid>
     )
 }
