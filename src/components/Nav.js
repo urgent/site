@@ -33,7 +33,7 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
             gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
             pt={4}
         >
-            <Image gridColumn="logo" width={12} src="/images/smooms.io.svg" alt="smooms.io" />
+            <Image gridColumn="logo" width={12} src="/images/logo.png" alt="smooms.io" />
             <Box gridColumn="edit" ml={8} mt={2}>
                 <Edit click={editClick}><Text>Edit</Text></Edit>
             </Box>
