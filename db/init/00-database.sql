@@ -299,12 +299,24 @@ create policy insert_tag_if_author
 create policy update_tag_if_author
   on tag
   for update
-  using (EXISTS (SELECT * FROM sessions INNER JOIN category ON (tag.category_id = category.id) INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (tag.category_id IN (
+    SELECT category.id
+    FROM category 
+    INNER JOIN organization_user ON (category.organization_id = organization_user.organization_id)
+    INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) 
+    WHERE sessions.session_token = current_user_id()
+  ));
 
 create policy delete_tag_if_author
   on tag
   for delete
-  using (EXISTS (SELECT * FROM sessions INNER JOIN category ON (tag.category_id = category.id) INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (tag.category_id IN (
+    SELECT category.id
+    FROM category 
+    INNER JOIN organization_user ON (category.organization_id = organization_user.organization_id)
+    INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) 
+    WHERE sessions.session_token = current_user_id()
+  ));
 
 -- RLS message_tag
 
@@ -316,12 +328,26 @@ create policy insert_message_tag_if_author
 create policy update_message_tag_if_author
   on message_tag
   for update
-  using (EXISTS (SELECT * FROM sessions INNER JOIN message ON (message.id = message_tag.message_id) INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (message_tag.tag_id IN (
+    SELECT tag.id
+    FROM tag
+    INNER JOIN category ON (tag.category_id = category.id) 
+    INNER JOIN organization_user ON (category.organization_id = organization_user.organization_id)
+    INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) 
+    WHERE sessions.session_token = current_user_id()
+  ));
 
 create policy delete_message_tag_if_author
   on message_tag
   for delete
-  using (EXISTS (SELECT * FROM sessions INNER JOIN message ON (message.id = message_tag.message_id) INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (message_tag.tag_id IN (
+    SELECT tag.id
+    FROM tag
+    INNER JOIN category ON (tag.category_id = category.id) 
+    INNER JOIN organization_user ON (category.organization_id = organization_user.organization_id)
+    INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) 
+    WHERE sessions.session_token = current_user_id()
+  ));
 
 -- RLS user_config
 
