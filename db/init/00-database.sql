@@ -263,12 +263,12 @@ create policy insert_if_author
 create policy update_if_author
   on message
   for update
-  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (message.organization_id IN (SELECT organization_id FROM organization_user INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_if_author
   on message
   for delete
-  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = message.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (message.organization_id IN (SELECT organization_id FROM organization_user INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) WHERE sessions.session_token = current_user_id()));
 
 
 -- RLS category
@@ -281,12 +281,13 @@ create policy insert_category_if_author
 create policy update_category_if_author
   on category
   for update
-  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (category.organization_id IN (SELECT organization_id FROM organization_user INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) WHERE sessions.session_token = current_user_id()));
 
 create policy delete_category_if_author
   on category
   for delete
-  using (EXISTS (SELECT * FROM sessions INNER JOIN organization ON (organization.id = category.organization_id AND organization.user_id  = sessions.user_id) WHERE sessions.session_token = current_user_id()));
+  using (category.organization_id IN (SELECT organization_id FROM organization_user INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) WHERE sessions.session_token = current_user_id()));
+
 
 -- RLS tag
 
