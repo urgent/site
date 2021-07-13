@@ -26,7 +26,7 @@ function display(visible, element) {
 
 export function AddCategory({ connectionId, focusedOrganization }) {
     const [nameText, setNameText] = useState('');
-    const [colorText, setColorText] = useState('');
+    const [colorText, setColorText] = useState('E53E3E');
     const [isCategoryPending, insertCategory] = useMutation(InsertCategoryMutation);
 
     // Editor submit callback
