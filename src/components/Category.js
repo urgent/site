@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import Tag from "../components/Tag"
 import Toolbar from "./Toolbar"
 import { AddTag } from "./Tag"
-import { Grid, VStack, Box, Wrap, WrapItem, Button, Input } from "@chakra-ui/react"
+import { Grid, VStack, Box, Wrap, WrapItem, Button, Input, Text } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
 import useMutation from './useMutation'
 
@@ -22,6 +22,15 @@ function display(visible, element) {
     if (visible) {
         return element
     }
+}
+
+function render(mode, edit, view) {
+    if (mode === 'edit') {
+        return edit
+    } else {
+        return view
+    }
+
 }
 
 export function AddCategory({ connectionId, focusedOrganization }) {
@@ -79,6 +88,9 @@ export function AddCategory({ connectionId, focusedOrganization }) {
 }
 
 export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization }) {
+    const [categoryMode, setCategoryMode] = useState('view');
+    const [editCategoryText, setEditCategoryText] = useState(category.name);
+
     return (
         <Grid
             maxWidth={[16, 24, 36, 48, 48]}
@@ -97,7 +109,14 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 gridRow="toolbar"
                 gridColumn="content"
             >
-                {display(edit, <Toolbar />)}
+                {display(edit, <Toolbar editClick={() => {
+                    if (categoryMode === 'edit') {
+                        setCategoryMode('view')
+                    }
+                    else {
+                        setCategoryMode('edit')
+                    }
+                }} />)}
             </Box>
             <Box
                 gridRow="toolbar"
@@ -117,7 +136,20 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 fontSize={12}
                 letterSpacing={1}
             >
-                {category.name}
+                {render(
+                    categoryMode,
+                    <Input
+                        type="text"
+                        name="editCategoryText"
+                        value={editCategoryText}
+                        onChange={(e) => setEditCategoryText(e.target.value)}
+                        size={"xs"}
+                        boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+                        borderRadius={1}
+                        mt={1}
+                    />,
+                    <Text mt={1}>{editCategoryText}</Text>
+                )}
             </Box>
             <Wrap
                 gridRow="body"
