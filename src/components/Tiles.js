@@ -130,9 +130,8 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode, f
   return format(nodes)
 }
 
-export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization }) {
+export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization, messageMode, setMessageMode }) {
   const [editorText, setEditorText] = useState('');
-  const [messageMode, setMessageMode] = useState('view')
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
@@ -141,7 +140,6 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   const onSubmit = useCallback(
     event => {
       event.preventDefault();
-
       if (messageMode === 'edit') {
         const [messageId] = focusedMessage;
         updateMessage({
@@ -153,7 +151,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           },
           updater: store => { },
         });
-
+        setMessageMode('view')
       } else {
         insertMessage({
           variables: {
@@ -217,6 +215,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
               },
               updater: store => { },
             });
+            setMessageMode('view');
           }}
         >
           {edge.node.content}

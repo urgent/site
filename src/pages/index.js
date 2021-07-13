@@ -102,10 +102,12 @@ function Home({ preloadedQuery }) {
 
   const [focusedOrganization, setFocusedOrganization] = useState(defaultFocusedOrganization(data))
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
+  const [messageMode, setMessageMode] = useState('view')
 
   function navEditClick() {
     if (mode === "edit") {
       setMode('view')
+      setMessageMode('view')
     }
     else {
       setMode('edit')
@@ -156,7 +158,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={data.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
+        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={data.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} messageMode={messageMode} setMessageMode={setMessageMode} />
       </Grid>
     </>
   )
