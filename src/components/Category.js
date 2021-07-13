@@ -18,6 +18,18 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
+const UpdateCategoryMutation = graphql`
+  mutation CategoryUpdateCategoryMutation($input:UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
+        rowId
+        name
+        color
+      }
+    }
+  }
+`;
+
 function display(visible, element) {
     if (visible) {
         return element
