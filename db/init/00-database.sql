@@ -185,13 +185,14 @@ CREATE POLICY select_if_organization
       WHERE sessions.session_token = current_user_id()
   ));
 
--- join category to get org id
+
   CREATE POLICY select_if_organization
   on tag
   for select 
-  USING ( id IN (
-    SELECT organization_id
-      FROM organization_user
+  USING ( category_id IN (
+    SELECT category.id
+      FROM category
+      INNER JOIN organization_user ON (organization_user.organization_id = category.organization_id)
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)    
       WHERE sessions.session_token = current_user_id()
   ));
