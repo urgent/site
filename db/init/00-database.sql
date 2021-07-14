@@ -489,3 +489,12 @@ AS $$
   RETURNING *
 
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.update_tag(id int, name text)
+RETURNS public.tag
+AS $$
+
+  UPDATE public.tag SET name=$2 WHERE id=$1
+  RETURNING *
+
+$$ LANGUAGE sql VOLATILE STRICT;
