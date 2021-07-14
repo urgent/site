@@ -42,7 +42,6 @@ function render(mode, edit, view) {
     } else {
         return view
     }
-
 }
 
 export function AddCategory({ connectionId, focusedOrganization }) {
@@ -205,9 +204,8 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                                 edit={edit}
                                 messages={messages}
                                 connectionId={category.tagsByCategoryId?.__id}
-                            >
-                                {edge.node.name}
-                            </Tag>
+                                tag={edge.node}
+                            />
                         </WrapItem>
                     )
                 })}

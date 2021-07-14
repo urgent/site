@@ -1,0 +1,164 @@
+/**
+ * @flow
+ */
+
+/* eslint-disable */
+
+'use strict';
+
+/*::
+import type { ConcreteRequest } from 'relay-runtime';
+export type UpdateTagInput = {|
+  clientMutationId?: ?string,
+  id: number,
+  name: string,
+|};
+export type TagUpdateTagMutationVariables = {|
+  input: UpdateTagInput
+|};
+export type TagUpdateTagMutationResponse = {|
+  +updateTag: ?{|
+    +tag: ?{|
+      +rowId: number,
+      +name: ?string,
+    |}
+  |}
+|};
+export type TagUpdateTagMutation = {|
+  variables: TagUpdateTagMutationVariables,
+  response: TagUpdateTagMutationResponse,
+|};
+*/
+
+
+/*
+mutation TagUpdateTagMutation(
+  $input: UpdateTagInput!
+) {
+  updateTag(input: $input) {
+    tag {
+      rowId
+      name
+      id
+    }
+  }
+}
+*/
+
+const node/*: ConcreteRequest*/ = (function(){
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "input"
+  }
+],
+v1 = [
+  {
+    "kind": "Variable",
+    "name": "input",
+    "variableName": "input"
+  }
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
+return {
+  "fragment": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Fragment",
+    "metadata": null,
+    "name": "TagUpdateTagMutation",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateTagPayload",
+        "kind": "LinkedField",
+        "name": "updateTag",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Tag",
+            "kind": "LinkedField",
+            "name": "tag",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/)
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ],
+    "type": "Mutation",
+    "abstractKey": null
+  },
+  "kind": "Request",
+  "operation": {
+    "argumentDefinitions": (v0/*: any*/),
+    "kind": "Operation",
+    "name": "TagUpdateTagMutation",
+    "selections": [
+      {
+        "alias": null,
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateTagPayload",
+        "kind": "LinkedField",
+        "name": "updateTag",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Tag",
+            "kind": "LinkedField",
+            "name": "tag",
+            "plural": false,
+            "selections": [
+              (v2/*: any*/),
+              (v3/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "kind": "ScalarField",
+                "name": "id",
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
+  },
+  "params": {
+    "cacheID": "6234f41f7e1ad0462658b7f9c32a4939",
+    "id": null,
+    "metadata": {},
+    "name": "TagUpdateTagMutation",
+    "operationKind": "mutation",
+    "text": "mutation TagUpdateTagMutation(\n  $input: UpdateTagInput!\n) {\n  updateTag(input: $input) {\n    tag {\n      rowId\n      name\n      id\n    }\n  }\n}\n"
+  }
+};
+})();
+// prettier-ignore
+(node/*: any*/).hash = 'a4338a579269c6ff9a6a27c5fba5b554';
+
+module.exports = node;

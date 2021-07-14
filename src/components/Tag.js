@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from "react"
-import { Button, Box, VStack, Input } from "@chakra-ui/react"
+import { Button, Box, VStack, Input, Text } from "@chakra-ui/react"
 import useMutation from './useMutation'
 import Toolbar from './Toolbar';
 
@@ -27,6 +27,17 @@ const DeleteTagMutation = graphql`
       }
     }
 }
+`;
+
+const UpdateTagMutation = graphql`
+  mutation TagUpdateTagMutation($input:UpdateTagInput!) {
+    updateTag(input: $input) {
+      tag {
+        rowId
+        name
+      }
+    }
+  }
 `;
 
 export function AddTag({ connectionId, categoryId }) {
@@ -104,10 +115,40 @@ function display(visible) {
   return 'none'
 }
 
-export default function Tag({ click, id, tagFilter, color, edit, messages, connectionId, children }) {
+function render(mode, edit, view) {
+  if (mode === 'edit') {
+    return edit
+  } else {
+    return view
+  }
+}
+
+export default function Tag({ click, id, tagFilter, color, edit, messages, connectionId, tag, children }) {
   const isActive = tagFilter.includes(id);
   const styles = style(color, isActive)
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
+  const [editTagText, setEditTagText] = useState(tag.name);
+  const [tagMode, setTagMode] = useState('view')
+  const [focusedTag, setFocusedTag] = useState(false)
+  const [isUpdateTagPending, updateTag] = useMutation(UpdateTagMutation);
+
+  const onEnter = useCallback(
+    e => {
+      if (e.key !== 'Enter') {
+        return;
+      }
+      updateTag({
+        variables: {
+          input: {
+            id: focusedTag,
+            name: editTagText,
+          },
+        },
+      });
+      setTagMode('view')
+      setFocusedTag(false)
+    }
+  )
 
   return (
     <>
@@ -139,7 +180,19 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
             updater: store => { },
           })
         }
-        } />
+        }
+
+          editClick={() => {
+            if (tagMode === 'edit') {
+              setTagMode('view')
+              setFocusedTag(false)
+            }
+            else {
+              setTagMode('edit')
+              setFocusedTag(tag.rowId)
+            }
+          }}
+        />
       </Box>
       <Button
         fontSize={[10, 10, 12, 12, 12]}
@@ -152,7 +205,22 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
         {...styles}
       >
         <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
-          {children}
+
+          {render(
+            tagMode,
+            <Input
+              type="text"
+              name="editTagText"
+              value={editTagText}
+              onChange={(e) => setEditTagText(e.target.value)}
+              size={"xs"}
+              boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+              borderRadius={1}
+              mt={1}
+              onKeyDown={onEnter}
+            />,
+            <Text mt={1}>{tag.name}</Text>
+          )}
         </Box>
       </Button>
     </>
