@@ -2087,12 +2087,21 @@ type UpdateCategoryPayload {
   unchanged and unused. May be used by a client to track mutations.
   """
   clientMutationId: String
-  categories: [Category]
+  category: Category
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+
+  """Reads a single `Organization` that is related to this `Category`."""
+  organizationByOrganizationId: Organization
+
+  """An edge for our `Category`. May be used by Relay 1."""
+  categoryEdge(
+    """The method to use when ordering `Category`."""
+    orderBy: [CategoriesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): CategoriesEdge
 }
 
 """All input for the `updateCategory` mutation."""

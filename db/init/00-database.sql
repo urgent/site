@@ -482,7 +482,7 @@ AS $$
 $$ LANGUAGE sql VOLATILE STRICT;
 
 CREATE FUNCTION public.update_category(id int, name text)
-RETURNS setof public.category
+RETURNS public.category
 AS $$
 
   UPDATE public.category SET name=$2 WHERE id=$1

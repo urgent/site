@@ -102,6 +102,26 @@ export function AddCategory({ connectionId, focusedOrganization }) {
 export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization }) {
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState(category.name);
+    const [focusedCategory, setFocusedCategory] = useState();
+    const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
+
+    const onEnter = useCallback(
+        e => {
+            if (e.key !== 'Enter') {
+                return;
+            }
+            updateCategory({
+                variables: {
+                    input: {
+                        id: focusedCategory,
+                        name: editCategoryText,
+                    },
+                },
+            });
+            setCategoryMode('view')
+            setFocusedCategory(false)
+        }
+    )
 
     return (
         <Grid
@@ -124,9 +144,11 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 {display(edit, <Toolbar editClick={() => {
                     if (categoryMode === 'edit') {
                         setCategoryMode('view')
+                        setFocusedCategory(false)
                     }
                     else {
                         setCategoryMode('edit')
+                        setFocusedCategory(category.rowId)
                     }
                 }} />)}
             </Box>
@@ -159,6 +181,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                         boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
                         borderRadius={1}
                         mt={1}
+                        onKeyDown={onEnter}
                     />,
                     <Text mt={1}>{editCategoryText}</Text>
                 )}
