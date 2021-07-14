@@ -12,6 +12,7 @@ export type UpdateCategoryInput = {|
   clientMutationId?: ?string,
   id: number,
   name: string,
+  color: string,
 |};
 export type CategoryUpdateCategoryMutationVariables = {|
   input: UpdateCategoryInput

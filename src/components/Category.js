@@ -98,11 +98,20 @@ export function AddCategory({ connectionId, focusedOrganization }) {
     )
 }
 
+function size(mode) {
+    if (mode === 'edit') {
+        return '4rem';
+    } else {
+        return '2rem'
+    }
+}
+
 export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization }) {
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState(category.name);
     const [focusedCategory, setFocusedCategory] = useState();
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
+    const [editCategoryColor, setEditCategoryColor] = useState(category.color);
 
     const onEnter = useCallback(
         e => {
@@ -114,6 +123,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     input: {
                         id: focusedCategory,
                         name: editCategoryText,
+                        color: editCategoryColor
                     },
                 },
             });
@@ -133,7 +143,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
             fontSize={[8, 12, 12, 12, 12]}
             textAlign="left"
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-            gridTemplateRows="[toolbar] 2rem [titlebar] 2rem [body] auto"
+            gridTemplateRows={`[toolbar] 2rem [titlebar] ${size(categoryMode)} [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
         >
             <Box
@@ -171,17 +181,30 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
             >
                 {render(
                     categoryMode,
-                    <Input
-                        type="text"
-                        name="editCategoryText"
-                        value={editCategoryText}
-                        onChange={(e) => setEditCategoryText(e.target.value)}
-                        size={"xs"}
-                        boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-                        borderRadius={1}
-                        mt={1}
-                        onKeyDown={onEnter}
-                    />,
+                    <>
+                        <Input
+                            type="text"
+                            name="editCategoryText"
+                            value={editCategoryText}
+                            onChange={(e) => setEditCategoryText(e.target.value)}
+                            size={"xs"}
+                            boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+                            borderRadius={1}
+                            mt={1}
+                            onKeyDown={onEnter}
+                        />
+                        <Input
+                            type="text"
+                            name="editCategoryColor"
+                            value={editCategoryColor}
+                            onChange={(e) => setEditCategoryColor(e.target.value)}
+                            size={"xs"}
+                            boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+                            borderRadius={1}
+                            mt={1}
+                            onKeyDown={onEnter}
+                        />
+                    </>,
                     <Text mt={1}>{editCategoryText}</Text>
                 )}
             </Box>

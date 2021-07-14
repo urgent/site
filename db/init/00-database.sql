@@ -482,11 +482,11 @@ AS $$
 
 $$ LANGUAGE sql VOLATILE STRICT;
 
-CREATE FUNCTION public.update_category(id int, name text)
+CREATE FUNCTION public.update_category(id int, name text, color text)
 RETURNS public.category
 AS $$
 
-  UPDATE public.category SET name=$2 WHERE id=$1
+  UPDATE public.category SET name=$2, color=$3 WHERE id=$1
   RETURNING *
 
 $$ LANGUAGE sql VOLATILE STRICT;

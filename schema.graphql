@@ -2119,6 +2119,7 @@ input UpdateCategoryInput {
   clientMutationId: String
   id: Int!
   name: String!
+  color: String!
 }
 
 """The output of our `updateMessage` mutation."""
