@@ -30,6 +30,26 @@ const UpdateCategoryMutation = graphql`
   }
 `;
 
+const DeleteCategoryMutation = graphql`
+    mutation CategoryDeleteMutation($input:DeleteCategoryInput!, $connections: [ID!]!) {
+        deleteCategory(input: $input) {
+            category {
+                id
+                name
+                tagsByCategoryId {
+                    __id @deleteEdge(connections: $connections)
+                    edges {
+                        node {
+                            id
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+`
+
 function display(visible, element) {
     if (visible) {
         return element
@@ -112,6 +132,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
     const [focusedCategory, setFocusedCategory] = useState();
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [editCategoryColor, setEditCategoryColor] = useState(category.color);
+    const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
 
     const onEnter = useCallback(
         e => {
@@ -150,16 +171,42 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 gridRow="toolbar"
                 gridColumn="content"
             >
-                {display(edit, <Toolbar editClick={() => {
-                    if (categoryMode === 'edit') {
-                        setCategoryMode('view')
-                        setFocusedCategory(false)
-                    }
-                    else {
-                        setCategoryMode('edit')
-                        setFocusedCategory(category.rowId)
-                    }
-                }} />)}
+                {display(edit, <Toolbar
+                    editClick={() => {
+                        if (categoryMode === 'edit') {
+                            setCategoryMode('view')
+                            setFocusedCategory(false)
+                        }
+                        else {
+                            setCategoryMode('edit')
+                            setFocusedCategory(category.rowId)
+                        }
+                    }}
+
+                    deleteClick={() => {
+                        // need connections to update
+                        let connections = [];
+                        /*messages.edges.forEach(edge => {
+                            // if one message tag matches deleted tag ...
+                            const match = edge.node.messageTagsByMessageId.edges.some(edge => {
+                                return edge.node.tagByTagId.rowId === id;
+                            })
+                            // ... add connection ID to Relay @deleteEdge directive
+                            if (match) {
+                                connections = [...connections, edge.node.messageTagsByMessageId.__id]
+                            }
+                        })*/
+
+                        deleteCategory({
+                            variables: {
+                                input: {
+                                    categoryId: category.rowId
+                                }
+                            },
+                            updater: store => { },
+                        })
+                    }}
+                />)}
             </Box>
             <Box
                 gridRow="toolbar"

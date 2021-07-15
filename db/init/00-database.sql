@@ -499,3 +499,11 @@ AS $$
   RETURNING *
 
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.delete_category(category_id Int)
+RETURNS public.category
+AS $$
+  DELETE FROM public.category
+    WHERE id=$1
+  RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
