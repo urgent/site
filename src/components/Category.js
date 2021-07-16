@@ -34,15 +34,20 @@ const DeleteCategoryMutation = graphql`
     mutation CategoryDeleteMutation($input:DeleteCategoryInput!, $connections: [ID!]!) {
         deleteCategory(input: $input) {
             category {
-                id
-                name
-                tagsByCategoryId {
-                    __id @deleteEdge(connections: $connections)
-                    edges {
-                        node {
-                            id
-                            name
+                id @deleteEdge(connections: $connections)
+            }
+            query {
+                allMessages {
+                    nodes {
+                        messageTagsByMessageId {
+                        __id @deleteEdge(connections: $connections)
+                        edges {
+                            node {
+                            messageId
+                            }
                         }
+                        }
+                        content
                     }
                 }
             }
@@ -126,7 +131,7 @@ function size(mode) {
     }
 }
 
-export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization }) {
+export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization, connectionId }) {
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState(category.name);
     const [focusedCategory, setFocusedCategory] = useState();
@@ -185,23 +190,16 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
 
                     deleteClick={() => {
                         // need connections to update
-
-                        /*messages.edges.forEach(edge => {
-                            // if one message tag matches deleted tag ...
-                            const match = edge.node.messageTagsByMessageId.edges.some(edge => {
-                                return edge.node.tagByTagId.rowId === id;
-                            })
-                            // ... add connection ID to Relay @deleteEdge directive
-                            if (match) {
-                                connections = [...connections, edge.node.messageTagsByMessageId.__id]
-                            }
-                        })*/
+                        const connections = messages.edges.map(edge => {
+                            return edge.node.messageTagsByMessageId.__id;
+                        })
 
                         deleteCategory({
                             variables: {
                                 input: {
                                     categoryId: category.rowId
-                                }
+                                },
+                                connections: [...connections, connectionId],
                             },
                             updater: store => { },
                         })
