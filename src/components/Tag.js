@@ -17,8 +17,20 @@ const InsertTagMutation = graphql`
 const DeleteTagMutation = graphql`
   mutation TagDeleteTagMutation($tag:DeleteTagInput!, $messageTag:DeleteMessageTagInput!, $connections: [ID!]!) {
     deleteMessageTag(input: $messageTag) {
-        messageTag {
-          __id @deleteEdge(connections: $connections)
+      query {
+        allMessages {
+          nodes {
+            messageTagsByMessageId {
+              __id @deleteEdge(connections: $connections)
+              edges {
+                node {
+                  messageId
+                }
+              }
+            }
+            content
+          }
+        }
       }
     }
     deleteTag(input: $tag) {
@@ -26,7 +38,7 @@ const DeleteTagMutation = graphql`
         id @deleteEdge(connections: $connections)
       }
     }
-}
+  }
 `;
 
 const UpdateTagMutation = graphql`
@@ -155,18 +167,9 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
       <Box display={display(edit)}>
         <Toolbar deleteClick={() => {
           // need connections to update
-          let connections = [];
-          messages.edges.forEach(edge => {
-            // if one message tag matches deleted tag ...
-            const match = edge.node.messageTagsByMessageId.edges.some(edge => {
-              return edge.node.tagByTagId.rowId === id;
-            })
-            // ... add connection ID to Relay @deleteEdge directive
-            if (match) {
-              connections = [...connections, edge.node.messageTagsByMessageId.__id]
-            }
+          const connections = messages.edges.map(edge => {
+            return edge.node.messageTagsByMessageId.__id;
           })
-
           deleteTag({
             variables: {
               tag: {

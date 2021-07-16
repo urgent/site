@@ -185,7 +185,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
 
                     deleteClick={() => {
                         // need connections to update
-                        let connections = [];
+
                         /*messages.edges.forEach(edge => {
                             // if one message tag matches deleted tag ...
                             const match = edge.node.messageTagsByMessageId.edges.some(edge => {
