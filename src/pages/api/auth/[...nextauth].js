@@ -21,10 +21,10 @@ export default NextAuth({
     events: {
         async createUser(message) {
             const pool = new Pool()
+            await pool.query(`SELECT set_config('user.id', 'server', false)`);
             // is email auth provider?
             if (message.email) {
                 // look up invite by email to get organization id
-                await pool.query(`SELECT set_config('user.id', 'server', false)`);
                 const organizationRes = await pool.query(`SELECT organization_id FROM invite WHERE email=$1`, [message.email]);
                 // has invite?
                 if (organizationRes.rows.length > 0) {
