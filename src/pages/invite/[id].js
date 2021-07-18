@@ -8,7 +8,7 @@ function Page({ slug, error }) {
   }
   return (
     <div style={{ display: "block", }}>
-      <form action="/api/invite">
+      <form action="/api/invite" method="POST">
         <div style={{ display: "flex", margin: "10px" }}>
           <label style={{ margin: "10px" }}>Email</label>
           <input type="email" name="email" style={{ margin: "10px", border: "1px solid #CCC", padding: "4px 12px" }} />

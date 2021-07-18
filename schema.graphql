@@ -9,12 +9,12 @@ type Query implements Node {
   """
   The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`.
   """
-  id: ID!
+  nodeId: ID!
 
   """Fetches an object given its globally unique `ID`."""
   node(
     """The globally unique `ID`."""
-    id: ID!
+    nodeId: ID!
   ): Node
 
   """Reads and enables pagination through a set of `Account`."""
@@ -364,41 +364,41 @@ type Query implements Node {
     """
     condition: VerificationRequestCondition
   ): VerificationRequestsConnection
-  accountByRowId(rowId: Int!): Account
-  categoryByRowId(rowId: Int!): Category
-  inviteByRowId(rowId: Int!): Invite
-  messageByRowId(rowId: Int!): Message
-  organizationByRowId(rowId: Int!): Organization
-  sessionByRowId(rowId: Int!): Session
-  tagByRowId(rowId: Int!): Tag
-  userConfigByRowId(rowId: Int!): UserConfig
+  accountById(id: Int!): Account
+  categoryById(id: Int!): Category
+  inviteById(id: Int!): Invite
+  messageById(id: Int!): Message
+  organizationById(id: Int!): Organization
+  sessionById(id: Int!): Session
+  tagById(id: Int!): Tag
+  userConfigById(id: Int!): UserConfig
   userConfigByUserId(userId: Int!): UserConfig
-  userByRowId(rowId: Int!): User
-  verificationRequestByRowId(rowId: Int!): VerificationRequest
+  userById(id: Int!): User
+  verificationRequestById(id: Int!): VerificationRequest
   currentUserId: String
 
   """Reads a single `Account` using its globally unique `ID`."""
   account(
     """The globally unique `ID` to be used in selecting a single `Account`."""
-    id: ID!
+    nodeId: ID!
   ): Account
 
   """Reads a single `Category` using its globally unique `ID`."""
   category(
     """The globally unique `ID` to be used in selecting a single `Category`."""
-    id: ID!
+    nodeId: ID!
   ): Category
 
   """Reads a single `Invite` using its globally unique `ID`."""
   invite(
     """The globally unique `ID` to be used in selecting a single `Invite`."""
-    id: ID!
+    nodeId: ID!
   ): Invite
 
   """Reads a single `Message` using its globally unique `ID`."""
   message(
     """The globally unique `ID` to be used in selecting a single `Message`."""
-    id: ID!
+    nodeId: ID!
   ): Message
 
   """Reads a single `Organization` using its globally unique `ID`."""
@@ -406,19 +406,19 @@ type Query implements Node {
     """
     The globally unique `ID` to be used in selecting a single `Organization`.
     """
-    id: ID!
+    nodeId: ID!
   ): Organization
 
   """Reads a single `Session` using its globally unique `ID`."""
   session(
     """The globally unique `ID` to be used in selecting a single `Session`."""
-    id: ID!
+    nodeId: ID!
   ): Session
 
   """Reads a single `Tag` using its globally unique `ID`."""
   tag(
     """The globally unique `ID` to be used in selecting a single `Tag`."""
-    id: ID!
+    nodeId: ID!
   ): Tag
 
   """Reads a single `UserConfig` using its globally unique `ID`."""
@@ -426,13 +426,13 @@ type Query implements Node {
     """
     The globally unique `ID` to be used in selecting a single `UserConfig`.
     """
-    id: ID!
+    nodeId: ID!
   ): UserConfig
 
   """Reads a single `User` using its globally unique `ID`."""
   user(
     """The globally unique `ID` to be used in selecting a single `User`."""
-    id: ID!
+    nodeId: ID!
   ): User
 
   """Reads a single `VerificationRequest` using its globally unique `ID`."""
@@ -440,7 +440,7 @@ type Query implements Node {
     """
     The globally unique `ID` to be used in selecting a single `VerificationRequest`.
     """
-    id: ID!
+    nodeId: ID!
   ): VerificationRequest
 }
 
@@ -449,7 +449,7 @@ interface Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
+  nodeId: ID!
 }
 
 """A connection to a list of `Account` values."""
@@ -473,8 +473,8 @@ type Account implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   compoundId: String!
   userId: Int!
   providerType: String!
@@ -553,8 +553,8 @@ enum AccountsOrderBy {
 A condition to be used against `Account` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input AccountCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `compoundId` field."""
   compoundId: String
@@ -608,8 +608,8 @@ type Category implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   organizationId: Int!
   name: String
   color: String
@@ -651,8 +651,8 @@ type Organization implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   userId: Int!
   slug: String
 
@@ -809,8 +809,8 @@ type User implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   name: String
   email: String
   emailVerified: Datetime
@@ -953,8 +953,8 @@ A condition to be used against `Organization` object types. All fields are
 tested for equality and combined with a logical ‘and.’
 """
 input OrganizationCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `userId` field."""
   userId: Int
@@ -1029,8 +1029,8 @@ type UserConfig implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   userId: Int!
   defaultOrganization: Int!
 
@@ -1085,8 +1085,8 @@ A condition to be used against `UserConfig` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input UserConfigCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `userId` field."""
   userId: Int
@@ -1115,8 +1115,8 @@ A condition to be used against `Category` object types. All fields are tested
 for equality and combined with a logical ‘and.’
 """
 input CategoryCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
@@ -1149,8 +1149,8 @@ type Message implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   organizationId: Int!
   content: String
 
@@ -1219,8 +1219,8 @@ type Tag implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   name: String
   categoryId: Int!
 
@@ -1313,8 +1313,8 @@ enum MessagesOrderBy {
 A condition to be used against `Message` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input MessageCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
@@ -1344,8 +1344,8 @@ type Invite implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   organizationId: Int!
   email: String
 
@@ -1379,8 +1379,8 @@ enum InvitesOrderBy {
 A condition to be used against `Invite` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input InviteCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
@@ -1432,8 +1432,8 @@ enum TagsOrderBy {
 A condition to be used against `Tag` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input TagCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `name` field."""
   name: String
@@ -1472,8 +1472,8 @@ type Session implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   userId: Int!
   expires: Datetime!
   sessionToken: String!
@@ -1516,8 +1516,8 @@ enum SessionsOrderBy {
 A condition to be used against `Session` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input SessionCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `userId` field."""
   userId: Int
@@ -1589,8 +1589,8 @@ enum UsersOrderBy {
 A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’
 """
 input UserCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `name` field."""
   name: String
@@ -1634,8 +1634,8 @@ type VerificationRequest implements Node {
   """
   A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  id: ID!
-  rowId: Int!
+  nodeId: ID!
+  id: Int!
   identifier: String!
   token: String!
   expires: Datetime!
@@ -1676,8 +1676,8 @@ A condition to be used against `VerificationRequest` object types. All fields
 are tested for equality and combined with a logical ‘and.’
 """
 input VerificationRequestCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
+  """Checks for equality with the object’s `id` field."""
+  id: Int
 
   """Checks for equality with the object’s `identifier` field."""
   identifier: String

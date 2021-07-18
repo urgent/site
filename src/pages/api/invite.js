@@ -5,7 +5,7 @@ import axios from 'axios';
 
 export default async (req, res) => {
     const {
-        query: { email, slug },
+        body: { email, slug },
         method,
     } = req
     // add to invitation table
