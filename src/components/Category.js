@@ -160,7 +160,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
 
     return (
         <Grid
-            maxWidth={[16, 24, 36, 48, 48]}
+            maxWidth={[16, 24, 36, 96, 96]}
             minHeight={24}
             mx="auto"
             my={4}

@@ -22,7 +22,7 @@ function MyApp({ Component, pageProps }) {
           <ChakraProvider theme={theme}>
             <Grid
               data-cy="grid"
-              templateColumns="[sidebar] 1fr [content] 3fr [info] 1fr"
+              templateColumns="[sidebar] 2fr [content] 7fr"
               templateRows="[nav] 5rem [body] auto [footer] 600px"
               bg={"background.50"}
               color={"text.600"}
