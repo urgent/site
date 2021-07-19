@@ -22,8 +22,17 @@ export type CategoryInsertCategoryMutationResponse = {|
   +createCategory: ?{|
     +category: ?{|
       +id: string,
+      +rowId: number,
       +name: ?string,
       +color: ?string,
+      +tagsByCategoryId: {|
+        +__id: string,
+        +edges: $ReadOnlyArray<{|
+          +node: ?{|
+            +name: ?string
+          |}
+        |}>,
+      |},
     |}
   |}
 |};
@@ -41,8 +50,17 @@ mutation CategoryInsertCategoryMutation(
   createCategory(input: $input) {
     category {
       id
+      rowId
       name
       color
+      tagsByCategoryId {
+        edges {
+          node {
+            name
+            id
+          }
+        }
+      }
     }
   }
 }
@@ -69,34 +87,42 @@ v2 = [
 v3 = {
   "alias": null,
   "args": null,
-  "concreteType": "Category",
-  "kind": "LinkedField",
-  "name": "category",
-  "plural": false,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
+},
+v7 = {
+  "kind": "ClientExtension",
   "selections": [
     {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
-      "name": "id",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "name",
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "color",
+      "name": "__id",
       "storageKey": null
     }
-  ],
-  "storageKey": null
+  ]
 };
 return {
   "fragment": {
@@ -116,7 +142,56 @@ return {
         "name": "createCategory",
         "plural": false,
         "selections": [
-          (v3/*: any*/)
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Category",
+            "kind": "LinkedField",
+            "name": "category",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/),
+              (v6/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "TagsConnection",
+                "kind": "LinkedField",
+                "name": "tagsByCategoryId",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "TagsEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Tag",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v5/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v7/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
         ],
         "storageKey": null
       }
@@ -141,7 +216,57 @@ return {
         "name": "createCategory",
         "plural": false,
         "selections": [
-          (v3/*: any*/),
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "Category",
+            "kind": "LinkedField",
+            "name": "category",
+            "plural": false,
+            "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/),
+              (v6/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "TagsConnection",
+                "kind": "LinkedField",
+                "name": "tagsByCategoryId",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "TagsEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Tag",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v5/*: any*/),
+                          (v3/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v7/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
           {
             "alias": null,
             "args": null,
@@ -169,16 +294,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "24e1995308236b98e7f5cd2aa29113dd",
+    "cacheID": "924621411971e0c62745c0ef9e6e3083",
     "id": null,
     "metadata": {},
     "name": "CategoryInsertCategoryMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      name\n      color\n    }\n  }\n}\n"
+    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '0dea7edc93c4d89fcb01afc4dccfff44';
+(node/*: any*/).hash = '695f4415e7700778bf0b5c77b3f263a8';
 
 module.exports = node;

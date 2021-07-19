@@ -11,8 +11,17 @@ const InsertCategoryMutation = graphql`
     createCategory(input: $input) {
       category @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
         id
+        rowId
         name
         color
+        tagsByCategoryId {
+            __id
+            edges {
+                node {
+                    name
+                }
+            }
+        }
       }
     }
   }
@@ -25,6 +34,14 @@ const UpdateCategoryMutation = graphql`
         rowId
         name
         color
+        tagsByCategoryId {
+            __id
+            edges {
+                node {
+                    name
+                }
+            }
+        }
       }
     }
   }

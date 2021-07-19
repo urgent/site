@@ -21,6 +21,7 @@ export type TagInsertTagMutationResponse = {|
   +createTag: ?{|
     +tag: ?{|
       +id: string,
+      +rowId: number,
       +name: ?string,
     |}
   |}
@@ -39,6 +40,7 @@ mutation TagInsertTagMutation(
   createTag(input: $input) {
     tag {
       id
+      rowId
       name
     }
   }
@@ -76,6 +78,13 @@ v3 = {
       "args": null,
       "kind": "ScalarField",
       "name": "id",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "rowId",
       "storageKey": null
     },
     {
@@ -159,16 +168,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "94cf6442b8a7504b24ef94203e03affd",
+    "cacheID": "4fa480e889a01b0d281742d95419df4e",
     "id": null,
     "metadata": {},
     "name": "TagInsertTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagInsertTagMutation(\n  $input: CreateTagInput!\n) {\n  createTag(input: $input) {\n    tag {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "mutation TagInsertTagMutation(\n  $input: CreateTagInput!\n) {\n  createTag(input: $input) {\n    tag {\n      id\n      rowId\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '82e39ed00cafae27b5a34173b3faa174';
+(node/*: any*/).hash = '3a9020573700971cb4a2f9c7d3809c58';
 
 module.exports = node;

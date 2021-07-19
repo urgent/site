@@ -8,6 +8,7 @@ const InsertTagMutation = graphql`
     createTag(input: $input) {
       tag @appendNode(connections: $connections, edgeTypeName: "TagsEdge") {
         id
+        rowId
         name
       }
     }

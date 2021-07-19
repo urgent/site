@@ -23,6 +23,14 @@ export type CategoryUpdateCategoryMutationResponse = {|
       +rowId: number,
       +name: ?string,
       +color: ?string,
+      +tagsByCategoryId: {|
+        +__id: string,
+        +edges: $ReadOnlyArray<{|
+          +node: ?{|
+            +name: ?string
+          |}
+        |}>,
+      |},
     |}
   |}
 |};
@@ -42,6 +50,14 @@ mutation CategoryUpdateCategoryMutation(
       rowId
       name
       color
+      tagsByCategoryId {
+        edges {
+          node {
+            name
+            id
+          }
+        }
+      }
       id
     }
   }
@@ -83,6 +99,25 @@ v4 = {
   "kind": "ScalarField",
   "name": "color",
   "storageKey": null
+},
+v5 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -109,7 +144,42 @@ return {
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
-              (v4/*: any*/)
+              (v4/*: any*/),
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "TagsConnection",
+                "kind": "LinkedField",
+                "name": "tagsByCategoryId",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "TagsEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Tag",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
+                "storageKey": null
+              }
             ],
             "storageKey": null
           }
@@ -148,10 +218,40 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
-                "name": "id",
+                "concreteType": "TagsConnection",
+                "kind": "LinkedField",
+                "name": "tagsByCategoryId",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "TagsEdge",
+                    "kind": "LinkedField",
+                    "name": "edges",
+                    "plural": true,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "Tag",
+                        "kind": "LinkedField",
+                        "name": "node",
+                        "plural": false,
+                        "selections": [
+                          (v3/*: any*/),
+                          (v6/*: any*/)
+                        ],
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  },
+                  (v5/*: any*/)
+                ],
                 "storageKey": null
-              }
+              },
+              (v6/*: any*/)
             ],
             "storageKey": null
           }
@@ -161,16 +261,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "08397c18c80cbd2ecbc042b3fe48f561",
+    "cacheID": "fbf702d917af95a359f618ce5651b710",
     "id": null,
     "metadata": {},
     "name": "CategoryUpdateCategoryMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryUpdateCategoryMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      id\n    }\n  }\n}\n"
+    "text": "mutation CategoryUpdateCategoryMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '4efdfabb716851b8153edfdc8dba5501';
+(node/*: any*/).hash = '25daafbd85ce21402bf8acbb1b1e2e9e';
 
 module.exports = node;
