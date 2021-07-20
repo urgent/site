@@ -108,6 +108,7 @@ CREATE TABLE public.tag (
 CREATE TABLE public.message_tag (
     message_id INTEGER NOT NULL CONSTRAINT message_tag_message_id_fkey REFERENCES public.message(id) ON DELETE CASCADE,
     tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
+    organization_id INT NOT NULL CONSTRAINT message_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
 );
 
 -- Filter messages shown to user based on organization
@@ -163,9 +164,6 @@ CREATE POLICY select_if_organization
       WHERE sessions.session_token = current_user_id()
   ));
 
--- messages without message_tags are blocked by select_if_organization policy
--- allow untagged messages to be selected
--- needed to insert message, then select the id for message tag insert
 CREATE POLICY select_for_insert
   on message
   for select 
@@ -200,10 +198,9 @@ CREATE POLICY select_if_organization
 CREATE POLICY select_if_organization
   on message_tag
   for select 
-  USING ( message_id IN (
-    SELECT message.id 
-      FROM message
-      INNER JOIN organization_user ON (organization_user.organization_id = message.organization_id) 
+  USING ( organization_id IN (
+    SELECT organization_user.organization_id 
+      FROM organization_user
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)
       WHERE sessions.session_token = current_user_id()));
 
@@ -427,11 +424,11 @@ WITH moved_rows AS (
     VALUES($1, $2)
   RETURNING *
 ),
--- many to many relation
 
+-- many to many relation
 moved_tags AS (
-  INSERT INTO public.message_tag (message_id, tag_id)
-  SELECT moved_rows.id, tagInput.tag_id
+  INSERT INTO public.message_tag (message_id, tag_id, organization_id)
+  SELECT moved_rows.id, tagInput.tag_id, $1
   FROM moved_rows, UNNEST($3) as tagInput(tag_id)
   RETURNING *
 )
