@@ -174,13 +174,13 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   return (
     <Grid
       gridTemplateColumns={[
-        "repeat(auto-fit, minmax(100px, 1fr))",
-        "repeat(auto-fit, minmax(100px, 1fr))",
-        "repeat(auto-fit, minmax(200px, 1fr))",
-        "repeat(auto-fit, minmax(200px, 1fr))",
-        "repeat(auto-fit, minmax(200px, 1fr))"]}
+        "repeat(auto-fit, minmax(200px, 2fr))",
+        "repeat(auto-fit, minmax(200px, 2fr))",
+        "repeat(auto-fit, minmax(400px, 2fr))",
+        "repeat(auto-fit, minmax(400px, 2fr))",
+        "repeat(auto-fit, minmax(400px, 2fr))"]}
       gridGap="5px"
-      gridAutoRows={["100px", "150px", "200px", "200px", "200px"]}
+      gridAutoRows={["200px", "300px", "400px", "400px", "400px"]}
       gridAutoFlow="dense"
     >
       {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => (
