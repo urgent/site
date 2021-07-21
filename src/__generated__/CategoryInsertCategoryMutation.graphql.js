@@ -25,6 +25,7 @@ export type CategoryInsertCategoryMutationResponse = {|
       +rowId: number,
       +name: ?string,
       +color: ?string,
+      +organizationId: number,
       +tagsByCategoryId: {|
         +__id: string,
         +edges: $ReadOnlyArray<{|
@@ -53,6 +54,7 @@ mutation CategoryInsertCategoryMutation(
       rowId
       name
       color
+      organizationId
       tagsByCategoryId {
         edges {
           node {
@@ -113,6 +115,13 @@ v6 = {
   "storageKey": null
 },
 v7 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "organizationId",
+  "storageKey": null
+},
+v8 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -154,6 +163,7 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
+              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -185,7 +195,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -228,6 +238,7 @@ return {
               (v4/*: any*/),
               (v5/*: any*/),
               (v6/*: any*/),
+              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -260,7 +271,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v7/*: any*/)
+                  (v8/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -294,16 +305,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "924621411971e0c62745c0ef9e6e3083",
+    "cacheID": "f9722b9d03e6a51a28c53a743975fe46",
     "id": null,
     "metadata": {},
     "name": "CategoryInsertCategoryMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      organizationId\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '695f4415e7700778bf0b5c77b3f263a8';
+(node/*: any*/).hash = '423687712c804dfb0c8590b6c8e42a33';
 
 module.exports = node;

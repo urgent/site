@@ -14,6 +14,7 @@ const InsertCategoryMutation = graphql`
         rowId
         name
         color
+        organizationId
         tagsByCategoryId {
             __id
             edges {
@@ -110,7 +111,7 @@ export function AddCategory({ connectionId, focusedOrganization }) {
             setNameText('');
             setColorText('');
         },
-        [nameText, setNameText, colorText, setColorText, insertCategory, focusedOrganization],
+        [nameText, setNameText, colorText, setColorText, insertCategory, focusedOrganization, connectionId],
     );
 
     return (
