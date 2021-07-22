@@ -2,6 +2,7 @@ import React, { useState, useCallback } from "react"
 import { Button, Box, VStack, Input, Text } from "@chakra-ui/react"
 import useMutation from './useMutation'
 import Toolbar from './Toolbar';
+import AlertDialog from "./AlertDialog";
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
@@ -144,6 +145,7 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
   const [tagMode, setTagMode] = useState('view')
   const [focusedTag, setFocusedTag] = useState(false)
   const [isUpdateTagPending, updateTag] = useMutation(UpdateTagMutation);
+  const [isConfirmOpen, setConfirmIsOpen] = React.useState(false)
 
   const onEnter = useCallback(
     e => {
@@ -163,29 +165,36 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
     }
   )
 
+  function confirmDeleteTag() {
+    // need connections to update
+    const connections = messages.edges.map(edge => {
+      return edge.node.messageTagsByMessageId.__id;
+    })
+    deleteTag({
+      variables: {
+        tag: {
+          tagId: id,
+        },
+        messageTag: {
+          tagId: id,
+        },
+        connections: [...connections, connectionId],
+      },
+      updater: store => { },
+    })
+  }
+
   return (
     <>
       <Box display={display(edit)}>
-        <Toolbar deleteClick={() => {
-          // need connections to update
-          const connections = messages.edges.map(edge => {
-            return edge.node.messageTagsByMessageId.__id;
-          })
-          deleteTag({
-            variables: {
-              tag: {
-                tagId: id,
-              },
-              messageTag: {
-                tagId: id,
-              },
-              connections: [...connections, connectionId],
-            },
-            updater: store => { },
-          })
-        }
-        }
-
+        <AlertDialog
+          title={`Delete ${tag.name}`}
+          body={`Tags on messages will be lost. Are you sure you want to delete all ${tag.name} tags?`}
+          click={confirmDeleteTag}
+          isOpen={isConfirmOpen}
+          setIsOpen={setConfirmIsOpen}
+        />
+        <Toolbar deleteClick={() => setConfirmIsOpen(true)}
           editClick={() => {
             if (tagMode === 'edit') {
               setTagMode('view')
