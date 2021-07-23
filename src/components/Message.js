@@ -26,7 +26,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows="[menu] 2em [body] auto [tags] 2em"
+      gridTemplateRows="[menu] 2em [body] auto [tags] 4em"
       gridTemplateColumns="[body] auto [menu] 4.5em"
       gridColumn={gridColumn}
       gridRow={gridRow}
