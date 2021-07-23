@@ -82,6 +82,7 @@ const pagesFragment = graphql`
 `;
 
 function defaultFocusedOrganization(data) {
+  console.log(data);
   // if user config is set in database, use user config
   if (data.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
     return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
