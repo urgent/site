@@ -9,7 +9,7 @@ import {
     Button
 } from "@chakra-ui/react"
 
-export default function ({ title, body, click, isOpen, setIsOpen }) {
+function alert({ title, body, click, isOpen, setIsOpen }) {
     const onClose = () => setIsOpen(false)
     const cancelRef = React.useRef()
 
@@ -44,3 +44,5 @@ export default function ({ title, body, click, isOpen, setIsOpen }) {
         </>
     )
 }
+
+export default alert;

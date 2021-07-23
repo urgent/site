@@ -1,10 +1,12 @@
+import React, { useRef } from 'react'
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 import 'react-quill/dist/quill.snow.css';
 
-export function Editor({ value, onChange, onSubmit }) {
+export default function Editor({ value, onChange, onSubmit, editorRef }) {
+
     return (
         <>
-            <div><ReactQuill style={{ height: "70%" }} theme="snow" value={value} onChange={onChange} /></div>
+            <div><ReactQuill ref={editorRef} theme="snow" value={value} onChange={onChange} /></div>
             <br /><br /><br />
             <button onClick={onSubmit}>Save</button>
         </>

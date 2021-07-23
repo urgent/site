@@ -1,9 +1,11 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import Message from "./Message"
-import { Editor } from './Editor';
+import Editor from './Editor';
 import { Grid } from "@chakra-ui/react"
 import { graphql } from 'react-relay';
 import useMutation from './useMutation'
+const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
+
 
 const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
@@ -136,17 +138,20 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
 
+  const editorRef = useRef(null)
+
   // Editor submit callback
   const onSubmit = useCallback(
     event => {
       event.preventDefault();
+      const delta = JSON.stringify(editorRef.current.getEditor().getContents());
       if (messageMode === 'edit') {
         const [messageId] = focusedMessage;
         updateMessage({
           variables: {
             input: {
               id: messageId,
-              content: editorText,
+              content: delta,
             },
           },
           updater: store => { },
@@ -157,7 +162,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           variables: {
             input: {
               organizationId: focusedOrganization,
-              content: editorText,
+              content: delta,
               tags: tagFilter,
             },
             connections: [messages?.__id]
@@ -218,11 +223,11 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
             setMessageMode('view');
           }}
         >
-          {edge.node.content}
+          {<ReactQuill value={JSON.parse(edge.node.content)} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
         </Message>
       ))}
       <Message gridColumn="span 2" gridRow="span 2">
-        <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} >
+        <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} editorRef={(el) => editorRef.current = el}>
         </Editor>
       </Message>
     </Grid>)
