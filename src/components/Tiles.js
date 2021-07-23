@@ -188,44 +188,53 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridAutoRows={["200px", "300px", "400px", "400px", "400px"]}
       gridAutoFlow="dense"
     >
-      {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => (
-        <Message
-          key={index}
-          edit={edit}
-          tags={edge.node.messageTagsByMessageId}
-          tagFilter={tagFilter}
-          id={edge.node.rowId}
-          setFocusedMessage={setFocusedMessage}
-          gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
-          gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
-          editClick={(messageId, collectionId, content) => {
-            if (messageMode === 'edit') {
-              // turn off edit mode
-              setMessageMode('view')
-              setEditorText('')
-            } else {
-              // run edit
-              setMessageMode('edit')
-              setFocusedMessage([messageId, collectionId])
-              setEditorText(content)
-            }
-          }}
-          deleteClick={(messageId, collectionId) => {
-            deleteMessage({
-              variables: {
-                input: {
-                  messageId: messageId,
+      {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => {
+        let messageContent;
+        try {
+          messageContent = JSON.parse(edge.node.content);
+        } catch (e) {
+          messageContent = edge.node.content;
+        }
+
+        return (
+          <Message
+            key={index}
+            edit={edit}
+            tags={edge.node.messageTagsByMessageId}
+            tagFilter={tagFilter}
+            id={edge.node.rowId}
+            setFocusedMessage={setFocusedMessage}
+            gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
+            gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
+            editClick={(messageId, collectionId, content) => {
+              if (messageMode === 'edit') {
+                // turn off edit mode
+                setMessageMode('view')
+                setEditorText('')
+              } else {
+                // run edit
+                setMessageMode('edit')
+                setFocusedMessage([messageId, collectionId])
+                setEditorText(content)
+              }
+            }}
+            deleteClick={(messageId, collectionId) => {
+              deleteMessage({
+                variables: {
+                  input: {
+                    messageId: messageId,
+                  },
+                  connections: [messages?.__id]
                 },
-                connections: [messages?.__id]
-              },
-              updater: store => { },
-            });
-            setMessageMode('view');
-          }}
-        >
-          {<ReactQuill value={JSON.parse(edge.node.content)} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
-        </Message>
-      ))}
+                updater: store => { },
+              });
+              setMessageMode('view');
+            }}
+          >
+            {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+          </Message>
+        )
+      })}
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} editorRef={(el) => editorRef.current = el}>
         </Editor>
