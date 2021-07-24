@@ -30,6 +30,8 @@ export default NextAuth({
                 if (organizationRes.rows.length > 0) {
                     // User has invite from invite signup page. Add user to invite organization
                     await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES($1,$2)`, [organizationRes.rows[0]['organization_id'], message.id])
+                    await pool.query(`DELETE FROM user_config WHERE user_id=$1`, [message.id])
+                    await pool.query(`INSERT INTO public.user_config(default_organization, user_id) VALUES($1,$2)`, [organizationRes.rows[0]['organization_id'], message.id]);
                 }
 
             }

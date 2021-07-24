@@ -461,12 +461,19 @@ $$ LANGUAGE sql VOLATILE STRICT;
 CREATE FUNCTION public.create_user_config(default_organization Int)
 RETURNS public.user_config
 AS $$
-  INSERT INTO public.user_config(user_id, default_organization)
-    SELECT sessions.user_id, $1 FROM sessions WHERE sessions.session_token = current_user_id()
-  ON CONFLICT (user_id) 
-  DO 
-    UPDATE SET default_organization = $1
-  RETURNING *;
+  WITH deleted_rows AS (
+    DELETE FROM user_config WHERE user_id in (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id())
+  ),
+  moved_rows AS (
+    INSERT INTO public.user_config(user_id, default_organization)
+      SELECT sessions.user_id, $1 FROM sessions WHERE sessions.session_token = current_user_id()
+    ON CONFLICT (user_id) 
+    DO 
+      UPDATE SET default_organization = $1
+    RETURNING *
+  )
+
+  SELECT * FROM moved_rows
    
 $$ LANGUAGE sql VOLATILE STRICT;
 

@@ -82,7 +82,6 @@ const pagesFragment = graphql`
 `;
 
 function defaultFocusedOrganization(data) {
-  console.log(data);
   // if user config is set in database, use user config
   if (data.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
     return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
@@ -100,9 +99,7 @@ function Home({ preloadedQuery }) {
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  console.log(defaultFocusedOrganization(data))
   const [focusedOrganization, setFocusedOrganization] = useState(defaultFocusedOrganization(data))
-  console.log(focusedOrganization);
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
   const [messageMode, setMessageMode] = useState('view')
 
