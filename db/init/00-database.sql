@@ -230,6 +230,7 @@ CREATE POLICY select_if_organization_invited
       FROM organization_user
       INNER JOIN sessions ON (sessions.user_id = organization_user.user_id)
       WHERE sessions.session_token = current_user_id()));
+      
 
 CREATE POLICY select_if_server
   on organization
@@ -250,6 +251,25 @@ CREATE POLICY insert_if_server
   ON organization_user
   FOR INSERT
   WITH CHECK ( (SELECT current_user_id() = 'server'));
+
+-- limits config to only logged in user
+-- if policy does not exist, message will only show if config drop down blurs
+
+CREATE POLICY select_if_organization
+  on user_config
+  for select 
+  USING ( user_config.user_id IN (
+    SELECT sessions.user_id 
+      FROM sessions     
+      WHERE sessions.session_token = current_user_id()));
+
+CREATE POLICY select_if_organization
+  on organization
+  for select 
+  USING ( organization.user_id IN (
+    SELECT sessions.user_id 
+      FROM sessions     
+      WHERE sessions.session_token = current_user_id()));
 
 -- RLS message
 
