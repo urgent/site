@@ -152,6 +152,8 @@ ALTER TABLE public.organization_user ENABLE ROW LEVEL SECURITY;
 
 ALTER TABLE public.organization ENABLE ROW LEVEL SECURITY;
 
+ALTER TABLE public.user_config ENABLE ROW LEVEL SECURITY;
+
 -- these selects might be creating errors with create message function. Can't select ID.
 
 CREATE POLICY select_if_organization
