@@ -7,7 +7,7 @@ export default function SignIn({ children }) {
     if (session) {
         return <>
             Signed in as {session.user.name} <br />
-            <button onClick={signOut}>Sign out</button>
+            <button onClick={signOut} data-cy="signout">Sign out</button>
         </>
     }
     else {
@@ -18,6 +18,7 @@ export default function SignIn({ children }) {
                 size="md"
                 backgroundColor="primary.500"
                 _hover={{ background: "hover.500" }}
+                data-cy="signin"
             >
                 {children}
             </Button>

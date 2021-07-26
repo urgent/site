@@ -58,3 +58,5 @@ amplifytools.xcconfig
 app/
 #traefik ssl cert
 letsencrypt/
+
+cypress.env.json
