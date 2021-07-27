@@ -52,6 +52,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         alignSelf="end"
         px={4}
         pb={2}
+        data-cy="body"
       >
         {list(tags)}
         {display(edit, <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />)}

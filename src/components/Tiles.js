@@ -187,6 +187,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridGap="5px"
       gridAutoRows={["200px", "300px", "400px", "400px", "400px"]}
       gridAutoFlow="dense"
+      data-cy="tiles"
     >
       {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => {
         let messageContent;
@@ -230,6 +231,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
               });
               setMessageMode('view');
             }}
+            data-cy="message"
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>
