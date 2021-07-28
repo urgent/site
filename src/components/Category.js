@@ -5,6 +5,7 @@ import { AddTag } from "./Tag"
 import { Grid, VStack, Box, Wrap, WrapItem, Button, Input, Text } from "@chakra-ui/react"
 import { HamburgerIcon } from "@chakra-ui/icons"
 import useMutation from './useMutation'
+import AlertDialog from "./AlertDialog";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation($input:CreateCategoryInput!, $connections: [ID!]!) {
@@ -52,7 +53,7 @@ const DeleteCategoryMutation = graphql`
     mutation CategoryDeleteMutation($input:DeleteCategoryInput!, $connections: [ID!]!) {
         deleteCategory(input: $input) {
             category {
-                id @deleteEdge(connections: $connections)
+                __id @deleteEdge(connections: $connections)
             }
             query {
                 allMessages {
@@ -67,6 +68,9 @@ const DeleteCategoryMutation = graphql`
                         }
                         content
                     }
+                }
+                allCategories {
+                    __id @deleteEdge(connections: $connections)
                 }
             }
         }
@@ -156,6 +160,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [editCategoryColor, setEditCategoryColor] = useState(category.color);
     const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
+    const [isConfirmOpen, setConfirmIsOpen] = React.useState(false)
 
     const onEnter = useCallback(
         e => {
@@ -176,6 +181,23 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
         }
     )
 
+    function confirmDeleteCategory() {
+        // need connections to update
+        const connections = messages.edges.map(edge => {
+            return edge.node.messageTagsByMessageId.__id;
+        })
+
+        deleteCategory({
+            variables: {
+                input: {
+                    categoryId: category.rowId
+                },
+                connections: [...connections, connectionId],
+            },
+            updater: store => { },
+        })
+    }
+
     return (
         <Grid
             maxWidth={[16, 24, 36, 96, 96]}
@@ -194,6 +216,14 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 gridRow="toolbar"
                 gridColumn="content"
             >
+                <AlertDialog
+                    title={`Delete ${category.name}`}
+                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category.name} category?`}
+                    click={confirmDeleteCategory}
+                    isOpen={isConfirmOpen}
+                    setIsOpen={setConfirmIsOpen}
+                />
+
                 {display(edit, <Toolbar
                     editClick={() => {
                         if (categoryMode === 'edit') {
@@ -205,23 +235,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                             setFocusedCategory(category.rowId)
                         }
                     }}
-
-                    deleteClick={() => {
-                        // need connections to update
-                        const connections = messages.edges.map(edge => {
-                            return edge.node.messageTagsByMessageId.__id;
-                        })
-
-                        deleteCategory({
-                            variables: {
-                                input: {
-                                    categoryId: category.rowId
-                                },
-                                connections: [...connections, connectionId],
-                            },
-                            updater: store => { },
-                        })
-                    }}
+                    deleteClick={() => setConfirmIsOpen(true)}
                 />)}
             </Box>
             <Box

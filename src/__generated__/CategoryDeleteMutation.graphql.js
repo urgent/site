@@ -19,7 +19,7 @@ export type CategoryDeleteMutationVariables = {|
 export type CategoryDeleteMutationResponse = {|
   +deleteCategory: ?{|
     +category: ?{|
-      +id: string
+      +__id: string
     |},
     +query: ?{|
       +allMessages: ?{|
@@ -34,7 +34,10 @@ export type CategoryDeleteMutationResponse = {|
           |},
           +content: ?string,
         |}>
-      |}
+      |},
+      +allCategories: ?{|
+        +__id: string
+      |},
     |},
   |}
 |};
@@ -95,10 +98,19 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "__id",
   "storageKey": null
 },
 v4 = {
+  "kind": "ClientExtension",
+  "selections": [
+    (v3/*: any*/)
+  ]
+},
+v5 = [
+  (v4/*: any*/)
+],
+v6 = {
   "alias": null,
   "args": null,
   "concreteType": "MessageTagsEdge",
@@ -127,27 +139,42 @@ v4 = {
   ],
   "storageKey": null
 },
-v5 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "__id",
-  "storageKey": null
-},
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "content",
   "storageKey": null
 },
-v7 = [
-  {
-    "kind": "Variable",
-    "name": "connections",
-    "variableName": "connections"
-  }
-];
+v8 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
+},
+v9 = {
+  "kind": "ClientExtension",
+  "selections": [
+    (v3/*: any*/),
+    {
+      "alias": null,
+      "args": null,
+      "filters": null,
+      "handle": "deleteEdge",
+      "key": "",
+      "kind": "ScalarHandle",
+      "name": "__id",
+      "handleArgs": [
+        {
+          "kind": "Variable",
+          "name": "connections",
+          "variableName": "connections"
+        }
+      ]
+    }
+  ]
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -173,9 +200,7 @@ return {
             "kind": "LinkedField",
             "name": "category",
             "plural": false,
-            "selections": [
-              (v3/*: any*/)
-            ],
+            "selections": (v5/*: any*/),
             "storageKey": null
           },
           {
@@ -210,21 +235,26 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
-                          {
-                            "kind": "ClientExtension",
-                            "selections": [
-                              (v5/*: any*/)
-                            ]
-                          }
+                          (v6/*: any*/),
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/)
+                      (v7/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
+                "storageKey": null
+              },
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CategoriesConnection",
+                "kind": "LinkedField",
+                "name": "allCategories",
+                "plural": false,
+                "selections": (v5/*: any*/),
                 "storageKey": null
               }
             ],
@@ -262,17 +292,8 @@ return {
             "name": "category",
             "plural": false,
             "selections": [
-              (v3/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "filters": null,
-                "handle": "deleteEdge",
-                "key": "",
-                "kind": "ScalarHandle",
-                "name": "id",
-                "handleArgs": (v7/*: any*/)
-              }
+              (v8/*: any*/),
+              (v9/*: any*/)
             ],
             "storageKey": null
           },
@@ -308,35 +329,32 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
-                          {
-                            "kind": "ClientExtension",
-                            "selections": [
-                              (v5/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "filters": null,
-                                "handle": "deleteEdge",
-                                "key": "",
-                                "kind": "ScalarHandle",
-                                "name": "__id",
-                                "handleArgs": (v7/*: any*/)
-                              }
-                            ]
-                          }
+                          (v6/*: any*/),
+                          (v9/*: any*/)
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/),
-                      (v3/*: any*/)
+                      (v7/*: any*/),
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              (v3/*: any*/)
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "CategoriesConnection",
+                "kind": "LinkedField",
+                "name": "allCategories",
+                "plural": false,
+                "selections": [
+                  (v9/*: any*/)
+                ],
+                "storageKey": null
+              },
+              (v8/*: any*/)
             ],
             "storageKey": null
           }
@@ -356,6 +374,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '68fd28c189d6bb9dd6965b84ef697a15';
+(node/*: any*/).hash = 'c15b1c89794a1f657da2be0a91eb765a';
 
 module.exports = node;
