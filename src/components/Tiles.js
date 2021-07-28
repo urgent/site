@@ -231,7 +231,6 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
               });
               setMessageMode('view');
             }}
-            data-cy="message"
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>

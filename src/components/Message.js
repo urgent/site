@@ -30,6 +30,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
       gridTemplateColumns="[body] auto [menu] 4.5em"
       gridColumn={gridColumn}
       gridRow={gridRow}
+      data-cy="message"
     >
       <Box
         gridRow="menu"
