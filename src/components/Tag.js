@@ -187,7 +187,7 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
 
   return (
     <>
-      <Box display={display(edit)}>
+      <Box display={display(edit)} data-cy="tag_container">
         <AlertDialog
           title={`Delete ${tag.name}`}
           body={`Tags on messages will be lost. Are you sure you want to delete all ${tag.name} tags?`}
