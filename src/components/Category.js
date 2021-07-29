@@ -129,6 +129,7 @@ export function AddCategory({ connectionId, focusedOrganization }) {
                 onChange={(e) => setNameText(e.target.value)}
                 placeholder="Name"
                 value={nameText}
+                data-cy="add_category_name"
             />
             <Input
                 size={["sm", "sm", "sm", "md", "md"]}
@@ -140,7 +141,7 @@ export function AddCategory({ connectionId, focusedOrganization }) {
                 placeholder="Color"
                 value="E53E3E"
             />
-            <Button onClick={(e) => onSubmit(e)}>Add</Button>
+            <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>Add</Button>
         </VStack>
     )
 }
@@ -211,6 +212,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
             gridTemplateRows={`[toolbar] 2rem [titlebar] ${size(categoryMode)} [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
+            data-cy="category"
         >
             <Box
                 gridRow="toolbar"

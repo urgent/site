@@ -1,4 +1,4 @@
-describe('Login page', () => {
+describe('Message', () => {
     it('requires login', () => {
         cy.visit('/')
         // 1, for editor
@@ -7,7 +7,7 @@ describe('Login page', () => {
         cy.get('[data-cy=save]').click()
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
     })
-    it('creates message', () => {
+    it('creates', () => {
         cy.visit('/')
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
         cy.setCookie(Cypress.env('COOKIE_NAME'), Cypress.env('SESSION_TOKEN'));
@@ -16,7 +16,7 @@ describe('Login page', () => {
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 2)
     })
 
-    it('deletes message', () => {
+    it('deletes', () => {
         cy.visit('/')
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
         cy.setCookie(Cypress.env('COOKIE_NAME'), Cypress.env('SESSION_TOKEN'));

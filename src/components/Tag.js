@@ -87,9 +87,10 @@ export function AddTag({ connectionId, categoryId }) {
       paddingY={1}
       onChange={(e) => setName(e.target.value)}
       placeholder="Tag Name"
+      data-cy="add_tag_text"
       value={name}
     />
-    <Button size="xs" onClick={onSubmit} >Add Tag</Button>
+    <Button data-cy="add_tag_button" size="xs" onClick={onSubmit} >Add Tag</Button>
   </VStack>
 }
 
@@ -216,6 +217,7 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
         onClick={() => click(id, tagFilter)}
         isActive={isActive}
         {...styles}
+        data-cy="tag"
       >
         <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
 

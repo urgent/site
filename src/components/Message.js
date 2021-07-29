@@ -4,7 +4,7 @@ import { Grid, Box, Badge, Button } from "@chakra-ui/react"
 
 
 export function AddTagToMessage({ click }) {
-  return <Button onClick={click}>+</Button>;
+  return <Button data-cy="add_tag_to_message" onClick={click}>+</Button>;
 }
 
 function display(visible, element) {
@@ -15,7 +15,7 @@ function display(visible, element) {
 
 function list(tags) {
   if (tags) {
-    return tags.edges.map((edge, index) => <Badge key={index} color="white" mr={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>{edge.node.tagByTagId?.name}</Badge>)
+    return tags.edges.map((edge, index) => <Badge data-cy="message_tag" key={index} color="white" mr={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>{edge.node.tagByTagId?.name}</Badge>)
   }
 }
 

@@ -34,7 +34,7 @@ function alert({ title, body, click, isOpen, setIsOpen }) {
                             <Button ref={cancelRef} onClick={onClose}>
                                 Cancel
                             </Button>
-                            <Button variant="solid" color="white" backgroundColor="primary.500" _hover={{ background: "hover.500" }} onClick={() => { click(); setIsOpen(false); }} ml={3}>
+                            <Button data-cy="alert_confirm" variant="solid" color="white" backgroundColor="primary.500" _hover={{ background: "hover.500" }} onClick={() => { click(); setIsOpen(false); }} ml={3}>
                                 Delete
                             </Button>
                         </AlertDialogFooter>
