@@ -717,6 +717,35 @@ type Organization implements Node {
     condition: MessageCondition
   ): MessagesConnection!
 
+  """Reads and enables pagination through a set of `MessageTag`."""
+  messageTagsByOrganizationId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MessageTag`."""
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MessageTagCondition
+  ): MessageTagsConnection!
+
   """Reads and enables pagination through a set of `OrganizationUser`."""
   organizationUsersByOrganizationId(
     """Only read the first `n` values of the set."""
@@ -1207,12 +1236,16 @@ type MessageTagsConnection {
 type MessageTag {
   messageId: Int!
   tagId: Int!
+  organizationId: Int!
 
   """Reads a single `Message` that is related to this `MessageTag`."""
   messageByMessageId: Message
 
   """Reads a single `Tag` that is related to this `MessageTag`."""
   tagByTagId: Tag
+
+  """Reads a single `Organization` that is related to this `MessageTag`."""
+  organizationByOrganizationId: Organization
 }
 
 type Tag implements Node {
@@ -1264,6 +1297,8 @@ enum MessageTagsOrderBy {
   MESSAGE_ID_DESC
   TAG_ID_ASC
   TAG_ID_DESC
+  ORGANIZATION_ID_ASC
+  ORGANIZATION_ID_DESC
 }
 
 """
@@ -1276,6 +1311,9 @@ input MessageTagCondition {
 
   """Checks for equality with the object’s `tagId` field."""
   tagId: Int
+
+  """Checks for equality with the object’s `organizationId` field."""
+  organizationId: Int
 }
 
 """A `MessageTag` edge in the connection."""
@@ -1862,6 +1900,9 @@ type CreateMessageTagPayload {
   """Reads a single `Tag` that is related to this `MessageTag`."""
   tagByTagId: Tag
 
+  """Reads a single `Organization` that is related to this `MessageTag`."""
+  organizationByOrganizationId: Organization
+
   """An edge for our `MessageTag`. May be used by Relay 1."""
   messageTagEdge(
     """The method to use when ordering `MessageTag`."""
@@ -2075,6 +2116,9 @@ type DeleteMessageTagPayload {
   """Reads a single `Tag` that is related to this `MessageTag`."""
   tagByTagId: Tag
 
+  """Reads a single `Organization` that is related to this `MessageTag`."""
+  organizationByOrganizationId: Organization
+
   """An edge for our `MessageTag`. May be used by Relay 1."""
   messageTagEdge(
     """The method to use when ordering `MessageTag`."""
@@ -2090,6 +2134,7 @@ input DeleteMessageTagInput {
   """
   clientMutationId: String
   tagId: Int!
+  messageId: Int!
 }
 
 """The output of our `deleteTag` mutation."""
