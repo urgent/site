@@ -7,6 +7,10 @@ export function AddTagToMessage({ click }) {
   return <Button data-cy="add_tag_to_message" onClick={click}>+</Button>;
 }
 
+export function DeleteTagFromMessage({ click }) {
+  return <Button data-cy="delete_tag_from_message" onClick={click}>+</Button>;
+}
+
 function display(visible, element) {
   if (visible) {
     return element

@@ -55,6 +55,13 @@ describe('Tag', () => {
         cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=add_tag_to_message]').click()
         cy.get('[data-cy=category]:first-child [data-cy=tag]').click()
         cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=message_tag]').should('have.length', 1)
+        // delete tag from message
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=delete_tag_from_message]').click()
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=message_tag]').should('have.length', 0)
+        // add tag to message
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=add_tag_to_message]').click()
+        cy.get('[data-cy=category]:first-child [data-cy=tag]').click()
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=message_tag]').should('have.length', 1)
         // delete tag
         cy.get('[data-cy=category]:first-child [data-cy=tag_container] [data-cy=trash]').click()
         cy.get('[data-cy=alert_confirm').click()
