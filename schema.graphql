@@ -1797,6 +1797,12 @@ type Mutation {
     """
     input: DeleteTagInput!
   ): DeleteTagPayload
+  removeMessageTag(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: RemoveMessageTagInput!
+  ): RemoveMessageTagPayload
   updateCategory(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2134,7 +2140,6 @@ input DeleteMessageTagInput {
   """
   clientMutationId: String
   tagId: Int!
-  messageId: Int!
 }
 
 """The output of our `deleteTag` mutation."""
@@ -2169,6 +2174,47 @@ input DeleteTagInput {
   """
   clientMutationId: String
   tagId: Int!
+}
+
+"""The output of our `removeMessageTag` mutation."""
+type RemoveMessageTagPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  messageTag: MessageTag
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Message` that is related to this `MessageTag`."""
+  messageByMessageId: Message
+
+  """Reads a single `Tag` that is related to this `MessageTag`."""
+  tagByTagId: Tag
+
+  """Reads a single `Organization` that is related to this `MessageTag`."""
+  organizationByOrganizationId: Organization
+
+  """An edge for our `MessageTag`. May be used by Relay 1."""
+  messageTagEdge(
+    """The method to use when ordering `MessageTag`."""
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+  ): MessageTagsEdge
+}
+
+"""All input for the `removeMessageTag` mutation."""
+input RemoveMessageTagInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  tagId: Int!
+  messageId: Int!
 }
 
 """The output of our `updateCategory` mutation."""

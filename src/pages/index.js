@@ -19,6 +19,8 @@ const InsertMessageTagMutation = graphql`
   mutation pagesMessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
     createMessageTag(input: $input) {
       messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
+        messageId
+        tagId
         tagByTagId {
           name
           categoryByCategoryId {
@@ -64,6 +66,7 @@ const pagesFragment = graphql`
                       node {
                         __id
                         tagId
+                        messageId
                         tagByTagId {
                           __id
                           rowId

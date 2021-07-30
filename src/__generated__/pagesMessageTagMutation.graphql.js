@@ -20,12 +20,14 @@ export type pagesMessageTagMutationVariables = {|
 export type pagesMessageTagMutationResponse = {|
   +createMessageTag: ?{|
     +messageTag: ?{|
+      +messageId: number,
+      +tagId: number,
       +tagByTagId: ?{|
         +name: ?string,
         +categoryByCategoryId: ?{|
           +color: ?string
         |},
-      |}
+      |},
     |}
   |}
 |};
@@ -42,6 +44,8 @@ mutation pagesMessageTagMutation(
 ) {
   createMessageTag(input: $input) {
     messageTag {
+      messageId
+      tagId
       tagByTagId {
         name
         categoryByCategoryId {
@@ -77,17 +81,31 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "messageId",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "color",
+  "name": "tagId",
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
+},
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -120,6 +138,8 @@ return {
             "name": "messageTag",
             "plural": false,
             "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -128,7 +148,7 @@ return {
                 "name": "tagByTagId",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -137,7 +157,7 @@ return {
                     "name": "categoryByCategoryId",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -179,6 +199,8 @@ return {
             "name": "messageTag",
             "plural": false,
             "selections": [
+              (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -187,7 +209,7 @@ return {
                 "name": "tagByTagId",
                 "plural": false,
                 "selections": [
-                  (v3/*: any*/),
+                  (v5/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -196,12 +218,12 @@ return {
                     "name": "categoryByCategoryId",
                     "plural": false,
                     "selections": [
-                      (v4/*: any*/),
-                      (v5/*: any*/)
+                      (v6/*: any*/),
+                      (v7/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v5/*: any*/)
+                  (v7/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -235,16 +257,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3ff0d4948122a75af2a93d1ef67813c4",
+    "cacheID": "3c42991d1cdf86e78821b942e3f499af",
     "id": null,
     "metadata": {},
     "name": "pagesMessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation pagesMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation pagesMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      messageId\n      tagId\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '5464e05bc693a232cdd1e5e2cb0f5952';
+(node/*: any*/).hash = '710d1ca610ab190a5dbcd8a696644a94';
 
 module.exports = node;
