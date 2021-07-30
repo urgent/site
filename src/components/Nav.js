@@ -70,16 +70,18 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
             ]
             }
             gridRow="nav"
-            gridColumn={["sidebar / -1", "sidebar / -1", "sidebar / -1", "content", "content"]}
+            gridColumn={"sidebar / -1"}
             pt={4}
+            bg={'primary.400'}
+
         >
-            <Image gridColumn="logo" width={12} src="/images/logo.png" alt="smooms.io" />
+            <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
             <Box gridColumn="edit" ml={8} mt={2}>
                 <Edit click={editClick}><Text>Edit</Text></Edit>
             </Box>
             <Box gridColumn="signin" mt={2} >
                 <SignIn>
-                    <Text color="text.50">Sign in</Text>
+                    <Text color="primary.400">Sign in</Text>
                 </SignIn>
             </Box>
             {display(

@@ -16,8 +16,8 @@ export default function SignIn({ children }) {
                 onClick={() => signIn(1)}
                 variant="solid"
                 size="md"
-                backgroundColor="primary.500"
-                _hover={{ background: "hover.500" }}
+                bg="white"
+                _hover={{ background: "muted.100" }}
                 data-cy="signin"
             >
                 {children}

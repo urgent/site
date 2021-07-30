@@ -5,6 +5,18 @@ const config = {
     useSystemColorMode: false,
     colors: {
         primary: {
+            "900": "#984017",
+            "800": "#b24a1b",
+            "700": "#cb551e",
+            "600": "#e55f22",
+            "500": "#fe6a26",
+            "400": "#fe793c",
+            "300": "#fe8851",
+            "200": "#fe9767",
+            "100": "#fea67d",
+
+        },
+        secondary: {
             "50": "#E5EDFF",
             "100": "#B8CDFF",
             "200": "#8AADFF",
@@ -16,7 +28,7 @@ const config = {
             "800": "#001E66",
             "900": "#000F33"
         },
-        secondary: {
+        tertiary: {
             "50": "#E9E9FC",
             "100": "#C0C0F6",
             "200": "#9898F1",
