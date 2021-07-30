@@ -111,10 +111,13 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         alignSelf="end"
         px={4}
         pb={2}
+        mt={2}
         data-cy="body"
+        overflowY="scroll"
+        height={20}
       >
-        {list(tags, onDeleteMessageTag)}
         {display(edit, <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />)}
+        {list(tags, onDeleteMessageTag)}
       </Box>
     </Grid>
   );

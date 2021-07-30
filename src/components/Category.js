@@ -291,7 +291,6 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 gridRow="body"
                 gridColumn="content / -1"
                 my={2}
-                justify="center"
                 spacing={4}
             >
                 {category.tagsByCategoryId?.edges.map((edge, index) => {
