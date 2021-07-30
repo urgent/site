@@ -84,7 +84,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows="[menu] 2em [body] auto [tags] 4em"
+      gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
       gridTemplateColumns="[body] auto [menu] 4.5em"
       gridColumn={gridColumn}
       gridRow={gridRow}
@@ -100,7 +100,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="body"
         gridColumn="body / -1"
         px={4}
-        pb={2}
+        pb={4}
         overflowX="hidden"
       >
         {children}
@@ -111,7 +111,6 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         alignSelf="end"
         px={4}
         pb={2}
-        mt={2}
         data-cy="body"
         overflowY="scroll"
         height={20}

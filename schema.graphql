@@ -1925,6 +1925,7 @@ input CreateMessageTagInput {
   clientMutationId: String
   messageId: Int!
   tagId: Int!
+  organizationId: Int!
 }
 
 """The output of our `createOrganization` mutation."""

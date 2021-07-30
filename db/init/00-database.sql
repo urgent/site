@@ -404,11 +404,11 @@ AS $$
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
 
-CREATE FUNCTION public.create_message_tag(message_id Int, tag_id Int)
+CREATE FUNCTION public.create_message_tag(message_id Int, tag_id Int, organization_id Int)
 RETURNS public.message_tag
 AS $$
-  INSERT INTO public.message_tag(message_id, tag_id)
-    VALUES(message_id, tag_id)
+  INSERT INTO public.message_tag(message_id, tag_id, organization_id)
+    VALUES($1, $2, $3)
   RETURNING *;
 $$ LANGUAGE sql VOLATILE STRICT;
 

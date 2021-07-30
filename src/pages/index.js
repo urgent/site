@@ -130,7 +130,8 @@ function Home({ preloadedQuery }) {
               variables: {
                 input: {
                   messageId,
-                  tagId: tagId
+                  tagId: tagId,
+                  organizationId: focusedOrganization
                 },
                 connections: [connectionId]
               },
