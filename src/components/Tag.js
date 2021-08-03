@@ -17,16 +17,18 @@ const InsertTagMutation = graphql`
 `;
 
 const DeleteTagMutation = graphql`
-  mutation TagDeleteTagMutation($tag:DeleteTagInput!, $messageTag:DeleteMessageTagInput!, $connections: [ID!]!) {
+  mutation TagDeleteTagMutation($tag:DeleteTagInput!, $messageTag:DeleteMessageTagInput!, $tagConnections: [ID!]!, $messageTagConnections: [ID!]!) {
     deleteMessageTag(input: $messageTag) {
       query {
         allMessages {
           nodes {
             messageTagsByMessageId {
-              __id @deleteEdge(connections: $connections)
               edges {
                 node {
                   messageId
+                  tagByTagId {
+                    id @deleteEdge(connections: $messageTagConnections)
+                  }
                 }
               }
             }
@@ -37,7 +39,7 @@ const DeleteTagMutation = graphql`
     }
     deleteTag(input: $tag) {
       tag {
-        id @deleteEdge(connections: $connections)
+        id @deleteEdge(connections: $tagConnections)
       }
     }
   }
@@ -179,7 +181,8 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
         messageTag: {
           tagId: id,
         },
-        connections: [...connections, connectionId],
+        tagConnections: [connectionId],
+        messageTagConnections: connections,
       },
       updater: store => { },
     })

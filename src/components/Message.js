@@ -11,10 +11,12 @@ const DeleteTagMutation = graphql`
         allMessages {
           nodes {
             messageTagsByMessageId {
-              __id @deleteEdge(connections: $connections)
               edges {
                 node {
                   messageId
+                  tagByTagId {
+                    id @deleteEdge(connections: $connections)
+                  }
                 }
               }
             }
@@ -66,7 +68,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
 
   function onDeleteMessageTag(messageId, tagId, connectionId) {
-    console.log({ messageId, tagId, connectionId })
+
     deleteMessageTag({
       variables: {
         input: {

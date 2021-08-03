@@ -19,7 +19,8 @@ export type DeleteMessageTagInput = {|
 export type TagDeleteTagMutationVariables = {|
   tag: DeleteTagInput,
   messageTag: DeleteMessageTagInput,
-  connections: $ReadOnlyArray<string>,
+  tagConnections: $ReadOnlyArray<string>,
+  messageTagConnections: $ReadOnlyArray<string>,
 |};
 export type TagDeleteTagMutationResponse = {|
   +deleteMessageTag: ?{|
@@ -27,12 +28,14 @@ export type TagDeleteTagMutationResponse = {|
       +allMessages: ?{|
         +nodes: $ReadOnlyArray<?{|
           +messageTagsByMessageId: {|
-            +__id: string,
             +edges: $ReadOnlyArray<{|
               +node: ?{|
-                +messageId: number
+                +messageId: number,
+                +tagByTagId: ?{|
+                  +id: string
+                |},
               |}
-            |}>,
+            |}>
           |},
           +content: ?string,
         |}>
@@ -65,6 +68,9 @@ mutation TagDeleteTagMutation(
             edges {
               node {
                 messageId
+                tagByTagId {
+                  id
+                }
               }
             }
           }
@@ -87,87 +93,59 @@ const node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "connections"
+  "name": "messageTag"
 },
 v1 = {
   "defaultValue": null,
   "kind": "LocalArgument",
-  "name": "messageTag"
+  "name": "messageTagConnections"
 },
 v2 = {
   "defaultValue": null,
   "kind": "LocalArgument",
   "name": "tag"
 },
-v3 = [
+v3 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "tagConnections"
+},
+v4 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "messageTag"
   }
 ],
-v4 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "MessageTagsEdge",
-  "kind": "LinkedField",
-  "name": "edges",
-  "plural": true,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "MessageTag",
-      "kind": "LinkedField",
-      "name": "node",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "messageId",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-},
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__id",
+  "name": "messageId",
   "storageKey": null
 },
 v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "content",
+  "name": "id",
   "storageKey": null
 },
 v7 = [
-  {
-    "kind": "Variable",
-    "name": "input",
-    "variableName": "tag"
-  }
+  (v6/*: any*/)
 ],
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
+  "name": "content",
   "storageKey": null
 },
 v9 = [
   {
     "kind": "Variable",
-    "name": "connections",
-    "variableName": "connections"
+    "name": "input",
+    "variableName": "tag"
   }
 ];
 return {
@@ -175,7 +153,8 @@ return {
     "argumentDefinitions": [
       (v0/*: any*/),
       (v1/*: any*/),
-      (v2/*: any*/)
+      (v2/*: any*/),
+      (v3/*: any*/)
     ],
     "kind": "Fragment",
     "metadata": null,
@@ -183,7 +162,7 @@ return {
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "DeleteMessageTagPayload",
         "kind": "LinkedField",
         "name": "deleteMessageTag",
@@ -221,17 +200,43 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
                           {
-                            "kind": "ClientExtension",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "MessageTagsEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
                             "selections": [
-                              (v5/*: any*/)
-                            ]
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "MessageTag",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  (v5/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": (v7/*: any*/),
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/)
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -246,7 +251,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v9/*: any*/),
         "concreteType": "DeleteTagPayload",
         "kind": "LinkedField",
         "name": "deleteTag",
@@ -259,9 +264,7 @@ return {
             "kind": "LinkedField",
             "name": "tag",
             "plural": false,
-            "selections": [
-              (v8/*: any*/)
-            ],
+            "selections": (v7/*: any*/),
             "storageKey": null
           }
         ],
@@ -275,15 +278,16 @@ return {
   "operation": {
     "argumentDefinitions": [
       (v2/*: any*/),
-      (v1/*: any*/),
-      (v0/*: any*/)
+      (v0/*: any*/),
+      (v3/*: any*/),
+      (v1/*: any*/)
     ],
     "kind": "Operation",
     "name": "TagDeleteTagMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v3/*: any*/),
+        "args": (v4/*: any*/),
         "concreteType": "DeleteMessageTagPayload",
         "kind": "LinkedField",
         "name": "deleteMessageTag",
@@ -321,35 +325,69 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v4/*: any*/),
                           {
-                            "kind": "ClientExtension",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "MessageTagsEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
                             "selections": [
-                              (v5/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
-                                "filters": null,
-                                "handle": "deleteEdge",
-                                "key": "",
-                                "kind": "ScalarHandle",
-                                "name": "__id",
-                                "handleArgs": (v9/*: any*/)
+                                "concreteType": "MessageTag",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  (v5/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v6/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "filters": null,
+                                        "handle": "deleteEdge",
+                                        "key": "",
+                                        "kind": "ScalarHandle",
+                                        "name": "id",
+                                        "handleArgs": [
+                                          {
+                                            "kind": "Variable",
+                                            "name": "connections",
+                                            "variableName": "messageTagConnections"
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v6/*: any*/),
-                      (v8/*: any*/)
+                      (v8/*: any*/),
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              (v8/*: any*/)
+              (v6/*: any*/)
             ],
             "storageKey": null
           }
@@ -358,7 +396,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v7/*: any*/),
+        "args": (v9/*: any*/),
         "concreteType": "DeleteTagPayload",
         "kind": "LinkedField",
         "name": "deleteTag",
@@ -372,7 +410,7 @@ return {
             "name": "tag",
             "plural": false,
             "selections": [
-              (v8/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -381,7 +419,13 @@ return {
                 "key": "",
                 "kind": "ScalarHandle",
                 "name": "id",
-                "handleArgs": (v9/*: any*/)
+                "handleArgs": [
+                  {
+                    "kind": "Variable",
+                    "name": "connections",
+                    "variableName": "tagConnections"
+                  }
+                ]
               }
             ],
             "storageKey": null
@@ -392,16 +436,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "64bdd1c715d9d7c0e4a886fe8fe98094",
+    "cacheID": "93e199bb4ad090d77039a93a860a123e",
     "id": null,
     "metadata": {},
     "name": "TagDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagDeleteTagMutation(\n  $tag: DeleteTagInput!\n  $messageTag: DeleteMessageTagInput!\n) {\n  deleteMessageTag(input: $messageTag) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n  deleteTag(input: $tag) {\n    tag {\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagDeleteTagMutation(\n  $tag: DeleteTagInput!\n  $messageTag: DeleteMessageTagInput!\n) {\n  deleteMessageTag(input: $messageTag) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n  deleteTag(input: $tag) {\n    tag {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'dc7e9e5d2be2a91e53929dad47939b7f';
+(node/*: any*/).hash = '11221e792186b0850bea87f28bb209d1';
 
 module.exports = node;

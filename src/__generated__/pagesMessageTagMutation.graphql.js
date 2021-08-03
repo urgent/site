@@ -12,6 +12,7 @@ export type CreateMessageTagInput = {|
   clientMutationId?: ?string,
   messageId: number,
   tagId: number,
+  organizationId: number,
 |};
 export type pagesMessageTagMutationVariables = {|
   input: CreateMessageTagInput,

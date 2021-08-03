@@ -23,12 +23,14 @@ export type MessageDeleteTagMutationResponse = {|
       +allMessages: ?{|
         +nodes: $ReadOnlyArray<?{|
           +messageTagsByMessageId: {|
-            +__id: string,
             +edges: $ReadOnlyArray<{|
               +node: ?{|
-                +messageId: number
+                +messageId: number,
+                +tagByTagId: ?{|
+                  +id: string
+                |},
               |}
-            |}>,
+            |}>
           |},
           +content: ?string,
         |}>
@@ -55,6 +57,9 @@ mutation MessageDeleteTagMutation(
             edges {
               node {
                 messageId
+                tagByTagId {
+                  id
+                }
               }
             }
           }
@@ -89,37 +94,15 @@ v2 = [
 v3 = {
   "alias": null,
   "args": null,
-  "concreteType": "MessageTagsEdge",
-  "kind": "LinkedField",
-  "name": "edges",
-  "plural": true,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "MessageTag",
-      "kind": "LinkedField",
-      "name": "node",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "messageId",
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    }
-  ],
+  "kind": "ScalarField",
+  "name": "messageId",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__id",
+  "name": "id",
   "storageKey": null
 },
 v5 = {
@@ -127,13 +110,6 @@ v5 = {
   "args": null,
   "kind": "ScalarField",
   "name": "content",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
   "storageKey": null
 };
 return {
@@ -186,12 +162,40 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
                           {
-                            "kind": "ClientExtension",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "MessageTagsEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
                             "selections": [
-                              (v4/*: any*/)
-                            ]
+                              {
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "MessageTag",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v4/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
@@ -262,41 +266,69 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          (v3/*: any*/),
                           {
-                            "kind": "ClientExtension",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "MessageTagsEdge",
+                            "kind": "LinkedField",
+                            "name": "edges",
+                            "plural": true,
                             "selections": [
-                              (v4/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
-                                "filters": null,
-                                "handle": "deleteEdge",
-                                "key": "",
-                                "kind": "ScalarHandle",
-                                "name": "__id",
-                                "handleArgs": [
+                                "concreteType": "MessageTag",
+                                "kind": "LinkedField",
+                                "name": "node",
+                                "plural": false,
+                                "selections": [
+                                  (v3/*: any*/),
                                   {
-                                    "kind": "Variable",
-                                    "name": "connections",
-                                    "variableName": "connections"
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "filters": null,
+                                        "handle": "deleteEdge",
+                                        "key": "",
+                                        "kind": "ScalarHandle",
+                                        "name": "id",
+                                        "handleArgs": [
+                                          {
+                                            "kind": "Variable",
+                                            "name": "connections",
+                                            "variableName": "connections"
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "storageKey": null
                                   }
-                                ]
+                                ],
+                                "storageKey": null
                               }
-                            ]
+                            ],
+                            "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
                       (v5/*: any*/),
-                      (v6/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              (v6/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -306,16 +338,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "5461945b80a70ac8154f08033ee69ef4",
+    "cacheID": "7a0b144d5a3369173d84e3dad976b049",
     "id": null,
     "metadata": {},
     "name": "MessageDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '8f7effb1bda867a91263e39714a26870';
+(node/*: any*/).hash = '8ec8f6560f2136e88b8fba9cc61cb2c9';
 
 module.exports = node;
