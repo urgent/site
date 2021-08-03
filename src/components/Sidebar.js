@@ -39,7 +39,6 @@ export default function Sidebar({ edit, categories, messages, tagFilter, tagClic
   return (
     <Box
       gridColumn="sidebar"
-      gridRow="body"
     >
       {data.allCategories?.edges.filter(edge => edge.node.organizationId === focusedOrganization).map((edge, index) => <Category key={index} edit={edit} category={edge.node} messages={messages} tagFilter={tagFilter} tagClick={tagClick} focusedOrganization={focusedOrganization} connectionId={edge.node.tagsByCategoryId.__id} />)}
       {display(edit, data.allCategories?.__id, focusedOrganization)}

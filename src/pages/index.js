@@ -154,7 +154,6 @@ function Home({ preloadedQuery }) {
       />
       <Grid
         as="main"
-        gridRow="body"
         gridColumn="content"
         pt={2}
         mx="auto"

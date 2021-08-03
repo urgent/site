@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react'
-import SignIn from "../components/SignIn"
-import Edit from "../components/Edit"
-import { Grid, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
+import { VStack, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
 import { BsGear } from 'react-icons/bs';
 import useMutation from './useMutation'
-import { useSession } from 'next-auth/client'
+import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRemove, HiChartBar, HiOutlineUserAdd } from 'react-icons/hi';
+import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 const InsertConfigMutation = graphql`
   mutation NavInsertConfigMutation($input:CreateUserConfigInput!) {
@@ -16,19 +16,8 @@ const InsertConfigMutation = graphql`
     }
 `;
 
-function display(session, component) {
-    if (session) {
-        return component;
-    }
-}
-
-export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization, userConfigOrganization }) {
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const btnRef = React.useRef()
+function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganization, focusedOrganization, btnRef }) {
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
-
-    const [session] = useSession()
-
     const onEnter = useCallback(
         async (e, organizations) => {
 
@@ -59,94 +48,141 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
         },
         [focusedOrganization]
     )
+    return <Drawer
+        isOpen={isOpen}
+        placement="bottom"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+    >
+        <DrawerOverlay />
+        <DrawerContent>
+            <DrawerCloseButton />
+            <DrawerHeader>Organization</DrawerHeader>
 
-    return (
-        <Grid
+            <DrawerBody>
+                <Select onChange={(e) => {
+                    insertConfig({
+                        variables: {
+                            input: {
+                                defaultOrganization: parseInt(e.target.value),
+                            },
+                        },
+                        updater: store => { },
+                    });
+                    setFocusedOrganization(parseInt(e.target.value));
+                }}>
+                    {organizations.edges.filter((edge) => {
+                        return edge.node?.hasOwnProperty('organizationByOrganizationId')
+                    }).map((edge) => {
+                        const { rowId, slug } = edge.node?.organizationByOrganizationId;
+                        if (focusedOrganization === rowId) {
+                            return <option key={rowId} value={rowId} selected="selected">{slug}</option>
+                        }
+                        else {
+                            return <option key={rowId} value={rowId}>{slug}</option>
+                        }
+                    })}
+                </Select>
+                <FormControl id="email">
+                    <FormLabel textAlign="center" marginTop="2rem">Add user</FormLabel>
+                    <Input type="email" placeholder="Email" onKeyDown={(e) => onEnter(e, organizations)} />
+                    <FormHelperText>User will receive email with sign-in instructions.</FormHelperText>
+                </FormControl>
+            </DrawerBody>
+
+            <DrawerFooter>
+                <Button variant="outline" mr={3} onClick={onClose}>
+                    Close
+                </Button>
+            </DrawerFooter>
+        </DrawerContent>
+    </Drawer>
+}
+
+export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization }) {
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const btnRef = React.useRef()
+    const [session] = useSession()
+    // used for nav button colors
+    const [focus, setFocus] = useState();
+
+    const colors = {
+        edit: "none",
+        org: "none",
+        card: "none",
+        user: "none",
+        bar: "none",
+        chip: "none",
+        layout: "none",
+    };
+
+    colors[focus] = '#FABC37'
+
+    if (session) {
+        return (
+            <VStack
+                spacing={2}
+                as="nav"
+                gridColumn={"nav"}
+                bg={'primary.400'}
+            >
+                <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
+                <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
+                    setFocus('edit');
+                    editClick(e);
+                }}>
+                    <Icon as={FiEdit} w={6} h={6} />
+                </Button>
+                <Button bg={colors.org} color="white" _hover={{ bg: "#FABC37" }} ref={btnRef} onClick={(e) => {
+                    setFocus('org');
+                    onOpen(e);
+                }} >
+                    <Icon as={BsGear} w={6} h={6} />
+                </Button>
+                <Button bg={colors.card} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                    setFocus('card');
+                }}>
+                    <Icon as={HiOutlineCreditCard} w={6} h={6} />
+                </Button>
+                <Button bg={colors.bar} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                    setFocus('user');
+                }}>
+                    <Icon as={HiChartBar} w={6} h={6} />
+                </Button>
+                <Button bg={colors.chip} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                    setFocus('chip');
+                }}>
+                    <Icon as={HiOutlineChip} w={6} h={6} />
+                </Button>
+                <Button bg={colors.layout} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                    setFocus('layout');
+                }}>
+                    <Icon as={FiLayout} w={6} h={6} />
+                </Button>
+                <Button bg="none" color="white" _hover={{ bg: "#FABC37" }} onClick={signOut} data-cy="signout">
+                    <Icon as={FiLogOut} w={6} h={6} />
+                </Button>
+                <OrganizationMenu {...{ isOpen, onOpen, onClose, organizations, setFocusedOrganization, focusedOrganization, btnRef }} />
+            </VStack >
+        )
+    }
+    else {
+        return (<VStack
+            spacing={2}
             as="nav"
-            gridTemplateColumns={[
-                ["[navLeftMargin] 10px [logo] 48px [edit] 112px [signin] 176px [config] 64px [navRightMargin] 10px"],
-                ["[navLeftMargin] 10px [logo] 48px [edit] 112px [signin] 176px [config] 64px [navRightMargin] 10px"],
-                ["[navLeftMargin] 10px [logo] 48px [edit] auto [signin] 176px [config] 64px [navRightMargin] 10px"]
-            ]
-            }
-            gridRow="nav"
-            gridColumn={"sidebar / -1"}
-            pt={4}
+            gridColumn={"nav"}
             bg={'primary.400'}
-
         >
             <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
-            <Box gridColumn="edit" ml={8} mt={2}>
-                <Edit click={editClick}><Text>Edit</Text></Edit>
-            </Box>
-            <Box gridColumn="signin" mt={2} >
-                <SignIn>
-                    <Text color="primary.400">Sign in</Text>
-                </SignIn>
-            </Box>
-            {display(
-                session,
-                <Box gridColumn="config" mt={2} >
-                    <Button bg="none" ref={btnRef} onClick={onOpen} >
-                        <Icon as={BsGear} w={6} h={6} />
-                    </Button>
-                </Box>
-            )}
-
-            <Drawer
-                isOpen={isOpen}
-                placement="bottom"
-                onClose={onClose}
-                finalFocusRef={btnRef}
+            <Button
+                onClick={() => signIn(1)}
+                data-cy="signin"
+                bg="none"
+                color="white"
+                _hover={{ bg: "#FABC37" }}
             >
-                <DrawerOverlay />
-                <DrawerContent>
-                    <DrawerCloseButton />
-                    <DrawerHeader>Organization</DrawerHeader>
-
-                    <DrawerBody>
-                        <Select onChange={(e) => {
-                            insertConfig({
-                                variables: {
-                                    input: {
-                                        defaultOrganization: parseInt(e.target.value),
-                                    },
-                                },
-                                updater: store => { },
-                            });
-                            setFocusedOrganization(parseInt(e.target.value));
-                        }}>
-                            {organizations.edges.filter((edge) => {
-                                return edge.node?.hasOwnProperty('organizationByOrganizationId')
-                            }).map((edge) => {
-                                const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                                if (focusedOrganization === rowId) {
-                                    return <option key={rowId} value={rowId} selected="selected">{slug}</option>
-                                }
-                                else {
-                                    return <option key={rowId} value={rowId}>{slug}</option>
-                                }
-                            })}
-                        </Select>
-                        {display(
-                            session,
-                            <FormControl id="email">
-                                <FormLabel textAlign="center" marginTop="2rem">Add user</FormLabel>
-                                <Input type="email" placeholder="Email" onKeyDown={(e) => onEnter(e, organizations)} />
-                                <FormHelperText>User will receive email with sign-in instructions.</FormHelperText>
-                            </FormControl>
-                        )}
-                    </DrawerBody>
-
-                    <DrawerFooter>
-                        <Button variant="outline" mr={3} onClick={onClose}>
-                            Close
-                        </Button>
-                    </DrawerFooter>
-                </DrawerContent>
-            </Drawer>
-
-
-        </Grid >
-    )
+                <Icon as={FiLogIn} w={6} h={6} />
+            </Button>
+        </VStack>)
+    }
 }
