@@ -96,53 +96,8 @@ export function AddTag({ connectionId, categoryId }) {
   </VStack>
 }
 
-function style(color, isActive) {
-  if (isActive) {
-    return {
-      color: "white",
-      bg: `#${color}`,
-      _active: {
-        bg: `#${color}`,
-      },
-      _hover: {
-        bg: `#${color}`,
-        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
-      }
-    }
-  } else {
-    return {
-      color: `#${color}`,
-      borderColor: `#${color}`,
-      bg: "white",
-      _active: {
-        bg: "white",
-      },
-      _hover: {
-        bg: "white",
-        boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)"
-      }
-    }
-  }
-}
-
-function display(visible) {
-  if (visible) {
-    return 'inherit'
-  }
-  return 'none'
-}
-
-function render(mode, edit, view) {
-  if (mode === 'edit') {
-    return edit
-  } else {
-    return view
-  }
-}
-
 export default function Tag({ click, id, tagFilter, color, edit, messages, connectionId, tag, children }) {
   const isActive = tagFilter.includes(id);
-  const styles = style(color, isActive)
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
   const [editTagText, setEditTagText] = useState(tag.name);
   const [tagMode, setTagMode] = useState('view')
@@ -190,7 +145,7 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
 
   return (
     <>
-      <Box display={display(edit)} data-cy="tag_container">
+      {edit && <Box data-cy="tag_container">
         <AlertDialog
           title={`Delete ${tag.name}`}
           body={`Tags on messages will be lost. Are you sure you want to delete all ${tag.name} tags?`}
@@ -210,37 +165,74 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
             }
           }}
         />
-      </Box>
-      <Button
-        fontSize={[10, 10, 12, 12, 12]}
-        p={2}
-        minWidth="inherit"
-        height="inherit"
-        border="2px"
-        onClick={() => click(id, tagFilter)}
-        isActive={isActive}
-        {...styles}
-        data-cy="tag"
-      >
-        <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+      </Box>}
 
-          {render(
-            tagMode,
-            <Input
-              type="text"
-              name="editTagText"
-              value={editTagText}
-              onChange={(e) => setEditTagText(e.target.value)}
-              size={"xs"}
-              boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-              borderRadius={1}
-              mt={1}
-              onKeyDown={onEnter}
-            />,
-            <Text mt={1}>{tag.name}</Text>
-          )}
-        </Box>
-      </Button>
+      {isActive &&
+        <Button
+          fontSize={[10, 10, 12, 12, 12]}
+          p={2}
+          minWidth="inherit"
+          height="inherit"
+          border="2px"
+          onClick={() => click(id, tagFilter)}
+          isActive={isActive}
+          color="white"
+          bg={`#${color}`}
+          _active={{ bg: `#${color}` }}
+          _hover={{ bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
+          data-cy="tag"
+        >
+          <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+
+            {tagMode === 'edit' &&
+              <Input
+                type="text"
+                name="editTagText"
+                value={editTagText}
+                onChange={(e) => setEditTagText(e.target.value)}
+                size={"xs"}
+                boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+                borderRadius={1}
+                mt={1}
+                onKeyDown={onEnter}
+              />}
+            {tagMode !== 'edit' && <Text mt={1}>{tag.name}</Text>}
+          </Box>
+        </Button>}
+
+      {!isActive &&
+        <Button
+          fontSize={[10, 10, 12, 12, 12]}
+          p={2}
+          minWidth="inherit"
+          height="inherit"
+          border="2px"
+          onClick={() => click(id, tagFilter)}
+          isActive={isActive}
+          color={`#${color}`}
+          borderColor={`#${color}`}
+          bg="white"
+          _active={{ bg: "white" }}
+          _hover={{ bg: "white", boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }} s
+          data-cy="tag"
+        >
+          <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+
+            {tagMode === 'edit' &&
+              <Input
+                type="text"
+                name="editTagText"
+                value={editTagText}
+                onChange={(e) => setEditTagText(e.target.value)}
+                size={"xs"}
+                boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+                borderRadius={1}
+                mt={1}
+                onKeyDown={onEnter}
+              />}
+            {tagMode !== 'edit' && <Text mt={1}>{tag.name}</Text>}
+          </Box>
+        </Button>}
     </>
   )
 }

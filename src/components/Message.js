@@ -32,54 +32,21 @@ export function AddTagToMessage({ click }) {
   return <Button data-cy="add_tag_to_message" onClick={click}>+</Button>;
 }
 
-function display(visible, element) {
-  if (visible) {
-    return element
-  }
+function onDeleteMessageTag(messageId, tagId, connectionId, deleteMessageTag) {
+  deleteMessageTag({
+    variables: {
+      input: {
+        messageId: messageId,
+        tagId: tagId
+      },
+      connections: [connectionId]
+    },
+    updater: store => { },
+  });
 }
 
-
-
-function list(tags, onDeleteMessageTag) {
-  if (tags) {
-    return tags.edges.map((edge, index) =>
-      <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
-        <HStack spacing={1}>
-          <Box>{edge.node.tagByTagId?.name}</Box>
-          <IconButton
-            data-cy="delete_tag_from_message"
-            _hover={{ background: `#${edge.node.tagByTagId?.categoryByCategoryId.color}` }}
-            onClick={() => onDeleteMessageTag(edge.node.messageId, edge.node.tagByTagId.rowId, tags.__id)}
-            size={"sm"}
-            aria-label="Trash"
-            icon={<HiOutlineTrash />}
-            color="white"
-            bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
-          ></IconButton>
-        </HStack>
-      </Badge>
-
-    )
-  }
-}
-
-// this component displays an individual message
 export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, editClick, deleteClick }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
-
-  function onDeleteMessageTag(messageId, tagId, connectionId) {
-
-    deleteMessageTag({
-      variables: {
-        input: {
-          messageId: messageId,
-          tagId: tagId
-        },
-        connections: [connectionId]
-      },
-      updater: store => { },
-    });
-  }
 
   return (
     <Grid
@@ -96,7 +63,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {display(edit, <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id)} />)}
+        {edit && <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id)} />}
       </Box>
       <Box
         gridRow="body"
@@ -117,8 +84,24 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         overflowY="scroll"
         height={20}
       >
-        {display(edit, <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />)}
-        {list(tags, onDeleteMessageTag)}
+        {edit && <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />}
+        {tags?.edges.map((edge, index) =>
+          <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
+            <HStack spacing={1}>
+              <Box>{edge.node.tagByTagId?.name}</Box>
+              {edit && <IconButton
+                data-cy="delete_tag_from_message"
+                _hover={{ background: `#${edge.node.tagByTagId?.categoryByCategoryId.color}` }}
+                onClick={() => onDeleteMessageTag(edge.node.messageId, edge.node.tagByTagId.rowId, tags.__id, deleteMessageTag)}
+                size={"sm"}
+                aria-label="Trash"
+                icon={<HiOutlineTrash />}
+                color="white"
+                bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
+              ></IconButton>}
+            </HStack>
+          </Badge>)}
+
       </Box>
     </Grid>
   );

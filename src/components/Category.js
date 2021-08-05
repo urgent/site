@@ -77,20 +77,6 @@ const DeleteCategoryMutation = graphql`
     }
 `
 
-function display(visible, element) {
-    if (visible) {
-        return element
-    }
-}
-
-function render(mode, edit, view) {
-    if (mode === 'edit') {
-        return edit
-    } else {
-        return view
-    }
-}
-
 export function AddCategory({ connectionId, focusedOrganization }) {
     const [nameText, setNameText] = useState('');
     const [colorText, setColorText] = useState('E53E3E');
@@ -226,7 +212,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     setIsOpen={setConfirmIsOpen}
                 />
 
-                {display(edit, <Toolbar
+                {edit && <Toolbar
                     editClick={() => {
                         if (categoryMode === 'edit') {
                             setCategoryMode('view')
@@ -238,7 +224,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                         }
                     }}
                     deleteClick={() => setConfirmIsOpen(true)}
-                />)}
+                />}
             </Box>
             <Box
                 gridRow="toolbar"
@@ -258,8 +244,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                 fontSize={12}
                 letterSpacing={1}
             >
-                {render(
-                    categoryMode,
+                {categoryMode === 'edit' &&
                     <>
                         <Input
                             type="text"
@@ -283,9 +268,8 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                             mt={1}
                             onKeyDown={onEnter}
                         />
-                    </>,
-                    <Text mt={1}>{editCategoryText}</Text>
-                )}
+                    </>}
+                {categoryMode !== 'edit' && <Text mt={1}>{editCategoryText}</Text>}
             </Box>
             <Wrap
                 gridRow="body"
@@ -311,7 +295,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     )
                 })}
             </Wrap>
-            {display(edit, <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />)}
+            {edit && <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />}
         </Grid>
     )
 }
