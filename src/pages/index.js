@@ -118,7 +118,7 @@ function Home({ preloadedQuery }) {
 
   return (
     <>
-      <Nav organizations={data.allOrganizationUsers} editClick={navEditClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
+      <Nav edit={mode === 'edit'} organizations={data.allOrganizationUsers} editClick={navEditClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {

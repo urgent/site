@@ -99,7 +99,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganizati
     </Drawer>
 }
 
-export default function Nav({ organizations, editClick, setFocusedOrganization, focusedOrganization }) {
+export default function Nav({ edit, organizations, editClick, setFocusedOrganization, focusedOrganization }) {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [session] = useSession()
@@ -118,6 +118,10 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
 
     colors[focus] = '#FABC37'
 
+    if (edit) {
+        colors.edit = '#FABC37';
+    }
+
     if (session) {
         return (
             <VStack
@@ -128,7 +132,6 @@ export default function Nav({ organizations, editClick, setFocusedOrganization, 
             >
                 <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
                 <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
-                    setFocus('edit');
                     editClick(e);
                 }}>
                     <Icon as={FiEdit} w={6} h={6} />
