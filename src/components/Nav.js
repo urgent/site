@@ -140,7 +140,12 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
                     setFocus('org');
                     onOpen(e);
                 }} >
-                    <Icon as={BsGear} w={6} h={6} />
+                    <Icon as={HiOutlineUserGroup} w={6} h={6} />
+                </Button>
+                <Button bg={colors.chip} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                    setFocus('chip');
+                }}>
+                    <Icon as={HiOutlineChip} w={6} h={6} />
                 </Button>
                 <Button bg={colors.card} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
                     setFocus('card');
@@ -152,15 +157,10 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
                 }}>
                     <Icon as={HiChartBar} w={6} h={6} />
                 </Button>
-                <Button bg={colors.chip} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
-                    setFocus('chip');
-                }}>
-                    <Icon as={HiOutlineChip} w={6} h={6} />
-                </Button>
                 <Button bg={colors.layout} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
                     setFocus('layout');
                 }}>
-                    <Icon as={FiLayout} w={6} h={6} />
+                    <Icon as={FiGitMerge} w={6} h={6} />
                 </Button>
                 <Button bg="none" color="white" _hover={{ bg: "#FABC37" }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
