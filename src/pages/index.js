@@ -115,9 +115,7 @@ function Home({ preloadedQuery }) {
   } else {
     [focusedOrganization, setFocusedOrganization] = useState(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId)
   }
-  console.log('1')
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
-  console.log('2')
   return (
     <>
       <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={() => setEdit(!edit)} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
@@ -127,7 +125,6 @@ function Home({ preloadedQuery }) {
           // add message to tag if in edit mode, and a message is focused.
           if (edit && focusedMessage) {
             const [messageId, connectionId] = focusedMessage;
-            console.log('3')
             insertMessageTag({
               variables: {
                 input: {
@@ -142,14 +139,12 @@ function Home({ preloadedQuery }) {
             setFocusedMessage(false)
             // filter messages if not in edit mode
           } else {
-            console.log('4')
             if (tagFilter.includes(tagId)) {
               setTagFilter(tagFilter.filter(active => active !== tagId))
             } else {
               setTagFilter([...tagFilter, tagId])
             }
           }
-          console.log('5')
         }}
         edit={edit}
         categories={query}
