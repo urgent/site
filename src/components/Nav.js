@@ -116,11 +116,10 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
         layout: "none",
     };
 
-    colors[focus] = '#FABC37'
-
     if (edit) {
         colors.edit = '#FABC37';
     }
+    colors[focus] = '#FABC37'
 
     if (session) {
         return (
@@ -132,6 +131,7 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
             >
                 <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
                 <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
+                    setFocus();
                     editClick(e);
                 }}>
                     <Icon as={FiEdit} w={6} h={6} />
@@ -147,7 +147,7 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
                 }}>
                     <Icon as={HiOutlineCreditCard} w={6} h={6} />
                 </Button>
-                <Button bg={colors.bar} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                <Button bg={colors.user} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
                     setFocus('user');
                 }}>
                     <Icon as={HiChartBar} w={6} h={6} />

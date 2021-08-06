@@ -97,8 +97,8 @@ export function format(nodes) {
  * @param { Boolean } messageMode Message edit mode status
  * @returns { Object[] } Relay result filtered per app controls
  */
-export function filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization) {
-  if (messageMode === "edit") {
+export function filter(messages, tagFilter, edit, focusedMessage, editMessage, focusedOrganization) {
+  if (edit && editMessage) {
     // message in edit mode. hide all messages not being edited
     const [messageId] = focusedMessage;
     const nodes = messages.edges.filter((edge) => edge.node.rowId === messageId)
@@ -132,11 +132,12 @@ export function filter(messages, tagFilter, edit, focusedMessage, messageMode, f
   return format(nodes)
 }
 
-export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization, messageMode, setMessageMode }) {
+export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization }) {
   const [editorText, setEditorText] = useState('');
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
+  const [editMessage, setEditMessage] = useState(false)
 
   const editorRef = useRef(null)
 
@@ -145,7 +146,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
     event => {
       event.preventDefault();
       const delta = JSON.stringify(editorRef.current.getEditor().getContents());
-      if (messageMode === 'edit') {
+      if (edit && editMessage) {
         const [messageId] = focusedMessage;
         updateMessage({
           variables: {
@@ -156,7 +157,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           },
           updater: store => { },
         });
-        setMessageMode('view')
+        setEditMessage(false)
       } else {
         insertMessage({
           variables: {
@@ -189,7 +190,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       gridAutoFlow="dense"
       data-cy="tiles"
     >
-      {filter(messages, tagFilter, edit, focusedMessage, messageMode, focusedOrganization)?.edges?.map((edge, index) => {
+      {filter(messages, tagFilter, edit, focusedMessage, editMessage, focusedOrganization)?.edges?.map((edge, index) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
@@ -208,13 +209,13 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
             gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
             gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
             editClick={(messageId, collectionId, content) => {
-              if (messageMode === 'edit') {
+              if (edit && editMessage) {
                 // turn off edit mode
-                setMessageMode('view')
+                setEditMessage(false)
                 setEditorText('')
               } else {
                 // run edit
-                setMessageMode('edit')
+                setEditMessage(true)
                 setFocusedMessage([messageId, collectionId])
                 setEditorText(content)
               }
@@ -229,7 +230,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
                 },
                 updater: store => { },
               });
-              setMessageMode('view');
+              setEditMessage(false);
             }}
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}

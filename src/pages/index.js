@@ -12,6 +12,8 @@ const HomeQuery = graphql`
   query pages_HomeQuery {
     ...SidebarFragment_categories
     ...pagesFragment_messages
+    ...pagesFragment_organization
+    ...pagesFragment_userConfig
   }
 `;
 
@@ -32,26 +34,8 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
-const pagesFragment = graphql`
+const messageFragment = graphql`
           fragment pagesFragment_messages on Query {
-            allOrganizationUsers {
-              __id
-              edges {
-                node {
-                  organizationByOrganizationId {
-                    rowId
-                    slug
-                  }
-                }
-              }
-            }
-            allUserConfigs {
-              edges {
-                node {
-                  defaultOrganization
-                }
-              }
-            }
             allMessages {
               __id
               @connection(key: "pagesFragment_allMessages")
@@ -84,46 +68,66 @@ const pagesFragment = graphql`
           }
 `;
 
-function defaultFocusedOrganization(data) {
-  // if user config is set in database, use user config
-  if (data.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-    return data.allUserConfigs?.edges[0]?.node.defaultOrganization;
+const organizationFragment = graphql`
+  fragment pagesFragment_organization on Query {
+    allOrganizationUsers {
+      __id
+      edges {
+        node {
+          organizationByOrganizationId {
+            rowId
+            slug
+          }
+        }
+      }
+    }
   }
-  // if not, use first row in query result
-  return data.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId
-}
+`;
+
+const userConfigFragment = graphql`
+  fragment pagesFragment_userConfig on Query {
+    allUserConfigs {
+      edges {
+        node {
+          defaultOrganization
+        }
+      }
+    }
+  }
+`;
 
 function Home({ preloadedQuery }) {
   const query = usePreloadedQuery(HomeQuery, preloadedQuery);
-  const data = useFragment(pagesFragment, query);
+  const messages = useFragment(messageFragment, query);
+  const organizations = useFragment(organizationFragment, query);
+  const userConfig = useFragment(userConfigFragment, query);
+
   // show editor
-  const [mode, setMode] = useState('view')
+  const [edit, setEdit] = useState(false)
   // filter based on tags
   const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
-  const [focusedOrganization, setFocusedOrganization] = useState(defaultFocusedOrganization(data))
-  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
-  const [messageMode, setMessageMode] = useState('view')
-
-  function navEditClick() {
-    if (mode === "edit") {
-      setMode('view')
-      setMessageMode('view')
-    }
-    else {
-      setMode('edit')
-    }
+  // if user config exists, use as default organization. If not, use first row in organization query
+  let focusedOrganization, setFocusedOrganization
+  if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
+    console.log('user config')
+    console.log(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization)
+    [focusedOrganization, setFocusedOrganization] = useState(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization)
+  } else {
+    [focusedOrganization, setFocusedOrganization] = useState(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId)
   }
+
+  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
   return (
     <>
-      <Nav edit={mode === 'edit'} organizations={data.allOrganizationUsers} editClick={navEditClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
+      <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={() => setEdit(!edit)} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
         tagClick={(tagId, tagFilter) => {
           // add message to tag if in edit mode, and a message is focused.
-          if (mode === "edit" && focusedMessage) {
+          if (edit && focusedMessage) {
             const [messageId, connectionId] = focusedMessage;
 
             insertMessageTag({
@@ -147,9 +151,9 @@ function Home({ preloadedQuery }) {
             }
           }
         }}
-        edit={mode === 'edit'}
+        edit={edit}
         categories={query}
-        messages={data.allMessages}
+        messages={messages.allMessages}
         focusedOrganization={focusedOrganization}
       />
       <Grid
@@ -160,7 +164,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={mode === 'edit'} tagFilter={tagFilter} messages={data.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} messageMode={messageMode} setMessageMode={setMessageMode} />
+        <Tiles edit={edit} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
       </Grid>
     </>
   )

@@ -12,24 +12,6 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type pagesFragment_messages$ref: FragmentReference;
 declare export opaque type pagesFragment_messages$fragmentType: pagesFragment_messages$ref;
 export type pagesFragment_messages = {|
-  +allOrganizationUsers: ?{|
-    +__id: string,
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +organizationByOrganizationId: ?{|
-          +rowId: number,
-          +slug: ?string,
-        |}
-      |}
-    |}>,
-  |},
-  +allUserConfigs: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +defaultOrganization: number
-      |}
-    |}>
-  |},
   +allMessages: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -95,99 +77,6 @@ return {
   "metadata": null,
   "name": "pagesFragment_messages",
   "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "OrganizationUsersConnection",
-      "kind": "LinkedField",
-      "name": "allOrganizationUsers",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "OrganizationUsersEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "OrganizationUser",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "Organization",
-                  "kind": "LinkedField",
-                  "name": "organizationByOrganizationId",
-                  "plural": false,
-                  "selections": [
-                    (v0/*: any*/),
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "slug",
-                      "storageKey": null
-                    }
-                  ],
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        },
-        (v1/*: any*/)
-      ],
-      "storageKey": null
-    },
-    {
-      "alias": null,
-      "args": null,
-      "concreteType": "UserConfigsConnection",
-      "kind": "LinkedField",
-      "name": "allUserConfigs",
-      "plural": false,
-      "selections": [
-        {
-          "alias": null,
-          "args": null,
-          "concreteType": "UserConfigsEdge",
-          "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "concreteType": "UserConfig",
-              "kind": "LinkedField",
-              "name": "node",
-              "plural": false,
-              "selections": [
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "defaultOrganization",
-                  "storageKey": null
-                }
-              ],
-              "storageKey": null
-            }
-          ],
-          "storageKey": null
-        }
-      ],
-      "storageKey": null
-    },
     {
       "alias": null,
       "args": null,
@@ -330,6 +219,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '63ab255fdc9bb8d7e48adb39b8159ee6';
+(node/*: any*/).hash = 'ed117473f407a08d15e15ccf5bd95e5b';
 
 module.exports = node;

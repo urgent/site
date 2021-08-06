@@ -59,12 +59,12 @@ const DeleteCategoryMutation = graphql`
                 allMessages {
                     nodes {
                         messageTagsByMessageId {
-                        __id @deleteEdge(connections: $connections)
-                        edges {
-                            node {
-                            messageId
+                            __id @deleteEdge(connections: $connections)
+                            edges {
+                                node {
+                                messageId
+                                }
                             }
-                        }
                         }
                         content
                     }
@@ -142,7 +142,7 @@ function size(mode) {
 
 export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization, connectionId }) {
     const [categoryMode, setCategoryMode] = useState('view');
-    const [editCategoryText, setEditCategoryText] = useState(category.name);
+    const [editCategoryText, setEditCategoryText] = useState();
     const [focusedCategory, setFocusedCategory] = useState();
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [editCategoryColor, setEditCategoryColor] = useState(category.color);
@@ -269,7 +269,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                             onKeyDown={onEnter}
                         />
                     </>}
-                {categoryMode !== 'edit' && <Text mt={1}>{editCategoryText}</Text>}
+                {categoryMode !== 'edit' && <Text mt={1}>{category.name}</Text>}
             </Box>
             <Wrap
                 gridRow="body"

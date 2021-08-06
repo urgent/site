@@ -5,6 +5,7 @@ import { graphql, useFragment } from 'react-relay';
 
 
 export default function Sidebar({ edit, categories, messages, tagFilter, tagClick, focusedOrganization }) {
+
   const data = useFragment(
     graphql`
             fragment SidebarFragment_categories on Query {
