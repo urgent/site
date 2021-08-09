@@ -45,7 +45,7 @@ function onDeleteMessageTag(messageId, tagId, connectionId, deleteMessageTag) {
   });
 }
 
-export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, editClick, deleteClick }) {
+export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, onEdit, onDelete }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
 
   return (
@@ -63,7 +63,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {edit && <Toolbar editClick={() => editClick(id, tags?.__id, children)} deleteClick={() => deleteClick(id, tags?.__id)} />}
+        {edit && <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
       </Box>
       <Box
         gridRow="body"
@@ -86,7 +86,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
       >
         {edit && <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />}
         {tags?.edges.map((edge, index) =>
-          <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
+          <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
             <HStack spacing={1}>
               <Box>{edge.node.tagByTagId?.name}</Box>
               {edit && <IconButton

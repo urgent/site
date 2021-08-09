@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
@@ -116,36 +116,41 @@ function Home({ preloadedQuery }) {
     [focusedOrganization, setFocusedOrganization] = useState(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId)
   }
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
+
+  const tagClick = useCallback((tagId, tagFilter) => {
+    // add message to tag if in edit mode, and a message is focused.
+    if (edit && focusedMessage) {
+      const [messageId, connectionId] = focusedMessage;
+      insertMessageTag({
+        variables: {
+          input: {
+            messageId,
+            tagId: tagId,
+            organizationId: focusedOrganization
+          },
+          connections: [connectionId]
+        },
+        updater: store => { },
+      });
+      setFocusedMessage(false)
+      // filter messages if not in edit mode
+    } else {
+      if (tagFilter.includes(tagId)) {
+        setTagFilter(tagFilter.filter(active => active !== tagId))
+      } else {
+        setTagFilter([...tagFilter, tagId])
+      }
+    }
+  }, [edit, focusedMessage, insertMessageTag, setFocusedMessage, focusedOrganization, setTagFilter]);
+
+  const editClick = useCallback(() => setEdit(!edit), [edit, setEdit])
+
   return (
     <>
-      <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={() => setEdit(!edit)} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
+      <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={editClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
       <Sidebar
         tagFilter={tagFilter}
-        tagClick={(tagId, tagFilter) => {
-          // add message to tag if in edit mode, and a message is focused.
-          if (edit && focusedMessage) {
-            const [messageId, connectionId] = focusedMessage;
-            insertMessageTag({
-              variables: {
-                input: {
-                  messageId,
-                  tagId: tagId,
-                  organizationId: focusedOrganization
-                },
-                connections: [connectionId]
-              },
-              updater: store => { },
-            });
-            setFocusedMessage(false)
-            // filter messages if not in edit mode
-          } else {
-            if (tagFilter.includes(tagId)) {
-              setTagFilter(tagFilter.filter(active => active !== tagId))
-            } else {
-              setTagFilter([...tagFilter, tagId])
-            }
-          }
-        }}
+        tagClick={tagClick}
         edit={edit}
         categories={query}
         messages={messages.allMessages}
