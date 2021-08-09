@@ -279,7 +279,13 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       })
       }
 
-      {!(edit && editMessage) && tagFilter.length === 0 && messages.edges?.map((edge) => {
+      {!(edit && editMessage) && tagFilter.length === 0 && messages.edges?.filter((edge) => {
+        if (edge.node.organizationId !== focusedOrganization) {
+          // different organization
+          return false;
+        }
+        return true;
+      }).map((edge) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
