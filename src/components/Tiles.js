@@ -250,8 +250,10 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           return false;
         }
         else {
-          return edge.node.messageTagsByMessageId?.edges.some(tag => {
-            return tagFilter.includes(tag.node.tagByTagId?.rowId)
+          const tags = edge.node.messageTagsByMessageId?.edges.map(tag => tag.node.tagByTagId?.rowId);
+          // need every. Each clicked tag adds to filter.
+          return tagFilter.every(filter => {
+            return tags.includes(filter)
           })
         }
       }).map((edge) => {
