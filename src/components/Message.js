@@ -47,6 +47,7 @@ function onDeleteMessageTag(messageId, tagId, connectionId, deleteMessageTag) {
 
 export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, onEdit, onDelete }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
+  const filter = useStore((state) => state.filter);
 
   return (
     <Grid

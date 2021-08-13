@@ -3,6 +3,7 @@ import { Button, Box, VStack, Input, Text } from "@chakra-ui/react"
 import useMutation from './useMutation'
 import Toolbar from './Toolbar';
 import AlertDialog from "./AlertDialog";
+import useStore from "../utils/store";
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
@@ -96,8 +97,10 @@ export function AddTag({ connectionId, categoryId }) {
   </VStack>
 }
 
-export default function Tag({ click, id, tagFilter, color, edit, messages, connectionId, tag, children }) {
-  const isActive = tagFilter.includes(id);
+export default function Tag({ id, color, edit, messages, connectionId, tag }) {
+  const filter = useStore((state) => state.filter);
+  const addFilter = useStore((state) => state.addFilter);
+  const removeFilter = useStore((state) => state.removeFilter);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
   const [editTagText, setEditTagText] = useState(tag.name);
   const [tagMode, setTagMode] = useState('view')
@@ -167,15 +170,15 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
         />
       </Box>}
 
-      {isActive &&
+      {filter.includes(id) &&
         <Button
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={() => click(id, tagFilter)}
-          isActive={isActive}
+          onClick={() => removeFilter(id)}
+          isActive={true}
           color="white"
           bg={`#${color}`}
           _active={{ bg: `#${color}` }}
@@ -200,15 +203,15 @@ export default function Tag({ click, id, tagFilter, color, edit, messages, conne
           </Box>
         </Button>}
 
-      {!isActive &&
+      {!filter.includes(id) &&
         <Button
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={() => click(id, tagFilter)}
-          isActive={isActive}
+          onClick={() => addFilter(id)}
+          isActive={false}
           color={`#${color}`}
           borderColor={`#${color}`}
           bg="white"

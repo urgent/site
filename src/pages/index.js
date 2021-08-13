@@ -6,6 +6,7 @@ import { withRelay } from 'relay-nextjs';
 import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
 import useMutation from '../components/useMutation'
+import create from 'zustand'
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
@@ -104,8 +105,6 @@ function Home({ preloadedQuery }) {
 
   // show editor
   const [edit, setEdit] = useState(false)
-  // filter based on tags
-  const [tagFilter, setTagFilter] = useState([])
   // add action button in message card, "+ button"
   const [focusedMessage, setFocusedMessage] = useState(false)
   // if user config exists, use as default organization. If not, use first row in organization query
@@ -117,40 +116,12 @@ function Home({ preloadedQuery }) {
   }
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
-  const tagClick = useCallback((tagId, tagFilter) => {
-    // add message to tag if in edit mode, and a message is focused.
-    if (edit && focusedMessage) {
-      const [messageId, connectionId] = focusedMessage;
-      insertMessageTag({
-        variables: {
-          input: {
-            messageId,
-            tagId: tagId,
-            organizationId: focusedOrganization
-          },
-          connections: [connectionId]
-        },
-        updater: store => { },
-      });
-      setFocusedMessage(false)
-      // filter messages if not in edit mode
-    } else {
-      if (tagFilter.includes(tagId)) {
-        setTagFilter(tagFilter.filter(active => active !== tagId))
-      } else {
-        setTagFilter([...tagFilter, tagId])
-      }
-    }
-  }, [edit, focusedMessage, insertMessageTag, setFocusedMessage, focusedOrganization, setTagFilter]);
-
   const editClick = useCallback(() => setEdit(!edit), [edit, setEdit])
 
   return (
     <>
       <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={editClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
       <Sidebar
-        tagFilter={tagFilter}
-        tagClick={tagClick}
         edit={edit}
         categories={query}
         messages={messages.allMessages}
@@ -164,7 +135,7 @@ function Home({ preloadedQuery }) {
         sx={{ textAlign: "center" }}
         width="100%"
       >
-        <Tiles edit={edit} tagFilter={tagFilter} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
+        <Tiles edit={edit} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
       </Grid>
     </>
   )

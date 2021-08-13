@@ -6,7 +6,6 @@ import { graphql } from 'react-relay';
 import useMutation from './useMutation'
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
-
 const InsertMessageMutation = graphql`
   mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
     createMessage(input: $input) {
@@ -75,62 +74,7 @@ const UpdateMessageMutation = graphql`
     }
 `;
 
-/**
- * Format input as nodes consistent with Relay query
- * 
- * @param {*} nodes 
- * @returns 
- */
-export function format(nodes) {
-  return {
-    "edges": nodes
-  }
-}
-
-
-/**
- * Filter messages per selected tags, app edit mode, message edit mode
- * @param { Object[] } messages Relay result
- * @param { Number[] } tagFilter Tag IDs 
- * @param { Boolean } edit App edit mode status
- * @param { Number } focusedMessage ID of message where edit button was clicked
- * @param { Boolean } messageMode Message edit mode status
- * @returns { Object[] } Relay result filtered per app controls
- */
-export function filter(messages, tagFilter, edit, focusedMessage, editMessage, focusedOrganization) {
-  if (edit && editMessage) {
-    // message in edit mode. hide all messages not being edited
-    const [messageId] = focusedMessage;
-    const nodes = messages.edges.filter((edge) => edge.node.rowId === messageId)
-    return format(nodes)
-  }
-
-
-  const nodes = messages?.edges?.filter((edge) => {
-    if (edge.node.organizationId !== focusedOrganization) {
-      // different organization
-      return false;
-    }
-    if (!Array.isArray(edge.node.messageTagsByMessageId?.edges)) {
-      // no tags, can't match tagFilter
-      return false;
-    }
-    else if (edge.node.messageTagsByMessageId?.edges === []) {
-      // empty tags, can't match tagFilter
-      return false;
-    }
-    else {
-      return edge.node.messageTagsByMessageId?.edges.every(edge => {
-        return tagFilter.includes(edge.node.tagByTagId?.rowId)
-      })
-    }
-  })
-
-  // so filtered data has same structure as unfiltered data
-  return format(nodes)
-}
-
-export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFocusedMessage, focusedOrganization }) {
+export default function Tiles({ edit, messages, focusedMessage, setFocusedMessage, focusedOrganization }) {
   const [editorText, setEditorText] = useState('');
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
@@ -161,7 +105,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           input: {
             organizationId: focusedOrganization,
             content: delta,
-            tags: tagFilter,
+            tags: filter,
           },
           connections: [messages?.__id]
         },
@@ -236,23 +180,23 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
           {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
         </Message>)}
 
-      {!(edit && editMessage) && tagFilter.length > 0 && messages.edges.filter((edge) => {
+      {!(edit && editMessage) && filter.length > 0 && messages.edges.filter((edge) => {
         if (edge.node.organizationId !== focusedOrganization) {
           // different organization
           return false;
         }
         if (!Array.isArray(edge.node.messageTagsByMessageId?.edges)) {
-          // no tags, can't match tagFilter
+          // no tags, can't match filter
           return false;
         }
         else if (edge.node.messageTagsByMessageId?.edges === []) {
-          // empty tags, can't match tagFilter
+          // empty tags, can't match filter
           return false;
         }
         else {
           const tags = edge.node.messageTagsByMessageId?.edges.map(tag => tag.node.tagByTagId?.rowId);
           // need every. Each clicked tag adds to filter.
-          return tagFilter.every(filter => {
+          return filter.every(filter => {
             return tags.includes(filter)
           })
         }
@@ -281,7 +225,7 @@ export default function Tiles({ edit, messages, tagFilter, focusedMessage, setFo
       })
       }
 
-      {!(edit && editMessage) && tagFilter.length === 0 && messages.edges?.filter((edge) => {
+      {!(edit && editMessage) && filter.length === 0 && messages.edges?.filter((edge) => {
         if (edge.node.organizationId !== focusedOrganization) {
           // different organization
           return false;
