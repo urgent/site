@@ -3,6 +3,7 @@ import Toolbar from "./Toolbar"
 import useMutation from './useMutation'
 import { Grid, Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
 import { HiOutlineTrash } from "react-icons/hi"
+import useStore from "../utils/store";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation($input:RemoveMessageTagInput!, $connections: [ID!]!) {
@@ -49,6 +50,25 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
 
+  const tagIds = tags?.edges.map((tag) => tag.node.tagByTagId?.rowId)
+
+  let display = 'none'
+
+  // message has tags
+  if (Array.isArray(tagIds)) {
+    // tag in filter
+    if (filter.every(filterTag => {
+      return tagIds.includes(filterTag)
+    })) {
+      display = 'inherit'
+    }
+  }
+
+  // no filter, show
+  if (filter.length === 0) {
+    display = 'inherit'
+  }
+
   return (
     <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -59,6 +79,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
       gridColumn={gridColumn}
       gridRow={gridRow}
       data-cy="message"
+      display={display}
     >
       <Box
         gridRow="menu"

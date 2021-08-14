@@ -105,7 +105,7 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
           input: {
             organizationId: focusedOrganization,
             content: delta,
-            tags: filter,
+            tags: [],
           },
           connections: [messages?.__id]
         },
@@ -145,12 +145,6 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
     setEditMessage(false);
   }, [deleteMessage,])
 
-  // message filters
-
-  const editFilter = useCallback(edge => {
-
-  }, [edit, editMessage])
-
   return (
     <Grid
       gridTemplateColumns={[
@@ -180,58 +174,7 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
           {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
         </Message>)}
 
-      {!(edit && editMessage) && filter.length > 0 && messages.edges.filter((edge) => {
-        if (edge.node.organizationId !== focusedOrganization) {
-          // different organization
-          return false;
-        }
-        if (!Array.isArray(edge.node.messageTagsByMessageId?.edges)) {
-          // no tags, can't match filter
-          return false;
-        }
-        else if (edge.node.messageTagsByMessageId?.edges === []) {
-          // empty tags, can't match filter
-          return false;
-        }
-        else {
-          const tags = edge.node.messageTagsByMessageId?.edges.map(tag => tag.node.tagByTagId?.rowId);
-          // need every. Each clicked tag adds to filter.
-          return filter.every(filter => {
-            return tags.includes(filter)
-          })
-        }
-      }).map((edge) => {
-        let messageContent;
-        try {
-          messageContent = JSON.parse(edge.node.content);
-        } catch (e) {
-          messageContent = edge.node.content;
-        }
-        return (
-          <Message
-            key={edge.node.rowId}
-            edit={edit}
-            tags={edge.node.messageTagsByMessageId}
-            id={edge.node.rowId}
-            setFocusedMessage={setFocusedMessage}
-            onEdit={onEdit}
-            onDelete={onDelete}
-            gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
-            gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
-          >
-            {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
-          </Message>
-        )
-      })
-      }
-
-      {!(edit && editMessage) && filter.length === 0 && messages.edges?.filter((edge) => {
-        if (edge.node.organizationId !== focusedOrganization) {
-          // different organization
-          return false;
-        }
-        return true;
-      }).map((edge) => {
+      {!(edit && editMessage) && messages.edges.map((edge) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
