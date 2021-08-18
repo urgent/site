@@ -36,7 +36,7 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ tags, gridColumn, gridRow, children, id, onEdit, onDelete }) {
+export default function Message({ tags, children, id, onEdit, onDelete, toolbar }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
@@ -71,6 +71,11 @@ export default function Message({ tags, gridColumn, gridRow, children, id, onEdi
     display = true
   }
 
+  // no filter for editor
+  if (!toolbar) {
+    display = true
+  }
+
   return <>
     {display && <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
@@ -78,8 +83,8 @@ export default function Message({ tags, gridColumn, gridRow, children, id, onEdi
       textAlign="left"
       gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
       gridTemplateColumns="[body] auto [menu] 4.5em"
-      gridColumn={gridColumn}
-      gridRow={gridRow}
+      gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
+      gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
       data-cy="message"
       display={display}
     >
@@ -87,7 +92,7 @@ export default function Message({ tags, gridColumn, gridRow, children, id, onEdi
         gridRow="menu"
         gridColumn="menu"
       >
-        <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />
+        {toolbar && <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
       </Box>
       <Box
         gridRow="body"
@@ -108,8 +113,8 @@ export default function Message({ tags, gridColumn, gridRow, children, id, onEdi
         overflowY="scroll"
         height={20}
       >
-        {<AddTagToMessage click={() => {
-          focusMessage(id)
+        {toolbar && <AddTagToMessage click={() => {
+          focusMessage([id, tags.__id])
         }} />}
         {tags?.edges.map((edge, index) =>
           <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>

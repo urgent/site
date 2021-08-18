@@ -116,7 +116,7 @@ export default function Tiles({ query }) {
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
   const [editMessage, setEditMessage] = useState(false)
-  const message = useStore((state) => state.message);
+  const [message] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const edit = useStore((state) => state.edit);
   const organization = useStore((state) => state.organization);
@@ -164,7 +164,7 @@ export default function Tiles({ query }) {
     } else {
       // run edit
       setEditMessage(true)
-      focusMessage(messageId)
+      focusMessage([messageId, collectionId])
       setEditorText(content)
     }
   }, [setEditMessage, setEditorText, focusMessage])
@@ -197,20 +197,15 @@ export default function Tiles({ query }) {
       data-cy="tiles"
     >
 
-      {// message in edit mode. hide all messages not being edited
-        edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message[0]).map(edge => <Message
-          key={edge.node.rowId}
-          edit={true}
-          tags={edge.node.messageTagsByMessageId}
-          id={edge.node.rowId}
-          setFocusedMessage={setFocusedMessage}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
-          gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
-        >
-          {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
-        </Message>)}
+      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message[0]).map(edge => <Message
+        key={edge.node.rowId}
+        tags={edge.node.messageTagsByMessageId}
+        id={edge.node.rowId}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      >
+        {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+      </Message>)}
 
       {!(edit && editMessage) && messages.allMessages.edges?.map((edge) => {
         let messageContent;
@@ -226,8 +221,7 @@ export default function Tiles({ query }) {
             id={edge.node.rowId}
             onEdit={onEdit}
             onDelete={onDelete}
-            gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
-            gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
+            toolbar={true}
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>
@@ -235,7 +229,7 @@ export default function Tiles({ query }) {
       })
       }
 
-      <Message gridColumn="span 2" gridRow="span 2">
+      <Message toolbar={false}>
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} editorRef={(el) => editorRef.current = el}>
         </Editor>
       </Message>

@@ -16,7 +16,7 @@ const useStore = create((set) => ({
     focusOrganization: (id) => set((state) => ({
         organization: id
     })),
-    message: false,
+    message: [false],
     focusMessage: (id) => set((state) => ({
         message: id
     }))

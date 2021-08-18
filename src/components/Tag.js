@@ -123,7 +123,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const removeFilter = useStore((state) => state.removeFilter);
   const edit = useStore((state) => state.edit);
   const organization = useStore((state) => state.organization);
-  const message = useStore((state) => state.message);
+  const [message, messageTagConnection] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
   const [editTagText, setEditTagText] = useState(tagName);
@@ -177,15 +177,15 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
             tagId: rowId,
             organizationId: organization
           },
-          connections: [...messageConnections]
+          connections: [messageTagConnection]
         },
         updater: store => { },
       });
-      focusMessage(false)
+      focusMessage([false])
     } else {
       removeFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, tagConnection, messageConnections, focusMessage, removeFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageConnections, focusMessage, removeFilter])
 
   const filterOn = useCallback(() => {
     if (edit) {
@@ -197,15 +197,15 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
             tagId: rowId,
             organizationId: organization
           },
-          connections: [...messageConnections]
+          connections: [messageTagConnection]
         },
         updater: store => { },
       });
-      focusMessage(false)
+      focusMessage([false])
     } else {
       addFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, tagConnection, messageConnections, focusMessage, addFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageConnections, focusMessage, addFilter])
 
   return (
     <>
