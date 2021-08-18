@@ -36,12 +36,12 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ tags, children, id, onEdit, onDelete, toolbar }) {
+export default function Message({ tags, children, id, onEdit, onDelete, toolbar, organizationId }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
+  const organization = useStore((state) => state.organization);
   const tagIds = tags?.edges.map((tag) => tag.node.tagByTagId?.rowId)
-  let display = false
 
   const onDeleteMessageTag = useCallback((tagId, connectionId) => () => {
     deleteMessageTag({
@@ -56,28 +56,38 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar 
     });
   }, [deleteMessageTag, id])
 
-  // message has tags
-  if (Array.isArray(tagIds)) {
-    // tag in filter
-    if (filter.every(filterTag => {
-      return tagIds.includes(filterTag)
-    })) {
-      display = true
+
+  const display = useCallback(() => {
+    // message belongs to focused organziation
+    if (organizationId !== organization) {
+      return false
     }
-  }
 
-  // no filter, show
-  if (filter.length === 0) {
-    display = true
-  }
+    // no filter, show
+    if (filter.length === 0) {
+      return true
+    }
 
-  // no filter for editor
-  if (!toolbar) {
-    display = true
-  }
+    // no filter for editor
+    if (!toolbar) {
+      return true
+    }
+
+    // message has tags
+    if (Array.isArray(tagIds)) {
+      // tag in filter
+      if (filter.every(filterTag => {
+        return tagIds.includes(filterTag)
+      })) {
+        return true
+      }
+    }
+
+    return false
+  }, [organizationId, organization, filter, toolbar, tagIds])
 
   return <>
-    {display && <Grid
+    {display() && <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
       borderRadius="10px"
       textAlign="left"
@@ -86,7 +96,6 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar 
       gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
       gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
       data-cy="message"
-      display={display}
     >
       <Box
         gridRow="menu"

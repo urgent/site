@@ -197,7 +197,7 @@ export default function Tiles({ query }) {
       data-cy="tiles"
     >
 
-      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message[0]).map(edge => <Message
+      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message).map(edge => <Message
         key={edge.node.rowId}
         tags={edge.node.messageTagsByMessageId}
         id={edge.node.rowId}
@@ -222,6 +222,7 @@ export default function Tiles({ query }) {
             onEdit={onEdit}
             onDelete={onDelete}
             toolbar={true}
+            organizationId={edge.node.organizationId}
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>

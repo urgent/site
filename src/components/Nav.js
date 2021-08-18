@@ -130,6 +130,7 @@ export default function Nav({ query }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
 
+    // needs to move in SSG, getServerSideProps
     if (!organization) {
         // if user config exists, use as default organization. If not, use first row in organization query
         if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
