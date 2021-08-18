@@ -127,12 +127,16 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
 export default function Nav({ query }) {
     const organizations = useFragment(organizationFragment, query);
     const userConfig = useFragment(userConfigFragment, query);
+    const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
-    // if user config exists, use as default organization. If not, use first row in organization query
-    if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-        focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
-    } else {
-        focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
+
+    if (!organization) {
+        // if user config exists, use as default organization. If not, use first row in organization query
+        if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
+            focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
+        } else {
+            focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
+        }
     }
 
 

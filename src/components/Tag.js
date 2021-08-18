@@ -185,7 +185,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     } else {
       removeFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageConnections, focusMessage, removeFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, focusMessage, removeFilter])
 
   const filterOn = useCallback(() => {
     if (edit) {
@@ -205,7 +205,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     } else {
       addFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageConnections, focusMessage, addFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, focusMessage, addFilter])
 
   return (
     <>

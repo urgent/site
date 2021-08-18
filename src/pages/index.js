@@ -3,7 +3,7 @@ import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
-import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
+import { graphql, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
 
 const HomeQuery = graphql`
