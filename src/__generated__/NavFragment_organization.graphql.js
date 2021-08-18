@@ -9,9 +9,9 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type pagesFragment_organization$ref: FragmentReference;
-declare export opaque type pagesFragment_organization$fragmentType: pagesFragment_organization$ref;
-export type pagesFragment_organization = {|
+declare export opaque type NavFragment_organization$ref: FragmentReference;
+declare export opaque type NavFragment_organization$fragmentType: NavFragment_organization$ref;
+export type NavFragment_organization = {|
   +allOrganizationUsers: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -23,12 +23,12 @@ export type pagesFragment_organization = {|
       |}
     |}>,
   |},
-  +$refType: pagesFragment_organization$ref,
+  +$refType: NavFragment_organization$ref,
 |};
-export type pagesFragment_organization$data = pagesFragment_organization;
-export type pagesFragment_organization$key = {
-  +$data?: pagesFragment_organization$data,
-  +$fragmentRefs: pagesFragment_organization$ref,
+export type NavFragment_organization$data = NavFragment_organization;
+export type NavFragment_organization$key = {
+  +$data?: NavFragment_organization$data,
+  +$fragmentRefs: NavFragment_organization$ref,
   ...
 };
 */
@@ -38,7 +38,7 @@ const node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "pagesFragment_organization",
+  "name": "NavFragment_organization",
   "selections": [
     {
       "alias": null,
@@ -115,6 +115,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = '52d77dc68a8cbdaf4f7d74db05ef5cfa';
+(node/*: any*/).hash = 'c660d4d22db9c2b7a285dfedd4b2d089';
 
 module.exports = node;

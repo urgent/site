@@ -6,6 +6,7 @@ import { Grid, VStack, Box, Wrap, WrapItem, Button, Input, Text } from "@chakra-
 import { HamburgerIcon } from "@chakra-ui/icons"
 import useMutation from './useMutation'
 import AlertDialog from "./AlertDialog";
+import useStore from "../utils/store";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation($input:CreateCategoryInput!, $connections: [ID!]!) {
@@ -77,10 +78,12 @@ const DeleteCategoryMutation = graphql`
     }
 `
 
-export function AddCategory({ connectionId, focusedOrganization }) {
+export function AddCategory({ connectionId }) {
     const [nameText, setNameText] = useState('');
     const [colorText, setColorText] = useState('E53E3E');
     const [isCategoryPending, insertCategory] = useMutation(InsertCategoryMutation);
+    const edit = useStore((state) => state.edit);
+    const organization = useStore((state) => state.organization);
 
     // Editor submit callback
     const onSubmit = useCallback(
@@ -89,7 +92,7 @@ export function AddCategory({ connectionId, focusedOrganization }) {
             insertCategory({
                 variables: {
                     input: {
-                        organizationId: focusedOrganization,
+                        organizationId: organization,
                         name: nameText,
                         color: colorText
                     },
@@ -101,11 +104,10 @@ export function AddCategory({ connectionId, focusedOrganization }) {
             setNameText('');
             setColorText('');
         },
-        [nameText, setNameText, colorText, setColorText, insertCategory, focusedOrganization, connectionId],
+        [nameText, setNameText, colorText, setColorText, insertCategory, organization, connectionId],
     );
-
-    return (
-        <VStack paddingX={2}>
+    return <>
+        {edit && <VStack paddingX={2}>
             <Input
                 size={["sm", "sm", "sm", "md", "md"]}
                 maxWidth={28}
@@ -129,25 +131,19 @@ export function AddCategory({ connectionId, focusedOrganization }) {
             />
             <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>Add</Button>
         </VStack>
-    )
+        }
+    </>
+
 }
 
-function size(mode) {
-    if (mode === 'edit') {
-        return '4rem';
-    } else {
-        return '2rem'
-    }
-}
-
-export default function Category({ edit, category, messages, tagFilter, tagClick, focusedOrganization, connectionId }) {
+export default function Category({ category, messageConnections, sidebarConnection }) {
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState();
     const [focusedCategory, setFocusedCategory] = useState();
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [editCategoryColor, setEditCategoryColor] = useState(category.color);
     const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
-    const [isConfirmOpen, setConfirmIsOpen] = React.useState(false)
+    const [isConfirmOpen, setConfirmIsOpen] = useState(false)
 
     const onEnter = useCallback(
         e => {
@@ -168,25 +164,20 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
         }
     )
 
-    function confirmDeleteCategory() {
-        // need connections to update
-        const connections = messages.edges.map(edge => {
-            return edge.node.messageTagsByMessageId.__id;
-        })
-
+    const confirmDeleteCategory = useCallback(() => {
         deleteCategory({
             variables: {
                 input: {
                     categoryId: category.rowId
                 },
-                connections: [...connections, connectionId],
+                connections: [...messageConnections, sidebarConnection],
             },
             updater: store => { },
         })
-    }
+    }, [deleteCategory, category, messageConnections, sidebarConnection]);
 
-    return (
-        <Grid
+    return <>
+        {categoryMode === 'edit' && <Grid
             maxWidth={[16, 24, 36, 96, 96]}
             minHeight={24}
             mx="auto"
@@ -196,7 +187,7 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
             fontSize={[8, 12, 12, 12, 12]}
             textAlign="left"
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-            gridTemplateRows={`[toolbar] 2rem [titlebar] ${size(categoryMode)} [body] auto`}
+            gridTemplateRows={`[toolbar] 2rem [titlebar] 4rem [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
             data-cy="category"
         >
@@ -212,16 +203,10 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     setIsOpen={setConfirmIsOpen}
                 />
 
-                {edit && <Toolbar
+                {<Toolbar
                     editClick={() => {
-                        if (categoryMode === 'edit') {
-                            setCategoryMode('view')
-                            setFocusedCategory(false)
-                        }
-                        else {
-                            setCategoryMode('edit')
-                            setFocusedCategory(category.rowId)
-                        }
+                        setCategoryMode('view')
+                        setFocusedCategory(false)
                     }}
                     deleteClick={() => setConfirmIsOpen(true)}
                 />}
@@ -269,6 +254,84 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                             onKeyDown={onEnter}
                         />
                     </>}
+            </Box>
+            <Wrap
+                gridRow="body"
+                gridColumn="content / -1"
+                my={2}
+                spacing={4}
+            >
+                {category.tagsByCategoryId?.edges.map((edge, index) => {
+                    return (
+                        <WrapItem key={index}>
+                            <Tag
+                                rowId={edge.node.rowId}
+                                color={category.color}
+                                messageConnections={messageConnections}
+                                tagConnection={category.tagsByCategoryId?.__id}
+                                tagName={edge.node.name}
+                            />
+                        </WrapItem>
+                    )
+                })}
+            </Wrap>
+            <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />
+        </Grid>
+        }
+
+
+        {categoryMode !== 'edit' && <Grid
+            maxWidth={[16, 24, 36, 96, 96]}
+            minHeight={24}
+            mx="auto"
+            my={4}
+            pb={4}
+            borderRadius="10px"
+            fontSize={[8, 12, 12, 12, 12]}
+            textAlign="left"
+            boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
+            gridTemplateRows={`[toolbar] 2rem [titlebar] 2rem [body] auto`}
+            gridTemplateColumns="[content] 4fr [corner] 1fr"
+            data-cy="category"
+        >
+            <Box
+                gridRow="toolbar"
+                gridColumn="content"
+            >
+                <AlertDialog
+                    title={`Delete ${category.name}`}
+                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category.name} category?`}
+                    click={confirmDeleteCategory}
+                    isOpen={isConfirmOpen}
+                    setIsOpen={setConfirmIsOpen}
+                />
+
+                {<Toolbar
+                    editClick={() => {
+                        setCategoryMode('edit')
+                        setFocusedCategory(category.rowId)
+                    }}
+                    deleteClick={() => setConfirmIsOpen(true)}
+                />}
+            </Box>
+            <Box
+                gridRow="toolbar"
+                gridColumn="corner"
+                pt={1}
+                pr={2}
+                textAlign="right"
+            >
+                <HamburgerIcon />
+            </Box>
+            <Box
+                gridRow="titlebar"
+                gridColumn="content / -1"
+                pl={1}
+                pt={1}
+                fontWeight="bold"
+                fontSize={12}
+                letterSpacing={1}
+            >
                 {categoryMode !== 'edit' && <Text mt={1}>{category.name}</Text>}
             </Box>
             <Wrap
@@ -281,21 +344,18 @@ export default function Category({ edit, category, messages, tagFilter, tagClick
                     return (
                         <WrapItem key={index}>
                             <Tag
-                                click={tagClick}
-                                name={edge.node.name}
-                                id={edge.node.rowId}
-                                tagFilter={tagFilter}
+                                rowId={edge.node.rowId}
                                 color={category.color}
-                                edit={edit}
-                                messages={messages}
-                                connectionId={category.tagsByCategoryId?.__id}
-                                tag={edge.node}
+                                messageConnections={messageConnections}
+                                tagConnection={category.tagsByCategoryId?.__id}
+                                tagName={edge.node.name}
                             />
                         </WrapItem>
                     )
                 })}
             </Wrap>
-            {edit && <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />}
+            <AddTag categoryTagsConnection={category.tagsByCategoryId?.__id} categoryId={category.rowId} />
         </Grid>
-    )
+        }
+    </>
 }

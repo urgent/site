@@ -5,83 +5,16 @@ import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
-import useMutation from '../components/useMutation'
-import create from 'zustand'
+import useStore from "../utils/store";
 
 // The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
+    ...NavFragment_organization
     ...SidebarFragment_categories
-    ...pagesFragment_messages
-    ...pagesFragment_organization
+    ...SidebarFragment_messages
+    ...TilesFragment_messages
     ...pagesFragment_userConfig
-  }
-`;
-
-const InsertMessageTagMutation = graphql`
-  mutation pagesMessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
-    createMessageTag(input: $input) {
-      messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
-        messageId
-        tagId
-        tagByTagId {
-          name
-          categoryByCategoryId {
-            color
-          }
-        }
-      }
-    }
-  }
-`;
-
-const messageFragment = graphql`
-          fragment pagesFragment_messages on Query {
-            allMessages {
-              __id
-              @connection(key: "pagesFragment_allMessages")
-              edges {
-                node {
-                  rowId
-                  content
-                  organizationId
-                  messageTagsByMessageId {
-                    __id
-                    edges {
-                      node {
-                        __id
-                        tagId
-                        messageId
-                        tagByTagId {
-                          __id
-                          rowId
-                          name
-                          categoryByCategoryId {
-                            color
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          }
-`;
-
-const organizationFragment = graphql`
-  fragment pagesFragment_organization on Query {
-    allOrganizationUsers {
-      __id
-      edges {
-        node {
-          organizationByOrganizationId {
-            rowId
-            slug
-          }
-        }
-      }
-    }
   }
 `;
 
@@ -99,46 +32,29 @@ const userConfigFragment = graphql`
 
 function Home({ preloadedQuery }) {
   const query = usePreloadedQuery(HomeQuery, preloadedQuery);
-  const messages = useFragment(messageFragment, query);
-  const organizations = useFragment(organizationFragment, query);
   const userConfig = useFragment(userConfigFragment, query);
-
-  // show editor
-  const [edit, setEdit] = useState(false)
-  // add action button in message card, "+ button"
-  const [focusedMessage, setFocusedMessage] = useState(false)
+  const focusOrganization = useStore((state) => state.focusOrganization);
   // if user config exists, use as default organization. If not, use first row in organization query
-  let focusedOrganization, setFocusedOrganization
   if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-    [focusedOrganization, setFocusedOrganization] = useState(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization)
+    focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
   } else {
-    [focusedOrganization, setFocusedOrganization] = useState(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId)
+    focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
   }
-  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
 
-  const editClick = useCallback(() => setEdit(!edit), [edit, setEdit])
-
-  return (
-    <>
-      <Nav edit={edit} organizations={organizations.allOrganizationUsers} editClick={editClick} setFocusedOrganization={setFocusedOrganization} focusedOrganization={focusedOrganization} />
-      <Sidebar
-        edit={edit}
-        categories={query}
-        messages={messages.allMessages}
-        focusedOrganization={focusedOrganization}
-      />
-      <Grid
-        as="main"
-        gridColumn="content"
-        pt={2}
-        mx="auto"
-        sx={{ textAlign: "center" }}
-        width="100%"
-      >
-        <Tiles edit={edit} messages={messages.allMessages} focusedMessage={focusedMessage} setFocusedMessage={setFocusedMessage} focusedOrganization={focusedOrganization} />
-      </Grid>
-    </>
-  )
+  return <>
+    <Nav query={query} />
+    <Sidebar query={query} />
+    <Grid
+      as="main"
+      gridColumn="content"
+      pt={2}
+      mx="auto"
+      sx={{ textAlign: "center" }}
+      width="100%"
+    >
+      <Tiles query={query} />
+    </Grid>
+  </>
 }
 
 function Loading() {

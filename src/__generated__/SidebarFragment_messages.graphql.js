@@ -9,9 +9,9 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type pagesFragment_messages$ref: FragmentReference;
-declare export opaque type pagesFragment_messages$fragmentType: pagesFragment_messages$ref;
-export type pagesFragment_messages = {|
+declare export opaque type SidebarFragment_messages$ref: FragmentReference;
+declare export opaque type SidebarFragment_messages$fragmentType: SidebarFragment_messages$ref;
+export type SidebarFragment_messages = {|
   +allMessages: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -40,12 +40,12 @@ export type pagesFragment_messages = {|
       |}
     |}>,
   |},
-  +$refType: pagesFragment_messages$ref,
+  +$refType: SidebarFragment_messages$ref,
 |};
-export type pagesFragment_messages$data = pagesFragment_messages;
-export type pagesFragment_messages$key = {
-  +$data?: pagesFragment_messages$data,
-  +$fragmentRefs: pagesFragment_messages$ref,
+export type SidebarFragment_messages$data = SidebarFragment_messages;
+export type SidebarFragment_messages$key = {
+  +$data?: SidebarFragment_messages$data,
+  +$fragmentRefs: SidebarFragment_messages$ref,
   ...
 };
 */
@@ -75,7 +75,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "pagesFragment_messages",
+  "name": "SidebarFragment_messages",
   "selections": [
     {
       "alias": null,
@@ -219,6 +219,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ed117473f407a08d15e15ccf5bd95e5b';
+(node/*: any*/).hash = '330a77f00f63259b05225dd1d9e3d923';
 
 module.exports = node;

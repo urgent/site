@@ -1,11 +1,9 @@
+import { login } from './login'
 describe('Message', () => {
-    it('requires login', () => {
-        cy.visit('/')
-        // 1, for editor
-        cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
-        cy.get('[data-cy=editor] .quill').type('Hello, World')
-        cy.get('[data-cy=save]').click()
-        cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
+    beforeEach(() => {
+        cy.log(`Visiting http://localhost:3000`)
+        cy.visit('/api/auth/signin')
+        login();
     })
     it('creates', () => {
         cy.visit('/')

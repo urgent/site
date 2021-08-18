@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback } from "react";
 import Toolbar from "./Toolbar"
 import useMutation from './useMutation'
 import { Grid, Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
@@ -30,29 +30,31 @@ const DeleteTagMutation = graphql`
 `;
 
 export function AddTagToMessage({ click }) {
-  return <Button data-cy="add_tag_to_message" onClick={click}>+</Button>;
+  const edit = useStore((state) => state.edit);
+  return <>
+    {edit && <Button data-cy="add_tag_to_message" onClick={click}>+</Button>}
+  </>
 }
 
-function onDeleteMessageTag(messageId, tagId, connectionId, deleteMessageTag) {
-  deleteMessageTag({
-    variables: {
-      input: {
-        messageId: messageId,
-        tagId: tagId
-      },
-      connections: [connectionId]
-    },
-    updater: store => { },
-  });
-}
-
-export default function Message({ tags, edit, gridColumn, gridRow, children, id, setFocusedMessage, onEdit, onDelete }) {
+export default function Message({ tags, gridColumn, gridRow, children, id, onEdit, onDelete }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
-
+  const focusMessage = useStore((state) => state.focusMessage);
   const tagIds = tags?.edges.map((tag) => tag.node.tagByTagId?.rowId)
+  let display = false
 
-  let display = 'none'
+  const onDeleteMessageTag = useCallback((tagId, connectionId) => () => {
+    deleteMessageTag({
+      variables: {
+        input: {
+          messageId: id,
+          tagId: tagId
+        },
+        connections: [connectionId]
+      },
+      updater: store => { },
+    });
+  }, [deleteMessageTag, id])
 
   // message has tags
   if (Array.isArray(tagIds)) {
@@ -60,17 +62,17 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
     if (filter.every(filterTag => {
       return tagIds.includes(filterTag)
     })) {
-      display = 'inherit'
+      display = true
     }
   }
 
   // no filter, show
   if (filter.length === 0) {
-    display = 'inherit'
+    display = true
   }
 
-  return (
-    <Grid
+  return <>
+    {display && <Grid
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
       borderRadius="10px"
       textAlign="left"
@@ -85,7 +87,7 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         gridRow="menu"
         gridColumn="menu"
       >
-        {edit && <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
+        <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />
       </Box>
       <Box
         gridRow="body"
@@ -106,25 +108,39 @@ export default function Message({ tags, edit, gridColumn, gridRow, children, id,
         overflowY="scroll"
         height={20}
       >
-        {edit && <AddTagToMessage click={() => setFocusedMessage([id, tags?.__id])} />}
+        {<AddTagToMessage click={() => {
+          focusMessage(id)
+        }} />}
         {tags?.edges.map((edge, index) =>
           <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
             <HStack spacing={1}>
               <Box>{edge.node.tagByTagId?.name}</Box>
-              {edit && <IconButton
-                data-cy="delete_tag_from_message"
-                _hover={{ background: `#${edge.node.tagByTagId?.categoryByCategoryId.color}` }}
-                onClick={() => onDeleteMessageTag(edge.node.messageId, edge.node.tagByTagId.rowId, tags.__id, deleteMessageTag)}
-                size={"sm"}
-                aria-label="Trash"
-                icon={<HiOutlineTrash />}
-                color="white"
+              <DeleteTag
                 bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
-              ></IconButton>}
+                click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
+              />
             </HStack>
           </Badge>)}
 
       </Box>
     </Grid>
-  );
+    }</>
+}
+
+function DeleteTag({ bg, click }) {
+  const edit = useStore((state) => state.edit);
+  return (
+    <>
+      {edit && <IconButton
+        data-cy="delete_tag_from_message"
+        _hover={{ background: { bg } }}
+        onClick={click}
+        size={"sm"}
+        aria-label="Trash"
+        icon={<HiOutlineTrash />}
+        color="white"
+        bg={bg}
+      ></IconButton>}
+    </>
+  )
 }

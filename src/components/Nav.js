@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react'
-import { VStack, Box, Image, Icon, Text, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
-import { BsGear } from 'react-icons/bs';
+import { VStack, Box, Image, Icon, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
+import { graphql, useFragment } from 'react-relay/hooks';
 import useMutation from './useMutation'
 import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRemove, HiChartBar, HiOutlineUserAdd } from 'react-icons/hi';
 import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
+import useStore from "../utils/store";
 
 const InsertConfigMutation = graphql`
   mutation NavInsertConfigMutation($input:CreateUserConfigInput!) {
@@ -16,8 +17,27 @@ const InsertConfigMutation = graphql`
     }
 `;
 
-function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganization, focusedOrganization, btnRef }) {
+const organizationFragment = graphql`
+  fragment NavFragment_organization on Query {
+    allOrganizationUsers {
+      __id
+      edges {
+        node {
+          organizationByOrganizationId {
+            rowId
+            slug
+          }
+        }
+      }
+    }
+  }
+`;
+
+function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
+    const organization = useStore((state) => state.organization);
+    const focusOrganization = useStore((state) => state.focusOrganization);
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
+
     const onEnter = useCallback(
         async (e, organizations) => {
 
@@ -28,7 +48,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganizati
             // render loop with setting state in react component drop down map
             const focusedOrganizationText = organizations.edges.filter(org => {
 
-                focusedOrganization === org.node.organizationByOrganizationId.rowId
+                organization === org.node.organizationByOrganizationId.rowId
             })
             const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
 
@@ -46,7 +66,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganizati
             });
             return response.json();
         },
-        [focusedOrganization]
+        [organization]
     )
     return <Drawer
         isOpen={isOpen}
@@ -69,13 +89,13 @@ function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganizati
                         },
                         updater: store => { },
                     });
-                    setFocusedOrganization(parseInt(e.target.value));
+                    focusOrganization(parseInt(e.target.value));
                 }}>
-                    {organizations.edges.filter((edge) => {
+                    {organizations?.edges?.filter((edge) => {
                         return edge.node?.hasOwnProperty('organizationByOrganizationId')
                     }).map((edge) => {
                         const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                        if (focusedOrganization === rowId) {
+                        if (organization === rowId) {
                             return <option key={rowId} value={rowId} selected="selected">{slug}</option>
                         }
                         else {
@@ -99,12 +119,16 @@ function OrganizationMenu({ isOpen, onClose, organizations, setFocusedOrganizati
     </Drawer>
 }
 
-export default function Nav({ edit, organizations, editClick, setFocusedOrganization, focusedOrganization }) {
+export default function Nav({ query }) {
+    const organizations = useFragment(organizationFragment, query);
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [session] = useSession()
     // used for nav button colors
     const [focus, setFocus] = useState();
+    const edit = useStore((state) => state.edit);
+    const toggleEdit = useStore((state) => state.toggleEdit);
+
 
     const colors = {
         edit: "none",
@@ -132,7 +156,7 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
                 <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
                 <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
                     setFocus();
-                    editClick(e);
+                    toggleEdit();
                 }}>
                     <Icon as={FiEdit} w={6} h={6} />
                 </Button>
@@ -165,7 +189,7 @@ export default function Nav({ edit, organizations, editClick, setFocusedOrganiza
                 <Button bg="none" color="white" _hover={{ bg: "#FABC37" }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
-                <OrganizationMenu {...{ isOpen, onOpen, onClose, organizations, setFocusedOrganization, focusedOrganization, btnRef }} />
+                <OrganizationMenu organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
             </VStack >
         )
     }

@@ -57,9 +57,27 @@ const UpdateTagMutation = graphql`
   }
 `;
 
-export function AddTag({ connectionId, categoryId }) {
+const InsertMessageTagMutation = graphql`
+  mutation TagInsertMessageTagMutation($input:CreateMessageTagInput!, $connections: [ID!]!) {
+    createMessageTag(input: $input) {
+      messageTag @appendNode(connections: $connections, edgeTypeName: "MessageTagsEdge") {
+        messageId
+        tagId
+        tagByTagId {
+          name
+          categoryByCategoryId {
+            color
+          }
+        }
+      }
+    }
+  }
+`;
+
+export function AddTag({ categoryTagsConnection, categoryId }) {
   const [name, setName] = useState('')
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
+  const edit = useStore((state) => state.edit);
 
   // Editor submit callback
   const onSubmit = useCallback(
@@ -71,7 +89,7 @@ export function AddTag({ connectionId, categoryId }) {
             name: name,
             categoryId: categoryId
           },
-          connections: [connectionId]
+          connections: [categoryTagsConnection]
         },
         updater: store => { },
       });
@@ -81,32 +99,39 @@ export function AddTag({ connectionId, categoryId }) {
     [name, setName, insertTag],
   );
 
-  return <VStack>
-    <Input
-      size={["sm", "sm", "sm", "md", "md"]}
-      maxWidth={28}
-      borderRadius={8}
-      paddingX={2}
-      paddingY={1}
-      onChange={(e) => setName(e.target.value)}
-      placeholder="Tag Name"
-      data-cy="add_tag_text"
-      value={name}
-    />
-    <Button data-cy="add_tag_button" size="xs" onClick={onSubmit} >Add Tag</Button>
-  </VStack>
+  return <>
+    {edit && <VStack>
+      <Input
+        size={["sm", "sm", "sm", "md", "md"]}
+        maxWidth={28}
+        borderRadius={8}
+        paddingX={2}
+        paddingY={1}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Tag Name"
+        data-cy="add_tag_text"
+        value={name}
+      />
+      <Button data-cy="add_tag_button" size="xs" onClick={onSubmit} >Add Tag</Button>
+    </VStack>}
+  </>
 }
 
-export default function Tag({ id, color, edit, messages, connectionId, tag }) {
+export default function Tag({ rowId, color, messageConnections, tagConnection, tagName }) {
   const filter = useStore((state) => state.filter);
   const addFilter = useStore((state) => state.addFilter);
   const removeFilter = useStore((state) => state.removeFilter);
+  const edit = useStore((state) => state.edit);
+  const organization = useStore((state) => state.organization);
+  const message = useStore((state) => state.message);
+  const focusMessage = useStore((state) => state.focusMessage);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
-  const [editTagText, setEditTagText] = useState(tag.name);
+  const [editTagText, setEditTagText] = useState(tagName);
   const [tagMode, setTagMode] = useState('view')
   const [focusedTag, setFocusedTag] = useState(false)
   const [isUpdateTagPending, updateTag] = useMutation(UpdateTagMutation);
-  const [isConfirmOpen, setConfirmIsOpen] = React.useState(false)
+  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
+  const [isConfirmOpen, setConfirmIsOpen] = useState(false)
 
   const onEnter = useCallback(
     e => {
@@ -126,32 +151,68 @@ export default function Tag({ id, color, edit, messages, connectionId, tag }) {
     }
   )
 
-  function confirmDeleteTag() {
-    // need connections to update
-    const connections = messages.edges.map(edge => {
-      return edge.node.messageTagsByMessageId.__id;
-    })
+  const confirmDeleteTag = useCallback(() => {
     deleteTag({
       variables: {
         tag: {
-          tagId: id,
+          tagId: rowId,
         },
         messageTag: {
-          tagId: id,
+          tagId: rowId,
         },
-        tagConnections: [connectionId],
-        messageTagConnections: connections,
+        tagConnections: [tagConnection],
+        messageTagConnections: messageConnections,
       },
       updater: store => { },
     })
-  }
+  })
+
+  const filterOff = useCallback(() => {
+    if (edit) {
+      // add tag to message
+      insertMessageTag({
+        variables: {
+          input: {
+            messageId: message,
+            tagId: rowId,
+            organizationId: organization
+          },
+          connections: [...messageConnections]
+        },
+        updater: store => { },
+      });
+      focusMessage(false)
+    } else {
+      removeFilter(rowId)
+    }
+  }, [edit, insertMessageTag, message, rowId, organization, tagConnection, messageConnections, focusMessage, removeFilter])
+
+  const filterOn = useCallback(() => {
+    if (edit) {
+      // add tag to message
+      insertMessageTag({
+        variables: {
+          input: {
+            messageId: message,
+            tagId: rowId,
+            organizationId: organization
+          },
+          connections: [...messageConnections]
+        },
+        updater: store => { },
+      });
+      focusMessage(false)
+    } else {
+      addFilter(rowId)
+    }
+  }, [edit, insertMessageTag, message, rowId, organization, tagConnection, messageConnections, focusMessage, addFilter])
 
   return (
     <>
-      {edit && <Box data-cy="tag_container">
+      <Box data-cy="tag_container">
         <AlertDialog
-          title={`Delete ${tag.name}`}
-          body={`Tags on messages will be lost. Are you sure you want to delete all ${tag.name} tags?`}
+          title={`Delete ${tagName}`}
+          body={`Tags on messages will be lost. Are you sure you want to delete all ${tagName} tags?`}
           click={confirmDeleteTag}
           isOpen={isConfirmOpen}
           setIsOpen={setConfirmIsOpen}
@@ -164,20 +225,20 @@ export default function Tag({ id, color, edit, messages, connectionId, tag }) {
             }
             else {
               setTagMode('edit')
-              setFocusedTag(tag.rowId)
+              setFocusedTag(rowId)
             }
           }}
         />
-      </Box>}
+      </Box>
 
-      {filter.includes(id) &&
+      {filter.includes(rowId) &&
         <Button
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={() => removeFilter(id)}
+          onClick={filterOff}
           isActive={true}
           color="white"
           bg={`#${color}`}
@@ -199,24 +260,24 @@ export default function Tag({ id, color, edit, messages, connectionId, tag }) {
                 mt={1}
                 onKeyDown={onEnter}
               />}
-            {tagMode !== 'edit' && <Text mt={1}>{tag.name}</Text>}
+            {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
           </Box>
         </Button>}
 
-      {!filter.includes(id) &&
+      {!filter.includes(rowId) &&
         <Button
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={() => addFilter(id)}
+          onClick={filterOn}
           isActive={false}
           color={`#${color}`}
           borderColor={`#${color}`}
           bg="white"
           _active={{ bg: "white" }}
-          _hover={{ bg: "white", boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }} s
+          _hover={{ bg: "white", boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
           data-cy="tag"
         >
           <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
@@ -233,7 +294,7 @@ export default function Tag({ id, color, edit, messages, connectionId, tag }) {
                 mt={1}
                 onKeyDown={onEnter}
               />}
-            {tagMode !== 'edit' && <Text mt={1}>{tag.name}</Text>}
+            {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
           </Box>
         </Button>}
     </>

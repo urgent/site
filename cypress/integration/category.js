@@ -1,11 +1,9 @@
+import { login } from './login'
 describe('Category', () => {
-    it('requires login', () => {
-        cy.visit('/')
-        cy.get('[data-cy=category]').should('have.length', 0)
-        cy.get('[data-cy=edit_mode]').click()
-        cy.get('[data-cy=add_category_name]').type('cy test')
-        cy.get('[data-cy=add_category_button]').click()
-        cy.get('[data-cy=category]').should('have.length', 0)
+    beforeEach(() => {
+        cy.log(`Visiting http://localhost:3000`)
+        cy.visit('/api/auth/signin')
+        login();
     })
     it('creates', () => {
         cy.visit('/')

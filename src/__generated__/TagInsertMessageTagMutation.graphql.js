@@ -14,11 +14,11 @@ export type CreateMessageTagInput = {|
   tagId: number,
   organizationId: number,
 |};
-export type pagesMessageTagMutationVariables = {|
+export type TagInsertMessageTagMutationVariables = {|
   input: CreateMessageTagInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type pagesMessageTagMutationResponse = {|
+export type TagInsertMessageTagMutationResponse = {|
   +createMessageTag: ?{|
     +messageTag: ?{|
       +messageId: number,
@@ -32,15 +32,15 @@ export type pagesMessageTagMutationResponse = {|
     |}
   |}
 |};
-export type pagesMessageTagMutation = {|
-  variables: pagesMessageTagMutationVariables,
-  response: pagesMessageTagMutationResponse,
+export type TagInsertMessageTagMutation = {|
+  variables: TagInsertMessageTagMutationVariables,
+  response: TagInsertMessageTagMutationResponse,
 |};
 */
 
 
 /*
-mutation pagesMessageTagMutation(
+mutation TagInsertMessageTagMutation(
   $input: CreateMessageTagInput!
 ) {
   createMessageTag(input: $input) {
@@ -121,7 +121,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "pagesMessageTagMutation",
+    "name": "TagInsertMessageTagMutation",
     "selections": [
       {
         "alias": null,
@@ -182,7 +182,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "pagesMessageTagMutation",
+    "name": "TagInsertMessageTagMutation",
     "selections": [
       {
         "alias": null,
@@ -258,16 +258,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3c42991d1cdf86e78821b942e3f499af",
+    "cacheID": "e1068d5ceac1f96caab6686400aaea55",
     "id": null,
     "metadata": {},
-    "name": "pagesMessageTagMutation",
+    "name": "TagInsertMessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation pagesMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      messageId\n      tagId\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation TagInsertMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      messageId\n      tagId\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '710d1ca610ab190a5dbcd8a696644a94';
+(node/*: any*/).hash = '594b08d68bb1c0975dc2d0b166d2c602';
 
 module.exports = node;

@@ -2,8 +2,9 @@ import React, { useState, useCallback, useRef } from "react";
 import Message from "./Message"
 import Editor from './Editor';
 import { Grid } from "@chakra-ui/react"
-import { graphql } from 'react-relay';
+import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
+import useStore from "../utils/store";
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 const InsertMessageMutation = graphql`
@@ -74,13 +75,51 @@ const UpdateMessageMutation = graphql`
     }
 `;
 
-export default function Tiles({ edit, messages, focusedMessage, setFocusedMessage, focusedOrganization }) {
+const messageFragment = graphql`
+          fragment TilesFragment_messages on Query {
+            allMessages {
+              __id
+              @connection(key: "pagesFragment_allMessages")
+              edges {
+                node {
+                  rowId
+                  content
+                  organizationId
+                  messageTagsByMessageId {
+                    __id
+                    edges {
+                      node {
+                        __id
+                        tagId
+                        messageId
+                        tagByTagId {
+                          __id
+                          rowId
+                          name
+                          categoryByCategoryId {
+                            color
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+`;
+
+export default function Tiles({ query }) {
   const [editorText, setEditorText] = useState('');
+  const messages = useFragment(messageFragment, query);
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
   const [editMessage, setEditMessage] = useState(false)
-
+  const message = useStore((state) => state.message);
+  const focusMessage = useStore((state) => state.focusMessage);
+  const edit = useStore((state) => state.edit);
+  const organization = useStore((state) => state.organization);
   const editorRef = useRef(null)
 
   // Editor submit
@@ -88,11 +127,10 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
     event.preventDefault();
     const delta = JSON.stringify(editorRef.current.getEditor().getContents());
     if (edit && editMessage) {
-      const [messageId] = focusedMessage;
       updateMessage({
         variables: {
           input: {
-            id: messageId,
+            id: message,
             content: delta,
           },
         },
@@ -103,11 +141,11 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
       insertMessage({
         variables: {
           input: {
-            organizationId: focusedOrganization,
+            organizationId: organization,
             content: delta,
             tags: [],
           },
-          connections: [messages?.__id]
+          connections: [messages?.allMessages?.__id]
         },
         updater: store => { },
       });
@@ -115,7 +153,7 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
       setEditorText('');
     }
   },
-    [editorText, setEditorText, insertMessage]);
+    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, editorText, insertMessage, organization, messages, setEditorText]);
 
   // Toolbar on edit
   const onEdit = useCallback((messageId, collectionId, content) => {
@@ -126,10 +164,10 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
     } else {
       // run edit
       setEditMessage(true)
-      setFocusedMessage([messageId, collectionId])
+      focusMessage(messageId)
       setEditorText(content)
     }
-  }, [setEditMessage, setEditorText, setFocusedMessage])
+  }, [setEditMessage, setEditorText, focusMessage])
 
   // Toolbar on delete
   const onDelete = useCallback((messageId, collectionId) => {
@@ -138,12 +176,12 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
         input: {
           messageId: messageId,
         },
-        connections: [messages?.__id]
+        connections: [messages?.allMessages.__id]
       },
       updater: store => { },
     });
     setEditMessage(false);
-  }, [deleteMessage,])
+  }, [deleteMessage, messages, setEditMessage])
 
   return (
     <Grid
@@ -160,7 +198,7 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
     >
 
       {// message in edit mode. hide all messages not being edited
-        edit && editMessage && messages.edges.filter((edge) => edge.node.rowId === focusedMessage[0]).map(edge => <Message
+        edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message[0]).map(edge => <Message
           key={edge.node.rowId}
           edit={true}
           tags={edge.node.messageTagsByMessageId}
@@ -174,7 +212,7 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
           {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
         </Message>)}
 
-      {!(edit && editMessage) && messages.edges.map((edge) => {
+      {!(edit && editMessage) && messages.allMessages.edges?.map((edge) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
@@ -184,10 +222,8 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
         return (
           <Message
             key={edge.node.rowId}
-            edit={edit}
             tags={edge.node.messageTagsByMessageId}
             id={edge.node.rowId}
-            setFocusedMessage={setFocusedMessage}
             onEdit={onEdit}
             onDelete={onDelete}
             gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
@@ -198,7 +234,6 @@ export default function Tiles({ edit, messages, focusedMessage, setFocusedMessag
         )
       })
       }
-
 
       <Message gridColumn="span 2" gridRow="span 2">
         <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} editorRef={(el) => editorRef.current = el}>
