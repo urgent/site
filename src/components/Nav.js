@@ -33,6 +33,18 @@ const organizationFragment = graphql`
   }
 `;
 
+const userConfigFragment = graphql`
+  fragment NavFragment_userConfig on Query {
+    allUserConfigs {
+      edges {
+        node {
+          defaultOrganization
+        }
+      }
+    }
+  }
+`;
+
 function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
@@ -44,14 +56,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
             if (e.key !== 'Enter') {
                 return;
             }
-            // to replace, need better coverage as focusedOrganization is used throughout app
-            // render loop with setting state in react component drop down map
-            const focusedOrganizationText = organizations.edges.filter(org => {
-
-                organization === org.node.organizationByOrganizationId.rowId
-            })
             const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
-
             const response = await fetch('/api/invite', {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 mode: 'cors', // no-cors, *cors, same-origin
@@ -121,6 +126,16 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
 
 export default function Nav({ query }) {
     const organizations = useFragment(organizationFragment, query);
+    const userConfig = useFragment(userConfigFragment, query);
+    const focusOrganization = useStore((state) => state.focusOrganization);
+    // if user config exists, use as default organization. If not, use first row in organization query
+    if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
+        focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
+    } else {
+        focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
+    }
+
+
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [session] = useSession()

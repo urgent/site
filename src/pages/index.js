@@ -1,45 +1,23 @@
-import React, { useState, useCallback } from "react";
+import React from "react";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
 import { withRelay } from 'relay-nextjs';
 import { graphql, useFragment, usePreloadedQuery } from 'react-relay/hooks';
 import { Grid } from '@chakra-ui/react'
-import useStore from "../utils/store";
 
-// The $uuid variable is injected automatically from the route.
 const HomeQuery = graphql`
   query pages_HomeQuery {
     ...NavFragment_organization
+    ...NavFragment_userConfig
     ...SidebarFragment_categories
     ...SidebarFragment_messages
     ...TilesFragment_messages
-    ...pagesFragment_userConfig
-  }
-`;
-
-const userConfigFragment = graphql`
-  fragment pagesFragment_userConfig on Query {
-    allUserConfigs {
-      edges {
-        node {
-          defaultOrganization
-        }
-      }
-    }
   }
 `;
 
 function Home({ preloadedQuery }) {
   const query = usePreloadedQuery(HomeQuery, preloadedQuery);
-  const userConfig = useFragment(userConfigFragment, query);
-  const focusOrganization = useStore((state) => state.focusOrganization);
-  // if user config exists, use as default organization. If not, use first row in organization query
-  if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-    focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
-  } else {
-    focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
-  }
 
   return <>
     <Nav query={query} />

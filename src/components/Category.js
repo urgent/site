@@ -275,7 +275,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                     )
                 })}
             </Wrap>
-            <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} focusedOrganization={focusedOrganization} />
+            <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} />
         </Grid>
         }
 

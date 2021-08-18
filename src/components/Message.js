@@ -32,7 +32,7 @@ const DeleteTagMutation = graphql`
 export function AddTagToMessage({ click }) {
   const edit = useStore((state) => state.edit);
   return <>
-    {edit && <Button data-cy="add_tag_to_message" onClick={click}>+</Button>}
+    {edit && <Button mr={1} data-cy="add_tag_to_message" onClick={click}>+</Button>}
   </>
 }
 
@@ -108,7 +108,7 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar 
         gridColumn="body / -1"
         alignSelf="end"
         px={4}
-        pb={2}
+        py={2}
         data-cy="body"
         overflowY="scroll"
         height={20}
