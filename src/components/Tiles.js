@@ -153,7 +153,7 @@ export default function Tiles({ query }) {
       setEditorText('');
     }
   },
-    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, editorText, insertMessage, organization, messages, setEditorText]);
+    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, messages, setEditorText]);
 
   // Toolbar on edit
   const onEdit = useCallback((messageId, collectionId, content) => {
@@ -162,12 +162,11 @@ export default function Tiles({ query }) {
       setEditMessage(false)
       setEditorText('')
     } else {
-      // run edit
       setEditMessage(true)
       focusMessage([messageId, collectionId])
       setEditorText(content)
     }
-  }, [setEditMessage, setEditorText, focusMessage])
+  }, [edit, editMessage, setEditMessage, setEditorText, focusMessage])
 
   // Toolbar on delete
   const onDelete = useCallback((messageId, collectionId) => {
@@ -197,15 +196,27 @@ export default function Tiles({ query }) {
       data-cy="tiles"
     >
 
-      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message).map(edge => <Message
-        key={edge.node.rowId}
-        tags={edge.node.messageTagsByMessageId}
-        id={edge.node.rowId}
-        onEdit={onEdit}
-        onDelete={onDelete}
-      >
-        {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
-      </Message>)}
+      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message).map(edge => {
+        let messageContent;
+        try {
+          messageContent = JSON.parse(edge.node.content);
+        } catch (e) {
+          messageContent = edge.node.content;
+        }
+        return <Message
+          key={edge.node.rowId}
+          tags={edge.node.messageTagsByMessageId}
+          id={edge.node.rowId}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          toolbar={true}
+          organizationId={edge.node.organizationId}
+          editActive={editMessage && message === edge.node.rowId}
+        >
+          {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+        </Message>
+      })}
+
 
       {!(edit && editMessage) && messages.allMessages.edges?.map((edge) => {
         let messageContent;

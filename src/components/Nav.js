@@ -52,7 +52,6 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
 
     const onEnter = useCallback(
         async (e, organizations) => {
-
             if (e.key !== 'Enter') {
                 return;
             }
@@ -70,9 +69,8 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
                 body: `email=${e.target.value}&slug=${slug}` // body data type must match "Content-Type" header
             });
             return response.json();
-        },
-        [organization]
-    )
+        }, [])
+
     return <Drawer
         isOpen={isOpen}
         placement="bottom"

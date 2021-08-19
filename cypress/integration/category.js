@@ -13,6 +13,9 @@ describe('Category', () => {
         cy.get('[data-cy=add_category_name]').type('cy test')
         cy.get('[data-cy=add_category_button]').click()
         cy.get('[data-cy=category]').should('have.length', 1)
+        cy.get('[data-cy=category]:first-child [data-cy=trash]').click()
+        cy.get('[data-cy=alert_confirm').click()
+        cy.get('[data-cy=category]').should('have.length', 0)
     })
 
     it('deletes', () => {

@@ -96,7 +96,7 @@ export function AddTag({ categoryTagsConnection, categoryId }) {
       // Reset form text
       setName('');
     },
-    [name, setName, insertTag],
+    [name, setName, insertTag, categoryId, categoryTagsConnection],
   );
 
   return <>
@@ -133,22 +133,21 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
   const [isConfirmOpen, setConfirmIsOpen] = useState(false)
 
-  const onEnter = useCallback(
-    e => {
-      if (e.key !== 'Enter') {
-        return;
-      }
-      updateTag({
-        variables: {
-          input: {
-            id: focusedTag,
-            name: editTagText,
-          },
-        },
-      });
-      setTagMode('view')
-      setFocusedTag(false)
+  const onEnter = useCallback(e => {
+    if (e.key !== 'Enter') {
+      return;
     }
+    updateTag({
+      variables: {
+        input: {
+          id: focusedTag,
+          name: editTagText,
+        },
+      },
+    });
+    setTagMode('view')
+    setFocusedTag(false)
+  }, [updateTag, focusedTag, editTagText, setTagMode, setFocusedTag]
   )
 
   const confirmDeleteTag = useCallback(() => {
@@ -165,7 +164,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       },
       updater: store => { },
     })
-  })
+  }, [deleteTag, rowId, tagConnection, messageConnections])
 
   const filterOff = useCallback(() => {
     if (edit) {
@@ -185,7 +184,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     } else {
       removeFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, focusMessage, removeFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, removeFilter])
 
   const filterOn = useCallback(() => {
     if (edit) {
@@ -205,7 +204,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     } else {
       addFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, focusMessage, addFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, addFilter])
 
   return (
     <>

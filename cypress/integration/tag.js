@@ -28,6 +28,12 @@ describe('Tag', () => {
         cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=add_tag_to_message]').click()
         cy.get('[data-cy=category]:first-child [data-cy=tag]').click()
         cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=message_tag]').should('have.length', 1)
+        // teardown
+        cy.get('[data-cy="category"]:first-child > div:first-child [data-cy="trash"]').click()
+        cy.get('[data-cy=alert_confirm').click()
+        cy.get('[data-cy=category]').should('have.length', 0)
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=trash]').click();
+        cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
     })
 
     it('deletes', () => {
@@ -65,6 +71,12 @@ describe('Tag', () => {
         cy.get('[data-cy=alert_confirm').click()
         cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=message_tag]').should('have.length', 0)
         cy.get('[data-cy=category]:first-child [data-cy=tag]').should('have.length', 0)
+        // teardown
+        cy.get('[data-cy=category]:first-child [data-cy=trash]').click()
+        cy.get('[data-cy=alert_confirm').click()
+        cy.get('[data-cy=category]').should('have.length', 0)
+        cy.get('[data-cy=tiles] [data-cy=message]:first-child [data-cy=trash]').click();
+        cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
     })
 
 })

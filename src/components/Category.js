@@ -161,7 +161,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
             });
             setCategoryMode('view')
             setFocusedCategory(false)
-        }
+        }, [updateCategory, focusedCategory, editCategoryText, editCategoryColor, setCategoryMode, setFocusedCategory]
     )
 
     const confirmDeleteCategory = useCallback(() => {

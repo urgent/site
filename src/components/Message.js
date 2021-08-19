@@ -36,7 +36,7 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ tags, children, id, onEdit, onDelete, toolbar, organizationId }) {
+export default function Message({ tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
@@ -58,6 +58,11 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
 
 
   const display = useCallback(() => {
+    // no filter for editor
+    if (!toolbar) {
+      return true
+    }
+
     // message belongs to focused organziation
     if (organizationId !== organization) {
       return false
@@ -65,11 +70,6 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
 
     // no filter, show
     if (filter.length === 0) {
-      return true
-    }
-
-    // no filter for editor
-    if (!toolbar) {
       return true
     }
 
@@ -92,20 +92,18 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
       borderRadius="10px"
       textAlign="left"
       gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
-      gridTemplateColumns="[body] auto [menu] 4.5em"
       gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
       gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
       data-cy="message"
     >
       <Box
         gridRow="menu"
-        gridColumn="menu"
+        ml={4}
       >
-        {toolbar && <Toolbar editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
+        {toolbar && <Toolbar editActive={editActive} editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
       </Box>
       <Box
         gridRow="body"
-        gridColumn="body / -1"
         px={4}
         pb={4}
         overflowX="hidden"
@@ -114,7 +112,6 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
       </Box>
       <Box
         gridRow="tags"
-        gridColumn="body / -1"
         alignSelf="end"
         px={4}
         py={2}
