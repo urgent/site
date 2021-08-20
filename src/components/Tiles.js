@@ -7,35 +7,6 @@ import useMutation from './useMutation'
 import useStore from "../utils/store";
 const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
-const InsertMessageMutation = graphql`
-  mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
-    createMessage(input: $input) {
-      messages @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
-        rowId
-        content
-        organizationId
-        messageTagsByMessageId {
-            __id
-            edges {
-              node {
-                __id
-                tagId
-                tagByTagId {
-                  __id
-                  rowId
-                  name
-                  categoryByCategoryId {
-                    color
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-`;
-
 const DeleteMessageMutation = graphql`
   mutation TilesDeleteMessageMutation($input:DeleteMessageInput!, $connections: [ID!]!) {
     deleteMessage(input: $input) {
@@ -44,35 +15,6 @@ const DeleteMessageMutation = graphql`
       }
     }
   }
-`;
-
-const UpdateMessageMutation = graphql`
-  mutation TilesUpdateMessageMutation($input:UpdateMessageInput!) {
-    updateMessage(input: $input) {
-      messages {
-        rowId
-        content
-        organizationId
-        messageTagsByMessageId {
-            __id
-            edges {
-              node {
-                __id
-                tagId
-                tagByTagId {
-                  __id
-                  rowId
-                  name
-                  categoryByCategoryId {
-                    color
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
 `;
 
 const messageFragment = graphql`
@@ -112,48 +54,12 @@ const messageFragment = graphql`
 export default function Tiles({ query }) {
   const [editorText, setEditorText] = useState('');
   const messages = useFragment(messageFragment, query);
-  const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
-  const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
   const [editMessage, setEditMessage] = useState(false)
   const [message] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const edit = useStore((state) => state.edit);
-  const organization = useStore((state) => state.organization);
-  const editorRef = useRef(null)
 
-  // Editor submit
-  const onSubmit = useCallback((event) => {
-    event.preventDefault();
-    const delta = JSON.stringify(editorRef.current.getEditor().getContents());
-    if (edit && editMessage) {
-      updateMessage({
-        variables: {
-          input: {
-            id: message,
-            content: delta,
-          },
-        },
-        updater: store => { },
-      });
-      setEditMessage(false)
-    } else {
-      insertMessage({
-        variables: {
-          input: {
-            organizationId: organization,
-            content: delta,
-            tags: [],
-          },
-          connections: [messages?.allMessages?.__id]
-        },
-        updater: store => { },
-      });
-      // Reset the comment text
-      setEditorText('');
-    }
-  },
-    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, messages, setEditorText]);
 
   // Toolbar on edit
   const onEdit = useCallback((messageId, collectionId, content) => {
@@ -242,7 +148,7 @@ export default function Tiles({ query }) {
       }
 
       <Message toolbar={false}>
-        <Editor value={editorText} onChange={setEditorText} onSubmit={onSubmit} editorRef={(el) => editorRef.current = el}>
+        <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
         </Editor>
       </Message>
     </Grid>)
