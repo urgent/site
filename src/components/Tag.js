@@ -118,7 +118,6 @@ export function AddTag({ categoryTagsConnection, categoryId }) {
 }
 
 export default function Tag({ rowId, color, messageConnections, tagConnection, tagName }) {
-  console.log(color)
   const filter = useStore((state) => state.filter);
   const addFilter = useStore((state) => state.addFilter);
   const removeFilter = useStore((state) => state.removeFilter);
