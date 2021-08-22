@@ -127,7 +127,7 @@ export function AddCategory({ connectionId }) {
                 paddingY={1}
                 onChange={(e) => setColorText(e.target.value)}
                 placeholder="Color"
-                value="E53E3E"
+                value={colorText}
             />
             <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>Add</Button>
         </VStack>

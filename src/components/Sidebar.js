@@ -74,6 +74,8 @@ export default function Sidebar({ query }) {
     })
   }, [messages]);
 
+  console.log(categories)
+
   return (
     <Box
       gridColumn="sidebar"
