@@ -187,7 +187,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
             fontSize={[8, 12, 12, 12, 12]}
             textAlign="left"
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-            gridTemplateRows={`[toolbar] 2rem [titlebar] 4rem [body] auto`}
+            gridTemplateRows={`[toolbar] 2rem [titlebar] 5rem [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
             data-cy="category"
         >
@@ -226,8 +226,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 pl={1}
                 pt={1}
                 fontWeight="bold"
-                fontSize={12}
-                letterSpacing={1}
+                fontSize={24}
             >
                 {categoryMode === 'edit' &&
                     <>
@@ -290,7 +289,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
             fontSize={[8, 12, 12, 12, 12]}
             textAlign="left"
             boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-            gridTemplateRows={`[toolbar] 2rem [titlebar] 2rem [body] auto`}
+            gridTemplateRows={`[toolbar] 2rem [titlebar] 3rem [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
             data-cy="category"
         >
@@ -329,8 +328,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 pl={1}
                 pt={1}
                 fontWeight="bold"
-                fontSize={12}
-                letterSpacing={1}
+                fontSize={24}
             >
                 {categoryMode !== 'edit' && <Text mt={1}>{category.name}</Text>}
             </Box>
