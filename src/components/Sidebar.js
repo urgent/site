@@ -74,11 +74,15 @@ export default function Sidebar({ query }) {
     })
   }, [messages]);
 
-  console.log(categories)
-
   return (
     <Box
       gridColumn="sidebar"
+      overflowY={["visible", "visible", "visible", "visible", "scroll"]}
+      overflowX={["visible", "visible", "visible", "visible", "hidden"]}
+      position={["static", "static", "static", "static", "fixed"]}
+      width={["inherit", "inherit", "inherit", "inherit", "20%"]}
+      left={["auto", "auto", "auto", "auto", "5rem"]}
+      height={["initial", "initial", "initial", "initial", "100vh"]}
     >
       {categories.allCategories?.edges.filter(edge => edge.node.organizationId === organization).map((edge, index) => <Category
         key={index}
