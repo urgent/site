@@ -122,23 +122,39 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
         {toolbar && <AddTagToMessage click={() => {
           focusMessage([id, tags.__id])
         }} />}
-        {tags?.edges.map((edge, index) =>
-          <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
-            <HStack spacing={1}>
-              <Box>{edge.node.tagByTagId?.name}</Box>
-              <DeleteTag
-                bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
-                click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
-              />
-            </HStack>
-          </Badge>)}
+        {tags?.edges.map((edge, index) => {
+          if (filter.includes(edge.node.tagByTagId.rowId)) {
+            return <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
+              <HStack spacing={1}>
+                <Box>{edge.node.tagByTagId?.name}</Box>
+                <DeleteTag
+                  bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
+                  click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
+                />
+              </HStack>
+            </Badge>
+          } else {
+            return <Badge data-cy="message_tag" key={index} variant="outline" color={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} px={2} mt={1} bg="white" border={`2px solid #${edge.node.tagByTagId?.categoryByCategoryId.color}`} boxShadow="none">
+              <HStack spacing={1}>
+                <Box>{edge.node.tagByTagId?.name}</Box>
+                <DeleteTag
+                  color={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
+                  bg="white"
+                  click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
+                />
+              </HStack>
+            </Badge>
+          }
+
+
+        })}
 
       </Box>
     </Grid>
     }</>
 }
 
-function DeleteTag({ bg, click }) {
+function DeleteTag({ bg, color, click }) {
   const edit = useStore((state) => state.edit);
   return (
     <>
@@ -151,6 +167,7 @@ function DeleteTag({ bg, click }) {
         icon={<HiOutlineTrash />}
         color="white"
         bg={bg}
+        color={color}
       ></IconButton>}
     </>
   )
