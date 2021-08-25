@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useRef } from 'react'
 import Tag from "../components/Tag"
 import Toolbar from "./Toolbar"
 import { AddTag } from "./Tag"
@@ -7,6 +7,8 @@ import { HamburgerIcon } from "@chakra-ui/icons"
 import useMutation from './useMutation'
 import AlertDialog from "./AlertDialog";
 import useStore from "../utils/store";
+import { ItemTypes } from '../lib/draggable'
+import { useDrag, useDrop } from 'react-dnd'
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation($input:CreateCategoryInput!, $connections: [ID!]!) {
@@ -136,7 +138,7 @@ export function AddCategory({ connectionId }) {
 
 }
 
-export default function Category({ category, messageConnections, sidebarConnection }) {
+export default function Category({ category, messageConnections, sidebarConnection, moveCategory, index }) {
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState();
     const [focusedCategory, setFocusedCategory] = useState();
@@ -144,6 +146,65 @@ export default function Category({ category, messageConnections, sidebarConnecti
     const [editCategoryColor, setEditCategoryColor] = useState(category.color);
     const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
     const [isConfirmOpen, setConfirmIsOpen] = useState(false)
+
+    const ref = useRef(null);
+    const [{ handlerId }, drop] = useDrop({
+        accept: ItemTypes.CATEGORY,
+        collect(monitor) {
+            return {
+                handlerId: monitor.getHandlerId(),
+            };
+        },
+        hover(item, monitor) {
+            if (!ref.current) {
+                return;
+            }
+            const dragIndex = item.index;
+            const hoverIndex = index;
+            // Don't replace items with themselves
+            if (dragIndex === hoverIndex) {
+                return;
+            }
+            // Determine rectangle on screen
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            // Get vertical middle
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            // Determine mouse position
+            const clientOffset = monitor.getClientOffset();
+            // Get pixels to the top
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            // Only perform the move when the mouse has crossed half of the items height
+            // When dragging downwards, only move when the cursor is below 50%
+            // When dragging upwards, only move when the cursor is above 50%
+            // Dragging downwards
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+                return;
+            }
+            // Dragging upwards
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+                return;
+            }
+            // Time to actually perform the action
+            moveCategory(dragIndex, hoverIndex);
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            item.index = hoverIndex;
+        },
+    });
+
+    const [{ isDragging }, drag] = useDrag({
+        type: ItemTypes.CATEGORY,
+        item: () => {
+            return { ...category, index };
+        },
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
+    drag(drop(ref));
+
 
     const onEnter = useCallback(
         e => {
@@ -292,6 +353,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
             gridTemplateRows={`[toolbar] 2rem [titlebar] 3rem [body] auto`}
             gridTemplateColumns="[content] 4fr [corner] 1fr"
             data-cy="category"
+            ref={ref}
         >
             <Box
                 gridRow="toolbar"
@@ -326,7 +388,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 gridRow="titlebar"
                 gridColumn="content / -1"
                 pl={1}
-                pt={1}
+                pt={1} handlerId
                 fontWeight="bold"
                 fontSize={24}
             >
