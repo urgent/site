@@ -88,7 +88,7 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
 
   return <>
     {display() && <Grid
-      boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
+      boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
       gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
