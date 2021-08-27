@@ -124,7 +124,7 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
         }} />}
         {tags?.edges.map((edge, index) => {
           if (filter.includes(edge.node.tagByTagId.rowId)) {
-            return <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}>
+            return <Badge data-cy="message_tag" key={index} color="white" px={2} mt={1} bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`} border={`2px solid #${edge.node.tagByTagId?.categoryByCategoryId.color}`} >
               <HStack spacing={1}>
                 <Box>{edge.node.tagByTagId?.name}</Box>
                 <DeleteTag
