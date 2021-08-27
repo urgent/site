@@ -13,10 +13,10 @@ export type UpdateMessageInput = {|
   id: number,
   content: string,
 |};
-export type TilesUpdateMessageMutationVariables = {|
+export type EditorUpdateMessageMutationVariables = {|
   input: UpdateMessageInput
 |};
-export type TilesUpdateMessageMutationResponse = {|
+export type EditorUpdateMessageMutationResponse = {|
   +updateMessage: ?{|
     +messages: ?$ReadOnlyArray<?{|
       +rowId: number,
@@ -42,15 +42,15 @@ export type TilesUpdateMessageMutationResponse = {|
     |}>
   |}
 |};
-export type TilesUpdateMessageMutation = {|
-  variables: TilesUpdateMessageMutationVariables,
-  response: TilesUpdateMessageMutationResponse,
+export type EditorUpdateMessageMutation = {|
+  variables: EditorUpdateMessageMutationVariables,
+  response: EditorUpdateMessageMutationResponse,
 |};
 */
 
 
 /*
-mutation TilesUpdateMessageMutation(
+mutation EditorUpdateMessageMutation(
   $input: UpdateMessageInput!
 ) {
   updateMessage(input: $input) {
@@ -161,7 +161,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "TilesUpdateMessageMutation",
+    "name": "EditorUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -258,7 +258,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "TilesUpdateMessageMutation",
+    "name": "EditorUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -353,16 +353,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8d61277363d0489b86148c841e3893bf",
+    "cacheID": "1e46edc0113da1a83e43f7ca4ab7581f",
     "id": null,
     "metadata": {},
-    "name": "TilesUpdateMessageMutation",
+    "name": "EditorUpdateMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '973a22099a34cacd2f516746fb374b5f';
+(node/*: any*/).hash = 'b4e4443a6e5a7c098ccab442c3be17ff';
 
 module.exports = node;

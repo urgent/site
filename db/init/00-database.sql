@@ -90,7 +90,8 @@ CREATE TABLE public.category (
     id SERIAL PRIMARY KEY,
     organization_id INT NOT NULL CONSTRAINT category_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
     name TEXT,
-    color TEXT
+    color TEXT,
+    sort INT
 );
 
 CREATE TABLE public.message (
@@ -128,6 +129,12 @@ CREATE TABLE public.invite (
 );
 
 -- Saved user config values, gear icon in app
+CREATE TABLE public.user_config (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL UNIQUE CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
+  default_organization INTEGER NOT NULL CONSTRAINT user_config_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
+);
+
 CREATE TABLE public.user_config (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL UNIQUE CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
@@ -540,4 +547,26 @@ AS $$
   DELETE FROM public.category
     WHERE id=$1
   RETURNING *;
+$$ LANGUAGE sql VOLATILE STRICT;
+
+
+
+
+
+
+
+
+
+-- categoryIds Int[], sort Int[]
+
+CREATE FUNCTION public.sort_category(category_ids integer[], sort integer[])
+RETURNS void
+AS $$
+
+UPDATE public.category
+SET sort=subquery.sort_index
+FROM (SELECT sort_index, category_id
+      FROM  UNNEST($1, $2) as input(category_id, sort_index)) AS subquery
+WHERE category.id=subquery.category_id;
+
 $$ LANGUAGE sql VOLATILE STRICT;

@@ -29,6 +29,7 @@ export type SidebarFragment_categories = {|
         +name: ?string,
         +color: ?string,
         +organizationId: number,
+        +sort: ?number,
       |}
     |}>,
   |},
@@ -78,7 +79,13 @@ return {
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "kind": "Literal",
+          "name": "orderBy",
+          "value": "SORT_ASC"
+        }
+      ],
       "concreteType": "CategoriesConnection",
       "kind": "LinkedField",
       "name": "allCategories",
@@ -151,6 +158,13 @@ return {
                   "kind": "ScalarField",
                   "name": "organizationId",
                   "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "sort",
+                  "storageKey": null
                 }
               ],
               "storageKey": null
@@ -160,7 +174,7 @@ return {
         },
         (v2/*: any*/)
       ],
-      "storageKey": null
+      "storageKey": "allCategories(orderBy:\"SORT_ASC\")"
     }
   ],
   "type": "Query",
@@ -168,6 +182,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '58acc7ccd58320abc4fe16d980983f40';
+(node/*: any*/).hash = 'e707371212faa159b69c3b682a5ba9f2';
 
 module.exports = node;

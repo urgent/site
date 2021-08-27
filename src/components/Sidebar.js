@@ -4,10 +4,11 @@ import { Box } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useStore from "../utils/store";
 import update from 'immutability-helper';
+import useMutation from './useMutation'
 
 const categoriesFragment = graphql`
 fragment SidebarFragment_categories on Query {
-    allCategories {
+    allCategories(orderBy:SORT_ASC) {
         __id
         edges {
             node {
@@ -23,7 +24,8 @@ fragment SidebarFragment_categories on Query {
               rowId,
               name,
               color,
-              organizationId
+              organizationId,
+              sort
             }
         }
     }
@@ -64,6 +66,20 @@ const messageFragment = graphql`
           }
 `;
 
+const sortCategoryMutation = graphql`
+  mutation SidebarSortCategoryMutation($input:SortCategoryInput!) {
+    sortCategory(input: $input) {
+      query {
+        allCategories {
+          nodes {
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
 export default function Sidebar({ query }) {
   const data = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
@@ -75,16 +91,30 @@ export default function Sidebar({ query }) {
     })
   }, [messages]);
   const [categories, setCategories] = useState(data.allCategories?.edges);
+  const [isSortCategoryPending, sortCategory] = useMutation(sortCategoryMutation);
+
+
 
   const moveCategory = useCallback((dragIndex, hoverIndex) => {
     const dragCategory = categories[dragIndex];
-    setCategories(update(categories, {
+    console.log(categories)
+    const spliced = update(categories, {
       $splice: [
         [dragIndex, 1],
         [hoverIndex, 0, dragCategory],
       ],
-    }));
-  }, [categories]);
+    });
+    setCategories(spliced);
+    sortCategory({
+      variables: {
+        input: {
+          categoryIds: spliced.map(edge => edge.node.rowId),
+          sort: spliced.map((_, i) => i),
+        }
+      },
+      updater: store => { },
+    });
+  }, [categories, sortCategory, setCategories]);
 
   return (
     <Box

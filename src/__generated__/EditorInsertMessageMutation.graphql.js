@@ -14,11 +14,11 @@ export type CreateMessageInput = {|
   content: string,
   tags: $ReadOnlyArray<?number>,
 |};
-export type TilesInsertMessageMutationVariables = {|
+export type EditorInsertMessageMutationVariables = {|
   input: CreateMessageInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type TilesInsertMessageMutationResponse = {|
+export type EditorInsertMessageMutationResponse = {|
   +createMessage: ?{|
     +messages: ?$ReadOnlyArray<?{|
       +rowId: number,
@@ -44,15 +44,15 @@ export type TilesInsertMessageMutationResponse = {|
     |}>
   |}
 |};
-export type TilesInsertMessageMutation = {|
-  variables: TilesInsertMessageMutationVariables,
-  response: TilesInsertMessageMutationResponse,
+export type EditorInsertMessageMutation = {|
+  variables: EditorInsertMessageMutationVariables,
+  response: EditorInsertMessageMutationResponse,
 |};
 */
 
 
 /*
-mutation TilesInsertMessageMutation(
+mutation EditorInsertMessageMutation(
   $input: CreateMessageInput!
 ) {
   createMessage(input: $input) {
@@ -169,7 +169,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TilesInsertMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -269,7 +269,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "TilesInsertMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -385,16 +385,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f28c621fa19408ecb0540a9fa16f11e9",
+    "cacheID": "6b5aff0fafbf4b6a867e2f29c8afea1a",
     "id": null,
     "metadata": {},
-    "name": "TilesInsertMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'cc5ea4cc540c748d931522f2b4eb9ae9';
+(node/*: any*/).hash = '5d5a1b15950227c5563c5432580dd6d4';
 
 module.exports = node;

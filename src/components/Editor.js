@@ -6,7 +6,7 @@ import useMutation from './useMutation'
 import useStore from "../utils/store";
 
 const InsertMessageMutation = graphql`
-  mutation TilesInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
+  mutation EditorInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
     createMessage(input: $input) {
       messages @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
         rowId
@@ -35,7 +35,7 @@ const InsertMessageMutation = graphql`
 `;
 
 const UpdateMessageMutation = graphql`
-  mutation TilesUpdateMessageMutation($input:UpdateMessageInput!) {
+  mutation EditorUpdateMessageMutation($input:UpdateMessageInput!) {
     updateMessage(input: $input) {
       messages {
         rowId
@@ -64,52 +64,52 @@ const UpdateMessageMutation = graphql`
 `;
 
 export default function Editor({ value, onChange, editMessage, setEditMessage, tileConnections, setEditorText }) {
-    const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
-    const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
-    const organization = useStore((state) => state.organization);
-    const editorRef = useRef(null);
-    const edit = useStore((state) => state.edit);
-    const [message] = useStore((state) => state.message);
-    const filter = useStore((state) => state.filter);
+  const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
+  const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
+  const organization = useStore((state) => state.organization);
+  const editorRef = useRef(null);
+  const edit = useStore((state) => state.edit);
+  const [message] = useStore((state) => state.message);
+  const filter = useStore((state) => state.filter);
 
-    // Editor submit
-    const onSubmit = useCallback((event) => {
-        event.preventDefault();
-        const delta = JSON.stringify(editorRef.current.getEditor().getContents());
-        if (edit && editMessage) {
-            updateMessage({
-                variables: {
-                    input: {
-                        id: message,
-                        content: delta,
-                    },
-                },
-                updater: store => { },
-            });
-            setEditMessage(false)
-        } else {
-            insertMessage({
-                variables: {
-                    input: {
-                        organizationId: organization,
-                        content: delta,
-                        tags: filter,
-                    },
-                    connections: [tileConnections]
-                },
-                updater: store => { },
-            });
-            // Reset the comment text
-            setEditorText('');
-        }
-    },
-        [editorRef, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, setEditorText, filter]);
+  // Editor submit
+  const onSubmit = useCallback((event) => {
+    event.preventDefault();
+    const delta = JSON.stringify(editorRef.current.getEditor().getContents());
+    if (edit && editMessage) {
+      updateMessage({
+        variables: {
+          input: {
+            id: message,
+            content: delta,
+          },
+        },
+        updater: store => { },
+      });
+      setEditMessage(false)
+    } else {
+      insertMessage({
+        variables: {
+          input: {
+            organizationId: organization,
+            content: delta,
+            tags: filter,
+          },
+          connections: [tileConnections]
+        },
+        updater: store => { },
+      });
+      // Reset the comment text
+      setEditorText('');
+    }
+  },
+    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, setEditorText, filter]);
 
-    return (
-        <>
-            <div data-cy="editor"><ReactQuill ref={(el) => editorRef.current = el} theme="snow" value={value} onChange={onChange} /></div>
-            <br /><br /><br />
-            <button data-cy="save" onClick={onSubmit}>Save</button>
-        </>
-    )
+  return (
+    <>
+      <div data-cy="editor"><ReactQuill ref={(el) => editorRef.current = el} theme="snow" value={value} onChange={onChange} /></div>
+      <br /><br /><br />
+      <button data-cy="save" onClick={onSubmit}>Save</button>
+    </>
+  )
 }
