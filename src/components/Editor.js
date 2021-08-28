@@ -87,6 +87,7 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
         updater: store => { },
       });
       setEditMessage(false)
+      setEditorText('');
     } else {
       insertMessage({
         variables: {

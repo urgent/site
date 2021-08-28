@@ -36,7 +36,7 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive }) {
+export default function Message({ value, tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
@@ -100,7 +100,7 @@ export default function Message({ tags, children, id, onEdit, onDelete, toolbar,
         gridRow="menu"
         ml={4}
       >
-        {toolbar && <Toolbar editActive={editActive} editClick={() => onEdit(id, tags?.__id, children)} deleteClick={() => onDelete(id, tags?.__id)} />}
+        {toolbar && <Toolbar editActive={editActive} editClick={() => onEdit(id, tags?.__id, value)} deleteClick={() => onDelete(id, tags?.__id)} />}
       </Box>
       <Box
         gridRow="body"

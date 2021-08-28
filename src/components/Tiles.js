@@ -118,13 +118,15 @@ export default function Tiles({ query }) {
           toolbar={true}
           organizationId={edge.node.organizationId}
           editActive={editMessage && message === edge.node.rowId}
+          value={messageContent}
         >
-          {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+          {<Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
+          </Editor>}
         </Message>
       })}
 
 
-      {!(edit && editMessage) && messages.allMessages.edges?.map((edge) => {
+      {!(edit && editMessage) && <>{messages.allMessages.edges?.map((edge) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
@@ -140,16 +142,19 @@ export default function Tiles({ query }) {
             onDelete={onDelete}
             toolbar={true}
             organizationId={edge.node.organizationId}
+            value={messageContent}
           >
             {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>
         )
-      })
+      })}
+        <Message toolbar={false}>
+          <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
+          </Editor>
+        </Message>
+      </>
       }
 
-      <Message toolbar={false}>
-        <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
-        </Editor>
-      </Message>
+
     </Grid>)
 }
