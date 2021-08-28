@@ -101,32 +101,7 @@ export default function Tiles({ query }) {
       gridAutoFlow="dense"
       data-cy="tiles"
     >
-
-      {edit && editMessage && messages.allMessages.edges.filter((edge) => edge.node.rowId === message).map(edge => {
-        let messageContent;
-        try {
-          messageContent = JSON.parse(edge.node.content);
-        } catch (e) {
-          messageContent = edge.node.content;
-        }
-        return <Message
-          key={edge.node.rowId}
-          tags={edge.node.messageTagsByMessageId}
-          id={edge.node.rowId}
-          onEdit={onEdit}
-          onDelete={onDelete}
-          toolbar={true}
-          organizationId={edge.node.organizationId}
-          editActive={editMessage && message === edge.node.rowId}
-          value={messageContent}
-        >
-          {<Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
-          </Editor>}
-        </Message>
-      })}
-
-
-      {!(edit && editMessage) && <>{messages.allMessages.edges?.map((edge) => {
+      {<>{messages.allMessages.edges?.map((edge) => {
         let messageContent;
         try {
           messageContent = JSON.parse(edge.node.content);
@@ -143,15 +118,20 @@ export default function Tiles({ query }) {
             toolbar={true}
             organizationId={edge.node.organizationId}
             value={messageContent}
+            editActive={editMessage && message === edge.node.rowId}
           >
-            {<ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+            {edit}
+            {editMessage}
+            {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText}>
+            </Editor>}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
           </Message>
         )
       })}
-        <Message toolbar={false}>
+        {!(edit && editMessage) && <Message toolbar={false}>
           <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
           </Editor>
-        </Message>
+        </Message>}
       </>
       }
 
