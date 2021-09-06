@@ -42,6 +42,8 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
   const focusMessage = useStore((state) => state.focusMessage);
   const organization = useStore((state) => state.organization);
   const tagIds = tags?.edges.map((tag) => tag.node.tagByTagId?.rowId)
+  const filterName = useStore((state) => state.filterName)
+  const filterColor = useStore((state) => state.filterColor)
 
   const onDeleteMessageTag = useCallback((tagId, connectionId) => () => {
     deleteMessageTag({
@@ -148,6 +150,10 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
 
 
         })}
+
+        {!toolbar && filterName.map((name, index) => <Badge data-cy="message_tag" key={index} variant="outline" color={`#${filterColor[index]}`} px={2} mt={1} bg="white" border={`2px solid #${filterColor[index]}`} boxShadow="none">
+          <Box>{name}</Box>
+        </Badge>)}
 
       </Box>
     </Grid>

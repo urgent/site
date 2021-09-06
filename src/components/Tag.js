@@ -121,6 +121,10 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const filter = useStore((state) => state.filter);
   const addFilter = useStore((state) => state.addFilter);
   const removeFilter = useStore((state) => state.removeFilter);
+  const addFilterName = useStore((state) => state.addFilterName);
+  const addFilterColor = useStore((state) => state.addFilterColor);
+  const removeFilterName = useStore((state) => state.removeFilterName);
+  const removeFilterColor = useStore((state) => state.removeFilterColor);
   const edit = useStore((state) => state.edit);
   const organization = useStore((state) => state.organization);
   const [message, messageTagConnection] = useStore((state) => state.message);
@@ -183,6 +187,8 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       focusMessage([false])
     } else {
       removeFilter(rowId)
+      removeFilterName(tagName)
+      removeFilterColor(color)
     }
   }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, removeFilter])
 
@@ -203,6 +209,8 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       focusMessage([false])
     } else {
       addFilter(rowId)
+      addFilterName(tagName)
+      addFilterColor(color)
     }
   }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, addFilter])
 

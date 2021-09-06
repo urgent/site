@@ -19,6 +19,20 @@ const useStore = create((set) => ({
     message: [false],
     focusMessage: (id) => set((state) => ({
         message: id
+    })),
+    filterName: [],
+    addFilterName: (tag) => set((state) => ({
+        filterName: [tag, ...state.filterName]
+    })),
+    removeFilterName: (name) => set((state) => ({
+        filterName: state.filterName.filter((tag) => tag !== name),
+    })),
+    filterColor: [],
+    addFilterColor: (tag) => set((state) => ({
+        filterColor: [tag, ...state.filterColor]
+    })),
+    removeFilterColor: (color) => set((state) => ({
+        filterColor: state.filterColor.filter((tag) => tag !== color),
     }))
 }));
 
