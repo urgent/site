@@ -151,7 +151,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
 
         })}
 
-        {!toolbar && filterName.map((name, index) => <Badge data-cy="message_tag" key={index} variant="outline" color={`#${filterColor[index]}`} px={2} mt={1} bg="white" border={`2px solid #${filterColor[index]}`} boxShadow="none">
+        {!toolbar && filterName.map((name, index) => <Badge data-cy="message_tag" key={index} variant="outline" color="white" bg={`#${filterColor[index]}`} px={2} mt={1} boxShadow="none">
           <Box>{name}</Box>
         </Badge>)}
 
