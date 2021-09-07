@@ -90,14 +90,9 @@ export default function Tiles({ query }) {
 
   return (
     <Grid
-      gridTemplateColumns={[
-        "repeat(auto-fit, minmax(200px, 2fr))",
-        "repeat(auto-fit, minmax(200px, 2fr))",
-        "repeat(auto-fit, minmax(400px, 2fr))",
-        "repeat(auto-fit, minmax(400px, 2fr))",
-        "repeat(auto-fit, minmax(400px, 2fr))"]}
+      gridTemplateColumns={"repeat(auto-fit, minmax(100px, 2fr))"}
       gridGap="5px"
-      gridAutoRows={["200px", "300px", "400px", "400px", "400px"]}
+      gridAutoRows={"100px"}
       gridAutoFlow="dense"
       data-cy="tiles"
     >
@@ -124,7 +119,7 @@ export default function Tiles({ query }) {
             {editMessage}
             {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText}>
             </Editor>}
-            {(!(edit && editMessage) || edge.node.rowId !== message) && <ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" />}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" fontSize="3rem" />}
           </Message>
         )
       })}

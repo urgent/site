@@ -88,14 +88,51 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     return false
   }, [organizationId, organization, filter, toolbar, tagIds])
 
+
+  const size = useCallback(() => {
+    // editor
+    if (!value) {
+      return {
+        width: "span 10",
+        height: "span 2"
+      }
+    }
+
+    const charLength = value['ops'].reduce((prev, curr) => {
+      return prev + curr?.insert.length;
+    }, 0)
+
+    if (charLength < 140) {
+      return {
+        width: "span 2",
+        height: "span 2"
+      }
+    }
+    else if (charLength < 500) {
+      return {
+        width: "span 2",
+        height: "span 6"
+      }
+    }
+    else {
+      return {
+        width: "span 4",
+        height: "span 6"
+      }
+    }
+
+  }, value)
+
+
+
   return <>
     {display() && <Grid
       boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
       gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
-      gridColumn={["span 2", "span 2", "span 2", "auto", "auto"]}
-      gridRow={["span 2", "span 2", "span 2", "auto", "auto"]}
+      gridColumn={size()['width']}
+      gridRow={size()['height']}
       data-cy="message"
     >
       <Box

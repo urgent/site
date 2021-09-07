@@ -6,6 +6,7 @@ import { ChakraProvider, Grid } from "@chakra-ui/react";
 import { theme } from "../components/theme";
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import '../styles.css'
 
 const clientEnv = getClientEnvironment();
 const initialPreloadedQuery = getInitialPreloadedQuery({
