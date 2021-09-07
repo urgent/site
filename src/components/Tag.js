@@ -187,10 +187,8 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       focusMessage([false])
     } else {
       removeFilter(rowId)
-      removeFilterName(tagName)
-      removeFilterColor(color)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, removeFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, removeFilter, removeFilterName, removeFilterColor])
 
   const filterOn = useCallback(() => {
     if (edit) {
@@ -212,7 +210,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       addFilterName(tagName)
       addFilterColor(color)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, addFilter])
+  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, addFilter, addFilterName, addFilterColor])
 
   return (
     <>
