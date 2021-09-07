@@ -98,6 +98,14 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       }
     }
 
+    // editor
+    if (!value['ops']) {
+      return {
+        width: "span 2",
+        height: "span 2"
+      }
+    }
+
     const charLength = value['ops'].reduce((prev, curr) => {
       return prev + curr?.insert.length;
     }, 0)
