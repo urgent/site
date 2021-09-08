@@ -98,7 +98,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       }
     }
 
-    // editor
+    // no text
     if (!value['ops']) {
       return {
         width: "span 2",
@@ -110,22 +110,24 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       return prev + curr?.insert.length;
     }, 0)
 
+    console.log(charLength)
+
     if (charLength < 140) {
       return {
         width: "span 2",
-        height: "span 2"
+        height: `span ${Math.max(2, Math.ceil(charLength / 35))}`
       }
     }
     else if (charLength < 500) {
       return {
         width: "span 2",
-        height: "span 6"
+        height: `span ${Math.ceil(charLength / 140)}`
       }
     }
     else {
       return {
         width: "span 4",
-        height: "span 6"
+        height: `span ${Math.ceil(charLength / 82)}`
       }
     }
 
@@ -138,7 +140,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows="[menu] 2em [body] auto [tags] 5em"
+      gridTemplateRows={`[menu] 2em [body] auto [tags] ${Math.max(4, Math.ceil(tags?.edges.length * 1.1))}em`}
       gridColumn={size()['width']}
       gridRow={size()['height']}
       data-cy="message"
@@ -153,18 +155,15 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         gridRow="body"
         px={4}
         pb={4}
-        overflowX="hidden"
+        data-cy="body"
       >
         {children}
       </Box>
       <Box
         gridRow="tags"
-        alignSelf="end"
         px={4}
         py={2}
-        data-cy="body"
-        overflowY="scroll"
-        height={20}
+        data-cy="tags"
       >
         {toolbar && <AddTagToMessage click={() => {
           focusMessage([id, tags.__id])
