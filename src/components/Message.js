@@ -115,7 +115,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     if (charLength < 140) {
       return {
         width: "span 2",
-        height: `span ${Math.max(2, Math.ceil(charLength / 35))}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 35))}`
       }
     }
     else if (charLength < 500) {
@@ -140,7 +140,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows={`[menu] 2em [body] auto [tags] ${Math.max(4, Math.ceil(tags?.edges.length * 1.1))}em`}
+      gridTemplateRows={`[menu] 2em [body] auto [tags] ${Math.max(4, Math.ceil(tags?.edges.length * 1.5))}em`}
       gridColumn={size()['width']}
       gridRow={size()['height']}
       data-cy="message"
