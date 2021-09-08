@@ -112,24 +112,22 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
-    console.log(charLength)
-
     if (charLength < 140) {
       return {
         width: "span 2",
-        height: `span ${Math.max(4, Math.ceil(charLength / 35))}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 30))}`
       }
     }
     else if (charLength < 500) {
       return {
         width: "span 2",
-        height: `span ${Math.max(4, Math.ceil(charLength / 140))}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 130))}`
       }
     }
     else {
       return {
         width: "span 4",
-        height: `span ${Math.max(4, Math.ceil(charLength / 90))}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 85))}`
       }
     }
 
