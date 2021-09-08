@@ -108,6 +108,8 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
 
     const charLength = value['ops'].reduce((prev, curr) => {
       return prev + curr?.insert.length;
+    }, 0) + tags?.edges.reduce((prev, curr) => {
+      return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
     console.log(charLength)
@@ -121,13 +123,13 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     else if (charLength < 500) {
       return {
         width: "span 2",
-        height: `span ${Math.ceil(charLength / 140)}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 140))}`
       }
     }
     else {
       return {
         width: "span 4",
-        height: `span ${Math.ceil(charLength / 82)}`
+        height: `span ${Math.max(4, Math.ceil(charLength / 90))}`
       }
     }
 
