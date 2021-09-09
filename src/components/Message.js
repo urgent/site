@@ -114,10 +114,8 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
-    console.log(value)
-    console.log(`message ${messageLength}`)
-    console.log(tags)
-    console.log(`tag ${tagLength}`)
+
+    console.log(Math.max(8, Math.ceil(tags?.edges.length * 3)))
 
     if (messageLength < 140) {
       return {
