@@ -114,6 +114,11 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
+    console.log(value)
+    console.log(`message ${messageLength}`)
+    console.log(tags)
+    console.log(`tag ${tagLength}`)
+
     if (messageLength < 140) {
       return {
         width: "span 2",
