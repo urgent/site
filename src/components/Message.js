@@ -106,28 +106,33 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       }
     }
 
-    const charLength = value['ops'].reduce((prev, curr) => {
+    const messageLength = value['ops'].reduce((prev, curr) => {
       return prev + curr?.insert.length;
-    }, 0) + tags?.edges.reduce((prev, curr) => {
+    }, 0)
+
+    const tagLength = tags?.edges.reduce((prev, curr) => {
       return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
-    if (charLength < 140) {
+    if (messageLength < 140) {
       return {
         width: "span 2",
-        height: `span ${Math.max(4, Math.ceil(charLength / 30))}`
+        height: `span ${Math.max(2, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 20))}`,
+        tagRow: Math.max(8, Math.ceil(tags?.edges.length * 3)),
       }
     }
-    else if (charLength < 500) {
+    else if (messageLength < 500) {
       return {
         width: "span 2",
-        height: `span ${Math.max(4, Math.ceil(charLength / 130))}`
+        height: `span ${Math.max(4, Math.ceil(messageLength / 30) + Math.ceil(tagLength / 10))}`,
+        tagRow: Math.max(4, Math.ceil(tags?.edges.length * 4)),
       }
     }
     else {
       return {
         width: "span 4",
-        height: `span ${Math.max(4, Math.ceil(charLength / 85))}`
+        height: `span ${Math.max(4, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 40))}`,
+        tagRow: Math.max(6, Math.ceil(tags?.edges.length)),
       }
     }
 
@@ -140,7 +145,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows={`[menu] 2em [body] auto [tags] ${Math.max(4, Math.ceil(tags?.edges.length * 1.5))}em`}
+      gridTemplateRows={`[menu] 2em [body] auto [tags] ${size()['tagRow']}em`}
       gridColumn={size()['width']}
       gridRow={size()['height']}
       data-cy="message"
