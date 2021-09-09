@@ -94,7 +94,8 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     if (!value) {
       return {
         width: "span 10",
-        height: "span 2"
+        height: "span 2",
+        tagRow: "2"
       }
     }
 
@@ -102,7 +103,8 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     if (!value['ops']) {
       return {
         width: "span 2",
-        height: "span 2"
+        height: "span 2",
+        tagRow: "8"
       }
     }
 
@@ -114,8 +116,6 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       return prev + curr.node.tagByTagId?.name.length;
     }, 0)
 
-
-    console.log(Math.max(8, Math.ceil(tags?.edges.length * 3)))
 
     if (messageLength < 140) {
       return {
