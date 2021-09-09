@@ -1,9 +1,9 @@
 import React, { useRef, useCallback } from 'react'
-const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
-import 'react-quill/dist/quill.snow.css';
+import { Textarea } from "@chakra-ui/react"
 import { graphql } from 'react-relay';
 import useMutation from './useMutation'
 import useStore from "../utils/store";
+
 
 const InsertMessageMutation = graphql`
   mutation EditorInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
@@ -108,7 +108,7 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
 
   return (
     <>
-      <div data-cy="editor"><ReactQuill ref={(el) => editorRef.current = el} theme="snow" value={value} onChange={onChange} /></div>
+      <div data-cy="editor"><Textarea value={value} onChange={(e) => onChange(e.target.value)} /></div>
       <br /><br /><br />
       <button data-cy="save" onClick={onSubmit}>Save</button>
     </>

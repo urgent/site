@@ -99,18 +99,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       }
     }
 
-    // no text
-    if (!value['ops']) {
-      return {
-        width: "span 2",
-        height: "span 2",
-        tagRow: "8"
-      }
-    }
-
-    const messageLength = value['ops'].reduce((prev, curr) => {
-      return prev + curr?.insert.length;
-    }, 0)
+    const messageLength = value.length;
 
     const tagLength = tags?.edges.reduce((prev, curr) => {
       return prev + curr.node.tagByTagId?.name.length;
@@ -127,19 +116,19 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     else if (messageLength < 500) {
       return {
         width: "span 2",
-        height: `span ${Math.max(4, Math.ceil(messageLength / 30) + Math.ceil(tagLength / 10))}`,
+        height: `span ${Math.max(4, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 10))}`,
         tagRow: Math.max(4, Math.ceil(tags?.edges.length * 4)),
       }
     }
     else {
       return {
         width: "span 4",
-        height: `span ${Math.max(4, Math.ceil(messageLength / 150) + Math.ceil(tagLength / 100))}`,
+        height: `span ${Math.max(4, Math.ceil(messageLength / 200) + Math.ceil(tagLength / 100))}`,
         tagRow: Math.max(6, Math.ceil(tags?.edges.length)),
       }
     }
 
-  }, value)
+  }, [value])
 
 
 
@@ -164,6 +153,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         px={4}
         pb={4}
         data-cy="body"
+        wordBreak="break-all"
       >
         {children}
       </Box>

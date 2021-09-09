@@ -5,7 +5,6 @@ import { Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
 import useStore from "../utils/store";
-const ReactQuill = typeof window === 'object' ? require('react-quill') : () => false;
 
 const DeleteMessageMutation = graphql`
   mutation TilesDeleteMessageMutation($input:DeleteMessageInput!, $connections: [ID!]!) {
@@ -99,7 +98,7 @@ export default function Tiles({ query }) {
       {<>{messages.allMessages.edges?.map((edge) => {
         let messageContent;
         try {
-          messageContent = JSON.parse(edge.node.content);
+          messageContent = JSON.stringify(edge.node.content);
         } catch (e) {
           messageContent = edge.node.content;
         }
@@ -119,7 +118,7 @@ export default function Tiles({ query }) {
             {editMessage}
             {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText}>
             </Editor>}
-            {(!(edit && editMessage) || edge.node.rowId !== message) && <ReactQuill value={messageContent} modules={{ toolbar: false }} readOnly={true} theme="bubble" fontSize="3rem" />}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <div>{messageContent}</div>}
           </Message>
         )
       })}

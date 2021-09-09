@@ -388,7 +388,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 gridRow="titlebar"
                 gridColumn="content / -1"
                 pl={1}
-                pt={1} handlerId
+                pt={1}
                 fontWeight="bold"
                 fontSize={24}
             >
