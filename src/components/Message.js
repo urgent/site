@@ -120,7 +120,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     if (messageLength < 140) {
       return {
         width: "span 2",
-        height: `span ${Math.max(2, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 20))}`,
+        height: `span ${Math.max(3, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 20))}`,
         tagRow: Math.max(8, Math.ceil(tags?.edges.length * 3)),
       }
     }
@@ -134,7 +134,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     else {
       return {
         width: "span 4",
-        height: `span ${Math.max(4, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 40))}`,
+        height: `span ${Math.max(4, Math.ceil(messageLength / 150) + Math.ceil(tagLength / 100))}`,
         tagRow: Math.max(6, Math.ceil(tags?.edges.length)),
       }
     }
