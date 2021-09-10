@@ -96,12 +96,6 @@ export default function Tiles({ query }) {
       data-cy="tiles"
     >
       {<>{messages.allMessages.edges?.map((edge) => {
-        let messageContent;
-        try {
-          messageContent = JSON.stringify(edge.node.content);
-        } catch (e) {
-          messageContent = edge.node.content;
-        }
         return (
           <Message
             key={edge.node.rowId}
@@ -111,14 +105,14 @@ export default function Tiles({ query }) {
             onDelete={onDelete}
             toolbar={true}
             organizationId={edge.node.organizationId}
-            value={messageContent}
+            value={edge.node.content}
             editActive={editMessage && message === edge.node.rowId}
           >
             {edit}
             {editMessage}
             {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText}>
             </Editor>}
-            {(!(edit && editMessage) || edge.node.rowId !== message) && <div>{messageContent}</div>}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <div>{edge.node.content}</div>}
           </Message>
         )
       })}

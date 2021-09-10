@@ -75,13 +75,13 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
   // Editor submit
   const onSubmit = useCallback((event) => {
     event.preventDefault();
-    const delta = JSON.stringify(editorRef.current.getEditor().getContents());
+
     if (edit && editMessage) {
       updateMessage({
         variables: {
           input: {
             id: message,
-            content: delta,
+            content: value,
           },
         },
         updater: store => { },
@@ -104,7 +104,7 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
       setEditorText('');
     }
   },
-    [editorRef, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, setEditorText, filter]);
+    [value, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, setEditorText, filter]);
 
   return (
     <>
