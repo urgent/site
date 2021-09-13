@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from "react";
 import Message from "./Message"
 import Editor from './Editor';
-import { Grid } from "@chakra-ui/react"
+import { Box, Grid } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
 import useStore from "../utils/store";
@@ -108,11 +108,8 @@ export default function Tiles({ query }) {
             value={edge.node.content}
             editActive={editMessage && message === edge.node.rowId}
           >
-            {edit}
-            {editMessage}
-            {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText}>
-            </Editor>}
-            {(!(edit && editMessage) || edge.node.rowId !== message) && <div>{edge.node.content}</div>}
+            {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} />}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <Box whiteSpace="pre-wrap">{edge.node.content}</Box>}
           </Message>
         )
       })}
