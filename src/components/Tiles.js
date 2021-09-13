@@ -109,7 +109,7 @@ export default function Tiles({ query }) {
             editActive={editMessage && message === edge.node.rowId}
           >
             {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} />}
-            {(!(edit && editMessage) || edge.node.rowId !== message) && <Box whiteSpace="pre-wrap">{edge.node.content}</Box>}
+            {(!(edit && editMessage) || edge.node.rowId !== message) && <Box whiteSpace="pre-wrap" wordBreak="break-word">{edge.node.content}</Box>}
           </Message>
         )
       })}
