@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Textarea } from "@chakra-ui/react"
 import { graphql } from 'react-relay';
 import useMutation from './useMutation'
@@ -67,7 +67,6 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const organization = useStore((state) => state.organization);
-  const editorRef = useRef(null);
   const edit = useStore((state) => state.edit);
   const [message] = useStore((state) => state.message);
   const filter = useStore((state) => state.filter);
