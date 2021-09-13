@@ -92,7 +92,7 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
         variables: {
           input: {
             organizationId: organization,
-            content: delta,
+            content: value,
             tags: filter,
           },
           connections: [tileConnections]
