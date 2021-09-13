@@ -89,7 +89,7 @@ export default function Tiles({ query }) {
 
   return (
     <Grid
-      gridTemplateColumns={"repeat(auto-fit, minmax(100px, 2fr))"}
+      gridTemplateColumns={"repeat(auto-fit, minmax(120px, 2fr))"}
       gridGap="5px"
       gridAutoRows={"100px"}
       gridAutoFlow="dense"
