@@ -27,6 +27,7 @@ class MyDocument extends Document {
                     <link rel="preconnect" href="https://fonts.gstatic.com" />
                     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&display=swap" rel="stylesheet" />
                     <link rel="shortcut icon" href="/images/favicon.png" />
+                    <title>Interface | smooms.io</title>
                 </Head>
                 <body>
                     <Main />
