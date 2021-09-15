@@ -1,4 +1,5 @@
 import { Provider } from 'next-auth/client'
+import Head from 'next/head'
 import { RelayEnvironmentProvider } from 'react-relay/hooks';
 import { getInitialPreloadedQuery, getRelayProps } from 'relay-nextjs/app';
 import { getClientEnvironment } from '../lib/client_environment';
@@ -18,23 +19,28 @@ function MyApp({ Component, pageProps }) {
   const env = relayProps.preloadedQuery?.environment ?? clientEnv;
 
   return (
-    <Provider session={pageProps.session}>
-      <RelayEnvironmentProvider environment={env}>
-        <ChakraProvider theme={theme}>
-          <DndProvider backend={HTML5Backend}>
-            <Grid
-              data-cy="grid"
-              templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
-              bg={"background.50"}
-              color={"text.600"}
-              minHeight="100vh"
-            >
-              <Component {...pageProps} {...relayProps} />
-            </Grid>
-          </DndProvider>
-        </ChakraProvider>
-      </RelayEnvironmentProvider>
-    </Provider>
+    <>
+      <Head>
+        <title>Interface | smooms.io</title>
+      </Head>
+      <Provider session={pageProps.session}>
+        <RelayEnvironmentProvider environment={env}>
+          <ChakraProvider theme={theme}>
+            <DndProvider backend={HTML5Backend}>
+              <Grid
+                data-cy="grid"
+                templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+                bg={"background.50"}
+                color={"text.600"}
+                minHeight="100vh"
+              >
+                <Component {...pageProps} {...relayProps} />
+              </Grid>
+            </DndProvider>
+          </ChakraProvider>
+        </RelayEnvironmentProvider>
+      </Provider>
+    </>
   );
 }
 

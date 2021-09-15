@@ -108,8 +108,8 @@ CREATE TABLE public.tag (
 
 CREATE TABLE public.message_tag (
     message_id INTEGER NOT NULL CONSTRAINT message_tag_message_id_fkey REFERENCES public.message(id) ON DELETE CASCADE,
-    tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE
-    organization_id INT NOT NULL CONSTRAINT message_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
+    tag_id INTEGER NOT NULL CONSTRAINT message_tag_tag_id_fkey REFERENCES public.tag(id) ON DELETE CASCADE,
+    organization_id INT NOT NULL CONSTRAINT message_tag_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
 );
 
 -- Filter messages shown to user based on organization
@@ -129,12 +129,6 @@ CREATE TABLE public.invite (
 );
 
 -- Saved user config values, gear icon in app
-CREATE TABLE public.user_config (
-  id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL UNIQUE CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
-  default_organization INTEGER NOT NULL CONSTRAINT user_config_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE
-);
-
 CREATE TABLE public.user_config (
   id SERIAL PRIMARY KEY,
   user_id INTEGER NOT NULL UNIQUE CONSTRAINT user_config_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
@@ -569,4 +563,11 @@ FROM (SELECT sort_index, category_id
       FROM  UNNEST($1, $2) as input(category_id, sort_index)) AS subquery
 WHERE category.id=subquery.category_id;
 
+$$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_organization_user(organization_id Int, user_id Int)
+RETURNS public.organization_user
+AS $$
+  INSERT INTO organization_user(organization_id, user_id) VALUES($1, $2)
+  RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;

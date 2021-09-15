@@ -126,16 +126,16 @@ export default function Sidebar({ query }) {
       left={["auto", "auto", "auto", "auto", "5rem"]}
       height={["initial", "initial", "initial", "initial", "100vh"]}
     >
-      {categories.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <Category
+      {categories?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <Category
         key={index}
         category={edge.node}
         // so sidebar component can update messages
         messageConnections={connections()}
-        sidebarConnection={categories.allCategories?.__id}
+        sidebarConnection={categories?.allCategories?.__id}
         moveCategory={moveCategory}
         index={index}
       />)}
-      <AddCategory connectionId={categories.allCategories?.__id} />
+      <AddCategory connectionId={categories?.allCategories?.__id} />
     </Box>
   )
 }

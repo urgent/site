@@ -95,7 +95,7 @@ export default function Tiles({ query }) {
       gridAutoFlow="dense"
       data-cy="tiles"
     >
-      {<>{messages.allMessages.edges?.map((edge) => {
+      {<>{messages?.allMessages?.edges?.map((edge) => {
         return (
           <Message
             key={edge.node.rowId}
