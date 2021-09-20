@@ -51,10 +51,11 @@ const messageFragment = graphql`
 `;
 
 export default function Tiles({ query }) {
-  const [editorText, setEditorText] = useState('');
+  const setEditorValue = useStore((state) => state.setEditorValue);
   const messages = useFragment(messageFragment, query);
   const [isDeleteMessagePending, deleteMessage] = useMutation(DeleteMessageMutation);
-  const [editMessage, setEditMessage] = useState(false)
+  const editMessage = useStore((state) => state.editMessage);
+  const setEditMessage = useStore((state) => state.setEditMessage);
   const [message] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const edit = useStore((state) => state.edit);
@@ -65,13 +66,13 @@ export default function Tiles({ query }) {
     if (edit && editMessage) {
       // turn off edit mode
       setEditMessage(false)
-      setEditorText('')
+      setEditorValue('')
     } else {
       setEditMessage(true)
       focusMessage([messageId, collectionId])
-      setEditorText(content)
+      setEditorValue(content)
     }
-  }, [edit, editMessage, setEditMessage, setEditorText, focusMessage])
+  }, [edit, editMessage, setEditMessage, setEditorValue, focusMessage])
 
   // Toolbar on delete
   const onDelete = useCallback((messageId, collectionId) => {
@@ -108,14 +109,13 @@ export default function Tiles({ query }) {
             value={edge.node.content}
             editActive={editMessage && message === edge.node.rowId}
           >
-            {edit && editMessage && edge.node.rowId === message && <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} />}
+            {edit && editMessage && edge.node.rowId === message && <Editor tileConnections={messages?.allMessages?.__id} />}
             {(!(edit && editMessage) || edge.node.rowId !== message) && <Box whiteSpace="pre-wrap" wordBreak="break-word">{edge.node.content}</Box>}
           </Message>
         )
       })}
         {!(edit && editMessage) && <Message toolbar={false}>
-          <Editor value={editorText} onChange={setEditorText} editMessage={editMessage} setEditMessage={setEditMessage} tileConnections={messages?.allMessages?.__id} setEditorText={setEditorText} >
-          </Editor>
+          <Editor tileConnections={messages?.allMessages?.__id} />
         </Message>}
       </>
       }

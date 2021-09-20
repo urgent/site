@@ -33,6 +33,15 @@ const useStore = create((set) => ({
     addFilterColor: (tag) => set((state) => ({
         filterColor: [tag, ...state.filterColor]
     })),
+    editorValue: '',
+    setEditorValue: (value) => set((state) => ({
+        editorValue: value
+    })),
+    editMessage: false,
+    setEditMessage: (toggle) => set((state) => ({
+        editMessage: toggle
+    })),
+
 }));
 
 export default useStore;

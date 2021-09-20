@@ -63,13 +63,17 @@ const UpdateMessageMutation = graphql`
     }
 `;
 
-export default function Editor({ value, onChange, editMessage, setEditMessage, tileConnections, setEditorText }) {
+export default function Editor({ tileConnections }) {
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
   const organization = useStore((state) => state.organization);
   const edit = useStore((state) => state.edit);
   const [message] = useStore((state) => state.message);
   const filter = useStore((state) => state.filter);
+  const editorValue = useStore((state) => state.editorValue);
+  const setEditorValue = useStore((state) => state.setEditorValue);
+  const editMessage = useStore((state) => state.editMessage);
+  const setEditMessage = useStore((state) => state.setEditMessage);
 
   // Editor submit
   const onSubmit = useCallback((event) => {
@@ -80,19 +84,19 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
         variables: {
           input: {
             id: message,
-            content: value,
+            content: editorValue,
           },
         },
         updater: store => { },
       });
       setEditMessage(false)
-      setEditorText('');
+      setEditorValue('');
     } else {
       insertMessage({
         variables: {
           input: {
             organizationId: organization,
-            content: value,
+            content: editorValue,
             tags: filter,
           },
           connections: [tileConnections]
@@ -100,14 +104,14 @@ export default function Editor({ value, onChange, editMessage, setEditMessage, t
         updater: store => { },
       });
       // Reset the comment text
-      setEditorText('');
+      setEditorValue('');
     }
   },
-    [value, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, setEditorText, filter]);
+    [editorValue, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, filter]);
 
   return (
     <>
-      <div data-cy="editor"><Textarea value={value} onChange={(e) => onChange(e.target.value)} /></div>
+      <div data-cy="editor"><Textarea value={editorValue} onChange={(e) => setEditorValue(e.target.value)} /></div>
       <br /><br /><br />
       <button data-cy="save" onClick={onSubmit}>Save</button>
     </>
