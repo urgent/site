@@ -29,7 +29,13 @@ export type SidebarFragment_categories = {|
         +name: ?string,
         +color: ?string,
         +organizationId: number,
-        +sort: ?number,
+        +configCategoriesByCategoryId: {|
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +sort: ?number
+            |}
+          |}>
+        |},
       |}
     |}>,
   |},
@@ -79,13 +85,7 @@ return {
   "selections": [
     {
       "alias": null,
-      "args": [
-        {
-          "kind": "Literal",
-          "name": "orderBy",
-          "value": "SORT_ASC"
-        }
-      ],
+      "args": null,
       "concreteType": "CategoriesConnection",
       "kind": "LinkedField",
       "name": "allCategories",
@@ -162,8 +162,41 @@ return {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "sort",
+                  "concreteType": "ConfigCategoriesConnection",
+                  "kind": "LinkedField",
+                  "name": "configCategoriesByCategoryId",
+                  "plural": false,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "ConfigCategoriesEdge",
+                      "kind": "LinkedField",
+                      "name": "edges",
+                      "plural": true,
+                      "selections": [
+                        {
+                          "alias": null,
+                          "args": null,
+                          "concreteType": "ConfigCategory",
+                          "kind": "LinkedField",
+                          "name": "node",
+                          "plural": false,
+                          "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "sort",
+                              "storageKey": null
+                            }
+                          ],
+                          "storageKey": null
+                        }
+                      ],
+                      "storageKey": null
+                    }
+                  ],
                   "storageKey": null
                 }
               ],
@@ -174,7 +207,7 @@ return {
         },
         (v2/*: any*/)
       ],
-      "storageKey": "allCategories(orderBy:\"SORT_ASC\")"
+      "storageKey": null
     }
   ],
   "type": "Query",
@@ -182,6 +215,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'e707371212faa159b69c3b682a5ba9f2';
+(node/*: any*/).hash = 'bfcf6e7465b699c71b5b50710268deae';
 
 module.exports = node;

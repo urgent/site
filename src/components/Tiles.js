@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useRef } from "react";
-import Message from "./Message"
+import React, { useState, useCallback, useRef } from 'react';
+import Message from './Message';
 import Editor from './Editor';
-import { Box, Grid } from "@chakra-ui/react"
+import { Box, Grid } from '@chakra-ui/react';
 import { graphql, useFragment } from 'react-relay';
-import useMutation from './useMutation'
-import useStore from "../utils/store";
+import useMutation from './useMutation';
+import useStore from '../utils/store';
 
 const DeleteMessageMutation = graphql`
   mutation TilesDeleteMessageMutation($input:DeleteMessageInput!, $connections: [ID!]!) {

@@ -9,7 +9,8 @@
     "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx",
     "test": "jest --watch",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run"
+    "test:e2e:run": "cypress run",
+    "schema": "npx postgraphile -c 'postgres://relay:$gR9gVALD*@localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",

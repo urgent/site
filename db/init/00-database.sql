@@ -90,8 +90,7 @@ CREATE TABLE public.category (
     id SERIAL PRIMARY KEY,
     organization_id INT NOT NULL CONSTRAINT category_organization_id_fkey REFERENCES public.organization(id) ON DELETE CASCADE,
     name TEXT,
-    color TEXT,
-    sort INT
+    color TEXT
 );
 
 CREATE TABLE public.message (
@@ -549,7 +548,31 @@ $$ LANGUAGE sql VOLATILE STRICT;
 
 
 
+-- User that owns the organization
+CREATE TABLE public.config_category (
+    user_id INTEGER NOT NULL CONSTRAINT config_category_user_id_fkey REFERENCES public.users(id) ON DELETE CASCADE,
+    category_id INTEGER NOT NULL CONSTRAINT config_category_category_id_fkey REFERENCES public.category(id) ON DELETE CASCADE,
+    sort INTEGER,
+    collapse BOOLEAN,
+    PRIMARY KEY(user_id, category_id)
+);
 
+ALTER TABLE public.config_category ENABLE ROW LEVEL SECURITY;
+
+create policy insert_if_author
+  on config_category
+  for insert
+  with check (EXISTS (SELECT * FROM sessions WHERE sessions.session_token = current_user_id()));
+
+create policy update_if_author
+  on config_category
+  for update
+  using (config_category.user_id IN (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id()));
+
+create policy delete_if_author
+  on config_category
+  for delete
+  using (config_category.user_id IN (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id()));
 
 -- categoryIds Int[], sort Int[]
 
@@ -557,11 +580,13 @@ CREATE FUNCTION public.sort_category(category_ids integer[], sort integer[])
 RETURNS void
 AS $$
 
-UPDATE public.category
-SET sort=subquery.sort_index
-FROM (SELECT sort_index, category_id
-      FROM  UNNEST($1, $2) as input(category_id, sort_index)) AS subquery
-WHERE category.id=subquery.category_id;
+  INSERT INTO public.config_category (user_id, category_id, sort)
+    SELECT s.user_id, category_id, sort_index
+    FROM  UNNEST($1, $2) as input(category_id, sort_index)
+    CROSS  JOIN sessions s
+    WHERE s.session_token = current_user_id()
+  ON CONFLICT (user_id, category_id) 
+  DO UPDATE SET sort = EXCLUDED.sort
 
 $$ LANGUAGE sql VOLATILE STRICT;
 
@@ -571,3 +596,5 @@ AS $$
   INSERT INTO organization_user(organization_id, user_id) VALUES($1, $2)
   RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;
+
+ALTER TABLE category DROP COLUMN sort;

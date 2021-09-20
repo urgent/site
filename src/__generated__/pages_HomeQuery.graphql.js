@@ -59,7 +59,7 @@ fragment NavFragment_userConfig on Query {
 }
 
 fragment SidebarFragment_categories on Query {
-  allCategories(orderBy: SORT_ASC) {
+  allCategories {
     edges {
       node {
         tagsByCategoryId {
@@ -75,7 +75,14 @@ fragment SidebarFragment_categories on Query {
         name
         color
         organizationId
-        sort
+        configCategoriesByCategoryId {
+          edges {
+            node {
+              sort
+              id
+            }
+          }
+        }
         id
       }
     }
@@ -330,13 +337,7 @@ return {
       },
       {
         "alias": null,
-        "args": [
-          {
-            "kind": "Literal",
-            "name": "orderBy",
-            "value": "SORT_ASC"
-          }
-        ],
+        "args": null,
         "concreteType": "CategoriesConnection",
         "kind": "LinkedField",
         "name": "allCategories",
@@ -402,8 +403,42 @@ return {
                   {
                     "alias": null,
                     "args": null,
-                    "kind": "ScalarField",
-                    "name": "sort",
+                    "concreteType": "ConfigCategoriesConnection",
+                    "kind": "LinkedField",
+                    "name": "configCategoriesByCategoryId",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "ConfigCategoriesEdge",
+                        "kind": "LinkedField",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "ConfigCategory",
+                            "kind": "LinkedField",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "alias": null,
+                                "args": null,
+                                "kind": "ScalarField",
+                                "name": "sort",
+                                "storageKey": null
+                              },
+                              (v1/*: any*/)
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ],
                     "storageKey": null
                   },
                   (v1/*: any*/)
@@ -415,7 +450,7 @@ return {
           },
           (v2/*: any*/)
         ],
-        "storageKey": "allCategories(orderBy:\"SORT_ASC\")"
+        "storageKey": null
       },
       {
         "alias": null,
@@ -541,12 +576,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "934f5a2d38903371960586fbb9f5789b",
+    "cacheID": "67ca13d0e5dfdacc889a62d69dc01a19",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...SidebarFragment_categories\n  ...SidebarFragment_messages\n  ...TilesFragment_messages\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories(orderBy: SORT_ASC) {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        sort\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...SidebarFragment_categories\n  ...SidebarFragment_messages\n  ...TilesFragment_messages\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_categories on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
