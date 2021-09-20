@@ -20,7 +20,7 @@ describe('Tag', () => {
         cy.get('[data-cy=category]:first-child [data-cy=tag]').should('have.length', 1)
         // create message
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
-        cy.get('[data-cy=editor] .quill').type('Hello, World')
+        cy.get('[data-cy=editor] textarea').type('Hello, World')
         cy.get('[data-cy=save]').click()
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 2)
         // add tag to message
@@ -51,7 +51,7 @@ describe('Tag', () => {
         cy.get('[data-cy=category]:first-child [data-cy=tag]').should('have.length', 1)
         // create message
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 1)
-        cy.get('[data-cy=editor] .quill').type('Hello, World')
+        cy.get('[data-cy=editor] textarea').type('Hello, World')
         cy.get('[data-cy=save]').click()
         cy.get('[data-cy=tiles] [data-cy=message]').should('have.length', 2)
         // add tag to message
