@@ -10,7 +10,7 @@
     "test": "jest --watch",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
-    "schema": "npx postgraphile -c 'postgres://relay:$gR9gVALD*@localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql"
+    "schema": "npx postgraphile -c 'postgres://localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",

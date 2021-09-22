@@ -784,6 +784,35 @@ type Organization implements Node {
     condition: MessageCondition
   ): MessagesConnection!
 
+  """Reads and enables pagination through a set of `MessageTag`."""
+  messageTagsByOrganizationId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `MessageTag`."""
+    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MessageTagCondition
+  ): MessageTagsConnection!
+
   """Reads and enables pagination through a set of `OrganizationUser`."""
   organizationUsersByOrganizationId(
     """Only read the first `n` values of the set."""
@@ -870,35 +899,6 @@ type Organization implements Node {
     """
     condition: UserConfigCondition
   ): UserConfigsConnection!
-
-  """Reads and enables pagination through a set of `MessageTag`."""
-  messageTagsByOrganizationId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: MessageTagCondition
-  ): MessageTagsConnection!
 }
 
 type User implements Node {
@@ -1933,6 +1933,12 @@ type Mutation {
     """
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
+  createOrganizationUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateOrganizationUserInput!
+  ): CreateOrganizationUserPayload
   createTag(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2139,6 +2145,46 @@ input CreateOrganizationInput {
   clientMutationId: String
   userId: Int!
   slug: String!
+}
+
+"""The output of our `createOrganizationUser` mutation."""
+type CreateOrganizationUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  organizationUser: OrganizationUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """
+  Reads a single `Organization` that is related to this `OrganizationUser`.
+  """
+  organizationByOrganizationId: Organization
+
+  """Reads a single `User` that is related to this `OrganizationUser`."""
+  userByUserId: User
+
+  """An edge for our `OrganizationUser`. May be used by Relay 1."""
+  organizationUserEdge(
+    """The method to use when ordering `OrganizationUser`."""
+    orderBy: [OrganizationUsersOrderBy!] = [NATURAL]
+  ): OrganizationUsersEdge
+}
+
+"""All input for the `createOrganizationUser` mutation."""
+input CreateOrganizationUserInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  organizationId: Int!
+  userId: Int!
 }
 
 """The output of our `createTag` mutation."""

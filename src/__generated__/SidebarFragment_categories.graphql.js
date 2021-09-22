@@ -13,31 +13,28 @@ declare export opaque type SidebarFragment_categories$ref: FragmentReference;
 declare export opaque type SidebarFragment_categories$fragmentType: SidebarFragment_categories$ref;
 export type SidebarFragment_categories = {|
   +allCategories: ?{|
-    +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
+        +color: ?string,
+        +name: ?string,
         +tagsByCategoryId: {|
-          +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
-              +rowId: number,
-              +name: ?string,
+              +name: ?string
             |}
-          |}>,
+          |}>
         |},
-        +rowId: number,
-        +name: ?string,
-        +color: ?string,
         +organizationId: number,
         +configCategoriesByCategoryId: {|
           +edges: $ReadOnlyArray<{|
             +node: ?{|
-              +sort: ?number
+              +collapse: ?boolean,
+              +sort: ?number,
             |}
           |}>
         |},
       |}
-    |}>,
+    |}>
   |},
   +$refType: SidebarFragment_categories$ref,
 |};
@@ -55,27 +52,8 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "rowId",
-  "storageKey": null
-},
-v1 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "name",
   "storageKey": null
-},
-v2 = {
-  "kind": "ClientExtension",
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "__id",
-      "storageKey": null
-    }
-  ]
 };
 return {
   "argumentDefinitions": [],
@@ -110,6 +88,14 @@ return {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "color",
+                  "storageKey": null
+                },
+                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "TagsConnection",
                   "kind": "LinkedField",
                   "name": "tagsByCategoryId",
@@ -131,25 +117,14 @@ return {
                           "name": "node",
                           "plural": false,
                           "selections": [
-                            (v0/*: any*/),
-                            (v1/*: any*/)
+                            (v0/*: any*/)
                           ],
                           "storageKey": null
                         }
                       ],
                       "storageKey": null
-                    },
-                    (v2/*: any*/)
+                    }
                   ],
-                  "storageKey": null
-                },
-                (v0/*: any*/),
-                (v1/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "color",
                   "storageKey": null
                 },
                 {
@@ -187,6 +162,13 @@ return {
                               "alias": null,
                               "args": null,
                               "kind": "ScalarField",
+                              "name": "collapse",
+                              "storageKey": null
+                            },
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
                               "name": "sort",
                               "storageKey": null
                             }
@@ -204,8 +186,7 @@ return {
             }
           ],
           "storageKey": null
-        },
-        (v2/*: any*/)
+        }
       ],
       "storageKey": null
     }
@@ -215,6 +196,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'bfcf6e7465b699c71b5b50710268deae';
+(node/*: any*/).hash = 'dbfe2b909712609a1fe0c2490cc63daf';
 
 module.exports = node;

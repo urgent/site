@@ -40,39 +40,38 @@ const messageFragment = graphql`
 
 const categoriesFragment = graphql`
 fragment SidebarFragment_categories on Query {
-    allCategories {
-        __id
-        edges {
-            node {
-              tagsByCategoryId {
-                __id
-                edges {
-                  node {
-                    rowId
-                    name
-                  }
-                }
-              }
-              rowId,
-              name,
-              color,
-              organizationId,
-              configCategoriesByCategoryId{
-                edges{
-                  node{
-                    sort
-                  }
-                }
+  allCategories {
+      __id
+      edges {
+        node {
+          tagsByCategoryId {
+            __id
+            edges {
+              node {
+                name
               }
             }
+          }
+          rowId
+          name
+          color
+          organizationId
+          configCategoriesByCategoryId {
+            edges {
+              node {
+                collapse
+                sort
+              }
+            }
+          }
         }
+      }
     }
-}
-`;
+}`;
 
 export default function Sidebar({ query }) {
   const messages = useFragment(messageFragment, query);
-  const categories = useFragment(categoriesFragment, query);
+  const categoriesUnsorted = useFragment(categoriesFragment, query);
   // need connections to update
   const connections = useMemo(() => {
     return messages?.allMessages?.edges?.map(edge => {
@@ -80,6 +79,25 @@ export default function Sidebar({ query }) {
     })
   }, [messages]);
   const organization = useStore((state) => state.organization);
+
+  const categories = {
+    allCategories: {
+      edges: categoriesUnsorted.allCategories.edges.map(edge => {
+        return {
+          node: {
+            sort: edge.node.configCategoriesByCategoryId.edges[0].node.sort,
+            ...edge.node
+          }
+        }
+      }).sort((a, b) => {
+        if (a.node.sort < b.node.sort) {
+          return -1;
+        } else {
+          return 1;
+        }
+      })
+    }
+  }
 
   return (
     <Box

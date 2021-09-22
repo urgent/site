@@ -214,14 +214,6 @@ CREATE POLICY select_if_organization
       FROM sessions     
       WHERE sessions.session_token = current_user_id()));
 
-CREATE POLICY select_if_organization
-  on organization
-  for select 
-  USING ( organization.user_id IN (
-    SELECT sessions.user_id 
-      FROM sessions     
-      WHERE sessions.session_token = current_user_id()));
-
 -- needed for dropdown, to get slug
 
 CREATE POLICY select_if_organization_invited
@@ -574,6 +566,13 @@ create policy delete_if_author
   for delete
   using (config_category.user_id IN (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id()));
 
+create policy select_if_author
+  on config_category
+  for select 
+  using (config_category.user_id IN (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id()));
+
+
+
 -- categoryIds Int[], sort Int[]
 
 CREATE FUNCTION public.sort_category(category_ids integer[], sort integer[])
@@ -596,5 +595,3 @@ AS $$
   INSERT INTO organization_user(organization_id, user_id) VALUES($1, $2)
   RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;
-
-ALTER TABLE category DROP COLUMN sort;
