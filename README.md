@@ -1,3 +1,10 @@
+<h1>Smooms.io: The Sales Enablement Platform For Innovators</h1>
+<h2>This app helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
+
+
+
+
+
 next chrome extension app - mvp
 
 or search
