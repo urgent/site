@@ -3,13 +3,7 @@
 
 We're here to make work fun, and prevent people from wasting time working while uninformed. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
 
-
-
-
-
-
-
-
+Whether it's a college grad making cold calls for the first time or an enterprise account executive closing multimillion dollar deals, our customers need us to deliver: the knowledge required to implement modern technology into monolithic titans of industry does not come easy: it slows adoption of technology that can change the world. We need to change this. 
 
 
 
