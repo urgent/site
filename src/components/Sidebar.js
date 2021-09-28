@@ -112,7 +112,7 @@ export default function Sidebar({ query }) {
       edges: categoriesUnsorted.allCategories.edges.map(edge => {
         return {
           node: {
-            sort: edge.node.configCategoriesByCategoryId.edges[0].node.sort,
+            sort: edge.node.configCategoriesByCategoryId.edges[0]?.node.sort,
             ...edge.node
           }
         }
@@ -127,9 +127,16 @@ export default function Sidebar({ query }) {
   }), [categoriesUnsorted]);
 
   const sortData = useMemo(() => {
+
     return {
       rowIds: categories.allCategories.edges.map(edge => edge.node.rowId),
-      sort: categories.allCategories.edges.map(edge => edge.node.sort)
+      sort: categories.allCategories.edges.map((edge, index) => {
+        if (edge.node.sort > 0) {
+          return edge.node.sort;
+        } else {
+          return index + 1;
+        }
+      })
     }
   }, [categories])
 
@@ -137,7 +144,7 @@ export default function Sidebar({ query }) {
     console.log(dragged);
     console.log(hovered);
     console.log(sortData.sort)
-    console.log(drag(sortData.sort)(dragged + 1, hovered + 1))
+    console.log(drag(sortData.sort)(dragged, hovered))
   }, [categories]);
 
 
