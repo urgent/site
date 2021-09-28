@@ -13,17 +13,20 @@ declare export opaque type SidebarFragment_categories$ref: FragmentReference;
 declare export opaque type SidebarFragment_categories$fragmentType: SidebarFragment_categories$ref;
 export type SidebarFragment_categories = {|
   +allCategories: ?{|
+    +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
-        +color: ?string,
-        +name: ?string,
         +tagsByCategoryId: {|
+          +__id: string,
           +edges: $ReadOnlyArray<{|
             +node: ?{|
               +name: ?string
             |}
-          |}>
+          |}>,
         |},
+        +rowId: number,
+        +name: ?string,
+        +color: ?string,
         +organizationId: number,
         +configCategoriesByCategoryId: {|
           +edges: $ReadOnlyArray<{|
@@ -34,7 +37,7 @@ export type SidebarFragment_categories = {|
           |}>
         |},
       |}
-    |}>
+    |}>,
   |},
   +$refType: SidebarFragment_categories$ref,
 |};
@@ -54,6 +57,18 @@ var v0 = {
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
+},
+v1 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
 };
 return {
   "argumentDefinitions": [],
@@ -88,14 +103,6 @@ return {
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "color",
-                  "storageKey": null
-                },
-                (v0/*: any*/),
-                {
-                  "alias": null,
-                  "args": null,
                   "concreteType": "TagsConnection",
                   "kind": "LinkedField",
                   "name": "tagsByCategoryId",
@@ -123,8 +130,24 @@ return {
                         }
                       ],
                       "storageKey": null
-                    }
+                    },
+                    (v1/*: any*/)
                   ],
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "rowId",
+                  "storageKey": null
+                },
+                (v0/*: any*/),
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "color",
                   "storageKey": null
                 },
                 {
@@ -186,7 +209,8 @@ return {
             }
           ],
           "storageKey": null
-        }
+        },
+        (v1/*: any*/)
       ],
       "storageKey": null
     }
@@ -196,6 +220,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'dbfe2b909712609a1fe0c2490cc63daf';
+(node/*: any*/).hash = '0bd7fbf5af3736a876be72860b3410a4';
 
 module.exports = node;

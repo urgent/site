@@ -143,7 +143,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
     const [editCategoryText, setEditCategoryText] = useState();
     const [focusedCategory, setFocusedCategory] = useState();
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
-    const [editCategoryColor, setEditCategoryColor] = useState(category.color);
+    const [editCategoryColor, setEditCategoryColor] = useState(category?.color);
     const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
     const [isConfirmOpen, setConfirmIsOpen] = useState(false)
 
@@ -229,7 +229,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
         deleteCategory({
             variables: {
                 input: {
-                    categoryId: category.rowId
+                    categoryId: category?.rowId
                 },
                 connections: [...messageConnections, sidebarConnection],
             },
@@ -257,8 +257,8 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 gridColumn="content"
             >
                 <AlertDialog
-                    title={`Delete ${category.name}`}
-                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category.name} category?`}
+                    title={`Delete ${category?.name}`}
+                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category?.name} category?`}
                     click={confirmDeleteCategory}
                     isOpen={isConfirmOpen}
                     setIsOpen={setConfirmIsOpen}
@@ -321,21 +321,21 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 my={2}
                 spacing={4}
             >
-                {category.tagsByCategoryId?.edges.map((edge, index) => {
+                {category?.tagsByCategoryId?.edges.map((edge, index) => {
                     return (
                         <WrapItem key={index}>
                             <Tag
                                 rowId={edge.node.rowId}
-                                color={category.color}
+                                color={category?.color}
                                 messageConnections={messageConnections}
-                                tagConnection={category.tagsByCategoryId?.__id}
+                                tagConnection={category?.tagsByCategoryId?.__id}
                                 tagName={edge.node.name}
                             />
                         </WrapItem>
                     )
                 })}
             </Wrap>
-            <AddTag connectionId={category.tagsByCategoryId?.__id} categoryId={category.rowId} />
+            <AddTag connectionId={category?.tagsByCategoryId?.__id} categoryId={category?.rowId} />
         </Grid>
         }
 
@@ -360,8 +360,8 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 gridColumn="content"
             >
                 <AlertDialog
-                    title={`Delete ${category.name}`}
-                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category.name} category?`}
+                    title={`Delete ${category?.name}`}
+                    body={`Tags on messages will be lost. Are you sure you want to delete the ${category?.name} category?`}
                     click={confirmDeleteCategory}
                     isOpen={isConfirmOpen}
                     setIsOpen={setConfirmIsOpen}
@@ -370,7 +370,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 {<Toolbar
                     editClick={() => {
                         setCategoryMode('edit')
-                        setFocusedCategory(category.rowId)
+                        setFocusedCategory(category?.rowId)
                     }}
                     deleteClick={() => setConfirmIsOpen(true)}
                 />}
@@ -392,7 +392,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 fontWeight="bold"
                 fontSize={24}
             >
-                {categoryMode !== 'edit' && <Text mt={1}>{category.name}</Text>}
+                {categoryMode !== 'edit' && <Text mt={1}>{category?.name}</Text>}
             </Box>
             <Wrap
                 gridRow="body"
@@ -400,21 +400,21 @@ export default function Category({ category, messageConnections, sidebarConnecti
                 my={2}
                 spacing={4}
             >
-                {category.tagsByCategoryId?.edges.map((edge, index) => {
+                {category?.tagsByCategoryId?.edges.map((edge, index) => {
                     return (
                         <WrapItem key={index}>
                             <Tag
                                 rowId={edge.node.rowId}
-                                color={category.color}
+                                color={category?.color}
                                 messageConnections={messageConnections}
-                                tagConnection={category.tagsByCategoryId?.__id}
+                                tagConnection={category?.tagsByCategoryId?.__id}
                                 tagName={edge.node.name}
                             />
                         </WrapItem>
                     )
                 })}
             </Wrap>
-            <AddTag categoryTagsConnection={category.tagsByCategoryId?.__id} categoryId={category.rowId} />
+            <AddTag categoryTagsConnection={category?.tagsByCategoryId?.__id} categoryId={category?.rowId} />
         </Grid>
         }
     </>

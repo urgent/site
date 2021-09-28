@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import Category, { AddCategory } from '../components/Category';
 import { Box } from '@chakra-ui/react';
 import { graphql, useFragment } from 'react-relay';
 import useStore from '../utils/store';
+import update from 'immutability-helper';
 
 const messageFragment = graphql`
           fragment SidebarFragment_messages on Query {
@@ -69,6 +70,32 @@ fragment SidebarFragment_categories on Query {
     }
 }`;
 
+export function drag(data) {
+
+  return (dragIndex, hoverIndex) => {
+
+    const removed = [
+      ...data.slice(0, dragIndex),
+      ...data.slice(dragIndex + 1)
+    ];
+
+
+    const newHoverIndex = removed.indexOf(data[hoverIndex]);
+    if (dragIndex > hoverIndex) {
+      const first = removed.slice(0, newHoverIndex)
+      const entry = data[dragIndex]
+      const end = removed.slice(newHoverIndex)
+      return [...first, entry, ...end]
+    } else {
+      const first = removed.slice(0, newHoverIndex + 1)
+      const entry = data[dragIndex]
+      const end = removed.slice(newHoverIndex + 1)
+      return [...first, entry, ...end]
+    }
+  }
+}
+
+
 export default function Sidebar({ query }) {
   const messages = useFragment(messageFragment, query);
   const categoriesUnsorted = useFragment(categoriesFragment, query);
@@ -80,7 +107,7 @@ export default function Sidebar({ query }) {
   }, [messages]);
   const organization = useStore((state) => state.organization);
 
-  const categories = {
+  const categories = useMemo(() => ({
     allCategories: {
       edges: categoriesUnsorted.allCategories.edges.map(edge => {
         return {
@@ -97,7 +124,22 @@ export default function Sidebar({ query }) {
         }
       })
     }
-  }
+  }), [categoriesUnsorted]);
+
+  const sortData = useMemo(() => {
+    return {
+      rowIds: categories.allCategories.edges.map(edge => edge.node.rowId),
+      sort: categories.allCategories.edges.map(edge => edge.node.sort)
+    }
+  }, [categories])
+
+  const moveCategory = useCallback((dragged, hovered) => {
+    console.log(dragged);
+    console.log(hovered);
+    console.log(sortData.sort)
+    console.log(drag(sortData.sort)(dragged + 1, hovered + 1))
+  }, [categories]);
+
 
   return (
     <Box
@@ -115,7 +157,7 @@ export default function Sidebar({ query }) {
         // so sidebar component can update messages, like with a delete or edit
         messageConnections={connections}
         sidebarConnection={categories?.allCategories?.__id}
-        moveCategory={() => { }}
+        moveCategory={moveCategory}
         index={index}
       />)}
       <AddCategory connectionId={categories?.allCategories?.__id} />
