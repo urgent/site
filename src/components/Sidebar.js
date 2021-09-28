@@ -3,7 +3,7 @@ import Category, { AddCategory } from '../components/Category';
 import { Box } from '@chakra-ui/react';
 import { graphql, useFragment } from 'react-relay';
 import useStore from '../utils/store';
-import update from 'immutability-helper';
+import useMutation from './useMutation';
 
 const messageFragment = graphql`
           fragment SidebarFragment_messages on Query {
@@ -70,6 +70,42 @@ fragment SidebarFragment_categories on Query {
     }
 }`;
 
+const SortCategoryMutation = graphql`
+  mutation SidebarSortMutation($input:SortCategoryInput!) {
+    sortCategory(input: $input) {
+      query {
+        allCategories {
+          __id
+          edges {
+          node {
+            tagsByCategoryId {
+              __id
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+            rowId
+            name
+            color
+            organizationId
+            configCategoriesByCategoryId {
+              edges {
+                node {
+                  collapse
+                  sort
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`
+
 export function drag(data) {
 
   return (dragIndex, hoverIndex) => {
@@ -99,6 +135,7 @@ export function drag(data) {
 export default function Sidebar({ query }) {
   const messages = useFragment(messageFragment, query);
   const categoriesUnsorted = useFragment(categoriesFragment, query);
+  const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
   // need connections to update
   const connections = useMemo(() => {
     return messages?.allMessages?.edges?.map(edge => {
@@ -141,10 +178,15 @@ export default function Sidebar({ query }) {
   }, [categories])
 
   const moveCategory = useCallback((dragged, hovered) => {
-    console.log(dragged);
-    console.log(hovered);
-    console.log(sortData.sort)
-    console.log(drag(sortData.sort)(dragged, hovered))
+    const sorted = drag(sortData.sort)(dragged, hovered)
+    sortCategory({
+      variables: {
+        input: {
+          categoryIds: sortData.rowIds,
+          sort: sorted
+        }
+      }
+    })
   }, [categories]);
 
 
