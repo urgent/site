@@ -27,7 +27,8 @@ export type SidebarSortMutationResponse = {|
               +__id: string,
               +edges: $ReadOnlyArray<{|
                 +node: ?{|
-                  +name: ?string
+                  +name: ?string,
+                  +rowId: number,
                 |}
               |}>,
             |},
@@ -69,6 +70,7 @@ mutation SidebarSortMutation(
               edges {
                 node {
                   name
+                  rowId
                   id
                 }
               }
@@ -119,6 +121,13 @@ v2 = {
   "storageKey": null
 },
 v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v4 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -129,13 +138,6 @@ v3 = {
       "storageKey": null
     }
   ]
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "rowId",
-  "storageKey": null
 },
 v5 = {
   "alias": null,
@@ -243,18 +245,19 @@ return {
                                     "name": "node",
                                     "plural": false,
                                     "selections": [
-                                      (v2/*: any*/)
+                                      (v2/*: any*/),
+                                      (v3/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
                                 ],
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           (v2/*: any*/),
                           (v5/*: any*/),
                           (v6/*: any*/),
@@ -299,7 +302,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -384,6 +387,7 @@ return {
                                     "plural": false,
                                     "selections": [
                                       (v2/*: any*/),
+                                      (v3/*: any*/),
                                       (v9/*: any*/)
                                     ],
                                     "storageKey": null
@@ -391,11 +395,11 @@ return {
                                 ],
                                 "storageKey": null
                               },
-                              (v3/*: any*/)
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v4/*: any*/),
+                          (v3/*: any*/),
                           (v2/*: any*/),
                           (v5/*: any*/),
                           (v6/*: any*/),
@@ -442,7 +446,7 @@ return {
                     ],
                     "storageKey": null
                   },
-                  (v3/*: any*/)
+                  (v4/*: any*/)
                 ],
                 "storageKey": null
               },
@@ -456,16 +460,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f3cf63c768544b4b3bf0862bc08a0670",
+    "cacheID": "58ff1ba4f9c04eb588a29a121da93a8c",
     "id": null,
     "metadata": {},
     "name": "SidebarSortMutation",
     "operationKind": "mutation",
-    "text": "mutation SidebarSortMutation(\n  $input: SortCategoryInput!\n) {\n  sortCategory(input: $input) {\n    query {\n      allCategories {\n        edges {\n          node {\n            tagsByCategoryId {\n              edges {\n                node {\n                  name\n                  id\n                }\n              }\n            }\n            rowId\n            name\n            color\n            organizationId\n            configCategoriesByCategoryId {\n              edges {\n                node {\n                  collapse\n                  sort\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation SidebarSortMutation(\n  $input: SortCategoryInput!\n) {\n  sortCategory(input: $input) {\n    query {\n      allCategories {\n        edges {\n          node {\n            tagsByCategoryId {\n              edges {\n                node {\n                  name\n                  rowId\n                  id\n                }\n              }\n            }\n            rowId\n            name\n            color\n            organizationId\n            configCategoriesByCategoryId {\n              edges {\n                node {\n                  collapse\n                  sort\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '7bf5735497e40dd89844bc073bcc2467';
+(node/*: any*/).hash = '12501c11f3edf9561555fd1a0bb7a613';
 
 module.exports = node;

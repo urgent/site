@@ -49,6 +49,7 @@ fragment SidebarFragment_categories on Query {
             __id
             edges {
               node {
+                rowId
                 name
               }
             }
@@ -83,6 +84,7 @@ const SortCategoryMutation = graphql`
               edges {
                 node {
                   name
+                  rowId
                 }
               }
             }
@@ -149,7 +151,7 @@ export default function Sidebar({ query }) {
       edges: categoriesUnsorted.allCategories.edges.map(edge => {
         return {
           node: {
-            sort: edge.node.configCategoriesByCategoryId.edges[0]?.node.sort,
+            sort: edge.node.configCategoriesByCategoryId?.edges[0]?.node.sort,
             ...edge.node
           }
         }
@@ -189,7 +191,6 @@ export default function Sidebar({ query }) {
     })
   }, [categories]);
 
-
   return (
     <Box
       gridColumn="sidebar"
@@ -205,11 +206,11 @@ export default function Sidebar({ query }) {
         category={edge.node}
         // so sidebar component can update messages, like with a delete or edit
         messageConnections={connections}
-        sidebarConnection={categories?.allCategories?.__id}
+        sidebarConnection={categoriesUnsorted?.allCategories?.__id}
         moveCategory={moveCategory}
         index={index}
       />)}
-      <AddCategory connectionId={categories?.allCategories?.__id} />
+      <AddCategory connectionId={categoriesUnsorted?.allCategories?.__id} />
     </Box>
   )
 }

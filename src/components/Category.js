@@ -24,6 +24,7 @@ const InsertCategoryMutation = graphql`
             edges {
                 node {
                     name
+                    rowId
                 }
             }
         }

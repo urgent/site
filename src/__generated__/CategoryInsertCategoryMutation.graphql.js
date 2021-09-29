@@ -30,7 +30,8 @@ export type CategoryInsertCategoryMutationResponse = {|
         +__id: string,
         +edges: $ReadOnlyArray<{|
           +node: ?{|
-            +name: ?string
+            +name: ?string,
+            +rowId: number,
           |}
         |}>,
       |},
@@ -59,6 +60,7 @@ mutation CategoryInsertCategoryMutation(
         edges {
           node {
             name
+            rowId
             id
           }
         }
@@ -188,7 +190,8 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/)
+                          (v5/*: any*/),
+                          (v4/*: any*/)
                         ],
                         "storageKey": null
                       }
@@ -264,6 +267,7 @@ return {
                         "plural": false,
                         "selections": [
                           (v5/*: any*/),
+                          (v4/*: any*/),
                           (v3/*: any*/)
                         ],
                         "storageKey": null
@@ -305,16 +309,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f9722b9d03e6a51a28c53a743975fe46",
+    "cacheID": "bdf35305c4a9b22cb9ec60a799d7f505",
     "id": null,
     "metadata": {},
     "name": "CategoryInsertCategoryMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      organizationId\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      organizationId\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            rowId\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '423687712c804dfb0c8590b6c8e42a33';
+(node/*: any*/).hash = 'c392f115954c7e64ca14aa0c16f4ce56';
 
 module.exports = node;
