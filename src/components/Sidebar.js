@@ -1,7 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import Category, { AddCategory } from '../components/Category';
 import Tag from "../components/Tag"
-import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, WrapItem, Button, Flex, Spacer, Image } from "@chakra-ui/react"
+import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, WrapItem } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useStore from '../utils/store';
 import useMutation from './useMutation';
@@ -267,42 +267,31 @@ export function Collapsable({ query, onClick }) {
   }, [categories]);
 
   return (
-    <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
-      <Accordion gridRow="menu" minHeight="90vh">
-        {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem>
-          <h2>
-            <AccordionButton>
-              <Box flex="1" textAlign="left">
-                {edge.node.name}
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4}>
-            {edge.node?.tagsByCategoryId?.edges.map((edge, index) => {
-              return (
-                <WrapItem key={index}>
-                  <Tag
-                    rowId={edge.node.rowId}
-                    color={edge.node?.color}
-                    tagConnection={edge.node?.tagsByCategoryId?.__id}
-                    tagName={edge.node.name}
-                  />
-                </WrapItem>
-              )
-            })}
-          </AccordionPanel>
-        </AccordionItem>)}
-      </Accordion>
-      <Flex>
-        <Box p="4">
-          <Image src="/images/logo.png" h={8} />
-        </Box>
-        <Spacer />
-        <Box p="4">
-          <Button gridRow="button" display="block" mx="auto" bg={'primary.400'} color="white" onClick={onClick}>Show Results</Button>
-        </Box>
-      </Flex>
-    </Box>
+    <Accordion gridRow="menu" minHeight="90vh">
+      {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem>
+        <h2>
+          <AccordionButton>
+            <Box flex="1" textAlign="left">
+              {edge.node.name}
+            </Box>
+            <AccordionIcon />
+          </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+          {edge.node?.tagsByCategoryId?.edges.map((tag, index) => {
+            return (
+              <WrapItem key={index}>
+                <Tag
+                  rowId={tag.node.rowId}
+                  color={edge.node?.color}
+                  tagConnection={edge.node?.tagsByCategoryId?.__id}
+                  tagName={tag.node.name}
+                />
+              </WrapItem>
+            )
+          })}
+        </AccordionPanel>
+      </AccordionItem>)}
+    </Accordion>
   );
 }

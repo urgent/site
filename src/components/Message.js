@@ -93,7 +93,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     // editor
     if (!value) {
       return {
-        width: "span 10",
+        width: ["1", "1", "1", "span 10", "span 10"],
         height: "span 2",
         tagRow: "2"
       }
@@ -108,21 +108,21 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
 
     if (messageLength < 140) {
       return {
-        width: "span 2",
+        width: ["1", "1", "1", "span 2", "span 2"],
         height: `span ${Math.max(3, Math.ceil(messageLength / 100) + Math.ceil(tagLength / 40))}`,
         tagRow: Math.max(8, Math.ceil(tags?.edges.length * 4)),
       }
     }
     else if (messageLength < 500) {
       return {
-        width: "span 2",
+        width: ["1", "1", "1", "span 2", "span 2"],
         height: `span ${Math.max(4, Math.ceil(messageLength / 90) + Math.ceil(tagLength / 40))}`,
         tagRow: Math.max(4, Math.ceil(tags?.edges.length * 6)),
       }
     }
     else {
       return {
-        width: "span 4",
+        width: ["1", "1", "1", "span 4", "span 4"],
         height: `span ${Math.max(4, Math.ceil(messageLength / 180) + Math.ceil(tagLength / 90))}`,
         tagRow: Math.max(6, Math.ceil(tags?.edges.length)),
       }
