@@ -251,8 +251,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
           _hover={{ bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
           data-cy="tag"
         >
-          <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
-
+          <Box>
             {tagMode === 'edit' &&
               <Input
                 type="text"
@@ -285,7 +284,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
           _hover={{ bg: "white", boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
           data-cy="tag"
         >
-          <Box display={['none', 'none', 'inherit', 'inherit', 'inherit']}>
+          <Box>
 
             {tagMode === 'edit' &&
               <Input

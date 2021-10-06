@@ -27,15 +27,7 @@ function MyApp({ Component, pageProps }) {
         <RelayEnvironmentProvider environment={env}>
           <ChakraProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
-              <Grid
-                data-cy="grid"
-                templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
-                bg={"background.50"}
-                color={"text.600"}
-                minHeight="100vh"
-              >
-                <Component {...pageProps} {...relayProps} />
-              </Grid>
+              <Component {...pageProps} {...relayProps} />
             </DndProvider>
           </ChakraProvider>
         </RelayEnvironmentProvider>

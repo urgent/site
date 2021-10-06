@@ -2,9 +2,10 @@ import React from "react";
 import Nav from "../components/Nav";
 import Sidebar from "../components/Sidebar"
 import Tiles from "../components/Tiles"
+import Mobile from "../components/Mobile"
 import { withRelay } from 'relay-nextjs';
 import { graphql, usePreloadedQuery } from 'react-relay/hooks';
-import { Grid } from '@chakra-ui/react'
+import { Grid, Box } from '@chakra-ui/react'
 
 const HomeQuery = graphql`
   query pages_HomeQuery {
@@ -20,18 +21,30 @@ function Home({ preloadedQuery }) {
   const query = usePreloadedQuery(HomeQuery, preloadedQuery);
 
   return <>
-    <Nav query={query} />
-    <Sidebar query={query} />
     <Grid
-      as="main"
-      gridColumn="content"
-      pt={2}
-      mx="auto"
-      sx={{ textAlign: "center" }}
-      width="100%"
+      data-cy="grid"
+      templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+      bg={"background.50"}
+      color={"text.600"}
+      minHeight="100vh"
+      d={["none", "none", "none", "grid", "grid"]}
     >
-      <Tiles query={query} />
+      <Nav query={query} />
+      <Sidebar query={query} />
+      <Grid
+        as="main"
+        gridColumn="content"
+        pt={2}
+        mx="auto"
+        sx={{ textAlign: "center" }}
+        width="100%"
+      >
+        <Tiles query={query} />
+      </Grid>
     </Grid>
+    <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
+      <Mobile query={query} />
+    </Box>
   </>
 }
 
