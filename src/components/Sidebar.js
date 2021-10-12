@@ -267,7 +267,7 @@ export function Collapsable({ query, onClick }) {
   }, [categories]);
 
   return (
-    <Accordion gridRow="menu" minHeight="90vh">
+    <Accordion gridRow="menu" minHeight="90vh" allowMultiple={true} >
       {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem>
         <h2>
           <AccordionButton>
