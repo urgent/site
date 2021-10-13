@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../components/Nav";
-import Sidebar from "../components/Sidebar"
+import { Collapsable } from "../components/Sidebar"
 import Tiles from "../components/Tiles"
 import Mobile from "../components/Mobile"
 import { withRelay } from 'relay-nextjs';
@@ -30,7 +30,7 @@ function Home({ preloadedQuery }) {
       d={["none", "none", "none", "grid", "grid"]}
     >
       <Nav query={query} />
-      <Sidebar query={query} />
+      <Box gridColumn="sidebar"><Collapsable query={query} /></Box>
       <Grid
         as="main"
         gridColumn="content"

@@ -216,7 +216,7 @@ export default function Sidebar({ query }) {
   )
 }
 
-export function Collapsable({ query, onClick }) {
+export function Collapsable({ query }) {
   const categoriesUnsorted = useFragment(categoriesFragment, query);
   const organization = useStore((state) => state.organization);
 
@@ -267,8 +267,8 @@ export function Collapsable({ query, onClick }) {
   }, [categories]);
 
   return (
-    <Accordion gridRow="menu" minHeight="90vh" allowMultiple={true} >
-      {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem>
+    <Accordion minHeight="90vh" allowMultiple={true} >
+      {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem key={edge.node.rowId}>
         <h2>
           <AccordionButton>
             <Box flex="1" textAlign="left">

@@ -8,7 +8,7 @@ export default function Mobile({ query }) {
     return <>
         {nav && <>
             <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
-                <Collapsable query={query} />
+                <Box gridRow="menu"><Collapsable query={query} /></Box>
                 <Flex>
                     <Box p="4">
                         <Image src="/images/logo.png" h={8} />
