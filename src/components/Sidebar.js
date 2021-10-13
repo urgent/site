@@ -1,10 +1,13 @@
-import React, { useMemo, useCallback } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import Category, { AddCategory } from '../components/Category';
 import Tag from "../components/Tag"
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, WrapItem } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay';
 import useStore from '../utils/store';
 import useMutation from './useMutation';
+import { ItemTypes } from '../lib/draggable'
+import { useDrag, useDrop } from 'react-dnd'
+
 
 const messageFragment = graphql`
           fragment SidebarFragment_messages on Query {
@@ -219,6 +222,7 @@ export default function Sidebar({ query }) {
 export function Collapsable({ query }) {
   const categoriesUnsorted = useFragment(categoriesFragment, query);
   const organization = useStore((state) => state.organization);
+  const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
 
 
   const categories = useMemo(() => ({
@@ -254,7 +258,7 @@ export function Collapsable({ query }) {
     }
   }, [categories])
 
-  const moveCategory = useCallback((dragged, hovered) => {
+  function moveCategory(dragged, hovered) {
     const sorted = drag(sortData.sort)(dragged, hovered)
     sortCategory({
       variables: {
@@ -264,34 +268,98 @@ export function Collapsable({ query }) {
         }
       }
     })
-  }, [categories]);
+  }
+
+
+
 
   return (
     <Accordion minHeight="90vh" allowMultiple={true} >
-      {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => <AccordionItem key={edge.node.rowId}>
-        <h2>
-          <AccordionButton>
-            <Box flex="1" textAlign="left">
-              {edge.node.name}
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
-        <AccordionPanel pb={4}>
-          {edge.node?.tagsByCategoryId?.edges.map((tag, index) => {
-            return (
-              <WrapItem key={index}>
-                <Tag
-                  rowId={tag.node.rowId}
-                  color={edge.node?.color}
-                  tagConnection={edge.node?.tagsByCategoryId?.__id}
-                  tagName={tag.node.name}
-                />
-              </WrapItem>
-            )
-          })}
-        </AccordionPanel>
-      </AccordionItem>)}
+      {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => {
+
+        const ref = useRef(null);
+        const [{ handlerId }, drop] = useDrop({
+          accept: ItemTypes.CATEGORY,
+          collect(monitor) {
+            return {
+              handlerId: monitor.getHandlerId(),
+            };
+          },
+          hover(item, monitor) {
+            if (!ref.current) {
+              return;
+            }
+            const dragIndex = item.index;
+            const hoverIndex = index;
+            // Don't replace items with themselves
+            if (dragIndex === hoverIndex) {
+              return;
+            }
+            // Determine rectangle on screen
+            const hoverBoundingRect = ref.current?.getBoundingClientRect();
+            // Get vertical middle
+            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+            // Determine mouse position
+            const clientOffset = monitor.getClientOffset();
+            // Get pixels to the top
+            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+            // Only perform the move when the mouse has crossed half of the items height
+            // When dragging downwards, only move when the cursor is below 50%
+            // When dragging upwards, only move when the cursor is above 50%
+            // Dragging downwards
+            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+              return;
+            }
+            // Dragging upwards
+            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+              return;
+            }
+            // Time to actually perform the action
+            moveCategory(dragIndex, hoverIndex);
+            // Note: we're mutating the monitor item here!
+            // Generally it's better to avoid mutations,
+            // but it's good here for the sake of performance
+            // to avoid expensive index searches.
+            item.index = hoverIndex;
+          },
+        });
+        const [{ isDragging }, drag] = useDrag({
+          type: ItemTypes.CATEGORY,
+          item: () => {
+            return { ...edge.node, index };
+          },
+          collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+          }),
+        });
+        drag(drop(ref));
+
+        return <AccordionItem key={edge.node.rowId} ref={ref}>
+          <h2>
+            <AccordionButton>
+              <Box flex="1" textAlign="left">
+                {edge.node.name}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            {edge.node?.tagsByCategoryId?.edges.map((tag, index) => {
+              return (
+                <WrapItem key={index}>
+                  <Tag
+                    rowId={tag.node.rowId}
+                    color={edge.node?.color}
+                    tagConnection={edge.node?.tagsByCategoryId?.__id}
+                    tagName={tag.node.name}
+                  />
+                </WrapItem>
+              )
+            })}
+          </AccordionPanel>
+        </AccordionItem>
+      }
+      )}
     </Accordion>
   );
 }
