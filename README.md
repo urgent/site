@@ -1,7 +1,7 @@
 <h1>Smooms.io: The Sales Enablement Platform For Innovators</h1>
 <h2>Smooms helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
 
-We're here to make work fun, and prevent people from wasting time working while uninformed. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
+We're here to prevent people from wasting time and being uninformed. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
 
 Whether it's a college grad making cold calls for the first time or an enterprise account executive closing multimillion dollar deals, our customers need us to deliver: the knowledge required to implement modern technology into monolithic titans of industry does not come easy. The current stack slows adoption of technology that makes the world better. We are the ones to change this. 
 
@@ -12,27 +12,40 @@ Whether it's a college grad making cold calls for the first time or an enterpris
 <i>Fortis fortuna adiuvat</i>
 <h3>BE SCIENTIFIC</h3>
 Reinforce decisions with rigorous logic
-Stay on top of trends
 
+Conduct exhaustive research
+
+Stay on top of trends
+<h3>BE PROACTIVE</h4>
+Strategize and relentlessly execute
+
+Think in terms of results
+
+Always ask: what are the 'first philosophies' driving this?
 <h3>EVERYTHING IS A SANDBOX</h3>
 The world is yours
 
-Be creative
+Stay creative
 <h3>THINK BEYOND DATA</h4>
 Always ask: what are the 'first philosophies' driving this?
+
+Think holistically
 <h3>FIGURE IT OUT</h3>
 People consistently do the impossible
 
-
 Design the process
 <h3>CUSTOMERS SHAPE US</h3>
-Smooms was born to solve real problems. Be obsessed with understanding and eliminating them.
-<h3>DISCOMFORT IS GROWTH</h3>
-Strong materials need a hotter forge.
+Smooms was born to solve real problems, be obsessed with solving them
+
+Make our customers' dreams come true
+<h3>ALWAYS BE LEARNING</h3>
+Smooms is a marketplace of ideas
+
+Expand your perspective, don't dig your feet into it
 <h3>TAKE RISKS TO INNOVATE</h3>
 Evolve or dissolve
 
-
+Be cautious
 
 
 next chrome extension app - mvp
