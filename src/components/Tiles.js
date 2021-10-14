@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react';
+import React from 'react';
 import Message from './Message';
 import Editor from './Editor';
 import { Box, Grid } from '@chakra-ui/react';
@@ -62,7 +62,7 @@ export default function Tiles({ query }) {
 
 
   // Toolbar on edit
-  const onEdit = useCallback((messageId, collectionId, content) => {
+  function onEdit(messageId, collectionId, content) {
     if (edit && editMessage) {
       // turn off edit mode
       setEditMessage(false)
@@ -72,10 +72,10 @@ export default function Tiles({ query }) {
       focusMessage([messageId, collectionId])
       setEditorValue(content)
     }
-  }, [edit, editMessage, setEditMessage, setEditorValue, focusMessage])
+  }
 
   // Toolbar on delete
-  const onDelete = useCallback((messageId, collectionId) => {
+  function onDelete(messageId, collectionId) {
     deleteMessage({
       variables: {
         input: {
@@ -86,7 +86,7 @@ export default function Tiles({ query }) {
       updater: store => { },
     });
     setEditMessage(false);
-  }, [deleteMessage, messages, setEditMessage])
+  }
 
   return (
     <Grid

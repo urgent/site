@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useState } from 'react'
 import { VStack, Box, Image, Icon, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
 import { graphql, useFragment } from 'react-relay/hooks';
 import useMutation from './useMutation'
@@ -50,26 +50,25 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
     const focusOrganization = useStore((state) => state.focusOrganization);
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
 
-    const onEnter = useCallback(
-        async (e, organizations) => {
-            if (e.key !== 'Enter') {
-                return;
-            }
-            const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
-            const response = await fetch('/api/invite', {
-                method: 'POST', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-                body: `email=${e.target.value}&slug=${slug}` // body data type must match "Content-Type" header
-            });
-            return response.json();
-        }, [])
+    async function onEnter(e, organizations) {
+        if (e.key !== 'Enter') {
+            return;
+        }
+        const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
+        const response = await fetch('/api/invite', {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: `email=${e.target.value}&slug=${slug}` // body data type must match "Content-Type" header
+        });
+        return response.json();
+    }
 
     return <Drawer
         isOpen={isOpen}

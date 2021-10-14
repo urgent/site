@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Toolbar from "./Toolbar"
 import useMutation from './useMutation'
 import { Grid, Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
@@ -45,7 +45,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
   const filterName = useStore((state) => state.filterName)
   const filterColor = useStore((state) => state.filterColor)
 
-  const onDeleteMessageTag = useCallback((tagId, connectionId) => () => {
+  function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
       variables: {
         input: {
@@ -56,10 +56,10 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
       },
       updater: store => { },
     });
-  }, [deleteMessageTag, id])
+  }
 
 
-  const display = useCallback(() => {
+  function display() {
     // no filter for editor
     if (!toolbar) {
       return true
@@ -86,10 +86,10 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
     }
 
     return false
-  }, [organizationId, organization, filter, toolbar, tagIds])
+  }
 
 
-  const size = useCallback(() => {
+  function size() {
     // editor
     if (!value) {
       return {
@@ -127,8 +127,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         tagRow: Math.max(6, Math.ceil(tags?.edges.length)),
       }
     }
-
-  }, [value])
+  }
 
 
 

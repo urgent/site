@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState } from "react"
 import { Button, Box, VStack, Input, Text } from "@chakra-ui/react"
 import useMutation from './useMutation'
 import Toolbar from './Toolbar';
@@ -80,24 +80,21 @@ export function AddTag({ categoryTagsConnection, categoryId }) {
   const edit = useStore((state) => state.edit);
 
   // Editor submit callback
-  const onSubmit = useCallback(
-    event => {
-      event.preventDefault();
-      insertTag({
-        variables: {
-          input: {
-            name: name,
-            categoryId: categoryId
-          },
-          connections: [categoryTagsConnection]
+  function onSubmit(event) {
+    event.preventDefault();
+    insertTag({
+      variables: {
+        input: {
+          name: name,
+          categoryId: categoryId
         },
-        updater: store => { },
-      });
-      // Reset form text
-      setName('');
-    },
-    [name, setName, insertTag, categoryId, categoryTagsConnection],
-  );
+        connections: [categoryTagsConnection]
+      },
+      updater: store => { },
+    });
+    // Reset form text
+    setName('');
+  }
 
   return <>
     {edit && <VStack>
@@ -137,7 +134,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
   const [isConfirmOpen, setConfirmIsOpen] = useState(false)
 
-  const onEnter = useCallback(e => {
+  function onEnter(e) {
     if (e.key !== 'Enter') {
       return;
     }
@@ -151,10 +148,9 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     });
     setTagMode('view')
     setFocusedTag(false)
-  }, [updateTag, focusedTag, editTagText, setTagMode, setFocusedTag]
-  )
+  }
 
-  const confirmDeleteTag = useCallback(() => {
+  function confirmDeleteTag() {
     deleteTag({
       variables: {
         tag: {
@@ -168,9 +164,9 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       },
       updater: store => { },
     })
-  }, [deleteTag, rowId, tagConnection, messageConnections])
+  }
 
-  const filterOff = useCallback(() => {
+  function filterOff() {
     if (edit) {
       // add tag to message
       insertMessageTag({
@@ -188,9 +184,9 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     } else {
       removeFilter(rowId)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, removeFilter, removeFilterName, removeFilterColor])
+  }
 
-  const filterOn = useCallback(() => {
+  function filterOn() {
     if (edit) {
       // add tag to message
       insertMessageTag({
@@ -210,7 +206,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       addFilterName(tagName)
       addFilterColor(color)
     }
-  }, [edit, insertMessageTag, message, rowId, organization, messageTagConnection, focusMessage, addFilter, addFilterName, addFilterColor])
+  }
 
   return (
     <>

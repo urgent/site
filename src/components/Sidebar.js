@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import Category, { AddCategory } from '../components/Category';
 import Tag from "../components/Tag"
 import { Box, Accordion, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, WrapItem } from "@chakra-ui/react"
@@ -183,7 +183,7 @@ export default function Sidebar({ query }) {
     }
   }, [categories])
 
-  const moveCategory = useCallback((dragged, hovered) => {
+  function moveCategory(dragged, hovered) {
     const sorted = drag(sortData.sort)(dragged, hovered)
     sortCategory({
       variables: {
@@ -193,7 +193,7 @@ export default function Sidebar({ query }) {
         }
       }
     })
-  }, [categories]);
+  }
 
   return (
     <Box

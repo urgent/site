@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Textarea } from "@chakra-ui/react"
 import { graphql } from 'react-relay';
 import useMutation from './useMutation'
@@ -76,7 +76,7 @@ export default function Editor({ tileConnections }) {
   const setEditMessage = useStore((state) => state.setEditMessage);
 
   // Editor submit
-  const onSubmit = useCallback((event) => {
+  function onSubmit(event) {
     event.preventDefault();
 
     if (edit && editMessage) {
@@ -106,8 +106,7 @@ export default function Editor({ tileConnections }) {
       // Reset the comment text
       setEditorValue('');
     }
-  },
-    [editorValue, edit, editMessage, updateMessage, message, setEditMessage, insertMessage, organization, tileConnections, filter]);
+  }
 
   return (
     <>

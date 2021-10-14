@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Tag from "../components/Tag"
 import Toolbar from "./Toolbar"
 import { AddTag } from "./Tag"
@@ -89,26 +89,24 @@ export function AddCategory({ connectionId }) {
     const organization = useStore((state) => state.organization);
 
     // Editor submit callback
-    const onSubmit = useCallback(
-        event => {
-            event.preventDefault();
-            insertCategory({
-                variables: {
-                    input: {
-                        organizationId: organization,
-                        name: nameText,
-                        color: colorText
-                    },
-                    connections: [connectionId]
+    function onSubmit(event) {
+        event.preventDefault();
+        insertCategory({
+            variables: {
+                input: {
+                    organizationId: organization,
+                    name: nameText,
+                    color: colorText
                 },
-                updater: store => { },
-            });
-            // Reset form text
-            setNameText('');
-            setColorText('');
-        },
-        [nameText, setNameText, colorText, setColorText, insertCategory, organization, connectionId],
-    );
+                connections: [connectionId]
+            },
+            updater: store => { },
+        });
+        // Reset form text
+        setNameText('');
+        setColorText('');
+    }
+
     return <>
         {edit && <VStack paddingX={2}>
             <Input
@@ -207,26 +205,25 @@ export default function Category({ category, messageConnections, sidebarConnecti
     drag(drop(ref));
 
 
-    const onEnter = useCallback(
-        e => {
-            if (e.key !== 'Enter') {
-                return;
-            }
-            updateCategory({
-                variables: {
-                    input: {
-                        id: focusedCategory,
-                        name: editCategoryText,
-                        color: editCategoryColor
-                    },
+    function onEnter(e) {
+        if (e.key !== 'Enter') {
+            return;
+        }
+        updateCategory({
+            variables: {
+                input: {
+                    id: focusedCategory,
+                    name: editCategoryText,
+                    color: editCategoryColor
                 },
-            });
-            setCategoryMode('view')
-            setFocusedCategory(false)
-        }, [updateCategory, focusedCategory, editCategoryText, editCategoryColor, setCategoryMode, setFocusedCategory]
-    )
+            },
+        });
+        setCategoryMode('view')
+        setFocusedCategory(false)
+    }
 
-    const confirmDeleteCategory = useCallback(() => {
+
+    function confirmDeleteCategory() {
         deleteCategory({
             variables: {
                 input: {
@@ -236,7 +233,7 @@ export default function Category({ category, messageConnections, sidebarConnecti
             },
             updater: store => { },
         })
-    }, [deleteCategory, category, messageConnections, sidebarConnection]);
+    }
 
     return <>
         {categoryMode === 'edit' && <Grid
