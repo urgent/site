@@ -14,10 +14,10 @@ export type UpdateCategoryInput = {|
   name: string,
   color: string,
 |};
-export type CategoryUpdateCategoryMutationVariables = {|
+export type useCategoryClickUpdateMutationVariables = {|
   input: UpdateCategoryInput
 |};
-export type CategoryUpdateCategoryMutationResponse = {|
+export type useCategoryClickUpdateMutationResponse = {|
   +updateCategory: ?{|
     +category: ?{|
       +rowId: number,
@@ -34,15 +34,15 @@ export type CategoryUpdateCategoryMutationResponse = {|
     |}
   |}
 |};
-export type CategoryUpdateCategoryMutation = {|
-  variables: CategoryUpdateCategoryMutationVariables,
-  response: CategoryUpdateCategoryMutationResponse,
+export type useCategoryClickUpdateMutation = {|
+  variables: useCategoryClickUpdateMutationVariables,
+  response: useCategoryClickUpdateMutationResponse,
 |};
 */
 
 
 /*
-mutation CategoryUpdateCategoryMutation(
+mutation useCategoryClickUpdateMutation(
   $input: UpdateCategoryInput!
 ) {
   updateCategory(input: $input) {
@@ -124,7 +124,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "CategoryUpdateCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "selections": [
       {
         "alias": null,
@@ -194,7 +194,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "CategoryUpdateCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "selections": [
       {
         "alias": null,
@@ -261,16 +261,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "fbf702d917af95a359f618ce5651b710",
+    "cacheID": "be01c09a00b5fe385b4ee96bfb271187",
     "id": null,
     "metadata": {},
-    "name": "CategoryUpdateCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryUpdateCategoryMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation useCategoryClickUpdateMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '25daafbd85ce21402bf8acbb1b1e2e9e';
+(node/*: any*/).hash = '2fd3d97d6c605823b747bfa1a2e676ba';
 
 module.exports = node;

@@ -1,14 +1,13 @@
-import React, { useState, useRef } from 'react'
-import Tag from "../components/Tag"
-import Toolbar from "./Toolbar"
-import { AddTag } from "./Tag"
-import { Grid, VStack, Box, Wrap, WrapItem, Button, Input, Text } from "@chakra-ui/react"
-import { HamburgerIcon } from "@chakra-ui/icons"
+import React, { useState } from 'react'
+import Tag from '../components/Tag'
+import Toolbar from './Toolbar'
+import { AddTag } from './Tag'
+import { Grid, VStack, Box, Wrap, WrapItem, Button, Input, Text, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react'
+import { useCategoryDrag } from './useCategoryDrag'
+import { HamburgerIcon } from '@chakra-ui/icons'
 import useMutation from './useMutation'
-import AlertDialog from "./AlertDialog";
-import useStore from "../utils/store";
-import { ItemTypes } from '../lib/draggable'
-import { useDrag, useDrop } from 'react-dnd'
+import AlertDialog from "./AlertDialog"
+import useStore from "../utils/store"
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation($input:CreateCategoryInput!, $connections: [ID!]!) {
@@ -33,53 +32,7 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-const UpdateCategoryMutation = graphql`
-  mutation CategoryUpdateCategoryMutation($input:UpdateCategoryInput!) {
-    updateCategory(input: $input) {
-      category {
-        rowId
-        name
-        color
-        tagsByCategoryId {
-            __id
-            edges {
-                node {
-                    name
-                }
-            }
-        }
-      }
-    }
-  }
-`;
 
-const DeleteCategoryMutation = graphql`
-    mutation CategoryDeleteMutation($input:DeleteCategoryInput!, $connections: [ID!]!) {
-        deleteCategory(input: $input) {
-            category {
-                __id @deleteEdge(connections: $connections)
-            }
-            query {
-                allMessages {
-                    nodes {
-                        messageTagsByMessageId {
-                            __id @deleteEdge(connections: $connections)
-                            edges {
-                                node {
-                                messageId
-                                }
-                            }
-                        }
-                        content
-                    }
-                }
-                allCategories {
-                    __id @deleteEdge(connections: $connections)
-                }
-            }
-        }
-    }
-`
 
 export function AddCategory({ connectionId }) {
     const [nameText, setNameText] = useState('');
@@ -141,99 +94,8 @@ export default function Category({ category, messageConnections, sidebarConnecti
     const [categoryMode, setCategoryMode] = useState('view');
     const [editCategoryText, setEditCategoryText] = useState();
     const [focusedCategory, setFocusedCategory] = useState();
-    const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [editCategoryColor, setEditCategoryColor] = useState(category?.color);
-    const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);
     const [isConfirmOpen, setConfirmIsOpen] = useState(false)
-
-    const ref = useRef(null);
-    const [{ handlerId }, drop] = useDrop({
-        accept: ItemTypes.CATEGORY,
-        collect(monitor) {
-            return {
-                handlerId: monitor.getHandlerId(),
-            };
-        },
-        hover(item, monitor) {
-            if (!ref.current) {
-                return;
-            }
-            const dragIndex = item.index;
-            const hoverIndex = index;
-            // Don't replace items with themselves
-            if (dragIndex === hoverIndex) {
-                return;
-            }
-            // Determine rectangle on screen
-            const hoverBoundingRect = ref.current?.getBoundingClientRect();
-            // Get vertical middle
-            const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-            // Determine mouse position
-            const clientOffset = monitor.getClientOffset();
-            // Get pixels to the top
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-            // Only perform the move when the mouse has crossed half of the items height
-            // When dragging downwards, only move when the cursor is below 50%
-            // When dragging upwards, only move when the cursor is above 50%
-            // Dragging downwards
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return;
-            }
-            // Dragging upwards
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return;
-            }
-            // Time to actually perform the action
-            moveCategory(dragIndex, hoverIndex);
-            // Note: we're mutating the monitor item here!
-            // Generally it's better to avoid mutations,
-            // but it's good here for the sake of performance
-            // to avoid expensive index searches.
-            item.index = hoverIndex;
-        },
-    });
-
-    const [{ isDragging }, drag] = useDrag({
-        type: ItemTypes.CATEGORY,
-        item: () => {
-            return { ...category, index };
-        },
-        collect: (monitor) => ({
-            isDragging: monitor.isDragging(),
-        }),
-    });
-    drag(drop(ref));
-
-
-    function onEnter(e) {
-        if (e.key !== 'Enter') {
-            return;
-        }
-        updateCategory({
-            variables: {
-                input: {
-                    id: focusedCategory,
-                    name: editCategoryText,
-                    color: editCategoryColor
-                },
-            },
-        });
-        setCategoryMode('view')
-        setFocusedCategory(false)
-    }
-
-
-    function confirmDeleteCategory() {
-        deleteCategory({
-            variables: {
-                input: {
-                    categoryId: category?.rowId
-                },
-                connections: [...messageConnections, sidebarConnection],
-            },
-            updater: store => { },
-        })
-    }
 
     return <>
         {categoryMode === 'edit' && <Grid
@@ -416,4 +278,34 @@ export default function Category({ category, messageConnections, sidebarConnecti
         </Grid>
         }
     </>
+}
+
+export function CollapsableItem({ category, moveCategory }) {
+    const [ref] = useCategoryDrag({ category, moveCategory });
+    return <AccordionItem key={category.rowId} ref={ref}>
+        <h2>
+            <AccordionButton>
+                <Box flex="1" textAlign="left">
+                    {category.name}
+                </Box>
+                <AccordionIcon />
+            </AccordionButton>
+        </h2>
+        <AccordionPanel pb={4}>
+            <Wrap>
+                {category.tagsByCategoryId?.edges.map((tag, index) => {
+                    return (
+                        <WrapItem key={index}>
+                            <Tag
+                                rowId={tag.node.rowId}
+                                color={category?.color}
+                                tagConnection={category?.tagsByCategoryId?.__id}
+                                tagName={tag.node.name}
+                            />
+                        </WrapItem>
+                    )
+                })}
+            </Wrap>
+        </AccordionPanel>
+    </AccordionItem>
 }

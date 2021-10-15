@@ -11,9 +11,9 @@ const HomeQuery = graphql`
   query pages_HomeQuery {
     ...NavFragment_organization
     ...NavFragment_userConfig
-    ...SidebarFragment_categories
     ...SidebarFragment_messages
     ...TilesFragment_messages
+    ...useSidebarFragment
   }
 `;
 

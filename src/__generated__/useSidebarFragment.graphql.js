@@ -9,9 +9,9 @@
 /*::
 import type { ReaderFragment } from 'relay-runtime';
 import type { FragmentReference } from "relay-runtime";
-declare export opaque type SidebarFragment_categories$ref: FragmentReference;
-declare export opaque type SidebarFragment_categories$fragmentType: SidebarFragment_categories$ref;
-export type SidebarFragment_categories = {|
+declare export opaque type useSidebarFragment$ref: FragmentReference;
+declare export opaque type useSidebarFragment$fragmentType: useSidebarFragment$ref;
+export type useSidebarFragment = {|
   +allCategories: ?{|
     +__id: string,
     +edges: $ReadOnlyArray<{|
@@ -40,12 +40,12 @@ export type SidebarFragment_categories = {|
       |}
     |}>,
   |},
-  +$refType: SidebarFragment_categories$ref,
+  +$refType: useSidebarFragment$ref,
 |};
-export type SidebarFragment_categories$data = SidebarFragment_categories;
-export type SidebarFragment_categories$key = {
-  +$data?: SidebarFragment_categories$data,
-  +$fragmentRefs: SidebarFragment_categories$ref,
+export type useSidebarFragment$data = useSidebarFragment;
+export type useSidebarFragment$key = {
+  +$data?: useSidebarFragment$data,
+  +$fragmentRefs: useSidebarFragment$ref,
   ...
 };
 */
@@ -82,7 +82,7 @@ return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "SidebarFragment_categories",
+  "name": "useSidebarFragment",
   "selections": [
     {
       "alias": null,
@@ -223,6 +223,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '9b241da310ec579cd6f56bcdb4bab8df';
+(node/*: any*/).hash = 'f0518c627fa5772a4049351eb0eb31ff';
 
 module.exports = node;

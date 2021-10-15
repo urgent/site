@@ -13,10 +13,10 @@ export type SortCategoryInput = {|
   categoryIds: $ReadOnlyArray<?number>,
   sort: $ReadOnlyArray<?number>,
 |};
-export type SidebarSortMutationVariables = {|
+export type useSidebarSortMutationVariables = {|
   input: SortCategoryInput
 |};
-export type SidebarSortMutationResponse = {|
+export type useSidebarSortMutationResponse = {|
   +sortCategory: ?{|
     +query: ?{|
       +allCategories: ?{|
@@ -50,15 +50,15 @@ export type SidebarSortMutationResponse = {|
     |}
   |}
 |};
-export type SidebarSortMutation = {|
-  variables: SidebarSortMutationVariables,
-  response: SidebarSortMutationResponse,
+export type useSidebarSortMutation = {|
+  variables: useSidebarSortMutationVariables,
+  response: useSidebarSortMutationResponse,
 |};
 */
 
 
 /*
-mutation SidebarSortMutation(
+mutation useSidebarSortMutation(
   $input: SortCategoryInput!
 ) {
   sortCategory(input: $input) {
@@ -179,7 +179,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "SidebarSortMutation",
+    "name": "useSidebarSortMutation",
     "selections": [
       {
         "alias": null,
@@ -320,7 +320,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "SidebarSortMutation",
+    "name": "useSidebarSortMutation",
     "selections": [
       {
         "alias": null,
@@ -460,16 +460,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "58ff1ba4f9c04eb588a29a121da93a8c",
+    "cacheID": "6154d813ef649dbd3995cf455db1379b",
     "id": null,
     "metadata": {},
-    "name": "SidebarSortMutation",
+    "name": "useSidebarSortMutation",
     "operationKind": "mutation",
-    "text": "mutation SidebarSortMutation(\n  $input: SortCategoryInput!\n) {\n  sortCategory(input: $input) {\n    query {\n      allCategories {\n        edges {\n          node {\n            tagsByCategoryId {\n              edges {\n                node {\n                  name\n                  rowId\n                  id\n                }\n              }\n            }\n            rowId\n            name\n            color\n            organizationId\n            configCategoriesByCategoryId {\n              edges {\n                node {\n                  collapse\n                  sort\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation useSidebarSortMutation(\n  $input: SortCategoryInput!\n) {\n  sortCategory(input: $input) {\n    query {\n      allCategories {\n        edges {\n          node {\n            tagsByCategoryId {\n              edges {\n                node {\n                  name\n                  rowId\n                  id\n                }\n              }\n            }\n            rowId\n            name\n            color\n            organizationId\n            configCategoriesByCategoryId {\n              edges {\n                node {\n                  collapse\n                  sort\n                  id\n                }\n              }\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '12501c11f3edf9561555fd1a0bb7a613';
+(node/*: any*/).hash = '7d0998034ba0fde28b8002ad0dd57453';
 
 module.exports = node;

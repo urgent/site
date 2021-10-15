@@ -12,11 +12,11 @@ export type DeleteCategoryInput = {|
   clientMutationId?: ?string,
   categoryId: number,
 |};
-export type CategoryDeleteMutationVariables = {|
+export type useCategoryClickDeleteMutationVariables = {|
   input: DeleteCategoryInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type CategoryDeleteMutationResponse = {|
+export type useCategoryClickDeleteMutationResponse = {|
   +deleteCategory: ?{|
     +category: ?{|
       +__id: string
@@ -41,15 +41,15 @@ export type CategoryDeleteMutationResponse = {|
     |},
   |}
 |};
-export type CategoryDeleteMutation = {|
-  variables: CategoryDeleteMutationVariables,
-  response: CategoryDeleteMutationResponse,
+export type useCategoryClickDeleteMutation = {|
+  variables: useCategoryClickDeleteMutationVariables,
+  response: useCategoryClickDeleteMutationResponse,
 |};
 */
 
 
 /*
-mutation CategoryDeleteMutation(
+mutation useCategoryClickDeleteMutation(
   $input: DeleteCategoryInput!
 ) {
   deleteCategory(input: $input) {
@@ -183,7 +183,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "CategoryDeleteMutation",
+    "name": "useCategoryClickDeleteMutation",
     "selections": [
       {
         "alias": null,
@@ -274,7 +274,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "CategoryDeleteMutation",
+    "name": "useCategoryClickDeleteMutation",
     "selections": [
       {
         "alias": null,
@@ -364,16 +364,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d2ca0dca06dcb4e0e5504173d05d745e",
+    "cacheID": "fe60422f6ccd59469ade3e96ea3d518a",
     "id": null,
     "metadata": {},
-    "name": "CategoryDeleteMutation",
+    "name": "useCategoryClickDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryDeleteMutation(\n  $input: DeleteCategoryInput!\n) {\n  deleteCategory(input: $input) {\n    category {\n      id\n    }\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation useCategoryClickDeleteMutation(\n  $input: DeleteCategoryInput!\n) {\n  deleteCategory(input: $input) {\n    category {\n      id\n    }\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'c15b1c89794a1f657da2be0a91eb765a';
+(node/*: any*/).hash = 'b1806be3e5da71375ed261eddf597eed';
 
 module.exports = node;
