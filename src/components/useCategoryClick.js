@@ -49,9 +49,6 @@ const DeleteCategoryMutation = graphql`
         }
     }
 `
-
-
-
 export function useCategoryEdit(categories) {
     const [isUpdateCategoryPending, updateCategory] = useMutation(UpdateCategoryMutation);
     const [isDeleteCategoryPending, deleteCategory] = useMutation(DeleteCategoryMutation);

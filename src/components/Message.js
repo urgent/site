@@ -172,7 +172,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
                 <Box>{edge.node.tagByTagId?.name}</Box>
                 <DeleteTag
                   bg={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
-                  click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
+                  click={() => onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
                 />
               </HStack>
             </Badge>
@@ -183,7 +183,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
                 <DeleteTag
                   color={`#${edge.node.tagByTagId?.categoryByCategoryId.color}`}
                   bg="white"
-                  click={onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
+                  click={() => onDeleteMessageTag(edge.node.tagByTagId.rowId, tags.__id)}
                 />
               </HStack>
             </Badge>
