@@ -74,7 +74,7 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
-export function AddTag({ categoryTagsConnection, categoryId }) {
+export function AddTag({ connectionId, categoryId }) {
   const [name, setName] = useState('')
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
   const edit = useStore((state) => state.edit);
@@ -88,7 +88,7 @@ export function AddTag({ categoryTagsConnection, categoryId }) {
           name: name,
           categoryId: categoryId
         },
-        connections: [categoryTagsConnection]
+        connections: [connectionId]
       },
       updater: store => { },
     });
