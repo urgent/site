@@ -70,13 +70,13 @@ export function useCategory({ focusedCategory, setFocusedCategory, editCategoryT
         setFocusedCategory(false)
     }
 
-    function del() {
+    function del({ categoryId, messageTagConnections, sidebarConnection }) {
         deleteCategory({
             variables: {
                 input: {
-                    categoryId: category?.rowId
+                    categoryId: categoryId
                 },
-                connections: [...messageConnections, sidebarConnection],
+                connections: [...messageTagConnections, sidebarConnection],
             },
             updater: store => { },
         })

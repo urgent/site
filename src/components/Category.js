@@ -89,7 +89,7 @@ export function AddCategory({ connectionId }) {
     </>
 }
 
-export function CollapsableItem({ category, moveCategory }) {
+export function CollapsableItem({ category, moveCategory, messageTagConnections, sidebarConnection }) {
     const [ref] = useCategoryDrag({ category, moveCategory });
     const [isConfirmOpen, setConfirmIsOpen] = useState(false)
     const [focusedCategory, setFocusedCategory] = useState();
@@ -103,7 +103,7 @@ export function CollapsableItem({ category, moveCategory }) {
         <AlertDialog
             title={`Delete ${category?.name}`}
             body={`Tags on messages will be lost. Are you sure you want to delete the ${category?.name} category?`}
-            click={del}
+            click={() => del({ categoryId: category?.rowId, messageTagConnections: messageTagConnections, sidebarConnection: sidebarConnection })}
             isOpen={isConfirmOpen}
             setIsOpen={setConfirmIsOpen}
         />

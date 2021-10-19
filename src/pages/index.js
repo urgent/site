@@ -11,7 +11,7 @@ const HomeQuery = graphql`
   query pages_HomeQuery {
     ...NavFragment_organization
     ...NavFragment_userConfig
-    ...SidebarFragment_messages
+    ...useSidebarFragment_messages
     ...TilesFragment_messages
     ...useSidebarFragment
   }
