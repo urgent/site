@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Tag from '../components/Tag'
 import Toolbar from './Toolbar'
 import { AddTag } from './Tag'
-import { VStack, Box, Wrap, WrapItem, Button, Input, Text, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon } from '@chakra-ui/react'
+import { VStack, Box, Wrap, WrapItem, Button, Input, Text, AccordionItem, AccordionButton, AccordionPanel, AccordionIcon, Badge } from '@chakra-ui/react'
 import { useCategoryDrag } from './useCategoryDrag'
 import useMutation from './useMutation'
 import AlertDialog from "./AlertDialog"
@@ -97,6 +97,7 @@ export function CollapsableItem({ category, moveCategory, messageTagConnections,
     const [editCategoryText, setEditCategoryText] = useState(category?.name);
     const [editCategoryColor, setEditCategoryColor] = useState(category?.color);
     const [onEnter, del] = useCategory({ focusedCategory, setFocusedCategory, editCategoryText, editCategoryColor })
+    const filter = useStore((state) => state.filter);
 
     return <AccordionItem key={category.rowId} ref={ref}>
 
@@ -110,17 +111,28 @@ export function CollapsableItem({ category, moveCategory, messageTagConnections,
         <h2>
             <AccordionButton>
                 <Box flex="1" textAlign="left">
-                    {!edit && category.name}
+                    {!edit && <>
+                        {category.name}
+                        {category.tagsByCategoryId?.edges.filter(tag => {
+                            return filter.includes(tag.node.rowId)
+                        }).map((tag) => {
+
+                            return <Badge data-cy="category_title_tag" key={tag.node.rowId} variant="outline" color="white" bg={`#${category.color}`} px={2} mx={2} boxShadow="none">
+                                <Box>{tag.node.name}</Box>
+                            </Badge>
+                        })}
+                    </>
+                    }
 
                     {edit && focusedCategory !== category.rowId &&
                         <><Toolbar
                             editClick={() => {
-                                console.log(category.rowId)
                                 setFocusedCategory(category?.rowId)
                             }}
                             deleteClick={() => setConfirmIsOpen(true)}
                         />
                             {category.name}
+
                         </>
                     }
 
