@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>Interface | smooms.io</title>
+        <title>Align | Interface</title>
       </Head>
       <Provider session={pageProps.session}>
         <RelayEnvironmentProvider environment={env}>
