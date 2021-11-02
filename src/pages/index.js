@@ -31,7 +31,7 @@ function Home({ preloadedQuery }) {
       d={["none", "none", "none", "grid", "grid"]}
     >
       <Nav query={query} />
-      <Box gridColumn="sidebar"><Collapsable query={query} /></Box>
+      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll"><Collapsable query={query} /></Box>
       <Grid
         as="main"
         gridColumn="content"

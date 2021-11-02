@@ -11,7 +11,7 @@ export function Collapsable({ query }) {
 
   return (
     <>
-      <Accordion minHeight="90vh" allowMultiple={true} >
+      <Accordion minHeight="85vh" allowMultiple={true} >
         {categories?.allCategories?.edges?.filter((edge) => edge.node.organizationId === organization).map((edge, index) => {
           return <CollapsableItem key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={categories.allCategories.__id} />
         }
