@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
-    "build": "next build",
-    "start": "next start",
+    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && next build",
+    "start": "export SET NODE_OPTIONS=--openssl-legacy-provider && next start",
     "relay": "relay-compiler --src ./src --schema ./schema.graphql --extensions js jsx",
     "test": "jest --watch",
     "test:e2e:open": "cypress open",

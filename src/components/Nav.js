@@ -256,7 +256,7 @@ export default function Nav({ query }) {
                 position={["static", "static", "static", "static", "fixed"]}
                 height={["auto", "auto", "auto", "auto", "100vh"]}
             >
-                <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
+                <Image gridColumn="logo" width={12} src="/images/align-white-icon.svg" alt="smooms.io" />
                 <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
                     setFocus();
                     toggleEdit();

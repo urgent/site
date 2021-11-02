@@ -1,7 +1,7 @@
-<h1>Smooms.io: The Sales Enablement Platform For Innovators</h1>
-<h2>Smooms helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
+<h1>Align | The Sales Enablement Platform For Innovators</h1>
+<h2>Align helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
 
-We're here to prevent people from wasting time and being uninformed. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
+We're here to accelerate market penetration, improve cross-team collaboration. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
 
 Whether it's a college grad making cold calls for the first time or an enterprise account executive closing multimillion dollar deals, our customers need us to deliver: the knowledge required to implement modern technology into monolithic titans of industry does not come easy. The current stack slows adoption of technology that makes the world better. We are the ones to change this. 
 
@@ -35,11 +35,11 @@ People consistently do the impossible
 
 Design the process
 <h3>CUSTOMERS SHAPE US</h3>
-Smooms was born to solve real problems, be obsessed with solving them
+Align was born to solve real problems, be obsessed with solving them
 
 Make our customers' dreams come true
 <h3>ALWAYS BE LEARNING</h3>
-Smooms is a marketplace of ideas
+Align is a marketplace of ideas
 
 Expand your perspective, don't dig your feet into it
 <h3>TAKE RISKS TO INNOVATE</h3>
