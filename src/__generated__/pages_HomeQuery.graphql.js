@@ -8,6 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+import type { NavAllUsers$ref } from "./NavAllUsers.graphql";
 import type { NavFragment_organization$ref } from "./NavFragment_organization.graphql";
 import type { NavFragment_userConfig$ref } from "./NavFragment_userConfig.graphql";
 import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
@@ -15,7 +16,7 @@ import type { useSidebarFragment$ref } from "./useSidebarFragment.graphql";
 import type { useSidebarFragment_messages$ref } from "./useSidebarFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +$fragmentRefs: NavFragment_organization$ref & NavFragment_userConfig$ref & useSidebarFragment_messages$ref & TilesFragment_messages$ref & useSidebarFragment$ref
+  +$fragmentRefs: NavFragment_organization$ref & NavFragment_userConfig$ref & useSidebarFragment_messages$ref & TilesFragment_messages$ref & useSidebarFragment$ref & NavAllUsers$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -31,6 +32,19 @@ query pages_HomeQuery {
   ...useSidebarFragment_messages
   ...TilesFragment_messages
   ...useSidebarFragment
+  ...NavAllUsers
+}
+
+fragment NavAllUsers on Query {
+  allUsers {
+    edges {
+      node {
+        id
+        name
+        email
+      }
+    }
+  }
 }
 
 fragment NavFragment_organization on Query {
@@ -217,6 +231,11 @@ return {
         "args": null,
         "kind": "FragmentSpread",
         "name": "useSidebarFragment"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "NavAllUsers"
       }
     ],
     "type": "Query",
@@ -567,20 +586,62 @@ return {
           (v2/*: any*/)
         ],
         "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "UsersConnection",
+        "kind": "LinkedField",
+        "name": "allUsers",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "UsersEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "User",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v1/*: any*/),
+                  (v3/*: any*/),
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "email",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "015200765b573d44729b71a5fe82739d",
+    "cacheID": "68600c23c223858e9524a3f4f42c8fc9",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n  ...NavAllUsers\n}\n\nfragment NavAllUsers on Query {\n  allUsers {\n    edges {\n      node {\n        id\n        name\n        email\n      }\n    }\n  }\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ce079ce5c79c47de1b92791f151e9e76';
+(node/*: any*/).hash = '08c530329c8a88a84e010191b57280c9';
 
 module.exports = node;
