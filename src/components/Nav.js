@@ -1,11 +1,25 @@
 import React, { useState } from 'react'
 import { VStack, Box, Image, Icon, Button, Select, useDisclosure, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, FormControl, FormLabel, Input, FormHelperText } from '@chakra-ui/react'
+import { Grid, GridItem, Heading, Divider, Flex, Spacer } from "@chakra-ui/react"
 import { graphql, useFragment } from 'react-relay/hooks';
 import useMutation from './useMutation'
 import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRemove, HiChartBar, HiOutlineUserAdd } from 'react-icons/hi';
 import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
+
+const gridButtonStyle = {
+  color: "white",
+  backgroundColor: "#888888",
+  borderRadius: "15px"
+};
+
+const gridInputStyle = {
+    borderColor: "#adadad",
+    color: "#adadad",
+    borderRadius: "15px",
+    borderWidth: "2px"
+}
 
 const InsertConfigMutation = graphql`
   mutation NavInsertConfigMutation($input:CreateUserConfigInput!) {
@@ -45,7 +59,21 @@ const userConfigFragment = graphql`
   }
 `;
 
-function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
+const allUsersFragment = graphql`
+  fragment NavAllUsers on Query {
+    allUsers{
+      edges{
+        node{
+            id
+            name
+            email
+        }
+      }
+    }
+  }
+`;
+
+function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
@@ -72,27 +100,33 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
 
     return <Drawer
         isOpen={isOpen}
-        placement="bottom"
+        placement="right"
         onClose={onClose}
         finalFocusRef={btnRef}
+        size="full"
     >
         <DrawerOverlay />
         <DrawerContent>
-            <DrawerCloseButton />
-            <DrawerHeader>Organization</DrawerHeader>
-
-            <DrawerBody>
-                <Select onChange={(e) => {
-                    insertConfig({
-                        variables: {
-                            input: {
-                                defaultOrganization: parseInt(e.target.value),
+            <DrawerHeader>
+            <Flex>
+                <Spacer />
+                <Select 
+                    onChange={(e) => {
+                        insertConfig({
+                            variables: {
+                                input: {
+                                    defaultOrganization: parseInt(e.target.value),
+                                },
                             },
-                        },
-                        updater: store => { },
-                    });
-                    focusOrganization(parseInt(e.target.value));
-                }}>
+                            updater: store => { },
+                        });
+                        focusOrganization(parseInt(e.target.value));
+                    }} 
+                    width='200px' 
+                    bgColor='black'
+                    color="white"
+                    borderRadius="20"
+                >
                     {organizations?.edges?.filter((edge) => {
                         return edge.node?.hasOwnProperty('organizationByOrganizationId')
                     }).map((edge) => {
@@ -105,11 +139,60 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
                         }
                     })}
                 </Select>
-                <FormControl id="email">
-                    <FormLabel textAlign="center" marginTop="2rem">Add user</FormLabel>
-                    <Input type="email" placeholder="Email" onKeyDown={(e) => onEnter(e, organizations)} />
-                    <FormHelperText>User will receive email with sign-in instructions.</FormHelperText>
-                </FormControl>
+            </Flex>
+            </DrawerHeader>
+            <DrawerBody m="5">
+                <Heading as="h2" size="xl" my="5" color="#666666">
+                    Admins
+                </Heading>
+                <Grid
+                  templateColumns="repeat(6, 1fr)"
+                  gap={6}
+                  mb="5"
+                >
+                    {users?.edges?.map((edge) => {
+                        return (
+                            <>
+                                <Box>{edge.node.name}</Box>
+                                <Box>{edge.node.email}</Box>
+                                <Button size="sm" style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" style={gridButtonStyle}>Make User</Button>
+                                <Button size="sm" style={gridButtonStyle}>Change Email</Button>
+                                <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
+                            </>
+                        )
+                    })}
+                    <Input type="name" placeholder="Name" style={gridInputStyle} />
+                    <Input type="email" placeholder="Email" style={gridInputStyle} />
+                    <Button size="sm" style={gridButtonStyle}>Add</Button>
+                </Grid>
+
+                <Divider orientation="horizontal"/>
+
+                <Heading as="h2" size="xl" my="5" color="#666666">
+                    Users
+                </Heading>
+                <Grid
+                  templateColumns="repeat(6, 1fr)"
+                  gap={6}
+                  mb="5"
+                >
+                    {users?.edges?.map((edge) => {
+                        return (
+                            <>
+                                <Box>{edge.node.name}</Box>
+                                <Box>{edge.node.email}</Box>
+                                <Button size="sm" style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" style={gridButtonStyle}>Make User</Button>
+                                <Button size="sm" style={gridButtonStyle}>Change Email</Button>
+                                <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
+                            </>
+                        )
+                    })}
+                    <Input type="name" placeholder="Name" style={gridInputStyle} />
+                    <Input type="email" placeholder="Email" style={gridInputStyle} />
+                    <Button size="sm" style={gridButtonStyle} onClick={(e) => (onAddUser(e))}>Add</Button>
+                </Grid>
             </DrawerBody>
 
             <DrawerFooter>
@@ -122,6 +205,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef }) {
 }
 
 export default function Nav({ query }) {
+    const users = useFragment(allUsersFragment, query);
     const organizations = useFragment(organizationFragment, query);
     const userConfig = useFragment(userConfigFragment, query);
     const organization = useStore((state) => state.organization);
@@ -208,7 +292,7 @@ export default function Nav({ query }) {
                 <Button bg="none" color="white" _hover={{ bg: "#FABC37" }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
-                <OrganizationMenu organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
+                <OrganizationMenu users={users.allUsers} organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
             </VStack >
         )
     }
