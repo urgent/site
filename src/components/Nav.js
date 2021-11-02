@@ -242,9 +242,9 @@ export default function Nav({ query }) {
     };
 
     if (edit) {
-        colors.edit = '#FABC37';
+        colors.edit = 'secondary.400';
     }
-    colors[focus] = '#FABC37'
+    colors[focus] = 'secondary.400'
 
     if (session) {
         return (
@@ -257,39 +257,39 @@ export default function Nav({ query }) {
                 height={["auto", "auto", "auto", "auto", "100vh"]}
             >
                 <Image gridColumn="logo" width={12} src="/images/align-white-icon.svg" alt="smooms.io" />
-                <Button bg={colors.edit} color="white" _hover={{ bg: "#FABC37" }} data-cy="edit_mode" onClick={(e) => {
+                <Button bg={colors.edit} color="white" _hover={{ bg: 'secondary.400' }} data-cy="edit_mode" onClick={(e) => {
                     setFocus();
                     toggleEdit();
                 }}>
                     <Icon as={FiEdit} w={6} h={6} />
                 </Button>
-                <Button bg={colors.org} color="white" _hover={{ bg: "#FABC37" }} ref={btnRef} onClick={(e) => {
+                <Button bg={colors.org} color="white" _hover={{ bg: 'secondary.400' }} ref={btnRef} onClick={(e) => {
                     setFocus('org');
                     onOpen(e);
                 }} >
                     <Icon as={HiOutlineUserGroup} w={6} h={6} />
                 </Button>
-                <Button bg={colors.chip} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                <Button bg={colors.chip} color="white" _hover={{ bg: 'secondary.400' }} onClick={(e) => {
                     setFocus('chip');
                 }}>
                     <Icon as={HiOutlineChip} w={6} h={6} />
                 </Button>
-                <Button bg={colors.card} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                <Button bg={colors.card} color="white" _hover={{ bg: 'secondary.400' }} onClick={(e) => {
                     setFocus('card');
                 }}>
                     <Icon as={HiOutlineCreditCard} w={6} h={6} />
                 </Button>
-                <Button bg={colors.user} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                <Button bg={colors.user} color="white" _hover={{ bg: 'secondary.400' }} onClick={(e) => {
                     setFocus('user');
                 }}>
                     <Icon as={HiChartBar} w={6} h={6} />
                 </Button>
-                <Button bg={colors.layout} color="white" _hover={{ bg: "#FABC37" }} onClick={(e) => {
+                <Button bg={colors.layout} color="white" _hover={{ bg: 'secondary.400' }} onClick={(e) => {
                     setFocus('layout');
                 }}>
                     <Icon as={FiGitMerge} w={6} h={6} />
                 </Button>
-                <Button bg="none" color="white" _hover={{ bg: "#FABC37" }} onClick={signOut} data-cy="signout">
+                <Button bg="none" color="white" _hover={{ bg: 'secondary.400' }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
                 <OrganizationMenu users={users.allUsers} organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
@@ -309,7 +309,7 @@ export default function Nav({ query }) {
                 data-cy="signin"
                 bg="none"
                 color="white"
-                _hover={{ bg: "#FABC37" }}
+                _hover={{ bg: 'secondary.400' }}
             >
                 <Icon as={FiLogIn} w={6} h={6} />
             </Button>

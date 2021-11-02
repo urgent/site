@@ -15,6 +15,11 @@ export default NextAuth({
             server: process.env.EMAIL_SERVER,
             from: process.env.EMAIL_FROM
         }),
+        Providers.Okta({
+            clientId: process.env.OKTA_CLIENT_ID,
+            clientSecret: process.env.OKTA_CLIENT_SECRET,
+            domain: process.env.OKTA_ISSUER
+        })
         // ...add more providers here
     ],
     database: process.env.DATABASE_URL,
