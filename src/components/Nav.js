@@ -9,9 +9,9 @@ import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
 
 const gridButtonStyle = {
-  color: "white",
-  backgroundColor: "#888888",
-  borderRadius: "15px"
+    color: "white",
+    backgroundColor: "#888888",
+    borderRadius: "15px"
 };
 
 const gridInputStyle = {
@@ -108,47 +108,47 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
         <DrawerOverlay />
         <DrawerContent>
             <DrawerHeader>
-            <Flex>
-                <Spacer />
-                <Select 
-                    onChange={(e) => {
-                        insertConfig({
-                            variables: {
-                                input: {
-                                    defaultOrganization: parseInt(e.target.value),
+                <Flex>
+                    <Spacer />
+                    <Select
+                        onChange={(e) => {
+                            insertConfig({
+                                variables: {
+                                    input: {
+                                        defaultOrganization: parseInt(e.target.value),
+                                    },
                                 },
-                            },
-                            updater: store => { },
-                        });
-                        focusOrganization(parseInt(e.target.value));
-                    }} 
-                    width='200px' 
-                    bgColor='black'
-                    color="white"
-                    borderRadius="20"
-                >
-                    {organizations?.edges?.filter((edge) => {
-                        return edge.node?.hasOwnProperty('organizationByOrganizationId')
-                    }).map((edge) => {
-                        const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                        if (organization === rowId) {
-                            return <option key={rowId} value={rowId} selected="selected">{slug}</option>
-                        }
-                        else {
-                            return <option key={rowId} value={rowId}>{slug}</option>
-                        }
-                    })}
-                </Select>
-            </Flex>
+                                updater: store => { },
+                            });
+                            focusOrganization(parseInt(e.target.value));
+                        }}
+                        width='200px'
+                        bgColor='black'
+                        color="white"
+                        borderRadius="20"
+                    >
+                        {organizations?.edges?.filter((edge) => {
+                            return edge.node?.hasOwnProperty('organizationByOrganizationId')
+                        }).map((edge) => {
+                            const { rowId, slug } = edge.node?.organizationByOrganizationId;
+                            if (organization === rowId) {
+                                return <option key={rowId} value={rowId} selected="selected">{slug}</option>
+                            }
+                            else {
+                                return <option key={rowId} value={rowId}>{slug}</option>
+                            }
+                        })}
+                    </Select>
+                </Flex>
             </DrawerHeader>
             <DrawerBody m="5">
                 <Heading as="h2" size="xl" my="5" color="#666666">
                     Admins
                 </Heading>
                 <Grid
-                  templateColumns="repeat(6, 1fr)"
-                  gap={6}
-                  mb="5"
+                    templateColumns="repeat(6, 1fr)"
+                    gap={6}
+                    mb="5"
                 >
                     {users?.edges?.map((edge) => {
                         return (
@@ -167,15 +167,15 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
                     <Button size="sm" style={gridButtonStyle}>Add</Button>
                 </Grid>
 
-                <Divider orientation="horizontal"/>
+                <Divider orientation="horizontal" />
 
                 <Heading as="h2" size="xl" my="5" color="#666666">
                     Users
                 </Heading>
                 <Grid
-                  templateColumns="repeat(6, 1fr)"
-                  gap={6}
-                  mb="5"
+                    templateColumns="repeat(6, 1fr)"
+                    gap={6}
+                    mb="5"
                 >
                     {users?.edges?.map((edge) => {
                         return (
@@ -303,7 +303,7 @@ export default function Nav({ query }) {
             gridColumn={"nav"}
             bg={'primary.400'}
         >
-            <Image gridColumn="logo" width={12} src="/images/logo-invert.png" alt="smooms.io" />
+            <Image gridColumn="logo" width={12} src="/images/align-white-icon.svg" alt="smooms.io" />
             <Button
                 onClick={() => signIn(1)}
                 data-cy="signin"
