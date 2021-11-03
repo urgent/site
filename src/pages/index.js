@@ -39,6 +39,8 @@ function Home({ preloadedQuery }) {
         mx="auto"
         sx={{ textAlign: "center" }}
         width="100%"
+        maxHeight="99vh"
+        overflowY="scroll"
       >
         <Tiles query={query} />
       </Grid>
