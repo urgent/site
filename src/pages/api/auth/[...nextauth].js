@@ -7,10 +7,6 @@ import crypto from "crypto";
 export default NextAuth({
     // Configure one or more authentication providers
     providers: [
-        Providers.GitHub({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET
-        }),
         Providers.Email({
             server: process.env.EMAIL_SERVER,
             from: process.env.EMAIL_FROM
