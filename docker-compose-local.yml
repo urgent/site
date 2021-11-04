@@ -30,6 +30,14 @@ services:
       - ./.env
     ports:
       - 5432:5432
-
+  nextjs:
+    container_name: nextjs
+    restart: always
+    build: .
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.nextjs.loadbalancer.server.port=3000
+      - traefik.http.routers.nextjs.rule=Host(`localhost`)
+      - traefik.http.routers.nextjs.entrypoints=web
 volumes:
   db:
