@@ -19,7 +19,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.graphql.loadbalancer.server.port=5433
-      - traefik.http.routers.graphql.rule=Host(`app.smooms.io`, `app.align.company`)
+      - traefik.http.routers.graphql.rule=Host(`app.align.company`)
       - traefik.http.routers.graphql.tls.certresolver=le
       - traefik.http.routers.graphql.entrypoints=graphile
   nextjs:
@@ -29,6 +29,6 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.nextjs.loadbalancer.server.port=3000
-      - traefik.http.routers.nextjs.rule=Host(`app.smooms.io`, `app.align.company`)
+      - traefik.http.routers.nextjs.rule=Host(`app.align.company`)
       - traefik.http.routers.nextjs.tls.certresolver=le
       - traefik.http.routers.nextjs.entrypoints=websecure
