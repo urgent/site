@@ -23,8 +23,6 @@ services:
       - traefik.http.routers.graphql.tls.certresolver=le
       - traefik.http.routers.graphql.entrypoints=graphile
   nextjs:
-    container_name: nextjs
-    restart: always
     build: .
     labels:
       - traefik.enable=true

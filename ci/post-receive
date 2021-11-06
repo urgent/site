@@ -1,0 +1,6 @@
+#!/bin/sh
+unset GIT_INDEX_FILE
+export GIT_WORK_TREE=/home/ubuntu/app
+export GIT_DIR=/home/ubuntu/repo
+git checkout -f main
+cd /home/ubuntu/app && docker-compose -f docker-compose.yml -f docker-compose-production.yml -p blue down -v && docker-compose -f docker-compose.yml -f docker-compose-production.yml -p blue up
