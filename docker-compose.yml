@@ -11,3 +11,5 @@ services:
       context: ./graphql
     env_file:
       - ./.env
+  ci:
+    build: ./ci

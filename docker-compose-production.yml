@@ -15,6 +15,11 @@ services:
       - 8080:8080
       - 80:80
       - 5433:5433
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-2
+        awslogs-group: traefik
   graphql:
     labels:
       - traefik.enable=true
@@ -22,6 +27,11 @@ services:
       - traefik.http.routers.graphql.rule=Host(`app.align.company`)
       - traefik.http.routers.graphql.tls.certresolver=le
       - traefik.http.routers.graphql.entrypoints=graphile
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-2
+        awslogs-group: graphql
   nextjs:
     build: .
     labels:
@@ -30,3 +40,8 @@ services:
       - traefik.http.routers.nextjs.rule=Host(`app.align.company`)
       - traefik.http.routers.nextjs.tls.certresolver=le
       - traefik.http.routers.nextjs.entrypoints=websecure
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-2
+        awslogs-group: nextjs
