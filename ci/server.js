@@ -23,10 +23,13 @@ app.get('/deploy', (req, res) => {
     res.send('Hello World');
 });
 
-app.get('/cloudwatch', (req, res) => {
+app.get('/revert', (req, res) => {
     res.send('Hello World');
 });
 
+app.get('/accept', (req, res) => {
+    res.send('Hello World');
+});
 
 // blue up    
 // green down

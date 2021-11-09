@@ -14,7 +14,6 @@ const HomeQuery = graphql`
     ...useSidebarFragment_messages
     ...TilesFragment_messages
     ...useSidebarFragment
-    ...NavAllUsers
   }
 `;
 

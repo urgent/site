@@ -59,20 +59,6 @@ const userConfigFragment = graphql`
   }
 `;
 
-const allUsersFragment = graphql`
-  fragment NavAllUsers on Query {
-    allUsers{
-      edges{
-        node{
-            id
-            name
-            email
-        }
-      }
-    }
-  }
-`;
-
 function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
@@ -205,7 +191,6 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
 }
 
 export default function Nav({ query }) {
-    const users = useFragment(allUsersFragment, query);
     const organizations = useFragment(organizationFragment, query);
     const userConfig = useFragment(userConfigFragment, query);
     const organization = useStore((state) => state.organization);
@@ -292,7 +277,7 @@ export default function Nav({ query }) {
                 <Button bg="none" color="white" _hover={{ bg: 'secondary.400' }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
-                <OrganizationMenu users={users.allUsers} organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
+                <OrganizationMenu organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
             </VStack >
         )
     }
