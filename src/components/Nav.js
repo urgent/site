@@ -162,8 +162,6 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
                                 <Box>{edge.node.name}</Box>
                                 <Box>{edge.node.email}</Box>
                                 <Button size="sm" style={gridButtonStyle}>Remove</Button>
-                                <Button size="sm" style={gridButtonStyle}>Make User</Button>
-                                <Button size="sm" style={gridButtonStyle}>Change Email</Button>
                                 <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
                             </>
                         )
