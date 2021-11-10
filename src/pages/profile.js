@@ -12,7 +12,7 @@ function Profile() {
     <label for="company">Company</label><input  id="company" maxlength="40" name="company" size="20" type="text" /><br />
     <label for="city">City</label><input  id="city" maxlength="40" name="city" size="20" type="text" /><br />
     <label for="state">State/Province</label><input  id="state" maxlength="20" name="state" size="20" type="text" /><br />
-    <label for="00N5f00000MT3ym">Number of Starting Align Seats:</label><input  id="00N5f00000MT3ym" name="00N5f00000MT3ym" size="20" type="text" /><br>
+    <label for="00N5f00000MT3ym">Number of Starting Align Seats:</label><input  id="00N5f00000MT3ym" name="00N5f00000MT3ym" size="20" type="text" /><br />
     <input type="submit" name="submit" />
     </form>
     </div>
