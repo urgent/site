@@ -92,7 +92,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
         size="full"
     >
         <DrawerOverlay />
-        <DrawerContent>
+        <DrawerContent sx={{left:"3.5rem", paddingRight:"3.5rem"}}>
             <DrawerHeader>
                 <Flex>
                     <Spacer />
