@@ -28,6 +28,7 @@
     "next": "^10.0.9",
     "next-auth": "^3.22.0",
     "pg": "^8.6.0",
+    "pino": "^7.2.0",
     "postgraphile-plugin-nested-mutations": "^1.1.0",
     "qs": "^6.10.1",
     "react": "^17.0.2",
