@@ -11,7 +11,7 @@ export default function Mobile({ query }) {
                 <Box gridRow="menu"><Collapsable query={query} /></Box>
                 <Flex>
                     <Box p="4">
-                        <Image src="/images/logo.png" h={8} />
+                        <Image src="/images/align_blue.png" h={8} />
                     </Box>
                     <Spacer />
                     <Box p="4">

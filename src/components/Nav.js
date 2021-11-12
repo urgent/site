@@ -37,10 +37,30 @@ const organizationFragment = graphql`
       __id
       edges {
         node {
+          userByUserId {
+            email
+          }
           organizationByOrganizationId {
             rowId
             slug
+            userByUserId {
+                email
+            }
           }
+        }
+      }
+    }
+  }
+`;
+
+const inviteFragment = graphql`
+  fragment NavFragment_invite on Query {
+    allInvites {
+      __id
+      edges {
+        node {
+            organizationId
+            email
         }
       }
     }
@@ -59,7 +79,7 @@ const userConfigFragment = graphql`
   }
 `;
 
-function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
+function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
@@ -92,7 +112,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
         size="full"
     >
         <DrawerOverlay />
-        <DrawerContent sx={{left:"3.5rem", paddingRight:"3.5rem"}}>
+        <DrawerContent sx={{ left: "3.5rem", paddingRight: "3.5rem" }}>
             <DrawerHeader>
                 <Flex>
                     <Spacer />
@@ -117,12 +137,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
                             return edge.node?.hasOwnProperty('organizationByOrganizationId')
                         }).map((edge) => {
                             const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                            if (organization === rowId) {
-                                return <option key={rowId} value={rowId} selected="selected">{slug}</option>
-                            }
-                            else {
-                                return <option key={rowId} value={rowId}>{slug}</option>
-                            }
+                            return <option key={rowId} value={rowId} defaultValue={organization}>{slug}</option>
                         })}
                     </Select>
                 </Flex>
@@ -136,14 +151,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
                     gap={6}
                     mb="5"
                 >
-                    {users?.edges?.map((edge) => {
-                        return (
-                            <>
-                                <Box>{edge.node.name}</Box>
-                                <Box>{edge.node.email}</Box>
-                            </>
-                        )
-                    })}
+                    <Box>{organizations.edges[0].node.userByUserId.email}</Box>
                 </Grid>
 
                 <Divider orientation="horizontal" />
@@ -156,14 +164,14 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
                     gap={6}
                     mb="5"
                 >
-                    {users?.edges?.map((edge) => {
+                    {organizations?.edges?.map((edge) => {
                         return (
-                            <>
+                            <span key="edge.node.name">
                                 <Box>{edge.node.name}</Box>
                                 <Box>{edge.node.email}</Box>
                                 <Button size="sm" style={gridButtonStyle}>Remove</Button>
                                 <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
-                            </>
+                            </span>
                         )
                     })}
                     <Input type="name" placeholder="Name" style={gridInputStyle} />
@@ -183,6 +191,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, users }) {
 
 export default function Nav({ query }) {
     const organizations = useFragment(organizationFragment, query);
+    const invites = useFragment(inviteFragment, query);
     const userConfig = useFragment(userConfigFragment, query);
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
@@ -268,7 +277,7 @@ export default function Nav({ query }) {
                 <Button bg="none" color="white" _hover={{ bg: 'secondary.400' }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
-                <OrganizationMenu organizations={organizations.allOrganizationUsers} {...{ isOpen, onOpen, onClose, btnRef }} />
+                <OrganizationMenu organizations={organizations.allOrganizationUsers} invites={invites.allInvites} {...{ isOpen, onOpen, onClose, btnRef }} />
             </VStack >
         )
     }

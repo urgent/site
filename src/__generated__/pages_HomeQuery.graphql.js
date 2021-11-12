@@ -8,6 +8,7 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
+import type { NavFragment_invite$ref } from "./NavFragment_invite.graphql";
 import type { NavFragment_organization$ref } from "./NavFragment_organization.graphql";
 import type { NavFragment_userConfig$ref } from "./NavFragment_userConfig.graphql";
 import type { TilesFragment_messages$ref } from "./TilesFragment_messages.graphql";
@@ -15,7 +16,7 @@ import type { useSidebarFragment$ref } from "./useSidebarFragment.graphql";
 import type { useSidebarFragment_messages$ref } from "./useSidebarFragment_messages.graphql";
 export type pages_HomeQueryVariables = {||};
 export type pages_HomeQueryResponse = {|
-  +$fragmentRefs: NavFragment_organization$ref & NavFragment_userConfig$ref & useSidebarFragment_messages$ref & TilesFragment_messages$ref & useSidebarFragment$ref
+  +$fragmentRefs: NavFragment_organization$ref & NavFragment_userConfig$ref & useSidebarFragment_messages$ref & TilesFragment_messages$ref & useSidebarFragment$ref & NavFragment_invite$ref
 |};
 export type pages_HomeQuery = {|
   variables: pages_HomeQueryVariables,
@@ -31,15 +32,36 @@ query pages_HomeQuery {
   ...useSidebarFragment_messages
   ...TilesFragment_messages
   ...useSidebarFragment
+  ...NavFragment_invite
+}
+
+fragment NavFragment_invite on Query {
+  allInvites {
+    edges {
+      node {
+        organizationId
+        email
+        id
+      }
+    }
+  }
 }
 
 fragment NavFragment_organization on Query {
   allOrganizationUsers {
     edges {
       node {
+        userByUserId {
+          email
+          id
+        }
         organizationByOrganizationId {
           rowId
           slug
+          userByUserId {
+            email
+            id
+          }
           id
         }
       }
@@ -143,7 +165,7 @@ var v0 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "rowId",
+  "name": "email",
   "storageKey": null
 },
 v1 = {
@@ -154,6 +176,26 @@ v1 = {
   "storageKey": null
 },
 v2 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "userByUserId",
+  "plural": false,
+  "selections": [
+    (v0/*: any*/),
+    (v1/*: any*/)
+  ],
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v4 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -165,21 +207,21 @@ v2 = {
     }
   ]
 },
-v3 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "color",
   "storageKey": null
 },
-v5 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -217,6 +259,11 @@ return {
         "args": null,
         "kind": "FragmentSpread",
         "name": "useSidebarFragment"
+      },
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "NavFragment_invite"
       }
     ],
     "type": "Query",
@@ -252,6 +299,7 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v2/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -260,7 +308,7 @@ return {
                     "name": "organizationByOrganizationId",
                     "plural": false,
                     "selections": [
-                      (v0/*: any*/),
+                      (v3/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -268,6 +316,7 @@ return {
                         "name": "slug",
                         "storageKey": null
                       },
+                      (v2/*: any*/),
                       (v1/*: any*/)
                     ],
                     "storageKey": null
@@ -278,7 +327,7 @@ return {
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       },
@@ -393,8 +442,8 @@ return {
                                 "name": "tagByTagId",
                                 "plural": false,
                                 "selections": [
-                                  (v0/*: any*/),
                                   (v3/*: any*/),
+                                  (v5/*: any*/),
                                   {
                                     "alias": null,
                                     "args": null,
@@ -403,29 +452,29 @@ return {
                                     "name": "categoryByCategoryId",
                                     "plural": false,
                                     "selections": [
-                                      (v4/*: any*/),
+                                      (v6/*: any*/),
                                       (v1/*: any*/)
                                     ],
                                     "storageKey": null
                                   },
                                   (v1/*: any*/),
-                                  (v2/*: any*/)
+                                  (v4/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v2/*: any*/)
+                              (v4/*: any*/)
                             ],
                             "storageKey": null
                           }
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
                   (v1/*: any*/),
-                  (v0/*: any*/),
+                  (v3/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -433,14 +482,14 @@ return {
                     "name": "content",
                     "storageKey": null
                   },
-                  (v5/*: any*/)
+                  (v7/*: any*/)
                 ],
                 "storageKey": null
               }
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
         ],
         "storageKey": null
       },
@@ -492,8 +541,8 @@ return {
                             "name": "node",
                             "plural": false,
                             "selections": [
-                              (v0/*: any*/),
                               (v3/*: any*/),
+                              (v5/*: any*/),
                               (v1/*: any*/)
                             ],
                             "storageKey": null
@@ -501,14 +550,14 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v2/*: any*/)
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   },
-                  (v0/*: any*/),
                   (v3/*: any*/),
-                  (v4/*: any*/),
                   (v5/*: any*/),
+                  (v6/*: any*/),
+                  (v7/*: any*/),
                   {
                     "alias": null,
                     "args": null,
@@ -564,23 +613,60 @@ return {
             ],
             "storageKey": null
           },
-          (v2/*: any*/)
+          (v4/*: any*/)
+        ],
+        "storageKey": null
+      },
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "InvitesConnection",
+        "kind": "LinkedField",
+        "name": "allInvites",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "InvitesEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "Invite",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v7/*: any*/),
+                  (v0/*: any*/),
+                  (v1/*: any*/)
+                ],
+                "storageKey": null
+              }
+            ],
+            "storageKey": null
+          },
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
     ]
   },
   "params": {
-    "cacheID": "015200765b573d44729b71a5fe82739d",
+    "cacheID": "581724d20d6fc2acd1d456cbb8c0f686",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        organizationByOrganizationId {\n          rowId\n          slug\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n  ...NavFragment_invite\n}\n\nfragment NavFragment_invite on Query {\n  allInvites {\n    edges {\n      node {\n        organizationId\n        email\n        id\n      }\n    }\n  }\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'ce079ce5c79c47de1b92791f151e9e76';
+(node/*: any*/).hash = '925f7b669e0c108019a08729d1fd27f3';
 
 module.exports = node;

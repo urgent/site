@@ -16,10 +16,16 @@ export type NavFragment_organization = {|
     +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
+        +userByUserId: ?{|
+          +email: ?string
+        |},
         +organizationByOrganizationId: ?{|
           +rowId: number,
           +slug: ?string,
-        |}
+          +userByUserId: ?{|
+            +email: ?string
+          |},
+        |},
       |}
     |}>,
   |},
@@ -34,7 +40,26 @@ export type NavFragment_organization$key = {
 */
 
 
-const node/*: ReaderFragment*/ = {
+const node/*: ReaderFragment*/ = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "User",
+  "kind": "LinkedField",
+  "name": "userByUserId",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "email",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -64,6 +89,7 @@ const node/*: ReaderFragment*/ = {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -85,7 +111,8 @@ const node/*: ReaderFragment*/ = {
                       "kind": "ScalarField",
                       "name": "slug",
                       "storageKey": null
-                    }
+                    },
+                    (v0/*: any*/)
                   ],
                   "storageKey": null
                 }
@@ -114,7 +141,8 @@ const node/*: ReaderFragment*/ = {
   "type": "Query",
   "abstractKey": null
 };
+})();
 // prettier-ignore
-(node/*: any*/).hash = 'c660d4d22db9c2b7a285dfedd4b2d089';
+(node/*: any*/).hash = '8940cbd46bcbdad922eb06e1bb1f6ebf';
 
 module.exports = node;
