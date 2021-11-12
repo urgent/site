@@ -164,10 +164,18 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                     gap={6}
                     mb="5"
                 >
+                    {invites?.edges?.map((edge) => {
+                        return (
+                            <span key={edge.node.email}>
+                                <Box>{edge.node.email}</Box>
+                                <Button size="sm" style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" style={gridButtonStyle}>Resend Invite</Button>
+                            </span>
+                        )
+                    })}
                     {organizations?.edges?.map((edge) => {
                         return (
-                            <span key="edge.node.name">
-                                <Box>{edge.node.name}</Box>
+                            <span key={edge.node.name}>
                                 <Box>{edge.node.email}</Box>
                                 <Button size="sm" style={gridButtonStyle}>Remove</Button>
                                 <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
