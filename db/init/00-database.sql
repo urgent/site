@@ -595,3 +595,10 @@ AS $$
   INSERT INTO organization_user(organization_id, user_id) VALUES($1, $2)
   RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.create_invite(organization_id Int, email text)
+RETURNS public.invite
+AS $$
+  INSERT INTO invite(organization_id, email) VALUES($1, $2)
+  RETURNING *;                                                      
+$$ LANGUAGE sql VOLATILE STRICT;

@@ -31,6 +31,17 @@ const InsertConfigMutation = graphql`
     }
 `;
 
+const InsertInviteMutation = graphql`
+  mutation NavInsertInviteMutation($input:CreateInviteInput!, $connections: [ID!]!) {
+    createInvite(input: $input) {
+        invite @prependNode(connections: $connections, edgeTypeName: "InvitesEdge") {
+            organizationId
+            email
+        }
+      }
+    }
+`;
+
 const organizationFragment = graphql`
   fragment NavFragment_organization on Query {
     allOrganizationUsers {
@@ -82,12 +93,12 @@ const userConfigFragment = graphql`
 function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
+    const [addEmail, setAddEmail] = useState();
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
+    const [isInvitePending, insertInvite] = useMutation(InsertInviteMutation)
 
-    async function onEnter(e, organizations) {
-        if (e.key !== 'Enter') {
-            return;
-        }
+    async function onAddUser(e) {
+        // send to next-auth endpoint
         const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
         const response = await fetch('/api/invite', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
@@ -99,9 +110,20 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: `email=${e.target.value}&slug=${slug}` // body data type must match "Content-Type" header
+            body: `email=${addEmail}&slug=${slug}` // body data type must match "Content-Type" header
         });
-        return response.json();
+        // run relay mutation
+        const data = await response.json();
+        insertInvite({
+            variables: {
+                input: {
+                    organizationId: organization,
+                    email: data.email,
+                },
+                connections: [invites.__id]
+            },
+            updater: store => { },
+        })
     }
 
     return <Drawer
@@ -175,15 +197,14 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                     })}
                     {organizations?.edges?.map((edge) => {
                         return (
-                            <span key={edge.node.name}>
+                            <span key={edge.node.organizationByOrganizationId.slug}>
                                 <Box>{edge.node.email}</Box>
                                 <Button size="sm" style={gridButtonStyle}>Remove</Button>
                                 <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
                             </span>
                         )
                     })}
-                    <Input type="name" placeholder="Name" style={gridInputStyle} />
-                    <Input type="email" placeholder="Email" style={gridInputStyle} />
+                    <Input type="email" placeholder="Email" style={gridInputStyle} onChange={(e) => setAddEmail(e.target.value)} />
                     <Button size="sm" style={gridButtonStyle} onClick={(e) => (onAddUser(e))}>Add</Button>
                 </Grid>
             </DrawerBody>
