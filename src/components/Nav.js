@@ -7,6 +7,7 @@ import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRe
 import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
+import P from 'pino';
 
 const gridButtonStyle = {
     color: "white",
@@ -34,12 +35,41 @@ const InsertConfigMutation = graphql`
 const InsertInviteMutation = graphql`
   mutation NavInsertInviteMutation($input:CreateInviteInput!, $connections: [ID!]!) {
     createInvite(input: $input) {
-        invite @prependNode(connections: $connections, edgeTypeName: "InvitesEdge") {
+        invite @appendNode(connections: $connections, edgeTypeName: "InvitesEdge") {
             organizationId
             email
         }
       }
     }
+`;
+
+const DeleteOrganizationUserMutation = graphql`
+  mutation NavDeleteOrganizationUserMutation($input:DeleteOrganizationUserInput!, $connections: [ID!]!) {
+    deleteOrganizationUser(input: $input) {
+        organizationUser {
+            id @deleteEdge(connections: $connections)
+            organizationByOrganizationId {
+                rowId
+                slug
+                userByUserId {
+                    email
+                }
+            }
+        }
+    }
+  }
+`;
+
+const DeleteInviteMutation = graphql`
+  mutation NavDeleteInviteMutation($input:DeleteInviteInput!, $connections: [ID!]!) {
+    deleteInvite(input: $input) {
+        invite {
+            id @deleteEdge(connections: $connections)
+            organizationId
+            email
+        }
+    }
+  }
 `;
 
 const organizationFragment = graphql`
@@ -48,6 +78,7 @@ const organizationFragment = graphql`
       __id
       edges {
         node {
+          userId
           userByUserId {
             email
           }
@@ -70,6 +101,7 @@ const inviteFragment = graphql`
       __id
       edges {
         node {
+            id
             organizationId
             email
         }
@@ -90,17 +122,32 @@ const userConfigFragment = graphql`
   }
 `;
 
-function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
+function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
     const organization = useStore((state) => state.organization);
     const focusOrganization = useStore((state) => state.focusOrganization);
-    const [addEmail, setAddEmail] = useState();
+    const userConfig = useFragment(userConfigFragment, query);
+    const [addEmail, setAddEmail] = useState('');
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
     const [isInvitePending, insertInvite] = useMutation(InsertInviteMutation)
+    const [isDeleteOrgUserPending, deleteOrgUser] = useMutation(DeleteOrganizationUserMutation)
+    const [isDeleteInvitePending, deleteInvite] = useMutation(DeleteInviteMutation)
+    const organizations = useFragment(organizationFragment, query);
+    const invites = useFragment(inviteFragment, query);
 
-    async function onAddUser(e) {
-        // send to next-auth endpoint
-        const slug = organizations.edges[0].node.organizationByOrganizationId.slug;
-        const response = await fetch('/api/invite', {
+    // needs to move in SSG, getServerSideProps
+    if (!organization) {
+        // if user config exists, use as default organization. If not, use first row in organization query
+        if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
+            focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
+        } else {
+            focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
+        }
+    }
+
+
+    function sendEmail(email) {
+        const slug = organizations.allOrganizationUsers.edges[0].node.organizationByOrganizationId.slug;
+        return fetch('/api/invite', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -110,19 +157,46 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: `email=${addEmail}&slug=${slug}` // body data type must match "Content-Type" header
+            body: `email=${email}&slug=${slug}` // body data type must match "Content-Type" header
         });
+    }
+
+    function onAddUser() {
+        sendEmail(addEmail);
         // run relay mutation
-        const data = await response.json();
         insertInvite({
             variables: {
                 input: {
                     organizationId: organization,
-                    email: data.email,
+                    email: addEmail,
                 },
-                connections: [invites.__id]
+                connections: [invites.allInvites.__id]
             },
             updater: store => { },
+        })
+    }
+
+    function onRemoveUser(userId) {
+        deleteOrgUser({
+            variables: {
+                input: {
+                    organizationId: organization,
+                    userId,
+                },
+                connections: [organizations.allOrganizationUsers.__id]
+            }
+        })
+    }
+
+    function onRemoveInvite(email) {
+        deleteInvite({
+            variables: {
+                input: {
+                    organizationId: organization,
+                    email,
+                },
+                connections: [invites.allInvites.__id]
+            }
         })
     }
 
@@ -155,7 +229,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                         color="white"
                         borderRadius="20"
                     >
-                        {organizations?.edges?.filter((edge) => {
+                        {organizations.allOrganizationUsers?.edges?.filter((edge) => {
                             return edge.node?.hasOwnProperty('organizationByOrganizationId')
                         }).map((edge) => {
                             const { rowId, slug } = edge.node?.organizationByOrganizationId;
@@ -173,7 +247,7 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                     gap={6}
                     mb="5"
                 >
-                    <Box>{organizations.edges[0].node.userByUserId.email}</Box>
+                    <Box>{organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
                 </Grid>
 
                 <Divider orientation="horizontal" />
@@ -186,26 +260,32 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                     gap={6}
                     mb="5"
                 >
-                    {invites?.edges?.map((edge) => {
+                    {invites.allInvites?.edges?.filter((edge) => {
+                        // do not show user's own invite
+                        return edge.node.email !== organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email
+                    }).map((edge) => {
                         return (
                             <span key={edge.node.email}>
                                 <Box>{edge.node.email}</Box>
-                                <Button size="sm" style={gridButtonStyle}>Remove</Button>
-                                <Button size="sm" style={gridButtonStyle}>Resend Invite</Button>
+                                <Button size="sm" onClick={() => onRemoveInvite(edge.node.email)} style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" onClick={() => sendEmail(edge.node.email)} style={gridButtonStyle}>Resend Invite</Button>
                             </span>
                         )
                     })}
-                    {organizations?.edges?.map((edge) => {
+                    {organizations.allOrganizationUsers?.edges?.filter((edge) => {
+                        // do not show user's own organization entry
+                        return edge.node.userByUserId.email !== organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email
+                    }).map((edge) => {
                         return (
                             <span key={edge.node.organizationByOrganizationId.slug}>
-                                <Box>{edge.node.email}</Box>
-                                <Button size="sm" style={gridButtonStyle}>Remove</Button>
-                                <Button size="sm" style={gridButtonStyle}>Reset Password</Button>
+                                <Box>{edge.node.userByUserId.email}</Box>
+                                <Button size="sm" onClick={() => onRemoveUser(edge.node.userId)} style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" onClick={() => sendEmail(edge.node.userByUserId.email)} style={gridButtonStyle}>Reset Password</Button>
                             </span>
                         )
                     })}
                     <Input type="email" placeholder="Email" style={gridInputStyle} onChange={(e) => setAddEmail(e.target.value)} />
-                    <Button size="sm" style={gridButtonStyle} onClick={(e) => (onAddUser(e))}>Add</Button>
+                    <Button size="sm" style={gridButtonStyle} onClick={onAddUser}>Add</Button>
                 </Grid>
             </DrawerBody>
 
@@ -215,27 +295,10 @@ function OrganizationMenu({ isOpen, onClose, organizations, btnRef, invites }) {
                 </Button>
             </DrawerFooter>
         </DrawerContent>
-    </Drawer>
+    </Drawer >
 }
 
 export default function Nav({ query }) {
-    const organizations = useFragment(organizationFragment, query);
-    const invites = useFragment(inviteFragment, query);
-    const userConfig = useFragment(userConfigFragment, query);
-    const organization = useStore((state) => state.organization);
-    const focusOrganization = useStore((state) => state.focusOrganization);
-
-    // needs to move in SSG, getServerSideProps
-    if (!organization) {
-        // if user config exists, use as default organization. If not, use first row in organization query
-        if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-            focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
-        } else {
-            focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
-        }
-    }
-
-
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const [session] = useSession()
@@ -243,7 +306,6 @@ export default function Nav({ query }) {
     const [focus, setFocus] = useState();
     const edit = useStore((state) => state.edit);
     const toggleEdit = useStore((state) => state.toggleEdit);
-
 
     const colors = {
         edit: "none",
@@ -306,7 +368,7 @@ export default function Nav({ query }) {
                 <Button bg="none" color="white" _hover={{ bg: 'secondary.400' }} onClick={signOut} data-cy="signout">
                     <Icon as={FiLogOut} w={6} h={6} />
                 </Button>
-                <OrganizationMenu organizations={organizations.allOrganizationUsers} invites={invites.allInvites} {...{ isOpen, onOpen, onClose, btnRef }} />
+                <OrganizationMenu {...{ isOpen, onOpen, onClose, btnRef, query }} />
             </VStack >
         )
     }

@@ -16,6 +16,7 @@ export type NavFragment_organization = {|
     +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
+        +userId: number,
         +userByUserId: ?{|
           +email: ?string
         |},
@@ -89,6 +90,13 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "userId",
+                  "storageKey": null
+                },
                 (v0/*: any*/),
                 {
                   "alias": null,
@@ -143,6 +151,6 @@ return {
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '8940cbd46bcbdad922eb06e1bb1f6ebf';
+(node/*: any*/).hash = '69699072baee9d4ba7c2b32f4361a25f';
 
 module.exports = node;

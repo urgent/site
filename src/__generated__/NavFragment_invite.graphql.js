@@ -16,6 +16,7 @@ export type NavFragment_invite = {|
     +__id: string,
     +edges: $ReadOnlyArray<{|
       +node: ?{|
+        +id: string,
         +organizationId: number,
         +email: ?string,
       |}
@@ -66,6 +67,13 @@ const node/*: ReaderFragment*/ = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
+                  "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
                   "name": "organizationId",
                   "storageKey": null
                 },
@@ -102,6 +110,6 @@ const node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 // prettier-ignore
-(node/*: any*/).hash = 'ceae591dde047ecc505f091a9e9b8ac1';
+(node/*: any*/).hash = '9e7eeb0d4ff538526afeb424b73b69a5';
 
 module.exports = node;

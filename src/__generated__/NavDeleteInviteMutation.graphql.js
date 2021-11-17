@@ -8,39 +8,40 @@
 
 /*::
 import type { ConcreteRequest } from 'relay-runtime';
-export type CreateInviteInput = {|
+export type DeleteInviteInput = {|
   clientMutationId?: ?string,
   organizationId: number,
   email: string,
 |};
-export type NavInsertInviteMutationVariables = {|
-  input: CreateInviteInput,
+export type NavDeleteInviteMutationVariables = {|
+  input: DeleteInviteInput,
   connections: $ReadOnlyArray<string>,
 |};
-export type NavInsertInviteMutationResponse = {|
-  +createInvite: ?{|
+export type NavDeleteInviteMutationResponse = {|
+  +deleteInvite: ?{|
     +invite: ?{|
+      +id: string,
       +organizationId: number,
       +email: ?string,
     |}
   |}
 |};
-export type NavInsertInviteMutation = {|
-  variables: NavInsertInviteMutationVariables,
-  response: NavInsertInviteMutationResponse,
+export type NavDeleteInviteMutation = {|
+  variables: NavDeleteInviteMutationVariables,
+  response: NavDeleteInviteMutationResponse,
 |};
 */
 
 
 /*
-mutation NavInsertInviteMutation(
-  $input: CreateInviteInput!
+mutation NavDeleteInviteMutation(
+  $input: DeleteInviteInput!
 ) {
-  createInvite(input: $input) {
+  deleteInvite(input: $input) {
     invite {
+      id
       organizationId
       email
-      id
     }
   }
 }
@@ -68,10 +69,17 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "organizationId",
+  "name": "id",
   "storageKey": null
 },
 v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "organizationId",
+  "storageKey": null
+},
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -86,14 +94,14 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "NavInsertInviteMutation",
+    "name": "NavDeleteInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "CreateInvitePayload",
+        "concreteType": "DeleteInvitePayload",
         "kind": "LinkedField",
-        "name": "createInvite",
+        "name": "deleteInvite",
         "plural": false,
         "selections": [
           {
@@ -105,7 +113,8 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v4/*: any*/)
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -123,14 +132,14 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "NavInsertInviteMutation",
+    "name": "NavDeleteInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "CreateInvitePayload",
+        "concreteType": "DeleteInvitePayload",
         "kind": "LinkedField",
-        "name": "createInvite",
+        "name": "deleteInvite",
         "plural": false,
         "selections": [
           {
@@ -142,37 +151,26 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "kind": "ScalarField",
+                "filters": null,
+                "handle": "deleteEdge",
+                "key": "",
+                "kind": "ScalarHandle",
                 "name": "id",
-                "storageKey": null
-              }
+                "handleArgs": [
+                  {
+                    "kind": "Variable",
+                    "name": "connections",
+                    "variableName": "connections"
+                  }
+                ]
+              },
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "filters": null,
-            "handle": "appendNode",
-            "key": "",
-            "kind": "LinkedHandle",
-            "name": "invite",
-            "handleArgs": [
-              {
-                "kind": "Variable",
-                "name": "connections",
-                "variableName": "connections"
-              },
-              {
-                "kind": "Literal",
-                "name": "edgeTypeName",
-                "value": "InvitesEdge"
-              }
-            ]
           }
         ],
         "storageKey": null
@@ -180,16 +178,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "20577d72588d17d2346ef976537f8138",
+    "cacheID": "3a1ff0f8241106c24fab66044346d178",
     "id": null,
     "metadata": {},
-    "name": "NavInsertInviteMutation",
+    "name": "NavDeleteInviteMutation",
     "operationKind": "mutation",
-    "text": "mutation NavInsertInviteMutation(\n  $input: CreateInviteInput!\n) {\n  createInvite(input: $input) {\n    invite {\n      organizationId\n      email\n      id\n    }\n  }\n}\n"
+    "text": "mutation NavDeleteInviteMutation(\n  $input: DeleteInviteInput!\n) {\n  deleteInvite(input: $input) {\n    invite {\n      id\n      organizationId\n      email\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = 'f0d5d55840dbdcf9211011f8ec35b161';
+(node/*: any*/).hash = 'fcab9aa7afda09c58cf1882e6b330924';
 
 module.exports = node;

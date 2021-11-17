@@ -34,7 +34,6 @@ export default NextAuth({
                     await pool.query(`DELETE FROM user_config WHERE user_id=$1`, [message.id])
                     await pool.query(`INSERT INTO public.user_config(default_organization, user_id) VALUES($1,$2)`, [organizationRes.rows[0]['organization_id'], message.id]);
                 }
-
             }
             // create organization for user
             var slug = crypto.randomBytes(20).toString('hex');
@@ -60,6 +59,8 @@ export default NextAuth({
                     await pool.query(`DELETE FROM user_config WHERE user_id=$1`, [organizationRes.rows[0]['user_id']])
                     await pool.query(`INSERT INTO public.user_config(default_organization, user_id) VALUES($1,$2)`, [organizationRes.rows[0]['organization_id'], organizationRes.rows[0]['user_id']]);
                 }
+                // clear out invite, all added
+                await pool.query(`DELETE FROM invite WHERE email=$1`, [message.user.email])
             }
         }
     }

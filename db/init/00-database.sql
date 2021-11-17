@@ -1,6 +1,8 @@
 \connect smooms;
 
 -- nextauth
+comment on table accounts is
+  E'@omit all';
 
 CREATE TABLE accounts
   (
@@ -30,6 +32,9 @@ CREATE TABLE sessions
     PRIMARY KEY (id)
   );
 
+  comment on table sessions is
+  E'@omit all';
+
 CREATE TABLE users
   (
     id             SERIAL,
@@ -42,6 +47,9 @@ CREATE TABLE users
     PRIMARY KEY (id)
   );
 
+comment on table users is
+  E'@omit all';
+
 CREATE TABLE verification_requests
   (
     id         SERIAL,
@@ -52,6 +60,9 @@ CREATE TABLE verification_requests
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
   );
+
+comment on table verification_requests is
+  E'@omit all';
 
 CREATE UNIQUE INDEX compound_id
   ON accounts(compound_id);
@@ -214,6 +225,29 @@ CREATE POLICY select_if_organization
       FROM sessions     
       WHERE sessions.session_token = current_user_id()));
 
+CREATE FUNCTION organization_owner()
+RETURNS SETOF int AS $$
+  SELECT organization.id
+  FROM organization
+  INNER JOIN sessions ON (sessions.user_id = organization.user_id)
+  WHERE sessions.session_token = current_user_id()
+$$ LANGUAGE sql STABLE
+SECURITY DEFINER; -- Bypass RLS
+
+CREATE POLICY select_if_organization_owner
+  on organization_user
+  for select 
+  USING ( organization_user.organization_id IN (
+    SELECT organization_owner()
+  ));
+
+CREATE POLICY delete_if_organization_owner
+  on organization_user
+  for delete 
+  USING ( organization_user.organization_id IN (
+    SELECT organization_owner()
+  ));
+
 -- needed for dropdown, to get slug
 
 CREATE POLICY select_if_organization_invited
@@ -243,6 +277,11 @@ CREATE POLICY select_if_server
 
 CREATE POLICY insert_if_server
   ON organization_user
+  FOR INSERT
+  WITH CHECK ( (SELECT current_user_id() = 'server'));
+
+CREATE POLICY insert_if_server
+  ON user_config
   FOR INSERT
   WITH CHECK ( (SELECT current_user_id() = 'server'));
 
@@ -571,8 +610,6 @@ create policy select_if_author
   for select 
   using (config_category.user_id IN (SELECT user_id FROM sessions WHERE sessions.session_token = current_user_id()));
 
-
-
 -- categoryIds Int[], sort Int[]
 
 CREATE FUNCTION public.sort_category(category_ids integer[], sort integer[])
@@ -600,5 +637,19 @@ CREATE FUNCTION public.create_invite(organization_id Int, email text)
 RETURNS public.invite
 AS $$
   INSERT INTO invite(organization_id, email) VALUES($1, $2)
+  RETURNING *;                                                      
+$$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.delete_organization_user(organization_id Int, user_id Int)
+RETURNS public.organization_user
+AS $$
+  DELETE FROM organization_user WHERE organization_id=$1 AND user_id=$2 AND user_id NOT IN (SELECT user_id FROM sessions WHERE session_token = current_user_id())
+  RETURNING *;                                                      
+$$ LANGUAGE sql VOLATILE STRICT;
+
+CREATE FUNCTION public.delete_invite(organization_id Int, email text)
+RETURNS public.invite
+AS $$
+  DELETE FROM invite WHERE organization_id=$1 AND email=$2
   RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;

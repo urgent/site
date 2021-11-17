@@ -17,6 +17,7 @@ export default async (req, res) => {
 
     const params = {
         email: String(email),
+        name: '',
         callbackUrl: `${process.env.FRONT_URL}/`,  // http://localhost:3000/
         csrfToken: String(GetCSRFResponse.data.csrfToken), // this comes from the upper example
         json: 'true'

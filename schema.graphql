@@ -241,7 +241,7 @@ type Query implements Node {
     after: Cursor
 
     """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [NATURAL]
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -370,6 +370,7 @@ type Query implements Node {
   inviteByRowId(rowId: Int!): Invite
   messageByRowId(rowId: Int!): Message
   organizationByRowId(rowId: Int!): Organization
+  organizationUserByRowId(rowId: Int!): OrganizationUser
   sessionByRowId(rowId: Int!): Session
   tagByRowId(rowId: Int!): Tag
   userConfigByRowId(rowId: Int!): UserConfig
@@ -377,6 +378,25 @@ type Query implements Node {
   userByRowId(rowId: Int!): User
   verificationRequestByRowId(rowId: Int!): VerificationRequest
   currentUserId: String
+  organizationOwner(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): OrganizationOwnerConnection
 
   """Reads a single `Account` using its globally unique `ID`."""
   account(
@@ -417,6 +437,14 @@ type Query implements Node {
     """
     id: ID!
   ): Organization
+
+  """Reads a single `OrganizationUser` using its globally unique `ID`."""
+  organizationUser(
+    """
+    The globally unique `ID` to be used in selecting a single `OrganizationUser`.
+    """
+    id: ID!
+  ): OrganizationUser
 
   """Reads a single `Session` using its globally unique `ID`."""
   session(
@@ -805,7 +833,7 @@ type Organization implements Node {
     after: Cursor
 
     """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [NATURAL]
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -935,7 +963,7 @@ type User implements Node {
     after: Cursor
 
     """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [NATURAL]
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -1078,9 +1106,14 @@ type OrganizationUsersConnection {
   totalCount: Int!
 }
 
-type OrganizationUser {
+type OrganizationUser implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
   organizationId: Int!
   userId: Int!
+  rowId: Int!
 
   """
   Reads a single `Organization` that is related to this `OrganizationUser`.
@@ -1107,6 +1140,10 @@ enum OrganizationUsersOrderBy {
   ORGANIZATION_ID_DESC
   USER_ID_ASC
   USER_ID_DESC
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """
@@ -1119,6 +1156,9 @@ input OrganizationUserCondition {
 
   """Checks for equality with the object’s `userId` field."""
   userId: Int
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
 }
 
 type UserConfig implements Node {
@@ -1803,6 +1843,29 @@ input VerificationRequestCondition {
   updatedAt: Datetime
 }
 
+"""A connection to a list of `Int` values."""
+type OrganizationOwnerConnection {
+  """A list of `Int` objects."""
+  nodes: [Int]!
+
+  """
+  A list of edges which contains the `Int` and cursor to aid in pagination.
+  """
+  edges: [OrganizationOwnerEdge!]!
+
+  """The count of *all* `Int` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Int` edge in the connection."""
+type OrganizationOwnerEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Int` at the end of the edge."""
+  node: Int
+}
+
 """
 The root mutation type which contains root level fields which mutate data.
 """
@@ -1861,6 +1924,12 @@ type Mutation {
     """
     input: DeleteCategoryInput!
   ): DeleteCategoryPayload
+  deleteInvite(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteInviteInput!
+  ): DeleteInvitePayload
   deleteMessage(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -1873,6 +1942,12 @@ type Mutation {
     """
     input: DeleteMessageTagInput!
   ): DeleteMessageTagPayload
+  deleteOrganizationUser(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteOrganizationUserInput!
+  ): DeleteOrganizationUserPayload
   deleteTag(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2111,7 +2186,7 @@ type CreateOrganizationUserPayload {
   """An edge for our `OrganizationUser`. May be used by Relay 1."""
   organizationUserEdge(
     """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [NATURAL]
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
   ): OrganizationUsersEdge
 }
 
@@ -2232,6 +2307,41 @@ input DeleteCategoryInput {
   categoryId: Int!
 }
 
+"""The output of our `deleteInvite` mutation."""
+type DeleteInvitePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  invite: Invite
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """Reads a single `Organization` that is related to this `Invite`."""
+  organizationByOrganizationId: Organization
+
+  """An edge for our `Invite`. May be used by Relay 1."""
+  inviteEdge(
+    """The method to use when ordering `Invite`."""
+    orderBy: [InvitesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): InvitesEdge
+}
+
+"""All input for the `deleteInvite` mutation."""
+input DeleteInviteInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  organizationId: Int!
+  email: String!
+}
+
 """The output of our `deleteMessage` mutation."""
 type DeleteMessagePayload {
   """
@@ -2304,6 +2414,46 @@ input DeleteMessageTagInput {
   """
   clientMutationId: String
   tagId: Int!
+}
+
+"""The output of our `deleteOrganizationUser` mutation."""
+type DeleteOrganizationUserPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  organizationUser: OrganizationUser
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """
+  Reads a single `Organization` that is related to this `OrganizationUser`.
+  """
+  organizationByOrganizationId: Organization
+
+  """Reads a single `User` that is related to this `OrganizationUser`."""
+  userByUserId: User
+
+  """An edge for our `OrganizationUser`. May be used by Relay 1."""
+  organizationUserEdge(
+    """The method to use when ordering `OrganizationUser`."""
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
+  ): OrganizationUsersEdge
+}
+
+"""All input for the `deleteOrganizationUser` mutation."""
+input DeleteOrganizationUserInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+  organizationId: Int!
+  userId: Int!
 }
 
 """The output of our `deleteTag` mutation."""

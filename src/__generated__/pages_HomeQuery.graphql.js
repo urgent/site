@@ -39,9 +39,9 @@ fragment NavFragment_invite on Query {
   allInvites {
     edges {
       node {
+        id
         organizationId
         email
-        id
       }
     }
   }
@@ -51,6 +51,7 @@ fragment NavFragment_organization on Query {
   allOrganizationUsers {
     edges {
       node {
+        userId
         userByUserId {
           email
           id
@@ -64,6 +65,7 @@ fragment NavFragment_organization on Query {
           }
           id
         }
+        id
       }
     }
   }
@@ -299,6 +301,13 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "userId",
+                    "storageKey": null
+                  },
                   (v2/*: any*/),
                   {
                     "alias": null,
@@ -320,7 +329,8 @@ return {
                       (v1/*: any*/)
                     ],
                     "storageKey": null
-                  }
+                  },
+                  (v1/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -641,9 +651,9 @@ return {
                 "name": "node",
                 "plural": false,
                 "selections": [
+                  (v1/*: any*/),
                   (v7/*: any*/),
-                  (v0/*: any*/),
-                  (v1/*: any*/)
+                  (v0/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -657,12 +667,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "581724d20d6fc2acd1d456cbb8c0f686",
+    "cacheID": "b23c09e6e6c5ad8d81850df81af8ce71",
     "id": null,
     "metadata": {},
     "name": "pages_HomeQuery",
     "operationKind": "query",
-    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n  ...NavFragment_invite\n}\n\nfragment NavFragment_invite on Query {\n  allInvites {\n    edges {\n      node {\n        organizationId\n        email\n        id\n      }\n    }\n  }\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query pages_HomeQuery {\n  ...NavFragment_organization\n  ...NavFragment_userConfig\n  ...useSidebarFragment_messages\n  ...TilesFragment_messages\n  ...useSidebarFragment\n  ...NavFragment_invite\n}\n\nfragment NavFragment_invite on Query {\n  allInvites {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment NavFragment_organization on Query {\n  allOrganizationUsers {\n    edges {\n      node {\n        userId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment NavFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n\nfragment TilesFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        rowId\n        content\n        organizationId\n        messageTagsByMessageId {\n          edges {\n            node {\n              tagId\n              messageId\n              tagByTagId {\n                rowId\n                name\n                categoryByCategoryId {\n                  color\n                  id\n                }\n                id\n              }\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment on Query {\n  allCategories {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment useSidebarFragment_messages on Query {\n  allMessages {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
