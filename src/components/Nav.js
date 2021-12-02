@@ -232,7 +232,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                             return edge.node?.hasOwnProperty('organizationByOrganizationId')
                         }).map((edge) => {
                             const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                            return <option key={rowId} value={rowId} defaultValue={organization}>{slug}</option>
+                            return <option key={rowId} value={rowId} defaultValue={organization} bg={"black"}>{slug}</option>
                         })}
                     </Select>
                 </Flex>
