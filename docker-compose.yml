@@ -5,11 +5,5 @@ services:
     volumes:
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
-  graphql:
-    image: smooms-graphql
-    build:
-      context: ./graphql
-    env_file:
-      - ./.env
   ci:
     build: ./ci

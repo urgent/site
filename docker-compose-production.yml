@@ -23,6 +23,11 @@ services:
         awslogs-region: us-east-2
         awslogs-group: traefik
   graphql_blue:
+    image: smooms-graphql
+    build:
+      context: ./graphql
+    env_file:
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.http.services.graphql_blue.loadbalancer.server.port=5433
@@ -35,6 +40,11 @@ services:
         awslogs-region: us-east-2
         awslogs-group: graphql_blue
   graphql_green:
+    image: smooms-graphql
+    build:
+      context: ./graphql
+    env_file:
+      - ./.env
     labels:
       - traefik.enable=true
       - traefik.http.services.graphql_green.loadbalancer.server.port=5433
