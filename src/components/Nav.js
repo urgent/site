@@ -7,7 +7,6 @@ import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRe
 import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
-import P from 'pino';
 
 const gridButtonStyle = {
     color: "white",
