@@ -22,18 +22,30 @@ services:
       options:
         awslogs-region: us-east-2
         awslogs-group: traefik
-  graphql:
+  graphql_blue:
     labels:
       - traefik.enable=true
-      - traefik.http.services.graphql.loadbalancer.server.port=5433
-      - traefik.http.routers.graphql.rule=Host(`app.align.company`)
-      - traefik.http.routers.graphql.tls.certresolver=le
-      - traefik.http.routers.graphql.entrypoints=graphile
+      - traefik.http.services.graphql_blue.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql_blue.rule=Host(`app.align.company`)
+      - traefik.http.routers.graphql_blue.tls.certresolver=le
+      - traefik.http.routers.graphql_blue.entrypoints=graphile
     logging:
       driver: awslogs
       options:
         awslogs-region: us-east-2
-        awslogs-group: graphql
+        awslogs-group: graphql_blue
+  graphql_green:
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.graphql_green.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql_green.rule=Host(`app.align.company`)
+      - traefik.http.routers.graphql_green.tls.certresolver=le
+      - traefik.http.routers.graphql_green.entrypoints=graphile
+    logging:
+      driver: awslogs
+      options:
+        awslogs-region: us-east-2
+        awslogs-group: graphql_green
   nextjs_blue:
     build: .
     labels:
