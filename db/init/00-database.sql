@@ -653,3 +653,5 @@ AS $$
   DELETE FROM invite WHERE organization_id=$1 AND email=$2
   RETURNING *;                                                      
 $$ LANGUAGE sql VOLATILE STRICT;
+
+ALTER TABLE organization_user ADD COLUMN id SERIAL PRIMARY KEY;
