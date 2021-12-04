@@ -71,13 +71,14 @@ const DeleteInviteMutation = graphql`
   }
 `;
 
-const organizationFragment = graphql`
-  fragment NavFragment_organization on Query {
+const organizationUsersFragment = graphql`
+  fragment NavFragment_organizationUsers on Query {
     allOrganizationUsers {
       __id
       edges {
         node {
           userId
+          organizationId
           userByUserId {
             email
           }
@@ -93,6 +94,19 @@ const organizationFragment = graphql`
     }
   }
 `;
+
+const organizationFragment = graphql`
+    fragment NavFragment_organization on Query {
+        allOrganizations {
+            edges {
+                node {
+                    rowId
+                    slug
+                }
+            }
+        }
+    }
+`
 
 const inviteFragment = graphql`
   fragment NavFragment_invite on Query {
@@ -130,6 +144,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
     const [isInvitePending, insertInvite] = useMutation(InsertInviteMutation)
     const [isDeleteOrgUserPending, deleteOrgUser] = useMutation(DeleteOrganizationUserMutation)
     const [isDeleteInvitePending, deleteInvite] = useMutation(DeleteInviteMutation)
+    const organizationUsers = useFragment(organizationUsersFragment, query);
     const organizations = useFragment(organizationFragment, query);
     const invites = useFragment(inviteFragment, query);
 
@@ -139,13 +154,13 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
         if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
             focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
         } else {
-            focusOrganization(organizations.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
+            focusOrganization(organizationUsers.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
         }
     }
 
 
     function sendEmail(email) {
-        const slug = organizations.allOrganizationUsers.edges[0].node.organizationByOrganizationId.slug;
+        const slug = organizationUsers.allOrganizationUsers.edges[0].node.organizationByOrganizationId.slug;
         return fetch('/api/invite', {
             method: 'POST', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -182,7 +197,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     organizationId: organization,
                     userId,
                 },
-                connections: [organizations.allOrganizationUsers.__id]
+                connections: [organizationUsers.allOrganizationUsers.__id]
             }
         })
     }
@@ -224,15 +239,14 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                             focusOrganization(parseInt(e.target.value));
                         }}
                         width='200px'
-                        bgColor='black'
+                        bg='black'
                         color="white"
                         borderRadius="20"
+                        value={organization}
                     >
-                        {organizations.allOrganizationUsers?.edges?.filter((edge) => {
-                            return edge.node?.hasOwnProperty('organizationByOrganizationId')
-                        }).map((edge) => {
-                            const { rowId, slug } = edge.node?.organizationByOrganizationId;
-                            return <option key={rowId} value={rowId} defaultValue={organization} bg={"black"}>{slug}</option>
+                        {organizations.allOrganizations?.edges?.map((edge) => {
+                            const { rowId, slug } = edge.node;
+                            return <option key={rowId} value={rowId} defaultValue={organization} style={{ backgroundColor: "black" }}>{slug}</option>
                         })}
                     </Select>
                 </Flex>
@@ -246,7 +260,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     gap={6}
                     mb="5"
                 >
-                    <Box>{organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
+                    <Box>{organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
                 </Grid>
 
                 <Divider orientation="horizontal" />
@@ -260,8 +274,8 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     mb="5"
                 >
                     {invites.allInvites?.edges?.filter((edge) => {
-                        // do not show user's own invite
-                        return edge.node.email !== organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email
+                        // do not show user's own invite, and show only focused organization
+                        return (edge.node.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
                     }).map((edge) => {
                         return (
                             <span key={edge.node.email}>
@@ -271,9 +285,9 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                             </span>
                         )
                     })}
-                    {organizations.allOrganizationUsers?.edges?.filter((edge) => {
+                    {organizationUsers.allOrganizationUsers?.edges?.filter((edge) => {
                         // do not show user's own organization entry
-                        return edge.node.userByUserId.email !== organizations.allOrganizationUsers.edges[0]?.node.userByUserId?.email
+                        return (edge.node.userByUserId.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
                     }).map((edge) => {
                         return (
                             <span key={edge.node.organizationByOrganizationId.slug}>

@@ -12,23 +12,13 @@ import type { FragmentReference } from "relay-runtime";
 declare export opaque type NavFragment_organization$ref: FragmentReference;
 declare export opaque type NavFragment_organization$fragmentType: NavFragment_organization$ref;
 export type NavFragment_organization = {|
-  +allOrganizationUsers: ?{|
-    +__id: string,
+  +allOrganizations: ?{|
     +edges: $ReadOnlyArray<{|
       +node: ?{|
-        +userId: number,
-        +userByUserId: ?{|
-          +email: ?string
-        |},
-        +organizationByOrganizationId: ?{|
-          +rowId: number,
-          +slug: ?string,
-          +userByUserId: ?{|
-            +email: ?string
-          |},
-        |},
+        +rowId: number,
+        +slug: ?string,
       |}
-    |}>,
+    |}>
   |},
   +$refType: NavFragment_organization$ref,
 |};
@@ -41,26 +31,7 @@ export type NavFragment_organization$key = {
 */
 
 
-const node/*: ReaderFragment*/ = (function(){
-var v0 = {
-  "alias": null,
-  "args": null,
-  "concreteType": "User",
-  "kind": "LinkedField",
-  "name": "userByUserId",
-  "plural": false,
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "email",
-      "storageKey": null
-    }
-  ],
-  "storageKey": null
-};
-return {
+const node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -69,15 +40,15 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": "OrganizationUsersConnection",
+      "concreteType": "OrganizationsConnection",
       "kind": "LinkedField",
-      "name": "allOrganizationUsers",
+      "name": "allOrganizations",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "OrganizationUsersEdge",
+          "concreteType": "OrganizationsEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -85,7 +56,7 @@ return {
             {
               "alias": null,
               "args": null,
-              "concreteType": "OrganizationUser",
+              "concreteType": "Organization",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -94,34 +65,14 @@ return {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "userId",
+                  "name": "rowId",
                   "storageKey": null
                 },
-                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
-                  "concreteType": "Organization",
-                  "kind": "LinkedField",
-                  "name": "organizationByOrganizationId",
-                  "plural": false,
-                  "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "rowId",
-                      "storageKey": null
-                    },
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "slug",
-                      "storageKey": null
-                    },
-                    (v0/*: any*/)
-                  ],
+                  "kind": "ScalarField",
+                  "name": "slug",
                   "storageKey": null
                 }
               ],
@@ -129,18 +80,6 @@ return {
             }
           ],
           "storageKey": null
-        },
-        {
-          "kind": "ClientExtension",
-          "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "__id",
-              "storageKey": null
-            }
-          ]
         }
       ],
       "storageKey": null
@@ -149,8 +88,7 @@ return {
   "type": "Query",
   "abstractKey": null
 };
-})();
 // prettier-ignore
-(node/*: any*/).hash = '69699072baee9d4ba7c2b32f4361a25f';
+(node/*: any*/).hash = 'd3072876c7e88137c81479dd074cabba';
 
 module.exports = node;

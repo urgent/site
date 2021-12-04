@@ -10,6 +10,7 @@ import { Grid, Box } from '@chakra-ui/react'
 const HomeQuery = graphql`
   query pages_HomeQuery {
     ...NavFragment_organization
+    ...NavFragment_organizationUsers
     ...NavFragment_userConfig
     ...useSidebarFragment_messages
     ...TilesFragment_messages
