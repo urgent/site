@@ -4,7 +4,7 @@ import { Grid, GridItem, Heading, Divider, Flex, Spacer } from "@chakra-ui/react
 import { graphql, useFragment } from 'react-relay/hooks';
 import useMutation from './useMutation'
 import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRemove, HiChartBar, HiOutlineUserAdd } from 'react-icons/hi';
-import { FiLayers, FiLayout, FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
+import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
 
