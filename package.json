@@ -38,6 +38,7 @@
     "react-icons": "^4.2.0",
     "react-relay": "^11.0.2",
     "relay-nextjs": "^0.1.2",
+    "stripe": "^8.191.0",
     "zustand": "^3.5.7"
   },
   "devDependencies": {
