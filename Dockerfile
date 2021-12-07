@@ -4,7 +4,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 COPY package.json /app
 COPY . .
-RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
+RUN npm install && npm build
 ENV NODE_ENV production
 ENV NODE_OPTIONS=--openssl-legacy-provider
 RUN addgroup -g 1001 -S nodejs
