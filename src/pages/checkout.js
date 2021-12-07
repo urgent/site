@@ -1,7 +1,3 @@
-import { NextPage } from 'next';
-import { Stripe, loadStripe } from '@stripe/stripe-js';
-
-
 const handleSubmit = async (e) => {
     e.preventDefault();
     // Create a Checkout Session.
@@ -31,14 +27,12 @@ const handleSubmit = async (e) => {
 
 const DonatePage = () => {
     return (
-        <Layout title="Donate with Checkout | Next.js + TypeScript Example">
-            <div className="page-container">
-                <h1>Donate with Checkout</h1>
-                <p>Donate to our project 💖</p>
-                <form onSubmit={handleSubmit}>
-                </form>
-            </div>
-        </Layout>
+        <div className="page-container">
+            <h1>Donate with Checkout</h1>
+            <p>Donate to our project 💖</p>
+            <form onSubmit={handleSubmit}>
+            </form>
+        </div>
     );
 };
 
