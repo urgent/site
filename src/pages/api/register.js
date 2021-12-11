@@ -12,11 +12,11 @@ export default async function handler(req, res) {
                     quantity: 1
                 },
             ],
-            success_url: "http://localhost:3000/success.html",
-            cancel_url: "http://localhost:3000/cancel.html",
+            success_url: "http://localhost:3000/success",
+            cancel_url: "http://localhost:3000/cancel",
         });
         res.status(200).json(session)
     } catch (e) {
-        res.status(200).json(e)
+        res.status(500).json(e)
     }
 }

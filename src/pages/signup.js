@@ -1,8 +1,21 @@
 import { Form, Field } from 'react-final-form'
 import { Box, Grid, GridItem, Image, Heading, Button, FormLabel, FormErrorMessage, FormHelperText } from '@chakra-ui/react'
 
-function onSubmit(values) {
-    return console.log(values);
+async function onSubmit(values) {
+    const response = await fetch('/api/register', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: JSON.stringify(values) // body data type must match "Content-Type" header
+    });
+    const { url } = await response.json();
+    window.location = url;
 }
 
 function validate() {
