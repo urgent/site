@@ -12,11 +12,11 @@ export default async function handler(req, res) {
                     quantity: 1
                 },
             ],
-            success_url: "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/cancel",
+            success_url: `${process.env.FRONT_URL}/api/success`,
+            cancel_url: `${process.env.FRONT_URL}/api/cancel`,
         });
         res.status(200).json(session)
     } catch (e) {
-        res.status(500).json(e)
+        res.status(500).json({ message: e.message })
     }
 }

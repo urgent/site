@@ -1,5 +1,6 @@
 import { Form, Field } from 'react-final-form'
 import { Box, Grid, GridItem, Image, Heading, Button, FormLabel, FormErrorMessage, FormHelperText } from '@chakra-ui/react'
+import { loadStripe } from '@stripe/stripe-js'
 
 async function onSubmit(values) {
     const response = await fetch('/api/register', {
@@ -14,8 +15,26 @@ async function onSubmit(values) {
         referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
         body: JSON.stringify(values) // body data type must match "Content-Type" header
     });
-    const { url } = await response.json();
-    window.location = url;
+
+    if (response.statusCode === 500) {
+        console.error(response.message);
+        return;
+    }
+
+
+    const stripe = await loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
+    const { id } = await response.json();
+
+    const { error } = await stripe.redirectToCheckout({
+        // Make the id field from the Checkout Session creation API response
+        // available to this file, so you can provide it as parameter here
+        // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+        sessionId: id,
+    });
+    // If `redirectToCheckout` fails due to a browser or network
+    // error, display the localized error message to your customer
+    // using `error.message`.
+    console.warn(error.message);
 }
 
 function validate() {
