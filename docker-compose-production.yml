@@ -61,7 +61,7 @@ services:
     labels:
       - traefik.enable=true
       - traefik.http.services.nextjs_blue.loadbalancer.server.port=3000
-      - traefik.http.routers.nextjs_blue.rule=Host(`app.align.company`)
+      - traefik.http.routers.nextjs_blue.rule=Host(`app.align.company`, `blue.align.company`)
       - traefik.http.routers.nextjs_blue.tls.certresolver=le
       - traefik.http.routers.nextjs_blue.entrypoints=websecure
     logging:
