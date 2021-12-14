@@ -1,4 +1,8 @@
 import Cors from 'micro-cors';
+import Stripe from 'stripe'
+import { buffer } from 'micro'
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const cors = Cors({
     allowMethods: ['POST', 'HEAD'],
@@ -15,9 +19,8 @@ export const config = {
 
 const webhookHandler = async (req, res) => {
     if (req.method === 'POST') {
-        const buf = await buffer(req);
-        const sig = req.headers['stripe-signature']
-            ;
+        const buf = await buffer(req)
+        const sig = req.headers['stripe-signature'];
         let event;
 
         try {
@@ -30,7 +33,11 @@ const webhookHandler = async (req, res) => {
         }
 
         // Successfully constructed event
+        res.status(200).send('ack')
         console.log('✅ Success:', event.id)
+
+    } else {
+        res.status(400).send('Restricted')
     }
 }
 export default cors(webhookHandler);
