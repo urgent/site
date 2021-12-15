@@ -60,3 +60,6 @@ app/
 letsencrypt/
 
 cypress.env.json
+
+migrate-backup.sql
+migrate-local-backup.sql
