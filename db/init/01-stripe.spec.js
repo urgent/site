@@ -3,7 +3,13 @@ import { Pool } from 'pg';
 describe('db smoke test', () => {
     let pool;
     beforeAll(() => {
-        pool = new Pool()
+        pool = new Pool({
+            user: process.env.POSTGRES_USER,
+            host: 'localhost',
+            database: 'smooms',
+            password: process.env.POSTGRES_PASSWORD,
+            port: 5432,
+        })
     });
     afterAll(async () => {
         await pool.end();

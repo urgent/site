@@ -9,6 +9,4 @@ CREATE TABLE stripe (
     email TEXT NOT NULL
 );
 
-CREATE POLICY 
-
-COMMIT;
+COMMIT
