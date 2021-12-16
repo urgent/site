@@ -1,9 +1,5 @@
 \connect smooms;
 
--- nextauth
-comment on table accounts is
-  E'@omit all';
-
 CREATE TABLE accounts
   (
     id                   SERIAL,
@@ -19,6 +15,10 @@ CREATE TABLE accounts
     updated_at           TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id)
   );
+
+-- nextauth
+comment on table accounts is
+  E'@omit all';
 
 CREATE TABLE sessions
   (

@@ -26,7 +26,7 @@ services:
     build:
       context: ./db
     volumes:
-      - db:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/v12/data
     env_file:
       - ./.env
     ports:
