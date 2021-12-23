@@ -241,6 +241,13 @@ CREATE POLICY select_if_organization_owner
     SELECT organization_owner()
   ));
 
+CREATE POLICY insert_if_organization_owner
+  on organization_user
+  for insert 
+  WITH CHECK ( organization_user.organization_id IN (
+    SELECT organization_owner()
+  ));
+
 CREATE POLICY delete_if_organization_owner
   on organization_user
   for delete 
@@ -321,6 +328,10 @@ create policy delete_if_author
   for delete
   using (message.organization_id IN (SELECT organization_id FROM organization_user INNER JOIN sessions ON (sessions.user_id = organization_user.user_id) WHERE sessions.session_token = current_user_id()));
 
+create policy select_if_author
+  on message
+  for select
+  using (message.organization_id IN (SELECT organization.id FROM organization INNER JOIN sessions ON (sessions.user_id = organization.user_id) WHERE sessions.session_token = current_user_id()));
 
 -- RLS category
 
