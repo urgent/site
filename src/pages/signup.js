@@ -51,7 +51,7 @@ export default function Signup() {
             gridRow="nav"
             bg={"primary.400"}
         >
-            <Image src="/images/align-white-icon.svg" ml={4} height={12} />
+            <Image src="/images/align3_webclip.png" ml={4} height={12} />
 
         </GridItem>
         <GridItem
