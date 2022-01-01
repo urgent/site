@@ -4,7 +4,7 @@ const test_username = 'stripe_unit_test'
 
 describe('db smoke test', () => {
     let pool;
-    beforeAll(() => {
+    beforeAll(async () => {
         pool = new Pool({
             user: process.env.POSTGRES_USER,
             host: 'localhost',
@@ -58,9 +58,11 @@ describe('stripe policies', () => {
         user = userRes.rows[0]['id']
         // create session for user
         await admin.query(`INSERT INTO sessions(user_id, expires, session_token, access_token) SELECT ${user}, NOW() + INTERVAL '1 hour', 'test12@test', 'test12@test'`);
-        // create org for user
+        // create org for user, messages are by organization
         const orgRes = await admin.query(`INSERT INTO organization(user_id, slug) SELECT ${user}, 'stripe_unit test' RETURNING organization.id`);
         org = orgRes.rows[0]['id']
+        // create organizatin_user record for user. Needed for stripe RLS
+        await admin.query(`INSERT INTO organization_user(organization_id, user_id) VALUES($1,$2)`, [org, user]);
         // add messages
         await admin.query(`INSERT INTO message(organization_id, content) SELECT ${org}, 'stripe_unit test'`);
         // set config session token
@@ -73,6 +75,7 @@ describe('stripe policies', () => {
     afterAll(async (done) => {
         // delete test user and sessions
         await admin.query(`DELETE FROM users WHERE name='${test_username}'`);
+        await admin.query(`DELETE FROM users WHERE name='${test_username}2'`);
         await admin.query(`DELETE FROM sessions WHERE access_token='test12@test'`);
         await admin.query(`DELETE FROM organization WHERE id='${org}'`);
         await admin.query(`DELETE FROM message WHERE organization_id='${org}'`)
@@ -91,6 +94,7 @@ describe('stripe policies', () => {
     })
 
     test('no select messages if no payment', async () => {
+        await pool.query(`SELECT * FROM stripe`);
         const organizationRes = await pool.query(`SELECT * FROM message users WHERE organization_id='${org}'`);
         expect(organizationRes.rows.length).toBe(0)
     })
@@ -103,7 +107,8 @@ describe('stripe policies', () => {
         const adminRes = await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 1, '${user}', '${test_username}' RETURNING amount, user_id`);
         expect(adminRes.rows[0]['user_id']).toBe(user);
         expect(adminRes.rows[0]['amount']).toBe('$1.00')
-        await expect(async () => await pool.query(`DELETE FROM stripe WHERE user_id='${user}' RETURNING id`)).rejects.toThrow();
+        const delRes = await pool.query(`DELETE FROM stripe WHERE user_id='${user}' RETURNING id`);
+        expect(delRes.rowCount).toEqual(0)
         await expect(async () => await pool.query(`UPDATE stripe SET created_at=created_at+ + INTERVAL '1 hour' WHERE user_id='${user}' RETURNING id`)).rejects.toThrow();
         await expect(async () => await pool.query(`SELECT * FROM stripe WHERE user_id='${user}' RETURNING id`)).rejects.toThrow();
         await expect(async () => await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 1, '${user}', '${test_username}' RETURNING amount, user_id`)).rejects.toThrow();
@@ -117,23 +122,22 @@ describe('stripe policies', () => {
         await pool.query(`INSERT INTO message(organization_id, content) VALUES('${org}', '')`);
         const messageRes = await pool.query(`SELECT id FROM message WHERE organization_id=$1`, [org]);
         expect(messageRes.rows[0]['id']).toBeGreaterThan(10);
-        await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
-        const orgUserRes = await pool.query(`SELECT id FROM organization_user WHERE organization_id=$1 AND user_id=$2`, [org, user]);
-        expect(orgUserRes.rows[0]['id']).toBeGreaterThan(10);
     })
 
     test('payment takes head count', async () => {
-        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 1, $1, $2`, [user, test_username]);
+        // log user in
+        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
+        // no stripe payment fails
+        await expect(async () => await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user])).rejects.toThrow();
+        // need stripe quantity = 2, for user and new organization member
+        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 2, $1, $2`, [user, test_username]);
+        // log user in again, switched pg instances
+        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
         await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
-        const orgUserRes = await pool.query(`SELECT id FROM organization_user WHERE organization_id=$1 AND user_id=$2`, [org, user]);
-        expect(orgUserRes.rows[0]['id']).toBeGreaterThan(10)
-        await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES (${org}, ${1})`);
-        const orgUser2Res = await pool.query(`SELECT id FROM organization_user WHERE organization_id=$1 AND user_id=$2`, [org, 1]);
-        expect(orgUser2Res.rows.length).toBe(0)
-        await admin.query(`DELETE FROM stripe WHERE user_id=${user}`);
-        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id) SELECT NOW(), 2, 2, ${user}`);
-        await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES (${org}, ${1})`);
-        const orgUser3Res = await pool.query(`SELECT id FROM organization_user WHERE organization_id=$1 AND user_id=$2`, [org, 1]);
-        expect(orgUser3Res.rows[0]['id']).toBeGreaterThan(10)
+        // stripe quantity = 3
+        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 3, $1, $2`, [user, test_username]);
+        // log user in again, switched pg instances
+        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
+        await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
     })
 })

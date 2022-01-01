@@ -63,3 +63,4 @@ cypress.env.json
 
 migrate-backup.sql
 migrate-local-backup.sql
+local_backup_rls_debug.sql
