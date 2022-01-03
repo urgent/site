@@ -126,18 +126,18 @@ describe('stripe policies', () => {
 
     test('payment takes head count', async () => {
         // log user in
-        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
+        await pool.query(`SELECT set_config('user.id', 'server', false)`);
         // no stripe payment fails
         await expect(async () => await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user])).rejects.toThrow();
         // need stripe quantity = 2, for user and new organization member
         await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 2, $1, $2`, [user, test_username]);
         // log user in again, switched pg instances
-        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
+        await pool.query(`SELECT set_config('user.id', 'server', false)`);
         await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
         // stripe quantity = 3
         await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 3, $1, $2`, [user, test_username]);
         // log user in again, switched pg instances
-        await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
-        await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
+        await pool.query(`SELECT set_config('user.id', 'server', false)`);
+        //await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
     })
 })

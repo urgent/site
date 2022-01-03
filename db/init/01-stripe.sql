@@ -7,7 +7,7 @@ CREATE TABLE stripe (
     stripe_transaction_date timestamptz NOT NULL,
     amount MONEY NOT NULL,
     quantity INTEGER NOT NULL,
-    email TEXT NOT NULL
+    email TEXT NOT NULL,
     user_id INTEGER NOT NULL
 );
 
@@ -30,6 +30,7 @@ INNER JOIN organization_user ON organization.id = organization_user.organization
 INNER JOIN sessions ON sessions.user_id = organization_user.user_id
 WHERE sessions.session_token = current_user_id()));
 
+--- need stripe payments from organization owner, not organization user
 --- need to go from organization_user.organization_id to organization.user_id to get owner
 --- then organization.user_id to stripe to get payments
 
@@ -85,5 +86,8 @@ CREATE POLICY insert_if_organization_paid
   AS RESTRICTIVE
   FOR INSERT
   WITH CHECK ( organization_user_balance(organization_user.organization_id::int) > 0);
+
+GRANT USAGE, SELECT ON stripe_id_seq TO relay;
+GRANT ALL PRIVILEGES ON stripe TO relay;
 
 COMMIT
