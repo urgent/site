@@ -19,12 +19,15 @@ psql -W -h localhost -p5432 -U smooms_admin -d smooms -c "CREATE USER rdsadmin w
 echo -e "updating local db with remote data\n"
 psql -W -h localhost -p5432 -U smooms_admin -d smooms < migrate-backup.sql
 echo -e "run tests\n"
+read -n 1 -s -r -p "Press any key to continue"
 npm run test
 echo -e "migrate local\n"
 psql -W -h localhost -p5432 -U smooms_admin -d smooms < staging.sql
 echo -e "run tests\n"
+read -n 1 -s -r -p "Press any key to continue"
 npm run test
 echo -e "migrate remotely\n"
 read -n 1 -s -r -p "Press any key to continue"
 echo -e "\n"
-#ssh smooms "psql -h smooms.cojo00b63jgd.us-east-2.rds.amazonaws.com -p 5432 -Usmooms_admin -d postgres" < staging.sql
+scp staging.sql smooms:/home/ubuntu/
+ssh smooms "psql -h smooms.cojo00b63jgd.us-east-2.rds.amazonaws.com -p 5432 -Usmooms_admin -d postgres -f /home/ubuntu/staging.sql; rm /home/ubuntu/staging.sql"

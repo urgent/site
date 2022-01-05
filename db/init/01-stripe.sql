@@ -37,17 +37,11 @@ WHERE sessions.session_token = current_user_id()));
 
 --- no payments today - 1 month, inactivate
 --- do not show messages
-CREATE POLICY select_if_organization_paid
+  CREATE POLICY select_if_organization_paid
   ON message
   AS RESTRICTIVE
   FOR SELECT
-  USING ( message.organization_id IN (
-    SELECT organization_user.organization_id
-    FROM organization_user
-    INNER JOIN stripe
-      ON (stripe.user_id = organization_user.user_id)
-      AND stripe_transaction_date >= NOW() - INTERVAL '30 days'
-  ));
+  USING (organization_user_balance(message.organization_id) >= 0);
 
 --- Count of active users in organization
 CREATE FUNCTION organization_active_seats(organization_id int)
