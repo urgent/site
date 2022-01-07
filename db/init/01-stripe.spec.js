@@ -94,7 +94,6 @@ describe('stripe policies', () => {
     })
 
     test('no select messages if no payment', async () => {
-        await pool.query(`SELECT * FROM stripe`);
         const organizationRes = await pool.query(`SELECT * FROM message users WHERE organization_id='${org}'`);
         expect(organizationRes.rows.length).toBe(0)
     })

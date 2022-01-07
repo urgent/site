@@ -9,9 +9,13 @@ export default async function handler(req, res) {
             line_items: [
                 {
                     price: process.env.STRIPE_PRICE_ID,
-                    quantity: 1
+                    quantity: 1,
                 },
             ],
+            metadata: {
+                user_id: "new",
+                seats: 1
+            },
             success_url: `${process.env.FRONT_URL}/api/success`,
             cancel_url: `${process.env.FRONT_URL}/api/cancel`,
         });

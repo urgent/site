@@ -1,6 +1,26 @@
 import Cors from 'micro-cors';
 import Stripe from 'stripe'
 import { buffer } from 'micro'
+import { Pool } from 'pg';
+
+const pool = new Pool({
+    user: process.env.POSTGRES_USER,
+    host: 'localhost',
+    database: 'smooms',
+    password: process.env.POSTGRES_PASSWORD,
+    port: 5432,
+});
+
+export async function pay(intent) {
+    await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, email, user_id) VALUES(to_timestamp($1), $2, $3, $4, $5)`, [
+        intent.created,
+        intent.data.amount_total,
+        intent.data.metadata.seats,
+        intent.data.customer_email,
+        intent.data.metadata.user_id,
+    ]);
+    pool.end();
+}
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -17,6 +37,8 @@ export const config = {
     },
 }
 
+
+
 const webhookHandler = async (req, res) => {
     if (req.method === 'POST') {
         const buf = await buffer(req)
@@ -32,10 +54,12 @@ const webhookHandler = async (req, res) => {
             return
         }
 
+        // create user id from nextauth
+
         // Successfully constructed event
         res.status(200).send('ack')
+        pay(event)
         console.log('✅ Success:', event.id)
-
     } else {
         res.status(400).send('Restricted')
     }
