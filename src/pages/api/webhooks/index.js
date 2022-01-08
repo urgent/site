@@ -3,15 +3,14 @@ import Stripe from 'stripe'
 import { buffer } from 'micro'
 import { Pool } from 'pg';
 
-const pool = new Pool({
-    user: process.env.POSTGRES_USER,
-    host: 'localhost',
-    database: 'smooms',
-    password: process.env.POSTGRES_PASSWORD,
-    port: 5432,
-});
-
 export async function pay(intent) {
+    const pool = new Pool({
+        user: process.env.POSTGRES_USER,
+        host: 'localhost',
+        database: 'smooms',
+        password: process.env.POSTGRES_PASSWORD,
+        port: 5432,
+    });
     const { created, data } = intent;
     const { amount_total, metadata, customer_email } = data;
     const { seats, user_id } = { ...metadata };
@@ -65,7 +64,7 @@ const webhookHandler = async (req, res) => {
 
         // Successfully constructed event
         res.status(200).send('ack')
-        pay(event)
+
         console.log('✅ Success:', event.id)
     } else {
         res.status(400).send('Restricted')
