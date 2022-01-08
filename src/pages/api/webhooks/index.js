@@ -12,7 +12,7 @@ const pool = new Pool({
 });
 
 export async function pay(intent) {
-    await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, email, user_id) VALUES(to_timestamp($1), $2, $3, $4, $5)`, [
+    const res = await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, email, user_id) VALUES(to_timestamp($1), $2, $3, $4, $5)`, [
         intent.created,
         intent.data.amount_total,
         intent.data.metadata.seats,
@@ -58,7 +58,11 @@ const webhookHandler = async (req, res) => {
 
         // Successfully constructed event
         res.status(200).send('ack')
-        pay(event)
+        try {
+            pay(event)
+        } catch (e) {
+            console.log(e.message)
+        }
         console.log('✅ Success:', event.id)
     } else {
         res.status(400).send('Restricted')
