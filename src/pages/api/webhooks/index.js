@@ -14,7 +14,7 @@ const pool = new Pool({
 export async function pay(intent) {
     const { created, data } = intent;
     const { amount_total, metadata, customer_email } = data;
-    const { seats, user_id } = metadata;
+    const { seats, user_id } = { ...metadata };
     await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, email, user_id) VALUES(to_timestamp($1), $2, $3, $4, $5)`, [
         created,
         amount_total,
