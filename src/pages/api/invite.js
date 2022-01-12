@@ -2,11 +2,7 @@ import qs from 'qs';
 import cookie from 'cookie';
 import axios from 'axios';
 
-export default async (req, res) => {
-    const {
-        body: { email, slug },
-    } = req
-
+export function invite({ email, slug }) {
     // create next-auth user via email provider
     const options = {
         method: 'GET',
@@ -45,6 +41,15 @@ export default async (req, res) => {
     };
 
     const { status } = await axios(signinOptions); // then get the response, in my case I just need to know the status
+    return status;
+}
+
+export default async (req, res) => {
+    const {
+        body: { email, slug },
+    } = req
+
+    const status = invite({ email })
 
     res.status(200).json({ email, slug, status })
 }
