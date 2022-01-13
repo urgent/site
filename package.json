@@ -18,6 +18,8 @@
     "@emotion/react": "^11.4.0",
     "@emotion/styled": "^11.3.0",
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
+    "@loomhq/loom-embed": "^1.2.12",
+    "@loomhq/loom-sdk": "^2.28.1",
     "@stripe/stripe-js": "^1.22.0",
     "axios": "^0.21.1",
     "babel-polyfill": "^6.26.0",

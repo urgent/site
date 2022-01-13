@@ -214,7 +214,6 @@ function DeleteTag({ bg, color, click }) {
         icon={<HiOutlineTrash />}
         color="white"
         bg={bg}
-        color={color}
       ></IconButton>}
     </>
   )

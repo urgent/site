@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Textarea } from "@chakra-ui/react"
 import { graphql } from 'react-relay';
 import useMutation from './useMutation'
@@ -63,6 +63,8 @@ const UpdateMessageMutation = graphql`
     }
 `;
 
+const BUTTON_ID = "loom-sdk-button";
+
 export default function Editor({ tileConnections }) {
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
@@ -74,7 +76,32 @@ export default function Editor({ tileConnections }) {
   const setEditorValue = useStore((state) => state.setEditorValue);
   const editMessage = useStore((state) => state.editMessage);
   const setEditMessage = useStore((state) => state.setEditMessage);
+  const [videoHTML, setVideoHTML] = useState("");
+  useEffect(() => {
+    async function setupLoom() {
+      const { setup } = (await import("@loomhq/loom-sdk"))
+      const { oembed } = (await import("@loomhq/loom-embed"))
 
+      const button = document.getElementById("loom-sdk-button");
+
+      if (!button) {
+        return;
+      }
+
+      const { configureButton } = await setup({
+        publicAppId: 'edc280e5-dc2c-49d5-b72c-38f06fbd8851',
+      });
+
+      const sdkButton = configureButton({ element: button });
+
+      sdkButton.on("insert-click", async (video) => {
+        const { html } = await oembed(video.sharedUrl, { width: 400 });
+        setVideoHTML(html);
+      });
+    }
+
+    setupLoom();
+  }, []);
   // Editor submit
   function onSubmit(event) {
     event.preventDefault();
@@ -113,6 +140,8 @@ export default function Editor({ tileConnections }) {
       <div data-cy="editor"><Textarea value={editorValue} onChange={(e) => setEditorValue(e.target.value)} /></div>
       <br /><br /><br />
       <button data-cy="save" onClick={onSubmit}>Save</button>
+      <button id={BUTTON_ID}>Record</button>
+      <div dangerouslySetInnerHTML={{ __html: videoHTML }}></div>
     </>
   )
 }
