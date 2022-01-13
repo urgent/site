@@ -1,0 +1,3 @@
+BEGIN;
+ALTER TABLE message ADD COLUMN loomSharedUrl TEXT;
+COMMIT;
