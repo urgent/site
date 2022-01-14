@@ -27,4 +27,15 @@ SELECT moved_rows.* FROM moved_rows LEFT JOIN moved_tags ON moved_rows.id = move
 
 $$ LANGUAGE sql VOLATILE STRICT;
 
+DROP FUNCTION update_message;
+
+CREATE FUNCTION public.update_message(id int, content text, loom_share_url TEXT DEFAULT NULL)
+RETURNS setof public.message
+AS $$
+
+  UPDATE public.message SET content=$2, loom_share_url=$3 WHERE id=$1
+  RETURNING *
+
+$$ LANGUAGE sql VOLATILE STRICT;
+
 COMMIT;
