@@ -1249,7 +1249,7 @@ type Message implements Node {
   rowId: Int!
   content: String
   organizationId: Int!
-  loomsharedurl: String
+  loomSharedUrl: String
 
   """Reads a single `Organization` that is related to this `Message`."""
   organizationByOrganizationId: Organization
@@ -1411,8 +1411,8 @@ enum MessagesOrderBy {
   CONTENT_DESC
   ORGANIZATION_ID_ASC
   ORGANIZATION_ID_DESC
-  LOOMSHAREDURL_ASC
-  LOOMSHAREDURL_DESC
+  LOOM_SHARED_URL_ASC
+  LOOM_SHARED_URL_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -1430,8 +1430,8 @@ input MessageCondition {
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
 
-  """Checks for equality with the object’s `loomsharedurl` field."""
-  loomsharedurl: String
+  """Checks for equality with the object’s `loomSharedUrl` field."""
+  loomSharedUrl: String
 }
 
 """A connection to a list of `Tag` values."""
@@ -1788,6 +1788,7 @@ input CreateMessageInput {
   organizationId: Int!
   content: String!
   tags: [Int]!
+  loomSharedUrl: String
 }
 
 """The output of our `createMessageTag` mutation."""
@@ -2282,6 +2283,7 @@ input UpdateMessageInput {
   clientMutationId: String
   id: Int!
   content: String!
+  loomSharedUrl: String
 }
 
 """The output of our `updateTag` mutation."""
