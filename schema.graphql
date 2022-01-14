@@ -17,35 +17,6 @@ type Query implements Node {
     id: ID!
   ): Node
 
-  """Reads and enables pagination through a set of `Account`."""
-  allAccounts(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Account`."""
-    orderBy: [AccountsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: AccountCondition
-  ): AccountsConnection
-
   """Reads and enables pagination through a set of `Category`."""
   allCategories(
     """Only read the first `n` values of the set."""
@@ -249,35 +220,6 @@ type Query implements Node {
     condition: OrganizationUserCondition
   ): OrganizationUsersConnection
 
-  """Reads and enables pagination through a set of `Session`."""
-  allSessions(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Session`."""
-    orderBy: [SessionsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: SessionCondition
-  ): SessionsConnection
-
   """Reads and enables pagination through a set of `Tag`."""
   allTags(
     """Only read the first `n` values of the set."""
@@ -335,35 +277,6 @@ type Query implements Node {
     """
     condition: UserConfigCondition
   ): UserConfigsConnection
-
-  """Reads and enables pagination through a set of `VerificationRequest`."""
-  allVerificationRequests(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `VerificationRequest`."""
-    orderBy: [VerificationRequestsOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: VerificationRequestCondition
-  ): VerificationRequestsConnection
   accountByRowId(rowId: Int!): Account
   categoryByRowId(rowId: Int!): Category
   configCategoryByUserIdAndCategoryId(userId: Int!, categoryId: Int!): ConfigCategory
@@ -372,12 +285,14 @@ type Query implements Node {
   organizationByRowId(rowId: Int!): Organization
   organizationUserByRowId(rowId: Int!): OrganizationUser
   sessionByRowId(rowId: Int!): Session
+  stripeByRowId(rowId: Int!): Stripe
   tagByRowId(rowId: Int!): Tag
-  userConfigByRowId(rowId: Int!): UserConfig
   userConfigByUserId(userId: Int!): UserConfig
+  userConfigByRowId(rowId: Int!): UserConfig
   userByRowId(rowId: Int!): User
   verificationRequestByRowId(rowId: Int!): VerificationRequest
   currentUserId: String
+  organizationActiveSeats(organizationId: Int): Int
   organizationOwner(
     """Only read the first `n` values of the set."""
     first: Int
@@ -397,6 +312,8 @@ type Query implements Node {
     """Read all values in the set after (below) this cursor."""
     after: Cursor
   ): OrganizationOwnerConnection
+  organizationPaid(organizationId: Int): Int
+  organizationUserBalance(organizationId: Int): Int
 
   """Reads a single `Account` using its globally unique `ID`."""
   account(
@@ -452,6 +369,12 @@ type Query implements Node {
     id: ID!
   ): Session
 
+  """Reads a single `Stripe` using its globally unique `ID`."""
+  stripe(
+    """The globally unique `ID` to be used in selecting a single `Stripe`."""
+    id: ID!
+  ): Stripe
+
   """Reads a single `Tag` using its globally unique `ID`."""
   tag(
     """The globally unique `ID` to be used in selecting a single `Tag`."""
@@ -489,141 +412,6 @@ interface Node {
   id: ID!
 }
 
-"""A connection to a list of `Account` values."""
-type AccountsConnection {
-  """A list of `Account` objects."""
-  nodes: [Account]!
-
-  """
-  A list of edges which contains the `Account` and cursor to aid in pagination.
-  """
-  edges: [AccountsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Account` you could get from the connection."""
-  totalCount: Int!
-}
-
-type Account implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  id: ID!
-  rowId: Int!
-  compoundId: String!
-  userId: Int!
-  providerType: String!
-  providerId: String!
-  providerAccountId: String!
-  refreshToken: String
-  accessToken: String
-  accessTokenExpires: Datetime
-  createdAt: Datetime!
-  updatedAt: Datetime!
-}
-
-"""
-A point in time as described by the [ISO
-8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
-"""
-scalar Datetime
-
-"""A `Account` edge in the connection."""
-type AccountsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Account` at the end of the edge."""
-  node: Account
-}
-
-"""A location in a connection that can be used for resuming pagination."""
-scalar Cursor
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: Cursor
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: Cursor
-}
-
-"""Methods to use when ordering `Account`."""
-enum AccountsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  COMPOUND_ID_ASC
-  COMPOUND_ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  PROVIDER_TYPE_ASC
-  PROVIDER_TYPE_DESC
-  PROVIDER_ID_ASC
-  PROVIDER_ID_DESC
-  PROVIDER_ACCOUNT_ID_ASC
-  PROVIDER_ACCOUNT_ID_DESC
-  REFRESH_TOKEN_ASC
-  REFRESH_TOKEN_DESC
-  ACCESS_TOKEN_ASC
-  ACCESS_TOKEN_DESC
-  ACCESS_TOKEN_EXPIRES_ASC
-  ACCESS_TOKEN_EXPIRES_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Account` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input AccountCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
-
-  """Checks for equality with the object’s `compoundId` field."""
-  compoundId: String
-
-  """Checks for equality with the object’s `userId` field."""
-  userId: Int
-
-  """Checks for equality with the object’s `providerType` field."""
-  providerType: String
-
-  """Checks for equality with the object’s `providerId` field."""
-  providerId: String
-
-  """Checks for equality with the object’s `providerAccountId` field."""
-  providerAccountId: String
-
-  """Checks for equality with the object’s `refreshToken` field."""
-  refreshToken: String
-
-  """Checks for equality with the object’s `accessToken` field."""
-  accessToken: String
-
-  """Checks for equality with the object’s `accessTokenExpires` field."""
-  accessTokenExpires: Datetime
-
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
-}
-
 """A connection to a list of `Category` values."""
 type CategoriesConnection {
   """A list of `Category` objects."""
@@ -647,9 +435,10 @@ type Category implements Node {
   """
   id: ID!
   rowId: Int!
-  organizationId: Int!
   name: String
   color: String
+  organizationId: Int!
+  sort: Int
 
   """Reads a single `Organization` that is related to this `Category`."""
   organizationByOrganizationId: Organization
@@ -754,6 +543,35 @@ type Organization implements Node {
     condition: CategoryCondition
   ): CategoriesConnection!
 
+  """Reads and enables pagination through a set of `Invite`."""
+  invitesByOrganizationId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `Invite`."""
+    orderBy: [InvitesOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: InviteCondition
+  ): InvitesConnection!
+
   """Reads and enables pagination through a set of `Message`."""
   messagesByOrganizationId(
     """Only read the first `n` values of the set."""
@@ -812,64 +630,6 @@ type Organization implements Node {
     condition: MessageTagCondition
   ): MessageTagsConnection!
 
-  """Reads and enables pagination through a set of `OrganizationUser`."""
-  organizationUsersByOrganizationId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: OrganizationUserCondition
-  ): OrganizationUsersConnection!
-
-  """Reads and enables pagination through a set of `Invite`."""
-  invitesByOrganizationId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `Invite`."""
-    orderBy: [InvitesOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: InviteCondition
-  ): InvitesConnection!
-
   """Reads and enables pagination through a set of `UserConfig`."""
   userConfigsByDefaultOrganization(
     """Only read the first `n` values of the set."""
@@ -898,6 +658,35 @@ type Organization implements Node {
     """
     condition: UserConfigCondition
   ): UserConfigsConnection!
+
+  """Reads and enables pagination through a set of `OrganizationUser`."""
+  organizationUsersByOrganizationId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OrganizationUser`."""
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OrganizationUserCondition
+  ): OrganizationUsersConnection!
 }
 
 type User implements Node {
@@ -942,35 +731,6 @@ type User implements Node {
     condition: OrganizationCondition
   ): OrganizationsConnection!
 
-  """Reads and enables pagination through a set of `OrganizationUser`."""
-  organizationUsersByUserId(
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: OrganizationUserCondition
-  ): OrganizationUsersConnection!
-
   """Reads a single `UserConfig` that is related to this `User`."""
   userConfigByUserId: UserConfig
 
@@ -1003,6 +763,35 @@ type User implements Node {
     condition: UserConfigCondition
   ): UserConfigsConnection! @deprecated(reason: "Please use userConfigByUserId instead")
 
+  """Reads and enables pagination through a set of `OrganizationUser`."""
+  organizationUsersByUserId(
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """The method to use when ordering `OrganizationUser`."""
+    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: OrganizationUserCondition
+  ): OrganizationUsersConnection!
+
   """Reads and enables pagination through a set of `ConfigCategory`."""
   configCategoriesByUserId(
     """Only read the first `n` values of the set."""
@@ -1033,6 +822,12 @@ type User implements Node {
   ): ConfigCategoriesConnection!
 }
 
+"""
+A point in time as described by the [ISO
+8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
+"""
+scalar Datetime
+
 """A connection to a list of `Organization` values."""
 type OrganizationsConnection {
   """A list of `Organization` objects."""
@@ -1057,6 +852,24 @@ type OrganizationsEdge {
 
   """The `Organization` at the end of the edge."""
   node: Organization
+}
+
+"""A location in a connection that can be used for resuming pagination."""
+scalar Cursor
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: Cursor
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: Cursor
 }
 
 """Methods to use when ordering `Organization`."""
@@ -1085,6 +898,76 @@ input OrganizationCondition {
 
   """Checks for equality with the object’s `slug` field."""
   slug: String
+}
+
+type UserConfig implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+  userId: Int!
+  defaultOrganization: Int!
+  rowId: Int!
+
+  """Reads a single `User` that is related to this `UserConfig`."""
+  userByUserId: User
+
+  """Reads a single `Organization` that is related to this `UserConfig`."""
+  organizationByDefaultOrganization: Organization
+}
+
+"""A connection to a list of `UserConfig` values."""
+type UserConfigsConnection {
+  """A list of `UserConfig` objects."""
+  nodes: [UserConfig]!
+
+  """
+  A list of edges which contains the `UserConfig` and cursor to aid in pagination.
+  """
+  edges: [UserConfigsEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `UserConfig` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `UserConfig` edge in the connection."""
+type UserConfigsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `UserConfig` at the end of the edge."""
+  node: UserConfig
+}
+
+"""Methods to use when ordering `UserConfig`."""
+enum UserConfigsOrderBy {
+  NATURAL
+  USER_ID_ASC
+  USER_ID_DESC
+  DEFAULT_ORGANIZATION_ASC
+  DEFAULT_ORGANIZATION_DESC
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `UserConfig` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input UserConfigCondition {
+  """Checks for equality with the object’s `userId` field."""
+  userId: Int
+
+  """Checks for equality with the object’s `defaultOrganization` field."""
+  defaultOrganization: Int
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
 }
 
 """A connection to a list of `OrganizationUser` values."""
@@ -1159,76 +1042,6 @@ input OrganizationUserCondition {
 
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
-}
-
-type UserConfig implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  id: ID!
-  rowId: Int!
-  userId: Int!
-  defaultOrganization: Int!
-
-  """Reads a single `User` that is related to this `UserConfig`."""
-  userByUserId: User
-
-  """Reads a single `Organization` that is related to this `UserConfig`."""
-  organizationByDefaultOrganization: Organization
-}
-
-"""A connection to a list of `UserConfig` values."""
-type UserConfigsConnection {
-  """A list of `UserConfig` objects."""
-  nodes: [UserConfig]!
-
-  """
-  A list of edges which contains the `UserConfig` and cursor to aid in pagination.
-  """
-  edges: [UserConfigsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `UserConfig` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `UserConfig` edge in the connection."""
-type UserConfigsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `UserConfig` at the end of the edge."""
-  node: UserConfig
-}
-
-"""Methods to use when ordering `UserConfig`."""
-enum UserConfigsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  DEFAULT_ORGANIZATION_ASC
-  DEFAULT_ORGANIZATION_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `UserConfig` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input UserConfigCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
-
-  """Checks for equality with the object’s `userId` field."""
-  userId: Int
-
-  """Checks for equality with the object’s `defaultOrganization` field."""
-  defaultOrganization: Int
 }
 
 """A connection to a list of `ConfigCategory` values."""
@@ -1312,12 +1125,14 @@ enum CategoriesOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
-  ORGANIZATION_ID_ASC
-  ORGANIZATION_ID_DESC
   NAME_ASC
   NAME_DESC
   COLOR_ASC
   COLOR_DESC
+  ORGANIZATION_ID_ASC
+  ORGANIZATION_ID_DESC
+  SORT_ASC
+  SORT_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -1330,14 +1145,83 @@ input CategoryCondition {
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
 
-  """Checks for equality with the object’s `organizationId` field."""
-  organizationId: Int
-
   """Checks for equality with the object’s `name` field."""
   name: String
 
   """Checks for equality with the object’s `color` field."""
   color: String
+
+  """Checks for equality with the object’s `organizationId` field."""
+  organizationId: Int
+
+  """Checks for equality with the object’s `sort` field."""
+  sort: Int
+}
+
+"""A connection to a list of `Invite` values."""
+type InvitesConnection {
+  """A list of `Invite` objects."""
+  nodes: [Invite]!
+
+  """
+  A list of edges which contains the `Invite` and cursor to aid in pagination.
+  """
+  edges: [InvitesEdge!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Invite` you could get from the connection."""
+  totalCount: Int!
+}
+
+type Invite implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
+  rowId: Int!
+  organizationId: Int!
+  email: String
+
+  """Reads a single `Organization` that is related to this `Invite`."""
+  organizationByOrganizationId: Organization
+}
+
+"""A `Invite` edge in the connection."""
+type InvitesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Invite` at the end of the edge."""
+  node: Invite
+}
+
+"""Methods to use when ordering `Invite`."""
+enum InvitesOrderBy {
+  NATURAL
+  ID_ASC
+  ID_DESC
+  ORGANIZATION_ID_ASC
+  ORGANIZATION_ID_DESC
+  EMAIL_ASC
+  EMAIL_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+}
+
+"""
+A condition to be used against `Invite` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input InviteCondition {
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
+
+  """Checks for equality with the object’s `organizationId` field."""
+  organizationId: Int
+
+  """Checks for equality with the object’s `email` field."""
+  email: String
 }
 
 """A connection to a list of `Message` values."""
@@ -1363,8 +1247,9 @@ type Message implements Node {
   """
   id: ID!
   rowId: Int!
-  organizationId: Int!
   content: String
+  organizationId: Int!
+  loomsharedurl: String
 
   """Reads a single `Organization` that is related to this `Message`."""
   organizationByOrganizationId: Organization
@@ -1522,10 +1407,12 @@ enum MessagesOrderBy {
   NATURAL
   ID_ASC
   ID_DESC
-  ORGANIZATION_ID_ASC
-  ORGANIZATION_ID_DESC
   CONTENT_ASC
   CONTENT_DESC
+  ORGANIZATION_ID_ASC
+  ORGANIZATION_ID_DESC
+  LOOMSHAREDURL_ASC
+  LOOMSHAREDURL_DESC
   PRIMARY_KEY_ASC
   PRIMARY_KEY_DESC
 }
@@ -1537,77 +1424,14 @@ input MessageCondition {
   """Checks for equality with the object’s `rowId` field."""
   rowId: Int
 
-  """Checks for equality with the object’s `organizationId` field."""
-  organizationId: Int
-
   """Checks for equality with the object’s `content` field."""
   content: String
-}
-
-"""A connection to a list of `Invite` values."""
-type InvitesConnection {
-  """A list of `Invite` objects."""
-  nodes: [Invite]!
-
-  """
-  A list of edges which contains the `Invite` and cursor to aid in pagination.
-  """
-  edges: [InvitesEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Invite` you could get from the connection."""
-  totalCount: Int!
-}
-
-type Invite implements Node {
-  """
-  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
-  """
-  id: ID!
-  rowId: Int!
-  organizationId: Int!
-  email: String
-
-  """Reads a single `Organization` that is related to this `Invite`."""
-  organizationByOrganizationId: Organization
-}
-
-"""A `Invite` edge in the connection."""
-type InvitesEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Invite` at the end of the edge."""
-  node: Invite
-}
-
-"""Methods to use when ordering `Invite`."""
-enum InvitesOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  ORGANIZATION_ID_ASC
-  ORGANIZATION_ID_DESC
-  EMAIL_ASC
-  EMAIL_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Invite` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input InviteCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
 
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
 
-  """Checks for equality with the object’s `email` field."""
-  email: String
+  """Checks for equality with the object’s `loomsharedurl` field."""
+  loomsharedurl: String
 }
 
 """A connection to a list of `Tag` values."""
@@ -1672,21 +1496,22 @@ type CategoriesEdge {
   node: Category
 }
 
-"""A connection to a list of `Session` values."""
-type SessionsConnection {
-  """A list of `Session` objects."""
-  nodes: [Session]!
-
+type Account implements Node {
   """
-  A list of edges which contains the `Session` and cursor to aid in pagination.
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  edges: [SessionsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Session` you could get from the connection."""
-  totalCount: Int!
+  id: ID!
+  rowId: Int!
+  compoundId: String!
+  userId: Int!
+  providerType: String!
+  providerId: String!
+  providerAccountId: String!
+  refreshToken: String
+  accessToken: String
+  accessTokenExpires: Datetime
+  createdAt: Datetime!
+  updatedAt: Datetime!
 }
 
 type Session implements Node {
@@ -1703,79 +1528,18 @@ type Session implements Node {
   updatedAt: Datetime!
 }
 
-"""A `Session` edge in the connection."""
-type SessionsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Session` at the end of the edge."""
-  node: Session
-}
-
-"""Methods to use when ordering `Session`."""
-enum SessionsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  USER_ID_ASC
-  USER_ID_DESC
-  EXPIRES_ASC
-  EXPIRES_DESC
-  SESSION_TOKEN_ASC
-  SESSION_TOKEN_DESC
-  ACCESS_TOKEN_ASC
-  ACCESS_TOKEN_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `Session` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input SessionCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
-
-  """Checks for equality with the object’s `userId` field."""
-  userId: Int
-
-  """Checks for equality with the object’s `expires` field."""
-  expires: Datetime
-
-  """Checks for equality with the object’s `sessionToken` field."""
-  sessionToken: String
-
-  """Checks for equality with the object’s `accessToken` field."""
-  accessToken: String
-
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
-}
-
-"""A connection to a list of `VerificationRequest` values."""
-type VerificationRequestsConnection {
-  """A list of `VerificationRequest` objects."""
-  nodes: [VerificationRequest]!
-
+type Stripe implements Node {
   """
-  A list of edges which contains the `VerificationRequest` and cursor to aid in pagination.
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
   """
-  edges: [VerificationRequestsEdge!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """
-  The count of *all* `VerificationRequest` you could get from the connection.
-  """
-  totalCount: Int!
+  id: ID!
+  rowId: Int!
+  createdAt: Datetime!
+  stripeTransactionDate: Datetime!
+  amount: Float!
+  quantity: Int!
+  email: String!
+  userId: Int!
 }
 
 type VerificationRequest implements Node {
@@ -1789,58 +1553,6 @@ type VerificationRequest implements Node {
   expires: Datetime!
   createdAt: Datetime!
   updatedAt: Datetime!
-}
-
-"""A `VerificationRequest` edge in the connection."""
-type VerificationRequestsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `VerificationRequest` at the end of the edge."""
-  node: VerificationRequest
-}
-
-"""Methods to use when ordering `VerificationRequest`."""
-enum VerificationRequestsOrderBy {
-  NATURAL
-  ID_ASC
-  ID_DESC
-  IDENTIFIER_ASC
-  IDENTIFIER_DESC
-  TOKEN_ASC
-  TOKEN_DESC
-  EXPIRES_ASC
-  EXPIRES_DESC
-  CREATED_AT_ASC
-  CREATED_AT_DESC
-  UPDATED_AT_ASC
-  UPDATED_AT_DESC
-  PRIMARY_KEY_ASC
-  PRIMARY_KEY_DESC
-}
-
-"""
-A condition to be used against `VerificationRequest` object types. All fields
-are tested for equality and combined with a logical ‘and.’
-"""
-input VerificationRequestCondition {
-  """Checks for equality with the object’s `rowId` field."""
-  rowId: Int
-
-  """Checks for equality with the object’s `identifier` field."""
-  identifier: String
-
-  """Checks for equality with the object’s `token` field."""
-  token: String
-
-  """Checks for equality with the object’s `expires` field."""
-  expires: Datetime
-
-  """Checks for equality with the object’s `createdAt` field."""
-  createdAt: Datetime
-
-  """Checks for equality with the object’s `updatedAt` field."""
-  updatedAt: Datetime
 }
 
 """A connection to a list of `Int` values."""
@@ -1900,12 +1612,6 @@ type Mutation {
     """
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
-  createOrganizationUser(
-    """
-    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
-    """
-    input: CreateOrganizationUserInput!
-  ): CreateOrganizationUserPayload
   createTag(
     """
     The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
@@ -2159,46 +1865,6 @@ input CreateOrganizationInput {
   clientMutationId: String
   userId: Int!
   slug: String!
-}
-
-"""The output of our `createOrganizationUser` mutation."""
-type CreateOrganizationUserPayload {
-  """
-  The exact same `clientMutationId` that was provided in the mutation input,
-  unchanged and unused. May be used by a client to track mutations.
-  """
-  clientMutationId: String
-  organizationUser: OrganizationUser
-
-  """
-  Our root query field type. Allows us to run any query from our mutation payload.
-  """
-  query: Query
-
-  """
-  Reads a single `Organization` that is related to this `OrganizationUser`.
-  """
-  organizationByOrganizationId: Organization
-
-  """Reads a single `User` that is related to this `OrganizationUser`."""
-  userByUserId: User
-
-  """An edge for our `OrganizationUser`. May be used by Relay 1."""
-  organizationUserEdge(
-    """The method to use when ordering `OrganizationUser`."""
-    orderBy: [OrganizationUsersOrderBy!] = [PRIMARY_KEY_ASC]
-  ): OrganizationUsersEdge
-}
-
-"""All input for the `createOrganizationUser` mutation."""
-input CreateOrganizationUserInput {
-  """
-  An arbitrary string value with no semantic meaning. Will be included in the
-  payload verbatim. May be used to track mutations by the client.
-  """
-  clientMutationId: String
-  organizationId: Int!
-  userId: Int!
 }
 
 """The output of our `createTag` mutation."""
