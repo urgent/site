@@ -13,6 +13,7 @@ export type CreateMessageInput = {|
   organizationId: number,
   content: string,
   tags: $ReadOnlyArray<?number>,
+  loomSharedUrl?: ?string,
 |};
 export type EditorInsertMessageMutationVariables = {|
   input: CreateMessageInput,
@@ -24,6 +25,7 @@ export type EditorInsertMessageMutationResponse = {|
       +rowId: number,
       +content: ?string,
       +organizationId: number,
+      +loomSharedUrl: ?string,
       +messageTagsByMessageId: {|
         +__id: string,
         +edges: $ReadOnlyArray<{|
@@ -60,6 +62,7 @@ mutation EditorInsertMessageMutation(
       rowId
       content
       organizationId
+      loomSharedUrl
       messageTagsByMessageId {
         edges {
           node {
@@ -125,24 +128,31 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tagId",
+  "name": "loomSharedUrl",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "tagId",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "color",
+  "name": "name",
   "storageKey": null
 },
 v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
+},
+v10 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -154,7 +164,7 @@ v9 = {
     }
   ]
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -190,6 +200,7 @@ return {
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -214,7 +225,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -224,7 +235,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v7/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -233,22 +244,22 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v8/*: any*/)
+                                  (v9/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v9/*: any*/)
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/)
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v10/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -290,6 +301,7 @@ return {
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -314,7 +326,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -324,7 +336,7 @@ return {
                             "plural": false,
                             "selections": [
                               (v3/*: any*/),
-                              (v7/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -333,28 +345,28 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v8/*: any*/),
-                                  (v10/*: any*/)
+                                  (v9/*: any*/),
+                                  (v11/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v10/*: any*/),
-                              (v9/*: any*/)
+                              (v11/*: any*/),
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/)
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v10/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v10/*: any*/)
+              (v11/*: any*/)
             ],
             "storageKey": null
           },
@@ -385,16 +397,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "6b5aff0fafbf4b6a867e2f29c8afea1a",
+    "cacheID": "e9465af544b87fde10a1fae60d1e95ea",
     "id": null,
     "metadata": {},
     "name": "EditorInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 // prettier-ignore
-(node/*: any*/).hash = '5d5a1b15950227c5563c5432580dd6d4';
+(node/*: any*/).hash = '54ed4eb25a5b92415f01d83bc3bdfce2';
 
 module.exports = node;

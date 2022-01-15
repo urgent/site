@@ -12,6 +12,7 @@ const InsertMessageMutation = graphql`
         rowId
         content
         organizationId
+        loomSharedUrl
         messageTagsByMessageId {
             __id
             edges {
@@ -40,6 +41,7 @@ const UpdateMessageMutation = graphql`
       messages {
         rowId
         content
+        loomSharedUrl
         organizationId
         messageTagsByMessageId {
             __id
@@ -78,7 +80,7 @@ export default function Editor({ tileConnections }) {
   const setEditorValue = useStore((state) => state.setEditorValue);
   const editMessage = useStore((state) => state.editMessage);
   const setEditMessage = useStore((state) => state.setEditMessage);
-  const [videoHTML, setVideoHTML] = useState("");
+  const [loomSharedUrl, setLoomSharedUrl] = useState("");
 
   // Editor submit
   function onSubmit(event) {
@@ -90,6 +92,7 @@ export default function Editor({ tileConnections }) {
           input: {
             id: message,
             content: editorValue,
+            loomSharedUrl: loomSharedUrl
           },
         },
         updater: store => { },
@@ -102,6 +105,7 @@ export default function Editor({ tileConnections }) {
           input: {
             organizationId: organization,
             content: editorValue,
+            loomSharedUrl: loomSharedUrl,
             tags: filter,
           },
           connections: [tileConnections]
@@ -119,9 +123,8 @@ export default function Editor({ tileConnections }) {
       <br /><br /><br />
       <Stack spacing={4} direction='row' align='center'>
         <Button data-cy="save" onClick={onSubmit} width="170px" borderRadius={20}>Save</Button>
-        <DynamicLoomSDK />
+        <DynamicLoomSDK {...{ loomSharedUrl, setLoomSharedUrl }} />
       </Stack>
-      <div dangerouslySetInnerHTML={{ __html: videoHTML }}></div>
     </>
   )
 }

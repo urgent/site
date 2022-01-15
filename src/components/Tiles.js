@@ -25,6 +25,7 @@ const messageFragment = graphql`
                 node {
                   rowId
                   content
+                  loomSharedUrl
                   organizationId
                   messageTagsByMessageId {
                     __id

@@ -6,7 +6,7 @@ import { Textarea, Button, Stack } from "@chakra-ui/react"
 const PUBLIC_APP_ID = 'edc280e5-dc2c-49d5-b72c-38f06fbd8851';
 const BUTTON_ID = "loom-sdk-button";
 
-export default function Loom() {
+export default function Loom({ setLoomSharedUrl }) {
     const [videoHTML, setVideoHTML] = useState("");
 
     useEffect(() => {
@@ -24,8 +24,9 @@ export default function Loom() {
             const sdkButton = configureButton({ element: button });
 
             sdkButton.on("insert-click", async (video) => {
+                setLoomSharedUrl(video.sharedUrl);
                 const { html } = await oembed(video.sharedUrl, { width: 400 });
-                setVideoHTML(html);
+                setVideoHTML(html)
             });
         }
 
