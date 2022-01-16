@@ -108,6 +108,7 @@ export default function Tiles({ query }) {
             toolbar={true}
             organizationId={edge.node.organizationId}
             value={edge.node.content}
+            loomSharedUrl={edge.node.loomSharedUrl}
             editActive={editMessage && message === edge.node.rowId}
           >
             {edit && editMessage && edge.node.rowId === message && <Editor tileConnections={messages?.allMessages?.__id} />}

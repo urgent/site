@@ -4,6 +4,7 @@ import useMutation from './useMutation'
 import { Grid, Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
 import { HiOutlineTrash } from "react-icons/hi"
 import useStore from "../utils/store";
+import dynamic from 'next/dynamic';
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation($input:RemoveMessageTagInput!, $connections: [ID!]!) {
@@ -29,6 +30,14 @@ const DeleteTagMutation = graphql`
   }
 `;
 
+const LoomEmbed = dynamic(() => import('./LoomEmbed'), {
+  ssr: false,
+});
+
+console.log('Loom embed')
+
+console.log(LoomEmbed)
+
 export function AddTagToMessage({ click }) {
   const edit = useStore((state) => state.edit);
   return <>
@@ -36,7 +45,7 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ value, tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive }) {
+export default function Message({ value, tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive, loomSharedUrl }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
@@ -155,6 +164,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         wordBreak="break-all"
       >
         {children}
+        {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
       <Box
         gridRow="tags"
