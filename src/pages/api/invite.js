@@ -2,7 +2,7 @@ import qs from 'qs';
 import cookie from 'cookie';
 import axios from 'axios';
 
-export function invite({ email, slug }) {
+export async function invite({ email, slug }) {
     // create next-auth user via email provider
     const options = {
         method: 'GET',
