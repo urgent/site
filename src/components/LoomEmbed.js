@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { oembed } from "@loomhq/loom-embed";
 
-export default function ({ loomSharedUrl }) {
+export default function LoomEmbed({ loomSharedUrl }) {
     const [videoHTML, setVideoHTML] = useState("");
     useEffect(() => {
         async function setupEmbed() {
