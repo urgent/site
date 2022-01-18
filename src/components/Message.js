@@ -45,7 +45,7 @@ export function AddTagToMessage({ click }) {
   </>
 }
 
-export default function Message({ value, tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive, loomSharedUrl }) {
+export default function Message({ value, tags, children, id, onEdit, onDelete, toolbar, organizationId, editActive, loomSharedUrl, sx }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(DeleteTagMutation);
   const filter = useStore((state) => state.filter);
   const focusMessage = useStore((state) => state.focusMessage);
@@ -141,14 +141,13 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
 
 
   return <>
-    {display() && <Grid
+    {display() && <Box
       boxShadow={toolbar && "4px 4px 15px 0 rgb(10 8 59 / 6%)"}
       borderRadius="10px"
       textAlign="left"
-      gridTemplateRows={`[menu] 2em [body] auto [tags] ${size()['tagRow']}em`}
-      gridColumn={size()['width']}
-      gridRow={size()['height']}
+      display="inline-block"
       data-cy="message"
+      sx={sx}
     >
       <Box
         gridRow="menu"
@@ -157,9 +156,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         {toolbar && <Toolbar editActive={editActive} editClick={() => onEdit(id, tags?.__id, value)} deleteClick={() => onDelete(id, tags?.__id)} />}
       </Box>
       <Box
-        gridRow="body"
-        px={4}
-        pb={4}
+        p={4}
         data-cy="body"
         wordBreak="break-all"
       >
@@ -167,7 +164,6 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
       <Box
-        gridRow="tags"
         px={4}
         py={2}
         data-cy="tags"
@@ -207,7 +203,7 @@ export default function Message({ value, tags, children, id, onEdit, onDelete, t
         </Badge>)}
 
       </Box>
-    </Grid>
+    </Box>
     }</>
 }
 

@@ -33,7 +33,7 @@ function Home({ preloadedQuery }) {
     >
       <Nav query={query} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll"><Collapsable query={query} /></Box>
-      <Grid
+      <Box
         as="main"
         gridColumn="content"
         pt={2}
@@ -44,7 +44,7 @@ function Home({ preloadedQuery }) {
         overflowY="scroll"
       >
         <Tiles query={query} />
-      </Grid>
+      </Box>
     </Grid>
     <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
       <Mobile query={query} />

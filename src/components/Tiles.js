@@ -90,11 +90,9 @@ export default function Tiles({ query }) {
   }
 
   return (
-    <Grid
-      gridTemplateColumns={["1", "1", "1", "repeat(auto-fit, minmax(120px, 2fr))", "repeat(auto-fit, minmax(120px, 2fr))"]}
-      gridGap="5px"
-      gridAutoRows={"100px"}
-      gridAutoFlow="dense"
+    <Box
+      sx={{ columnCount: "4" }}
+      columnGap="1em"
       data-cy="tiles"
     >
       {<>{messages?.allMessages?.edges?.map((edge) => {
@@ -116,12 +114,12 @@ export default function Tiles({ query }) {
           </Message>
         )
       })}
-        {!(edit && editMessage) && <Message toolbar={false}>
+        {!(edit && editMessage) && <Message toolbar={false} sx={{ display: "block", columnSpan: "all" }}>
           <Editor tileConnections={messages?.allMessages?.__id} />
         </Message>}
       </>
       }
 
 
-    </Grid>)
+    </Box>)
 }
