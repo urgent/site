@@ -34,10 +34,6 @@ const LoomEmbed = dynamic(() => import('./LoomEmbed'), {
   ssr: false,
 });
 
-console.log('Loom embed')
-
-console.log(LoomEmbed)
-
 export function AddTagToMessage({ click }) {
   const edit = useStore((state) => state.edit);
   return <>
