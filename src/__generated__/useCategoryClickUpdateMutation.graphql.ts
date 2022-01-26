@@ -1,129 +1,102 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type CreateCategoryInput = {|
-  clientMutationId?: ?string,
-  organizationId: number,
-  name: string,
-  color: string,
-|};
-export type CategoryInsertCategoryMutationVariables = {|
-  input: CreateCategoryInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type CategoryInsertCategoryMutationResponse = {|
-  +createCategory: ?{|
-    +category: ?{|
-      +id: string,
-      +rowId: number,
-      +name: ?string,
-      +color: ?string,
-      +organizationId: number,
-      +tagsByCategoryId: {|
-        +__id: string,
-        +edges: $ReadOnlyArray<{|
-          +node: ?{|
-            +name: ?string,
-            +rowId: number,
-          |}
-        |}>,
-      |},
-    |}
-  |}
-|};
-export type CategoryInsertCategoryMutation = {|
-  variables: CategoryInsertCategoryMutationVariables,
-  response: CategoryInsertCategoryMutationResponse,
-|};
-*/
+export type UpdateCategoryInput = {
+    clientMutationId?: string | null | undefined;
+    id: number;
+    name: string;
+    color: string;
+};
+export type useCategoryClickUpdateMutationVariables = {
+    input: UpdateCategoryInput;
+};
+export type useCategoryClickUpdateMutationResponse = {
+    readonly updateCategory: {
+        readonly category: {
+            readonly rowId: number;
+            readonly name: string | null;
+            readonly color: string | null;
+            readonly tagsByCategoryId: {
+                readonly __id: string;
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly name: string | null;
+                    } | null;
+                }>;
+            };
+        } | null;
+    } | null;
+};
+export type useCategoryClickUpdateMutation = {
+    readonly response: useCategoryClickUpdateMutationResponse;
+    readonly variables: useCategoryClickUpdateMutationVariables;
+};
+
 
 
 /*
-mutation CategoryInsertCategoryMutation(
-  $input: CreateCategoryInput!
+mutation useCategoryClickUpdateMutation(
+  $input: UpdateCategoryInput!
 ) {
-  createCategory(input: $input) {
+  updateCategory(input: $input) {
     category {
-      id
       rowId
       name
       color
-      organizationId
       tagsByCategoryId {
         edges {
           node {
             name
-            rowId
             id
           }
         }
       }
+      id
     }
   }
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "connections"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "input"
-},
-v2 = [
+const node: ConcreteRequest = (function(){
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "input"
+  }
+],
+v1 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v4 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "rowId",
   "storageKey": null
 },
-v5 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v6 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "color",
   "storageKey": null
 },
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "organizationId",
-  "storageKey": null
-},
-v8 = {
+v5 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -134,23 +107,27 @@ v8 = {
       "storageKey": null
     }
   ]
+},
+v6 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "id",
+  "storageKey": null
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "CategoryInsertCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "CreateCategoryPayload",
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "createCategory",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
@@ -161,11 +138,9 @@ return {
             "name": "category",
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
-              (v6/*: any*/),
-              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -190,15 +165,14 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v4/*: any*/)
+                          (v3/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v8/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -214,19 +188,16 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "CategoryInsertCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
-        "concreteType": "CreateCategoryPayload",
+        "args": (v1/*: any*/),
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "createCategory",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
@@ -237,11 +208,9 @@ return {
             "name": "category",
             "plural": false,
             "selections": [
+              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
-              (v6/*: any*/),
-              (v7/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -266,42 +235,21 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v5/*: any*/),
-                          (v4/*: any*/),
-                          (v3/*: any*/)
+                          (v3/*: any*/),
+                          (v6/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v8/*: any*/)
+                  (v5/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v6/*: any*/)
             ],
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "filters": null,
-            "handle": "appendNode",
-            "key": "",
-            "kind": "LinkedHandle",
-            "name": "category",
-            "handleArgs": [
-              {
-                "kind": "Variable",
-                "name": "connections",
-                "variableName": "connections"
-              },
-              {
-                "kind": "Literal",
-                "name": "edgeTypeName",
-                "value": "CategoriesEdge"
-              }
-            ]
           }
         ],
         "storageKey": null
@@ -309,16 +257,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "bdf35305c4a9b22cb9ec60a799d7f505",
+    "cacheID": "be01c09a00b5fe385b4ee96bfb271187",
     "id": null,
     "metadata": {},
-    "name": "CategoryInsertCategoryMutation",
+    "name": "useCategoryClickUpdateMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryInsertCategoryMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      id\n      rowId\n      name\n      color\n      organizationId\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            rowId\n            id\n          }\n        }\n      }\n    }\n  }\n}\n"
+    "text": "mutation useCategoryClickUpdateMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      tagsByCategoryId {\n        edges {\n          node {\n            name\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'c392f115954c7e64ca14aa0c16f4ce56';
-
-module.exports = node;
+(node as any).hash = '2fd3d97d6c605823b747bfa1a2e676ba';
+export default node;

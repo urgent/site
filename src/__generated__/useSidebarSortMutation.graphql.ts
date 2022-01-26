@@ -1,60 +1,56 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type SortCategoryInput = {|
-  clientMutationId?: ?string,
-  categoryIds: $ReadOnlyArray<?number>,
-  sort: $ReadOnlyArray<?number>,
-|};
-export type useSidebarSortMutationVariables = {|
-  input: SortCategoryInput
-|};
-export type useSidebarSortMutationResponse = {|
-  +sortCategory: ?{|
-    +query: ?{|
-      +allCategories: ?{|
-        +__id: string,
-        +edges: $ReadOnlyArray<{|
-          +node: ?{|
-            +tagsByCategoryId: {|
-              +__id: string,
-              +edges: $ReadOnlyArray<{|
-                +node: ?{|
-                  +name: ?string,
-                  +rowId: number,
-                |}
-              |}>,
-            |},
-            +rowId: number,
-            +name: ?string,
-            +color: ?string,
-            +organizationId: number,
-            +configCategoriesByCategoryId: {|
-              +edges: $ReadOnlyArray<{|
-                +node: ?{|
-                  +collapse: ?boolean,
-                  +sort: ?number,
-                |}
-              |}>
-            |},
-          |}
-        |}>,
-      |}
-    |}
-  |}
-|};
-export type useSidebarSortMutation = {|
-  variables: useSidebarSortMutationVariables,
-  response: useSidebarSortMutationResponse,
-|};
-*/
+export type SortCategoryInput = {
+    clientMutationId?: string | null | undefined;
+    categoryIds: Array<number | null>;
+    sort: Array<number | null>;
+};
+export type useSidebarSortMutationVariables = {
+    input: SortCategoryInput;
+};
+export type useSidebarSortMutationResponse = {
+    readonly sortCategory: {
+        readonly query: {
+            readonly allCategories: {
+                readonly __id: string;
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly tagsByCategoryId: {
+                            readonly __id: string;
+                            readonly edges: ReadonlyArray<{
+                                readonly node: {
+                                    readonly name: string | null;
+                                    readonly rowId: number;
+                                } | null;
+                            }>;
+                        };
+                        readonly rowId: number;
+                        readonly name: string | null;
+                        readonly color: string | null;
+                        readonly organizationId: number;
+                        readonly configCategoriesByCategoryId: {
+                            readonly edges: ReadonlyArray<{
+                                readonly node: {
+                                    readonly collapse: boolean | null;
+                                    readonly sort: number | null;
+                                } | null;
+                            }>;
+                        };
+                    } | null;
+                }>;
+            } | null;
+        } | null;
+    } | null;
+};
+export type useSidebarSortMutation = {
+    readonly response: useSidebarSortMutationResponse;
+    readonly variables: useSidebarSortMutationVariables;
+};
+
 
 
 /*
@@ -98,7 +94,7 @@ mutation useSidebarSortMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -469,7 +465,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '7d0998034ba0fde28b8002ad0dd57453';
-
-module.exports = node;
+(node as any).hash = '7d0998034ba0fde28b8002ad0dd57453';
+export default node;

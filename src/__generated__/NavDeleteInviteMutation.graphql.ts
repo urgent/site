@@ -1,48 +1,49 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type DeleteMessageInput = {|
-  clientMutationId?: ?string,
-  messageId: number,
-|};
-export type TilesDeleteMessageMutationVariables = {|
-  input: DeleteMessageInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type TilesDeleteMessageMutationResponse = {|
-  +deleteMessage: ?{|
-    +message: ?{|
-      +id: string
-    |}
-  |}
-|};
-export type TilesDeleteMessageMutation = {|
-  variables: TilesDeleteMessageMutationVariables,
-  response: TilesDeleteMessageMutationResponse,
-|};
-*/
+export type DeleteInviteInput = {
+    clientMutationId?: string | null | undefined;
+    organizationId: number;
+    email: string;
+};
+export type NavDeleteInviteMutationVariables = {
+    input: DeleteInviteInput;
+    connections: Array<string>;
+};
+export type NavDeleteInviteMutationResponse = {
+    readonly deleteInvite: {
+        readonly invite: {
+            readonly id: string;
+            readonly organizationId: number;
+            readonly email: string | null;
+        } | null;
+    } | null;
+};
+export type NavDeleteInviteMutation = {
+    readonly response: NavDeleteInviteMutationResponse;
+    readonly variables: NavDeleteInviteMutationVariables;
+};
+
 
 
 /*
-mutation TilesDeleteMessageMutation(
-  $input: DeleteMessageInput!
+mutation NavDeleteInviteMutation(
+  $input: DeleteInviteInput!
 ) {
-  deleteMessage(input: $input) {
-    message {
+  deleteInvite(input: $input) {
+    invite {
       id
+      organizationId
+      email
     }
   }
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -66,6 +67,20 @@ v3 = {
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "organizationId",
+  "storageKey": null
+},
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "email",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -75,25 +90,27 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TilesDeleteMessageMutation",
+    "name": "NavDeleteInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteMessagePayload",
+        "concreteType": "DeleteInvitePayload",
         "kind": "LinkedField",
-        "name": "deleteMessage",
+        "name": "deleteInvite",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Message",
+            "concreteType": "Invite",
             "kind": "LinkedField",
-            "name": "message",
+            "name": "invite",
             "plural": false,
             "selections": [
-              (v3/*: any*/)
+              (v3/*: any*/),
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -111,22 +128,22 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "TilesDeleteMessageMutation",
+    "name": "NavDeleteInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteMessagePayload",
+        "concreteType": "DeleteInvitePayload",
         "kind": "LinkedField",
-        "name": "deleteMessage",
+        "name": "deleteInvite",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Message",
+            "concreteType": "Invite",
             "kind": "LinkedField",
-            "name": "message",
+            "name": "invite",
             "plural": false,
             "selections": [
               (v3/*: any*/),
@@ -145,7 +162,9 @@ return {
                     "variableName": "connections"
                   }
                 ]
-              }
+              },
+              (v4/*: any*/),
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -155,16 +174,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b7408581553f5c253f60ec6671920e7d",
+    "cacheID": "3a1ff0f8241106c24fab66044346d178",
     "id": null,
     "metadata": {},
-    "name": "TilesDeleteMessageMutation",
+    "name": "NavDeleteInviteMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesDeleteMessageMutation(\n  $input: DeleteMessageInput!\n) {\n  deleteMessage(input: $input) {\n    message {\n      id\n    }\n  }\n}\n"
+    "text": "mutation NavDeleteInviteMutation(\n  $input: DeleteInviteInput!\n) {\n  deleteInvite(input: $input) {\n    invite {\n      id\n      organizationId\n      email\n    }\n  }\n}\n"
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '80258f25ab58bd841bcf6df03eda0185';
-
-module.exports = node;
+(node as any).hash = 'fcab9aa7afda09c58cf1882e6b330924';
+export default node;

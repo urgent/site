@@ -1,39 +1,32 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ReaderFragment } from "relay-runtime";
 
-/*::
-import type { ReaderFragment } from 'relay-runtime';
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type NavFragment_invite$ref: FragmentReference;
-declare export opaque type NavFragment_invite$fragmentType: NavFragment_invite$ref;
-export type NavFragment_invite = {|
-  +allInvites: ?{|
-    +__id: string,
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +id: string,
-        +organizationId: number,
-        +email: ?string,
-      |}
-    |}>,
-  |},
-  +$refType: NavFragment_invite$ref,
-|};
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_invite = {
+    readonly allInvites: {
+        readonly __id: string;
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly id: string;
+                readonly organizationId: number;
+                readonly email: string | null;
+            } | null;
+        }>;
+    } | null;
+    readonly " $refType": "NavFragment_invite";
+};
 export type NavFragment_invite$data = NavFragment_invite;
 export type NavFragment_invite$key = {
-  +$data?: NavFragment_invite$data,
-  +$fragmentRefs: NavFragment_invite$ref,
-  ...
+    readonly " $data"?: NavFragment_invite$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"NavFragment_invite">;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = {
+
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -109,7 +102,5 @@ const node/*: ReaderFragment*/ = {
   "type": "Query",
   "abstractKey": null
 };
-// prettier-ignore
-(node/*: any*/).hash = '9e7eeb0d4ff538526afeb424b73b69a5';
-
-module.exports = node;
+(node as any).hash = '9e7eeb0d4ff538526afeb424b73b69a5';
+export default node;

@@ -1,36 +1,32 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type CreateTagInput = {|
-  clientMutationId?: ?string,
-  name: string,
-  categoryId: number,
-|};
-export type TagInsertTagMutationVariables = {|
-  input: CreateTagInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type TagInsertTagMutationResponse = {|
-  +createTag: ?{|
-    +tag: ?{|
-      +id: string,
-      +rowId: number,
-      +name: ?string,
-    |}
-  |}
-|};
-export type TagInsertTagMutation = {|
-  variables: TagInsertTagMutationVariables,
-  response: TagInsertTagMutationResponse,
-|};
-*/
+export type CreateTagInput = {
+    clientMutationId?: string | null | undefined;
+    name: string;
+    categoryId: number;
+};
+export type TagInsertTagMutationVariables = {
+    input: CreateTagInput;
+    connections: Array<string>;
+};
+export type TagInsertTagMutationResponse = {
+    readonly createTag: {
+        readonly tag: {
+            readonly id: string;
+            readonly rowId: number;
+            readonly name: string | null;
+        } | null;
+    } | null;
+};
+export type TagInsertTagMutation = {
+    readonly response: TagInsertTagMutationResponse;
+    readonly variables: TagInsertTagMutationVariables;
+};
+
 
 
 /*
@@ -47,7 +43,7 @@ mutation TagInsertTagMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -177,7 +173,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '3a9020573700971cb4a2f9c7d3809c58';
-
-module.exports = node;
+(node as any).hash = '3a9020573700971cb4a2f9c7d3809c58';
+export default node;

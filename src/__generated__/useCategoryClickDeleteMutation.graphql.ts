@@ -1,51 +1,47 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type DeleteCategoryInput = {|
-  clientMutationId?: ?string,
-  categoryId: number,
-|};
-export type useCategoryClickDeleteMutationVariables = {|
-  input: DeleteCategoryInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type useCategoryClickDeleteMutationResponse = {|
-  +deleteCategory: ?{|
-    +category: ?{|
-      +__id: string
-    |},
-    +query: ?{|
-      +allMessages: ?{|
-        +nodes: $ReadOnlyArray<?{|
-          +messageTagsByMessageId: {|
-            +__id: string,
-            +edges: $ReadOnlyArray<{|
-              +node: ?{|
-                +messageId: number
-              |}
-            |}>,
-          |},
-          +content: ?string,
-        |}>
-      |},
-      +allCategories: ?{|
-        +__id: string
-      |},
-    |},
-  |}
-|};
-export type useCategoryClickDeleteMutation = {|
-  variables: useCategoryClickDeleteMutationVariables,
-  response: useCategoryClickDeleteMutationResponse,
-|};
-*/
+export type DeleteCategoryInput = {
+    clientMutationId?: string | null | undefined;
+    categoryId: number;
+};
+export type useCategoryClickDeleteMutationVariables = {
+    input: DeleteCategoryInput;
+    connections: Array<string>;
+};
+export type useCategoryClickDeleteMutationResponse = {
+    readonly deleteCategory: {
+        readonly category: {
+            readonly __id: string;
+        } | null;
+        readonly query: {
+            readonly allMessages: {
+                readonly nodes: ReadonlyArray<{
+                    readonly messageTagsByMessageId: {
+                        readonly __id: string;
+                        readonly edges: ReadonlyArray<{
+                            readonly node: {
+                                readonly messageId: number;
+                            } | null;
+                        }>;
+                    };
+                    readonly content: string | null;
+                } | null>;
+            } | null;
+            readonly allCategories: {
+                readonly __id: string;
+            } | null;
+        } | null;
+    } | null;
+};
+export type useCategoryClickDeleteMutation = {
+    readonly response: useCategoryClickDeleteMutationResponse;
+    readonly variables: useCategoryClickDeleteMutationVariables;
+};
+
 
 
 /*
@@ -76,7 +72,7 @@ mutation useCategoryClickDeleteMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -373,7 +369,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'b1806be3e5da71375ed261eddf597eed';
-
-module.exports = node;
+(node as any).hash = 'b1806be3e5da71375ed261eddf597eed';
+export default node;

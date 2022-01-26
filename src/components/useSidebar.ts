@@ -1,21 +1,20 @@
 import { useMemo } from "react"
 import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
+import { rearrange } from "./useCategoryDrag";
 
 // need connectionId. Need field to query
 const messageFragment = graphql`
-          fragment useSidebarFragment_messages on Query {
-            allMessages {
-              edges {
-                node {
-                  messageTagsByMessageId {
-                    edges {
-                      node {
-                        messageId
-                      }
+          fragment useSidebarFragment_messages on MessagesConnection {
+            edges {
+              node {
+                messageTagsByMessageId {
+                  edges {
+                    node {
+                      messageId
                     }
-                    __id
                   }
+                  __id
                 }
               }
             }
@@ -23,7 +22,7 @@ const messageFragment = graphql`
 `;
 
 const categoriesFragment = graphql`
-fragment useSidebarFragment on Query {
+fragment useSidebarFragment_categories on Query {
   allCategories {
       __id
       edges {
@@ -94,7 +93,7 @@ const SortCategoryMutation = graphql`
 export function useSidebar({ query }) {
   const categories = useFragment(categoriesFragment, query);
   const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
-  const messages = useFragment(messageFragment, query);
+  const messages = useFragment(messageFragment, query.allMessages);
   const messageTagConnections = useMemo(() => {
     return messages?.allMessages?.edges?.map(edge => {
       return edge.node.messageTagsByMessageId.__id;
@@ -107,6 +106,7 @@ export function useSidebar({ query }) {
    * @param {number} hovered Index of drop zone in category list
    */
   function moveCategory(dragged, hovered) {
+    if(typeof sortCategory === 'function') {
     sortCategory({
       variables: {
         input: {
@@ -115,6 +115,7 @@ export function useSidebar({ query }) {
         }
       }
     })
+  }
   }
 
   const sidebarCollection = useMemo(() => ({

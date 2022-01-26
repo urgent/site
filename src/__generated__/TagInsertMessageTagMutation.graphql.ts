@@ -1,42 +1,38 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type CreateMessageTagInput = {|
-  clientMutationId?: ?string,
-  messageId: number,
-  tagId: number,
-  organizationId: number,
-|};
-export type TagInsertMessageTagMutationVariables = {|
-  input: CreateMessageTagInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type TagInsertMessageTagMutationResponse = {|
-  +createMessageTag: ?{|
-    +messageTag: ?{|
-      +messageId: number,
-      +tagId: number,
-      +tagByTagId: ?{|
-        +name: ?string,
-        +categoryByCategoryId: ?{|
-          +color: ?string
-        |},
-      |},
-    |}
-  |}
-|};
-export type TagInsertMessageTagMutation = {|
-  variables: TagInsertMessageTagMutationVariables,
-  response: TagInsertMessageTagMutationResponse,
-|};
-*/
+export type CreateMessageTagInput = {
+    clientMutationId?: string | null | undefined;
+    messageId: number;
+    tagId: number;
+    organizationId: number;
+};
+export type TagInsertMessageTagMutationVariables = {
+    input: CreateMessageTagInput;
+    connections: Array<string>;
+};
+export type TagInsertMessageTagMutationResponse = {
+    readonly createMessageTag: {
+        readonly messageTag: {
+            readonly messageId: number;
+            readonly tagId: number;
+            readonly tagByTagId: {
+                readonly name: string | null;
+                readonly categoryByCategoryId: {
+                    readonly color: string | null;
+                } | null;
+            } | null;
+        } | null;
+    } | null;
+};
+export type TagInsertMessageTagMutation = {
+    readonly response: TagInsertMessageTagMutationResponse;
+    readonly variables: TagInsertMessageTagMutationVariables;
+};
+
 
 
 /*
@@ -60,7 +56,7 @@ mutation TagInsertMessageTagMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -267,7 +263,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '594b08d68bb1c0975dc2d0b166d2c602';
-
-module.exports = node;
+(node as any).hash = '594b08d68bb1c0975dc2d0b166d2c602';
+export default node;

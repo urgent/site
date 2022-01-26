@@ -17,10 +17,7 @@ const DeleteMessageMutation = graphql`
 `;
 
 const messageFragment = graphql`
-          fragment TilesFragment_messages on Query {
-            allMessages {
-              __id
-              @connection(key: "pagesFragment_allMessages")
+          fragment TilesFragment_messages on MessagesConnection {
               edges {
                 node {
                   rowId
@@ -48,7 +45,6 @@ const messageFragment = graphql`
                 }
               }
             }
-          }
 `;
 
 export default function Tiles({ query }) {
@@ -60,7 +56,6 @@ export default function Tiles({ query }) {
   const [message] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const edit = useStore((state) => state.edit);
-
 
   // Toolbar on edit
   function onEdit(messageId, collectionId, content) {
@@ -82,7 +77,8 @@ export default function Tiles({ query }) {
         input: {
           messageId: messageId,
         },
-        connections: [messages?.allMessages.__id]
+        connections: [messages?.
+          __id]
       },
       updater: store => { },
     });
@@ -95,7 +91,7 @@ export default function Tiles({ query }) {
       columnGap="1em"
       data-cy="tiles"
     >
-      {<>{messages?.allMessages?.edges?.map((edge) => {
+      {<>{messages?.edges?.map((edge) => {
         return (
           <Message
             key={edge.node.rowId}

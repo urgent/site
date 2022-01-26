@@ -11,6 +11,7 @@ app.use(
         "public",
         {
             classicIds: true,
+            enhanceGraphiql: true,
             exportSchemaGraphql: './schema.graphql',
             disableDefaultMutations: true,
             pgSettings: (req) => {

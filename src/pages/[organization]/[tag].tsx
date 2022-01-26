@@ -1,22 +1,24 @@
 import React from "react";
-import Nav from "../components/Nav";
-import { Collapsable } from "../components/Sidebar";
-import Tiles from "../components/Tiles";
-import Mobile from "../components/Mobile";
+import Nav from "../../components/Nav";
+import { Collapsable } from "../../components/Sidebar";
+import Tiles from "../../components/Tiles";
+import Mobile from "../../components/Mobile";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
-import { getClientEnvironment } from "../lib/client_environment";
+import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
-  query pages_HomeQuery {
+  query Tag_HomeQuery($tag: Int) {
     ...NavFragment_organization
     ...NavFragment_organizationUsers
     ...NavFragment_userConfig
-    ...useSidebarFragment_messages
-    ...TilesFragment_messages
-    ...useSidebarFragment
+    ...useSidebarFragment_categories
     ...NavFragment_invite
+    allMessages(condition: { organizationId: $tag }) {
+      ...TilesFragment_messages
+      ...useSidebarFragment_messages
+    }
   }
 `;
 
@@ -35,7 +37,7 @@ function Home({ preloadedQuery }) {
       >
         <Nav query={query} />
         <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Collapsable query={query} />
+          <Collapsable {...{ query }} />
         </Box>
         <Box
           as="main"
@@ -47,7 +49,7 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles query={query} />
+          <Tiles query={(query as any).allMessages} />
         </Box>
       </Grid>
       <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
@@ -60,18 +62,11 @@ function Home({ preloadedQuery }) {
 function Loading() {
   return <div>Loading...</div>;
 }
-
-function Error() {
-  return <>Error</>;
-}
-
 interface NextCtx {
   cookies: any;
 }
 
 export default withRelay(Home, HomeQuery, {
-  // This property is optional.
-  error: Error,
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
@@ -97,9 +92,16 @@ export default withRelay(Home, HomeQuery, {
     { token }
   ) => {
     const { createServerEnvironment } = await import(
-      "../lib/server_environment"
+      "../../lib/server_environment"
     );
     return createServerEnvironment(token);
+  },
+  variablesFromContext: (ctx) => {
+    console.log({
+      ...ctx.query,
+      ...{ tag: parseInt(ctx.query.tag as string) },
+    });
+    return { ...ctx.query, ...{ tag: parseInt(ctx.query.tag as string) } };
   },
 });
 

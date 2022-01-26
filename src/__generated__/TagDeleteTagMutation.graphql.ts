@@ -1,58 +1,54 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type DeleteTagInput = {|
-  clientMutationId?: ?string,
-  tagId: number,
-|};
-export type DeleteMessageTagInput = {|
-  clientMutationId?: ?string,
-  tagId: number,
-|};
-export type TagDeleteTagMutationVariables = {|
-  tag: DeleteTagInput,
-  messageTag: DeleteMessageTagInput,
-  tagConnections: $ReadOnlyArray<string>,
-  messageTagConnections: $ReadOnlyArray<string>,
-|};
-export type TagDeleteTagMutationResponse = {|
-  +deleteMessageTag: ?{|
-    +query: ?{|
-      +allMessages: ?{|
-        +nodes: $ReadOnlyArray<?{|
-          +messageTagsByMessageId: {|
-            +edges: $ReadOnlyArray<{|
-              +node: ?{|
-                +messageId: number,
-                +tagByTagId: ?{|
-                  +id: string
-                |},
-              |}
-            |}>
-          |},
-          +content: ?string,
-        |}>
-      |}
-    |}
-  |},
-  +deleteTag: ?{|
-    +tag: ?{|
-      +id: string
-    |}
-  |},
-|};
-export type TagDeleteTagMutation = {|
-  variables: TagDeleteTagMutationVariables,
-  response: TagDeleteTagMutationResponse,
-|};
-*/
+export type DeleteTagInput = {
+    clientMutationId?: string | null | undefined;
+    tagId: number;
+};
+export type DeleteMessageTagInput = {
+    clientMutationId?: string | null | undefined;
+    tagId: number;
+};
+export type TagDeleteTagMutationVariables = {
+    tag: DeleteTagInput;
+    messageTag: DeleteMessageTagInput;
+    tagConnections: Array<string>;
+    messageTagConnections: Array<string>;
+};
+export type TagDeleteTagMutationResponse = {
+    readonly deleteMessageTag: {
+        readonly query: {
+            readonly allMessages: {
+                readonly nodes: ReadonlyArray<{
+                    readonly messageTagsByMessageId: {
+                        readonly edges: ReadonlyArray<{
+                            readonly node: {
+                                readonly messageId: number;
+                                readonly tagByTagId: {
+                                    readonly id: string;
+                                } | null;
+                            } | null;
+                        }>;
+                    };
+                    readonly content: string | null;
+                } | null>;
+            } | null;
+        } | null;
+    } | null;
+    readonly deleteTag: {
+        readonly tag: {
+            readonly id: string;
+        } | null;
+    } | null;
+};
+export type TagDeleteTagMutation = {
+    readonly response: TagDeleteTagMutationResponse;
+    readonly variables: TagDeleteTagMutationVariables;
+};
+
 
 
 /*
@@ -89,7 +85,7 @@ mutation TagDeleteTagMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -445,7 +441,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '11221e792186b0850bea87f28bb209d1';
-
-module.exports = node;
+(node as any).hash = '11221e792186b0850bea87f28bb209d1';
+export default node;

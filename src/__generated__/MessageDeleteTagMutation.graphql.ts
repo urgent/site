@@ -1,48 +1,44 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type RemoveMessageTagInput = {|
-  clientMutationId?: ?string,
-  tagId: number,
-  messageId: number,
-|};
-export type MessageDeleteTagMutationVariables = {|
-  input: RemoveMessageTagInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type MessageDeleteTagMutationResponse = {|
-  +removeMessageTag: ?{|
-    +query: ?{|
-      +allMessages: ?{|
-        +nodes: $ReadOnlyArray<?{|
-          +messageTagsByMessageId: {|
-            +edges: $ReadOnlyArray<{|
-              +node: ?{|
-                +messageId: number,
-                +tagByTagId: ?{|
-                  +id: string
-                |},
-              |}
-            |}>
-          |},
-          +content: ?string,
-        |}>
-      |}
-    |}
-  |}
-|};
-export type MessageDeleteTagMutation = {|
-  variables: MessageDeleteTagMutationVariables,
-  response: MessageDeleteTagMutationResponse,
-|};
-*/
+export type RemoveMessageTagInput = {
+    clientMutationId?: string | null | undefined;
+    tagId: number;
+    messageId: number;
+};
+export type MessageDeleteTagMutationVariables = {
+    input: RemoveMessageTagInput;
+    connections: Array<string>;
+};
+export type MessageDeleteTagMutationResponse = {
+    readonly removeMessageTag: {
+        readonly query: {
+            readonly allMessages: {
+                readonly nodes: ReadonlyArray<{
+                    readonly messageTagsByMessageId: {
+                        readonly edges: ReadonlyArray<{
+                            readonly node: {
+                                readonly messageId: number;
+                                readonly tagByTagId: {
+                                    readonly id: string;
+                                } | null;
+                            } | null;
+                        }>;
+                    };
+                    readonly content: string | null;
+                } | null>;
+            } | null;
+        } | null;
+    } | null;
+};
+export type MessageDeleteTagMutation = {
+    readonly response: MessageDeleteTagMutationResponse;
+    readonly variables: MessageDeleteTagMutationVariables;
+};
+
 
 
 /*
@@ -73,7 +69,7 @@ mutation MessageDeleteTagMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -347,7 +343,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '8ec8f6560f2136e88b8fba9cc61cb2c9';
-
-module.exports = node;
+(node as any).hash = '8ec8f6560f2136e88b8fba9cc61cb2c9';
+export default node;

@@ -1,35 +1,31 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type CreateInviteInput = {|
-  clientMutationId?: ?string,
-  organizationId: number,
-  email: string,
-|};
-export type NavInsertInviteMutationVariables = {|
-  input: CreateInviteInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type NavInsertInviteMutationResponse = {|
-  +createInvite: ?{|
-    +invite: ?{|
-      +organizationId: number,
-      +email: ?string,
-    |}
-  |}
-|};
-export type NavInsertInviteMutation = {|
-  variables: NavInsertInviteMutationVariables,
-  response: NavInsertInviteMutationResponse,
-|};
-*/
+export type CreateInviteInput = {
+    clientMutationId?: string | null | undefined;
+    organizationId: number;
+    email: string;
+};
+export type NavInsertInviteMutationVariables = {
+    input: CreateInviteInput;
+    connections: Array<string>;
+};
+export type NavInsertInviteMutationResponse = {
+    readonly createInvite: {
+        readonly invite: {
+            readonly organizationId: number;
+            readonly email: string | null;
+        } | null;
+    } | null;
+};
+export type NavInsertInviteMutation = {
+    readonly response: NavInsertInviteMutationResponse;
+    readonly variables: NavInsertInviteMutationVariables;
+};
+
 
 
 /*
@@ -46,7 +42,7 @@ mutation NavInsertInviteMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -189,7 +185,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'f0d5d55840dbdcf9211011f8ec35b161';
-
-module.exports = node;
+(node as any).hash = 'f0d5d55840dbdcf9211011f8ec35b161';
+export default node;

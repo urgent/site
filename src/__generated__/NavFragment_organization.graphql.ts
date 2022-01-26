@@ -1,37 +1,30 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ReaderFragment } from "relay-runtime";
 
-/*::
-import type { ReaderFragment } from 'relay-runtime';
-import type { FragmentReference } from "relay-runtime";
-declare export opaque type NavFragment_organization$ref: FragmentReference;
-declare export opaque type NavFragment_organization$fragmentType: NavFragment_organization$ref;
-export type NavFragment_organization = {|
-  +allOrganizations: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +rowId: number,
-        +slug: ?string,
-      |}
-    |}>
-  |},
-  +$refType: NavFragment_organization$ref,
-|};
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_organization = {
+    readonly allOrganizations: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly rowId: number;
+                readonly slug: string | null;
+            } | null;
+        }>;
+    } | null;
+    readonly " $refType": "NavFragment_organization";
+};
 export type NavFragment_organization$data = NavFragment_organization;
 export type NavFragment_organization$key = {
-  +$data?: NavFragment_organization$data,
-  +$fragmentRefs: NavFragment_organization$ref,
-  ...
+    readonly " $data"?: NavFragment_organization$data | undefined;
+    readonly " $fragmentRefs": FragmentRefs<"NavFragment_organization">;
 };
-*/
 
 
-const node/*: ReaderFragment*/ = {
+
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -88,7 +81,5 @@ const node/*: ReaderFragment*/ = {
   "type": "Query",
   "abstractKey": null
 };
-// prettier-ignore
-(node/*: any*/).hash = 'd3072876c7e88137c81479dd074cabba';
-
-module.exports = node;
+(node as any).hash = 'd3072876c7e88137c81479dd074cabba';
+export default node;

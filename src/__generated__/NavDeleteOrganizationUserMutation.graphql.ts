@@ -1,41 +1,37 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type DeleteOrganizationUserInput = {|
-  clientMutationId?: ?string,
-  organizationId: number,
-  userId: number,
-|};
-export type NavDeleteOrganizationUserMutationVariables = {|
-  input: DeleteOrganizationUserInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type NavDeleteOrganizationUserMutationResponse = {|
-  +deleteOrganizationUser: ?{|
-    +organizationUser: ?{|
-      +id: string,
-      +organizationByOrganizationId: ?{|
-        +rowId: number,
-        +slug: ?string,
-        +userByUserId: ?{|
-          +email: ?string
-        |},
-      |},
-    |}
-  |}
-|};
-export type NavDeleteOrganizationUserMutation = {|
-  variables: NavDeleteOrganizationUserMutationVariables,
-  response: NavDeleteOrganizationUserMutationResponse,
-|};
-*/
+export type DeleteOrganizationUserInput = {
+    clientMutationId?: string | null | undefined;
+    organizationId: number;
+    userId: number;
+};
+export type NavDeleteOrganizationUserMutationVariables = {
+    input: DeleteOrganizationUserInput;
+    connections: Array<string>;
+};
+export type NavDeleteOrganizationUserMutationResponse = {
+    readonly deleteOrganizationUser: {
+        readonly organizationUser: {
+            readonly id: string;
+            readonly organizationByOrganizationId: {
+                readonly rowId: number;
+                readonly slug: string | null;
+                readonly userByUserId: {
+                    readonly email: string | null;
+                } | null;
+            } | null;
+        } | null;
+    } | null;
+};
+export type NavDeleteOrganizationUserMutation = {
+    readonly response: NavDeleteOrganizationUserMutationResponse;
+    readonly variables: NavDeleteOrganizationUserMutationVariables;
+};
+
 
 
 /*
@@ -59,7 +55,7 @@ mutation NavDeleteOrganizationUserMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -254,7 +250,5 @@ return {
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = '2d21ea84b711a3e7f4465d3fad331ad1';
-
-module.exports = node;
+(node as any).hash = '2d21ea84b711a3e7f4465d3fad331ad1';
+export default node;

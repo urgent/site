@@ -1,66 +1,64 @@
-/**
- * @flow
- */
-
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest } from "relay-runtime";
 
-/*::
-import type { ConcreteRequest } from 'relay-runtime';
-export type UpdateMessageInput = {|
-  clientMutationId?: ?string,
-  id: number,
-  content: string,
-  loomSharedUrl?: ?string,
-|};
-export type EditorUpdateMessageMutationVariables = {|
-  input: UpdateMessageInput
-|};
-export type EditorUpdateMessageMutationResponse = {|
-  +updateMessage: ?{|
-    +messages: ?$ReadOnlyArray<?{|
-      +rowId: number,
-      +content: ?string,
-      +loomSharedUrl: ?string,
-      +organizationId: number,
-      +messageTagsByMessageId: {|
-        +__id: string,
-        +edges: $ReadOnlyArray<{|
-          +node: ?{|
-            +__id: string,
-            +tagId: number,
-            +tagByTagId: ?{|
-              +__id: string,
-              +rowId: number,
-              +name: ?string,
-              +categoryByCategoryId: ?{|
-                +color: ?string
-              |},
-            |},
-          |}
-        |}>,
-      |},
-    |}>
-  |}
-|};
-export type EditorUpdateMessageMutation = {|
-  variables: EditorUpdateMessageMutationVariables,
-  response: EditorUpdateMessageMutationResponse,
-|};
-*/
+export type CreateMessageInput = {
+    clientMutationId?: string | null | undefined;
+    organizationId: number;
+    content: string;
+    tags: Array<number | null>;
+    loomSharedUrl?: string | null | undefined;
+};
+export type EditorInsertMessageMutationVariables = {
+    input: CreateMessageInput;
+    connections: Array<string>;
+};
+export type EditorInsertMessageMutationResponse = {
+    readonly createMessage: {
+        readonly messages: ReadonlyArray<{
+            readonly rowId: number;
+            readonly content: string | null;
+            readonly organizationId: number;
+            readonly loomSharedUrl: string | null;
+            readonly messageTagsByMessageId: {
+                readonly __id: string;
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly __id: string;
+                        readonly tagId: number;
+                        readonly tagByTagId: {
+                            readonly __id: string;
+                            readonly rowId: number;
+                            readonly name: string | null;
+                            readonly categoryByCategoryId: {
+                                readonly color: string | null;
+                            } | null;
+                        } | null;
+                    } | null;
+                }>;
+            };
+        } | null> | null;
+    } | null;
+};
+export type EditorInsertMessageMutation = {
+    readonly response: EditorInsertMessageMutationResponse;
+    readonly variables: EditorInsertMessageMutationVariables;
+};
+
 
 
 /*
-mutation EditorUpdateMessageMutation(
-  $input: UpdateMessageInput!
+mutation EditorInsertMessageMutation(
+  $input: CreateMessageInput!
 ) {
-  updateMessage(input: $input) {
+  createMessage(input: $input) {
     messages {
       rowId
       content
-      loomSharedUrl
       organizationId
+      loomSharedUrl
       messageTagsByMessageId {
         edges {
           node {
@@ -83,40 +81,36 @@ mutation EditorUpdateMessageMutation(
 }
 */
 
-const node/*: ConcreteRequest*/ = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "rowId",
   "storageKey": null
 },
-v3 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "content",
-  "storageKey": null
-},
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "loomSharedUrl",
+  "name": "content",
   "storageKey": null
 },
 v5 = {
@@ -130,24 +124,31 @@ v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "tagId",
+  "name": "loomSharedUrl",
   "storageKey": null
 },
 v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "name",
+  "name": "tagId",
   "storageKey": null
 },
 v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "color",
+  "name": "name",
   "storageKey": null
 },
 v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "color",
+  "storageKey": null
+},
+v10 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -159,7 +160,7 @@ v9 = {
     }
   ]
 },
-v10 = {
+v11 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -168,17 +169,20 @@ v10 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "EditorUpdateMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "UpdateMessagePayload",
+        "args": (v2/*: any*/),
+        "concreteType": "CreateMessagePayload",
         "kind": "LinkedField",
-        "name": "updateMessage",
+        "name": "createMessage",
         "plural": false,
         "selections": [
           {
@@ -189,10 +193,10 @@ return {
             "name": "messages",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -217,7 +221,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -226,8 +230,8 @@ return {
                             "name": "tagByTagId",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
-                              (v7/*: any*/),
+                              (v3/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -236,22 +240,22 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v8/*: any*/)
+                                  (v9/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v9/*: any*/)
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/)
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v10/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -267,16 +271,19 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
-    "name": "EditorUpdateMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
-        "concreteType": "UpdateMessagePayload",
+        "args": (v2/*: any*/),
+        "concreteType": "CreateMessagePayload",
         "kind": "LinkedField",
-        "name": "updateMessage",
+        "name": "createMessage",
         "plural": false,
         "selections": [
           {
@@ -287,10 +294,10 @@ return {
             "name": "messages",
             "plural": true,
             "selections": [
-              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -315,7 +322,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v6/*: any*/),
+                          (v7/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -324,8 +331,8 @@ return {
                             "name": "tagByTagId",
                             "plural": false,
                             "selections": [
-                              (v2/*: any*/),
-                              (v7/*: any*/),
+                              (v3/*: any*/),
+                              (v8/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -334,30 +341,51 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v8/*: any*/),
-                                  (v10/*: any*/)
+                                  (v9/*: any*/),
+                                  (v11/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v10/*: any*/),
-                              (v9/*: any*/)
+                              (v11/*: any*/),
+                              (v10/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v9/*: any*/)
+                          (v10/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v9/*: any*/)
+                  (v10/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v10/*: any*/)
+              (v11/*: any*/)
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "appendNode",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "messages",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              },
+              {
+                "kind": "Literal",
+                "name": "edgeTypeName",
+                "value": "MessagesEdge"
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -365,16 +393,14 @@ return {
     ]
   },
   "params": {
-    "cacheID": "717bf2b50f653b1f1aaa5df765587c3a",
+    "cacheID": "e9465af544b87fde10a1fae60d1e95ea",
     "id": null,
     "metadata": {},
-    "name": "EditorUpdateMessageMutation",
+    "name": "EditorInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
-// prettier-ignore
-(node/*: any*/).hash = 'eaba5d00db8af5c43ce234d1a2f7e7aa';
-
-module.exports = node;
+(node as any).hash = '54ed4eb25a5b92415f01d83bc3bdfce2';
+export default node;
