@@ -9,21 +9,23 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
-  query Tag_HomeQuery($tag: Int) {
-    ...NavFragment_organization
-    ...NavFragment_organizationUsers
-    ...NavFragment_userConfig
-    ...useSidebarFragment_categories
-    ...NavFragment_invite
-    allMessages(condition: { organizationId: $tag }) {
-      ...TilesFragment_messages
-      ...useSidebarFragment_messages
+  query Tag_TileQuery {
+    query {
+      ...NavFragment_organization
+      ...NavFragment_organizationUsers
+      ...NavFragment_userConfig
+      ...useSidebarFragment_categories
+      ...NavFragment_invite
+      tile(organizationId: 1, tagId: [169, 108]) {
+        ...TilesFragment_messages
+        ...useSidebarFragment_messages
+      }
     }
   }
 `;
 
 function Home({ preloadedQuery }) {
-  const query = usePreloadedQuery(HomeQuery, preloadedQuery);
+  const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
 
   return (
     <>
@@ -49,7 +51,7 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles query={(query as any).allMessages} />
+          <Tiles query={(query as any).tile} />
         </Box>
       </Grid>
       <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
@@ -101,7 +103,13 @@ export default withRelay(Home, HomeQuery, {
       ...ctx.query,
       ...{ tag: parseInt(ctx.query.tag as string) },
     });
-    return { ...ctx.query, ...{ tag: parseInt(ctx.query.tag as string) } };
+    return {
+      ...ctx.query,
+      ...{
+        tag: parseInt(ctx.query.tag as string),
+        organization: parseInt(ctx.query.tag as string),
+      },
+    };
   },
 });
 

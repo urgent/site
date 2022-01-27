@@ -154,7 +154,7 @@ type Query implements Node {
     after: Cursor
 
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -282,6 +282,7 @@ type Query implements Node {
   configCategoryByUserIdAndCategoryId(userId: Int!, categoryId: Int!): ConfigCategory
   inviteByRowId(rowId: Int!): Invite
   messageByRowId(rowId: Int!): Message
+  messageTagByRowId(rowId: Int!): MessageTag
   organizationByRowId(rowId: Int!): Organization
   organizationUserByRowId(rowId: Int!): OrganizationUser
   sessionByRowId(rowId: Int!): Session
@@ -315,6 +316,30 @@ type Query implements Node {
   organizationPaid(organizationId: Int): Int
   organizationUserBalance(organizationId: Int): Int
 
+  """Reads and enables pagination through a set of `Message`."""
+  tile(
+    organizationId: Int
+    tagId: [Int]
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+  ): MessagesConnection
+
   """Reads a single `Account` using its globally unique `ID`."""
   account(
     """The globally unique `ID` to be used in selecting a single `Account`."""
@@ -346,6 +371,14 @@ type Query implements Node {
     """The globally unique `ID` to be used in selecting a single `Message`."""
     id: ID!
   ): Message
+
+  """Reads a single `MessageTag` using its globally unique `ID`."""
+  messageTag(
+    """
+    The globally unique `ID` to be used in selecting a single `MessageTag`.
+    """
+    id: ID!
+  ): MessageTag
 
   """Reads a single `Organization` using its globally unique `ID`."""
   organization(
@@ -622,7 +655,7 @@ type Organization implements Node {
     after: Cursor
 
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -1275,7 +1308,7 @@ type Message implements Node {
     after: Cursor
 
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -1301,10 +1334,15 @@ type MessageTagsConnection {
   totalCount: Int!
 }
 
-type MessageTag {
+type MessageTag implements Node {
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  id: ID!
   messageId: Int!
   tagId: Int!
   organizationId: Int!
+  rowId: Int!
 
   """Reads a single `Message` that is related to this `MessageTag`."""
   messageByMessageId: Message
@@ -1349,7 +1387,7 @@ type Tag implements Node {
     after: Cursor
 
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
 
     """
     A condition to be used in determining which values should be returned by the collection.
@@ -1367,6 +1405,10 @@ enum MessageTagsOrderBy {
   TAG_ID_DESC
   ORGANIZATION_ID_ASC
   ORGANIZATION_ID_DESC
+  ID_ASC
+  ID_DESC
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
 }
 
 """
@@ -1382,6 +1424,9 @@ input MessageTagCondition {
 
   """Checks for equality with the object’s `organizationId` field."""
   organizationId: Int
+
+  """Checks for equality with the object’s `rowId` field."""
+  rowId: Int
 }
 
 """A `MessageTag` edge in the connection."""
@@ -1817,7 +1862,7 @@ type CreateMessageTagPayload {
   """An edge for our `MessageTag`. May be used by Relay 1."""
   messageTagEdge(
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
   ): MessageTagsEdge
 }
 
@@ -2069,7 +2114,7 @@ type DeleteMessageTagPayload {
   """An edge for our `MessageTag`. May be used by Relay 1."""
   messageTagEdge(
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
   ): MessageTagsEdge
 }
 
@@ -2183,7 +2228,7 @@ type RemoveMessageTagPayload {
   """An edge for our `MessageTag`. May be used by Relay 1."""
   messageTagEdge(
     """The method to use when ordering `MessageTag`."""
-    orderBy: [MessageTagsOrderBy!] = [NATURAL]
+    orderBy: [MessageTagsOrderBy!] = [PRIMARY_KEY_ASC]
   ): MessageTagsEdge
 }
 

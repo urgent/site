@@ -56,6 +56,7 @@ mutation MessageDeleteTagMutation(
                 tagByTagId {
                   id
                 }
+                id
               }
             }
           }
@@ -306,7 +307,8 @@ return {
                                       }
                                     ],
                                     "storageKey": null
-                                  }
+                                  },
+                                  (v4/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -334,12 +336,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7a0b144d5a3369173d84e3dad976b049",
+    "cacheID": "ff0953328110dd51253800e8d98d1513",
     "id": null,
     "metadata": {},
     "name": "MessageDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n                id\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();

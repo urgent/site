@@ -17,34 +17,34 @@ const DeleteMessageMutation = graphql`
 `;
 
 const messageFragment = graphql`
-          fragment TilesFragment_messages on MessagesConnection {
-              edges {
-                node {
-                  rowId
-                  content
-                  loomSharedUrl
-                  organizationId
-                  messageTagsByMessageId {
-                    __id
-                    edges {
-                      node {
-                        __id
-                        tagId
-                        messageId
-                        tagByTagId {
-                          __id
-                          rowId
-                          name
-                          categoryByCategoryId {
-                            color
-                          }
-                        }
-                      }
-                    }
-                  }
+  fragment TilesFragment_messages on MessagesConnection {
+    edges {
+      node {
+        rowId
+        content
+        loomSharedUrl
+        organizationId
+        messageTagsByMessageId {
+          __id
+          edges {
+            node {
+              __id
+              tagId
+              messageId
+              tagByTagId {
+                __id
+                rowId
+                name
+                categoryByCategoryId {
+                  color
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
 `;
 
 export default function Tiles({ query }) {
@@ -56,7 +56,6 @@ export default function Tiles({ query }) {
   const [message] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const edit = useStore((state) => state.edit);
-
   // Toolbar on edit
   function onEdit(messageId, collectionId, content) {
     if (edit && editMessage) {

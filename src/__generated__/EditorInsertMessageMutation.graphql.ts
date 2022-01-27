@@ -72,6 +72,7 @@ mutation EditorInsertMessageMutation(
               }
               id
             }
+            id
           }
         }
       }
@@ -351,6 +352,7 @@ return {
                             ],
                             "storageKey": null
                           },
+                          (v11/*: any*/),
                           (v10/*: any*/)
                         ],
                         "storageKey": null
@@ -393,12 +395,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e9465af544b87fde10a1fae60d1e95ea",
+    "cacheID": "03c727d9438673e0cfeb8bc324cea016",
     "id": null,
     "metadata": {},
     "name": "EditorInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
