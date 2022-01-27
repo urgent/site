@@ -1,4 +1,4 @@
-<h1>Align | The Sales Enablement Platform For Innovators</h1>
+<h1>Align | We build software that makes tech companies smarter.</h1>
 <h2>Align helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
 
 We're here to accelerate market penetration, improve cross-team collaboration. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
