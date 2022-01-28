@@ -136,7 +136,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
   const [isConfirmOpen, setConfirmIsOpen] = useState(false)
   const router = useRouter()
-  const { organization } = router.query
+  const { organization, tag } = router.query
 
   function onEnter(e) {
     if (e.key !== 'Enter') {
@@ -170,25 +170,20 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
     })
   }
 
-  function filterOff() {
-    if (edit) {
-      // add tag to message
-      insertMessageTag({
-        variables: {
-          input: {
-            messageId: message,
-            tagId: rowId,
-            organizationId: organization
-          },
-          connections: [messageTagConnection]
+  function addTagToMessage() {
+    insertMessageTag({
+      variables: {
+        input: {
+          messageId: message,
+          tagId: rowId,
+          organizationId: organization
         },
-        updater: store => { },
-      });
-      focusMessage([false])
-    } else {
-      removeFilter(rowId)
-    }
+        connections: [messageTagConnection]
+      },
+      updater: store => { },
+    });
   }
+
 
   function filterOn() {
     if (edit) {
@@ -236,74 +231,38 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
         />
       </Box>
 
-      {filter.includes(rowId) &&
 
 
 
-        <Link href={`/${organization}/${rowId}`}
-          fontSize={[10, 10, 12, 12, 12]}
+
+      <Link href={`/${organization}/${rowId}`}>
+        <Box fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          isActive={true}
+          isActive={tag === tagName}
           color="white"
           bg={`#${color}`}
           _active={{ bg: `#${color}` }}
           _hover={{ bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
-          data-cy="tag"
+          data-cy="tag">
+          {tagMode === 'edit' &&
+            <Input
+              type="text"
+              name="editTagText"
+              value={editTagText}
+              onChange={(e) => setEditTagText(e.target.value)}
+              size={"xs"}
+              boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
+              borderRadius={1}
+              mt={1}
+              onKeyDown={onEnter}
+            />}
+          {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
+        </Box>
+      </Link>
 
-        >
-          <Box>
-            {tagMode === 'edit' &&
-              <Input
-                type="text"
-                name="editTagText"
-                value={editTagText}
-                onChange={(e) => setEditTagText(e.target.value)}
-                size={"xs"}
-                boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-                borderRadius={1}
-                mt={1}
-                onKeyDown={onEnter}
-              />}
-            {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
-          </Box>
-        </Link>
-      }
-
-      {!filter.includes(rowId) &&
-        <Link href={`/${organization}/${rowId}`}
-          fontSize={[10, 10, 12, 12, 12]}
-          p={2}
-          minWidth="inherit"
-          height="inherit"
-          border="2px"
-          isActive={false}
-          color={`#${color}`}
-          borderColor={`#${color}`}
-          bg="white"
-          _active={{ bg: "white" }}
-          _hover={{ bg: "white", boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
-          data-cy="tag"
-        >
-          <Box>
-
-            {tagMode === 'edit' &&
-              <Input
-                type="text"
-                name="editTagText"
-                value={editTagText}
-                onChange={(e) => setEditTagText(e.target.value)}
-                size={"xs"}
-                boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-                borderRadius={1}
-                mt={1}
-                onKeyDown={onEnter}
-              />}
-            {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
-          </Box>
-        </Link>}
     </>
   )
 }
