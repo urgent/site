@@ -6,34 +6,32 @@ import { ReaderFragment } from "relay-runtime";
 
 import { FragmentRefs } from "relay-runtime";
 export type useSidebarFragment_categories = {
-    readonly allCategories: {
-        readonly __id: string;
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly tagsByCategoryId: {
-                    readonly __id: string;
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly rowId: number;
-                            readonly name: string | null;
-                        } | null;
-                    }>;
-                };
-                readonly rowId: number;
-                readonly name: string | null;
-                readonly color: string | null;
-                readonly organizationId: number;
-                readonly configCategoriesByCategoryId: {
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly collapse: boolean | null;
-                            readonly sort: number | null;
-                        } | null;
-                    }>;
-                };
-            } | null;
-        }>;
-    } | null;
+    readonly __id: string;
+    readonly edges: ReadonlyArray<{
+        readonly node: {
+            readonly tagsByCategoryId: {
+                readonly __id: string;
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly rowId: number;
+                        readonly name: string | null;
+                    } | null;
+                }>;
+            };
+            readonly rowId: number;
+            readonly name: string | null;
+            readonly color: string | null;
+            readonly organizationId: number;
+            readonly configCategoriesByCategoryId: {
+                readonly edges: ReadonlyArray<{
+                    readonly node: {
+                        readonly collapse: boolean | null;
+                        readonly sort: number | null;
+                    } | null;
+                }>;
+            };
+        } | null;
+    }>;
     readonly " $refType": "useSidebarFragment_categories";
 };
 export type useSidebarFragment_categories$data = useSidebarFragment_categories;
@@ -80,118 +78,107 @@ return {
     {
       "alias": null,
       "args": null,
-      "concreteType": "CategoriesConnection",
+      "concreteType": "CategoriesEdge",
       "kind": "LinkedField",
-      "name": "allCategories",
-      "plural": false,
+      "name": "edges",
+      "plural": true,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "CategoriesEdge",
+          "concreteType": "Category",
           "kind": "LinkedField",
-          "name": "edges",
-          "plural": true,
+          "name": "node",
+          "plural": false,
           "selections": [
             {
               "alias": null,
               "args": null,
-              "concreteType": "Category",
+              "concreteType": "TagsConnection",
               "kind": "LinkedField",
-              "name": "node",
+              "name": "tagsByCategoryId",
               "plural": false,
               "selections": [
                 {
                   "alias": null,
                   "args": null,
-                  "concreteType": "TagsConnection",
+                  "concreteType": "TagsEdge",
                   "kind": "LinkedField",
-                  "name": "tagsByCategoryId",
-                  "plural": false,
+                  "name": "edges",
+                  "plural": true,
                   "selections": [
                     {
                       "alias": null,
                       "args": null,
-                      "concreteType": "TagsEdge",
+                      "concreteType": "Tag",
                       "kind": "LinkedField",
-                      "name": "edges",
-                      "plural": true,
+                      "name": "node",
+                      "plural": false,
                       "selections": [
-                        {
-                          "alias": null,
-                          "args": null,
-                          "concreteType": "Tag",
-                          "kind": "LinkedField",
-                          "name": "node",
-                          "plural": false,
-                          "selections": [
-                            (v0/*: any*/),
-                            (v1/*: any*/)
-                          ],
-                          "storageKey": null
-                        }
+                        (v0/*: any*/),
+                        (v1/*: any*/)
                       ],
                       "storageKey": null
-                    },
-                    (v2/*: any*/)
+                    }
                   ],
                   "storageKey": null
                 },
-                (v0/*: any*/),
-                (v1/*: any*/),
+                (v2/*: any*/)
+              ],
+              "storageKey": null
+            },
+            (v0/*: any*/),
+            (v1/*: any*/),
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "color",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "organizationId",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "ConfigCategoriesConnection",
+              "kind": "LinkedField",
+              "name": "configCategoriesByCategoryId",
+              "plural": false,
+              "selections": [
                 {
                   "alias": null,
                   "args": null,
-                  "kind": "ScalarField",
-                  "name": "color",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "organizationId",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "concreteType": "ConfigCategoriesConnection",
+                  "concreteType": "ConfigCategoriesEdge",
                   "kind": "LinkedField",
-                  "name": "configCategoriesByCategoryId",
-                  "plural": false,
+                  "name": "edges",
+                  "plural": true,
                   "selections": [
                     {
                       "alias": null,
                       "args": null,
-                      "concreteType": "ConfigCategoriesEdge",
+                      "concreteType": "ConfigCategory",
                       "kind": "LinkedField",
-                      "name": "edges",
-                      "plural": true,
+                      "name": "node",
+                      "plural": false,
                       "selections": [
                         {
                           "alias": null,
                           "args": null,
-                          "concreteType": "ConfigCategory",
-                          "kind": "LinkedField",
-                          "name": "node",
-                          "plural": false,
-                          "selections": [
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "collapse",
-                              "storageKey": null
-                            },
-                            {
-                              "alias": null,
-                              "args": null,
-                              "kind": "ScalarField",
-                              "name": "sort",
-                              "storageKey": null
-                            }
-                          ],
+                          "kind": "ScalarField",
+                          "name": "collapse",
+                          "storageKey": null
+                        },
+                        {
+                          "alias": null,
+                          "args": null,
+                          "kind": "ScalarField",
+                          "name": "sort",
                           "storageKey": null
                         }
                       ],
@@ -205,15 +192,15 @@ return {
             }
           ],
           "storageKey": null
-        },
-        (v2/*: any*/)
+        }
       ],
       "storageKey": null
-    }
+    },
+    (v2/*: any*/)
   ],
-  "type": "Query",
+  "type": "CategoriesConnection",
   "abstractKey": null
 };
 })();
-(node as any).hash = '0e15b7d20dd8361acc5db9f45588aabe';
+(node as any).hash = '826a75b39c79443a9f5fa464f62d49ac';
 export default node;

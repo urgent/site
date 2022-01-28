@@ -4,6 +4,9 @@ import useMutation from './useMutation'
 import Toolbar from './Toolbar';
 import AlertDialog from "./AlertDialog";
 import useStore from "../utils/store";
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input:CreateTagInput!, $connections: [ID!]!) {
@@ -123,7 +126,6 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const removeFilterName = useStore((state) => state.removeFilterName);
   const removeFilterColor = useStore((state) => state.removeFilterColor);
   const edit = useStore((state) => state.edit);
-  const organization = useStore((state) => state.organization);
   const [message, messageTagConnection] = useStore((state) => state.message);
   const focusMessage = useStore((state) => state.focusMessage);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
@@ -133,6 +135,8 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const [isUpdateTagPending, updateTag] = useMutation(UpdateTagMutation);
   const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
   const [isConfirmOpen, setConfirmIsOpen] = useState(false)
+  const router = useRouter()
+  const { organization } = router.query
 
   function onEnter(e) {
     if (e.key !== 'Enter') {
@@ -233,19 +237,22 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       </Box>
 
       {filter.includes(rowId) &&
-        <Button
+
+
+
+        <Link href={`/${organization}/${rowId}`}
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={filterOff}
           isActive={true}
           color="white"
           bg={`#${color}`}
           _active={{ bg: `#${color}` }}
           _hover={{ bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
           data-cy="tag"
+
         >
           <Box>
             {tagMode === 'edit' &&
@@ -262,16 +269,16 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
               />}
             {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
           </Box>
-        </Button>}
+        </Link>
+      }
 
       {!filter.includes(rowId) &&
-        <Button
+        <Link href={`/${organization}/${rowId}`}
           fontSize={[10, 10, 12, 12, 12]}
           p={2}
           minWidth="inherit"
           height="inherit"
           border="2px"
-          onClick={filterOn}
           isActive={false}
           color={`#${color}`}
           borderColor={`#${color}`}
@@ -296,7 +303,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
               />}
             {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
           </Box>
-        </Button>}
+        </Link>}
     </>
   )
 }

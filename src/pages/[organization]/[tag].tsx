@@ -14,11 +14,13 @@ const HomeQuery = graphql`
       ...NavFragment_organization
       ...NavFragment_organizationUsers
       ...NavFragment_userConfig
-      ...useSidebarFragment_categories
       ...NavFragment_invite
       tile(organizationId: $organization, tagId: $tag) {
         ...TilesFragment_messages
         ...useSidebarFragment_messages
+      }
+      allCategories(condition: { organizationId: $organization }) {
+        ...useSidebarFragment_categories
       }
     }
   }
