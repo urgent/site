@@ -43,7 +43,7 @@
     "react-dom": "^17.0.2",
     "react-final-form": "^6.5.7",
     "react-icons": "^4.2.0",
-    "react-relay": "^11.0.2",
+    "react-relay": "^13.0.1",
     "relay-compiler-language-typescript": "^15.0.0",
     "relay-nextjs": "^0.6.0",
     "stripe": "^8.191.0",
