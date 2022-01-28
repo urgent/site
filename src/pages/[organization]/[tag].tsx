@@ -9,14 +9,14 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
-  query Tag_TileQuery {
+  query Tag_HomeQuery($organization: Int, $tag: [Int]) {
     query {
       ...NavFragment_organization
       ...NavFragment_organizationUsers
       ...NavFragment_userConfig
       ...useSidebarFragment_categories
       ...NavFragment_invite
-      tile(organizationId: 1, tagId: [169, 108]) {
+      tile(organizationId: $organization, tagId: $tag) {
         ...TilesFragment_messages
         ...useSidebarFragment_messages
       }
@@ -99,15 +99,11 @@ export default withRelay(Home, HomeQuery, {
     return createServerEnvironment(token);
   },
   variablesFromContext: (ctx) => {
-    console.log({
-      ...ctx.query,
-      ...{ tag: parseInt(ctx.query.tag as string) },
-    });
     return {
       ...ctx.query,
       ...{
         tag: parseInt(ctx.query.tag as string),
-        organization: parseInt(ctx.query.tag as string),
+        organization: parseInt(ctx.query.organization as string),
       },
     };
   },
