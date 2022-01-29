@@ -117,17 +117,27 @@ export function AddTag({ connectionId, categoryId }) {
   </>
 }
 
+function style({ active, color }) {
+  if (active) {
+    return {
+      color: "white",
+      bg: `#${color}`,
+      _active: { bg: `#${color}` },
+      _hover: { bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }
+    }
+  } else {
+    return {
+      color: `#${color}`,
+      borderColor: `#${color}`,
+      bg: "white",
+      _active: { bg: `white` },
+      _hover: { bg: `white`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }
+    }
+  }
+}
+
 export default function Tag({ rowId, color, messageConnections, tagConnection, tagName }) {
-  const filter = useStore((state) => state.filter);
-  const addFilter = useStore((state) => state.addFilter);
-  const removeFilter = useStore((state) => state.removeFilter);
-  const addFilterName = useStore((state) => state.addFilterName);
-  const addFilterColor = useStore((state) => state.addFilterColor);
-  const removeFilterName = useStore((state) => state.removeFilterName);
-  const removeFilterColor = useStore((state) => state.removeFilterColor);
-  const edit = useStore((state) => state.edit);
   const [message, messageTagConnection] = useStore((state) => state.message);
-  const focusMessage = useStore((state) => state.focusMessage);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
   const [editTagText, setEditTagText] = useState(tagName);
   const [tagMode, setTagMode] = useState('view')
@@ -137,6 +147,7 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
   const [isConfirmOpen, setConfirmIsOpen] = useState(false)
   const router = useRouter()
   const { organization, tag } = router.query
+
 
   function onEnter(e) {
     if (e.key !== 'Enter') {
@@ -150,8 +161,6 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
         },
       },
     });
-    setTagMode('view')
-    setFocusedTag(false)
   }
 
   function confirmDeleteTag() {
@@ -182,29 +191,6 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
       },
       updater: store => { },
     });
-  }
-
-
-  function filterOn() {
-    if (edit) {
-      // add tag to message
-      insertMessageTag({
-        variables: {
-          input: {
-            messageId: message,
-            tagId: rowId,
-            organizationId: organization
-          },
-          connections: [messageTagConnection]
-        },
-        updater: store => { },
-      });
-      focusMessage([false])
-    } else {
-      addFilter(rowId)
-      addFilterName(tagName)
-      addFilterColor(color)
-    }
   }
 
   return (
@@ -241,11 +227,8 @@ export default function Tag({ rowId, color, messageConnections, tagConnection, t
           minWidth="inherit"
           height="inherit"
           border="2px"
-          isActive={tag === tagName}
-          color="white"
-          bg={`#${color}`}
-          _active={{ bg: `#${color}` }}
-          _hover={{ bg: `#${color}`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" }}
+          isActive={tag === rowId}
+          {...style({ active: tag == rowId, color: color })}
           data-cy="tag">
           {tagMode === 'edit' &&
             <Input
