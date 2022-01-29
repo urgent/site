@@ -140,18 +140,18 @@ export default function Tag({ id, color, name }) {
   const router = useRouter()
   const { organization, tag } = router.query
 
-  return <Link href={`/${organization}/${rowId}`}>
+  return <Link href={`/${organization}/${id}`}>
     <Box
       fontSize={[10, 10, 12, 12, 12]}
       p={2}
       minWidth="inherit"
       height="inherit"
       border="2px"
-      isActive={tag === rowId}
-      {...style({ active: tag == rowId, color: color })}
+      isActive={tag === id}
+      {...style({ active: tag == id, color: color })}
       data-cy="tag"
     >
-      <Text mt={1}>{tagName}</Text>
+      <Text mt={1}>{name}</Text>
     </Box>
   </Link>
 }
