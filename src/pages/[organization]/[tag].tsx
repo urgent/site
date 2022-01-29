@@ -104,7 +104,7 @@ export default withRelay(Home, HomeQuery, {
     return {
       ...ctx.query,
       ...{
-        tag: parseInt(ctx.query.tag as string),
+        tag: (ctx.query.tag as string).split("&").map(parseInt),
         organization: parseInt(ctx.query.organization as string),
       },
     };

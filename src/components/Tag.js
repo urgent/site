@@ -136,9 +136,14 @@ function style({ active, color }) {
   }
 }
 
+function isActive({ tag, id }) {
+  return tag.split('&').map(el => parseInt(el)).includes(id);
+}
+
 export default function Tag({ id, color, name }) {
   const router = useRouter()
   const { organization, tag } = router.query
+  const active = isActive({ tag, id });
 
   return <Link href={`/${organization}/${id}`}>
     <Box
@@ -147,8 +152,8 @@ export default function Tag({ id, color, name }) {
       minWidth="inherit"
       height="inherit"
       border="2px"
-      isActive={tag === id}
-      {...style({ active: tag == id, color: color })}
+      isActive={active}
+      {...style({ active, color })}
       data-cy="tag"
     >
       <Text mt={1}>{name}</Text>
