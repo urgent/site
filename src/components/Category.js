@@ -180,10 +180,9 @@ export function CollapsableItem({ category, moveCategory, messageTagConnections,
                     return (
                         <WrapItem key={index}>
                             <Tag
-                                rowId={tag.node.rowId}
+                                id={tag.node.rowId}
                                 color={category?.color}
-                                tagConnection={category?.tagsByCategoryId?.__id}
-                                tagName={tag.node.name}
+                                name={tag.node.name}
                             />
                         </WrapItem>
                     )
