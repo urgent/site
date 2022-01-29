@@ -136,116 +136,22 @@ function style({ active, color }) {
   }
 }
 
-export default function Tag({ rowId, color, messageConnections, tagConnection, tagName }) {
-  const [message, messageTagConnection] = useStore((state) => state.message);
-  const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
-  const [editTagText, setEditTagText] = useState(tagName);
-  const [tagMode, setTagMode] = useState('view')
-  const [focusedTag, setFocusedTag] = useState(false)
-  const [isUpdateTagPending, updateTag] = useMutation(UpdateTagMutation);
-  const [isMessageTagPending, insertMessageTag] = useMutation(InsertMessageTagMutation);
-  const [isConfirmOpen, setConfirmIsOpen] = useState(false)
+export default function Tag({ rowId, color, tagName }) {
   const router = useRouter()
   const { organization, tag } = router.query
 
-
-  function onEnter(e) {
-    if (e.key !== 'Enter') {
-      return;
-    }
-    updateTag({
-      variables: {
-        input: {
-          id: focusedTag,
-          name: editTagText,
-        },
-      },
-    });
-  }
-
-  function confirmDeleteTag() {
-    deleteTag({
-      variables: {
-        tag: {
-          tagId: rowId,
-        },
-        messageTag: {
-          tagId: rowId,
-        },
-        tagConnections: [tagConnection],
-        messageTagConnections: messageConnections,
-      },
-      updater: store => { },
-    })
-  }
-
-  function addTagToMessage() {
-    insertMessageTag({
-      variables: {
-        input: {
-          messageId: message,
-          tagId: rowId,
-          organizationId: organization
-        },
-        connections: [messageTagConnection]
-      },
-      updater: store => { },
-    });
-  }
-
-  return (
-    <>
-      <Box data-cy="tag_container">
-        <AlertDialog
-          title={`Delete ${tagName}`}
-          body={`Tags on messages will be lost. Are you sure you want to delete all ${tagName} tags?`}
-          click={confirmDeleteTag}
-          isOpen={isConfirmOpen}
-          setIsOpen={setConfirmIsOpen}
-        />
-        <Toolbar deleteClick={() => setConfirmIsOpen(true)}
-          editClick={() => {
-            if (tagMode === 'edit') {
-              setTagMode('view')
-              setFocusedTag(false)
-            }
-            else {
-              setTagMode('edit')
-              setFocusedTag(rowId)
-            }
-          }}
-        />
-      </Box>
-
-
-
-
-
-      <Link href={`/${organization}/${rowId}`}>
-        <Box fontSize={[10, 10, 12, 12, 12]}
-          p={2}
-          minWidth="inherit"
-          height="inherit"
-          border="2px"
-          isActive={tag === rowId}
-          {...style({ active: tag == rowId, color: color })}
-          data-cy="tag">
-          {tagMode === 'edit' &&
-            <Input
-              type="text"
-              name="editTagText"
-              value={editTagText}
-              onChange={(e) => setEditTagText(e.target.value)}
-              size={"xs"}
-              boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-              borderRadius={1}
-              mt={1}
-              onKeyDown={onEnter}
-            />}
-          {tagMode !== 'edit' && <Text mt={1}>{tagName}</Text>}
-        </Box>
-      </Link>
-
-    </>
-  )
+  return <Link href={`/${organization}/${rowId}`}>
+    <Box
+      fontSize={[10, 10, 12, 12, 12]}
+      p={2}
+      minWidth="inherit"
+      height="inherit"
+      border="2px"
+      isActive={tag === rowId}
+      {...style({ active: tag == rowId, color: color })}
+      data-cy="tag"
+    >
+      <Text mt={1}>{tagName}</Text>
+    </Box>
+  </Link>
 }
