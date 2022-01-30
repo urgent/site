@@ -6,7 +6,6 @@ import useStore from '../utils/store'
 
 
 export function Collapsable({ query }) {
-  const organization = useStore((state) => state.organization);
   const [data, moveCategory, messageTagConnections] = useSidebar({ query });
   return (
     <>
