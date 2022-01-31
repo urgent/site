@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Collapsable } from '../components/Sidebar';
+import { Sidebar } from '../components/Sidebar';
 import Tiles from '../components/Tiles';
 import { Box, Button, Flex, Spacer, Image, VStack, Icon } from '@chakra-ui/react';
 import { signIn, signOut, useSession } from 'next-auth/client'
@@ -12,7 +12,7 @@ export default function Mobile({ query }) {
         return <>
             {nav && <>
                 <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
-                    <Box gridRow="menu"><Collapsable query={query} /></Box>
+                    <Box gridRow="menu"><Sidebar query={query} /></Box>
                     <Flex>
                         <Box p="4">
                             <Image src="/images/align3_webclip.png" h={8} />

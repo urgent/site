@@ -32,8 +32,6 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-
-
 export function AddCategory({ connectionId }) {
     const [nameText, setNameText] = useState('');
     const [colorText, setColorText] = useState('E53E3E');
@@ -89,7 +87,7 @@ export function AddCategory({ connectionId }) {
     </>
 }
 
-export function CollapsableItem({ category, moveCategory, messageTagConnections, sidebarConnection }) {
+export function Category({ category, moveCategory, messageTagConnections, sidebarConnection }) {
     const [ref] = useCategoryDrag({ category, moveCategory });
     const [isConfirmOpen, setConfirmIsOpen] = useState(false)
     const [focusedCategory, setFocusedCategory] = useState();
