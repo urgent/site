@@ -21,35 +21,6 @@ const messageFragment = graphql`
           }
 `;
 
-const categoriesFragment = graphql`
-fragment useSidebarFragment_categories on CategoriesConnection {
-  __id
-  edges {
-    node {
-      tagsByCategoryId {
-        __id
-        edges {
-          node {
-            rowId
-            name
-          }
-        }
-      }
-      rowId
-      name
-      color
-      organizationId
-      configCategoriesByCategoryId {
-        edges {
-          node {
-            collapse
-            sort
-          }
-        }
-      }
-    }
-  }
-}`;
 
 const SortCategoryMutation = graphql`
   mutation useSidebarSortMutation($input:SortCategoryInput!) {
@@ -88,8 +59,7 @@ const SortCategoryMutation = graphql`
 }
 `
 
-export function useSidebar({ query }) {
-  const categories = useFragment(categoriesFragment, query.allCategories);
+export function useSidebar({ query, categories }) {
   const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
   const messages = useFragment(messageFragment, query.allMessages);
   const messageTagConnections = useMemo(() => {
