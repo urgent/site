@@ -43,7 +43,7 @@ const SortCategoryMutation = graphql`
 }
 `
 
-export function useSidebar({ query, categories, messages }) {
+export function useSidebar({ categories, messages }) {
   const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
   const messageTagConnections = useMemo(() => {
     return messages?.allMessages?.edges?.map(edge => {

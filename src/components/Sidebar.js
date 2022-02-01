@@ -58,8 +58,9 @@ fragment SidebarFragment_messages on Query
 `;
 
 export function Sidebar({ query }) {
-  const categories = useFragment(categoriesFragment, query.allCategories);
-  const [data, moveCategory, messageTagConnections] = useSidebar({ query });
+  const categories = useFragment(categoriesFragment, query);
+  const messages = useFragment(messageFragment, query);
+  const [data, moveCategory, messageTagConnections] = useSidebar({ categories, messages });
   return (
     <>
       <Accordion minHeight="85vh" allowMultiple={true} >
