@@ -10,19 +10,14 @@ import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
   query Tag_HomeQuery($organization: Int, $tag: [Int]) {
-    query {
-      ...NavFragment_organization
-      ...NavFragment_organizationUsers
-      ...NavFragment_userConfig
-      ...NavFragment_invite
-      tile(organizationId: $organization, tagId: $tag) {
-        ...TilesFragment_messages
-        ...useSidebarFragment_messages
-      }
-      allCategories(condition: { organizationId: $organization }) {
-        ...useSidebarFragment_categories
-      }
-    }
+    ...NavFragment_organization
+    ...NavFragment_organizationUsers
+    ...NavFragment_userConfig
+    ...NavFragment_invite
+    ...TilesFragment_messages @arguments(organization: $organization, tag: $tag)
+    ...SidebarFragment_messages
+      @arguments(organization: $organization, tag: $tag)
+    ...SidebarFragment_categories @arguments(organization: $organization)
   }
 `;
 

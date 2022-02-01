@@ -3,23 +3,7 @@ import { graphql, useFragment } from 'react-relay';
 import useMutation from './useMutation'
 import { rearrange } from "./useCategoryDrag";
 
-// need connectionId. Need field to query
-const messageFragment = graphql`
-          fragment useSidebarFragment_messages on MessagesConnection {
-            edges {
-              node {
-                messageTagsByMessageId {
-                  edges {
-                    node {
-                      messageId
-                    }
-                  }
-                  __id
-                }
-              }
-            }
-          }
-`;
+
 
 
 const SortCategoryMutation = graphql`
@@ -59,9 +43,8 @@ const SortCategoryMutation = graphql`
 }
 `
 
-export function useSidebar({ query, categories }) {
+export function useSidebar({ query, categories, messages }) {
   const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
-  const messages = useFragment(messageFragment, query.allMessages);
   const messageTagConnections = useMemo(() => {
     return messages?.allMessages?.edges?.map(edge => {
       return edge.node.messageTagsByMessageId.__id;

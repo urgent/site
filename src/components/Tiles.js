@@ -17,7 +17,9 @@ const DeleteMessageMutation = graphql`
 `;
 
 const messageFragment = graphql`
-  fragment TilesFragment_messages on MessagesConnection {
+fragment TilesFragment_messages on Query
+@argumentDefinitions(organization: {type: "Int"}, tag:{type: "[Int]"}) {
+  tile(organizationId: $organization, tagId: $tag) {
     edges {
       node {
         rowId
@@ -45,6 +47,7 @@ const messageFragment = graphql`
       }
     }
   }
+}
 `;
 
 export default function Tiles({ query }) {
