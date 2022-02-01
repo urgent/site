@@ -60,11 +60,11 @@ fragment SidebarFragment_messages on Query
 export function Sidebar({ query }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
-  const [data, moveCategory, messageTagConnections] = useSidebar({ categories, messages });
+  const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({ categories, messages });
   return (
     <>
       <Accordion minHeight="85vh" allowMultiple={true} >
-        {categories?.map((edge, index) => {
+        {sidebarCollection?.map((edge, index) => {
           return <Category key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={data.categories.__id} />
         }
         )}
