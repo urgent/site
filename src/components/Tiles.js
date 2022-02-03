@@ -93,7 +93,7 @@ export default function Tiles({ query }) {
       columnGap="1em"
       data-cy="tiles"
     >
-      {<>{messages?.edges?.map((edge) => {
+      {<>{messages?.tile.edges?.map((edge) => {
         return (
           <Message
             key={edge.node.rowId}

@@ -148,17 +148,6 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
     const organizations = useFragment(organizationFragment, query);
     const invites = useFragment(inviteFragment, query);
 
-    // needs to move in SSG, getServerSideProps
-    if (!organization) {
-        // if user config exists, use as default organization. If not, use first row in organization query
-        if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-            focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
-        } else {
-            focusOrganization(organizationUsers.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
-        }
-    }
-
-
     function sendEmail(email) {
         const slug = organizationUsers.allOrganizationUsers.edges[0].node.organizationByOrganizationId.slug;
         return fetch('/api/invite', {
@@ -244,7 +233,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                         borderRadius="20"
                         value={organization}
                     >
-                        {organizations.allOrganizations?.edges?.map((edge) => {
+                        {organizations?.allOrganizations?.edges?.map((edge) => {
                             const { rowId, slug } = edge.node;
                             return <option key={rowId} value={rowId} defaultValue={organization} style={{ backgroundColor: "black" }}>{slug}</option>
                         })}
@@ -260,7 +249,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     gap={6}
                     mb="5"
                 >
-                    <Box>{organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
+                    <Box>{organizationUsers?.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
                 </Grid>
 
                 <Divider orientation="horizontal" />
@@ -273,7 +262,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     gap={6}
                     mb="5"
                 >
-                    {invites.allInvites?.edges?.filter((edge) => {
+                    {invites?.allInvites?.edges?.filter((edge) => {
                         // do not show user's own invite, and show only focused organization
                         return (edge.node.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
                     }).map((edge) => {
@@ -285,7 +274,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                             </span>
                         )
                     })}
-                    {organizationUsers.allOrganizationUsers?.edges?.filter((edge) => {
+                    {organizationUsers?.allOrganizationUsers?.edges?.filter((edge) => {
                         // do not show user's own organization entry
                         return (edge.node.userByUserId.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
                     }).map((edge) => {

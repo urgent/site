@@ -2,6 +2,7 @@ import React from 'react'
 import { Category, AddCategory } from './Category'
 import { useSidebar } from './useSidebar'
 import { Accordion } from "@chakra-ui/react"
+import { graphql, useFragment } from 'react-relay';
 
 const categoriesFragment = graphql`
 fragment SidebarFragment_categories on Query
@@ -60,16 +61,16 @@ fragment SidebarFragment_messages on Query
 export function Sidebar({ query }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
-  const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({ categories, messages });
+  const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({ categories: categories.allCategories, messages });
   return (
     <>
       <Accordion minHeight="85vh" allowMultiple={true} >
-        {sidebarCollection?.map((edge, index) => {
-          return <Category key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={data.categories.__id} />
+        {sidebarCollection.categories?.map((edge, index) => {
+          return <Category key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={sidebarCollection.categories.__id} />
         }
         )}
       </Accordion>
-      <AddCategory connectionId={data.categories?.__id} />
+      <AddCategory connectionId={sidebarCollection.categories?.__id} />
     </>
   );
 }

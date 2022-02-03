@@ -80,7 +80,7 @@ export function useSidebar({ categories, messages }) {
         return index + 1;
       }
     }),
-    categories: categories.edges.map(edge => {
+    categories: categories?.edges.map(edge => {
         return {
           node: {
             // sort nodes, graphile has trouble with sort across join
@@ -96,7 +96,7 @@ export function useSidebar({ categories, messages }) {
           return 1;
         }
       }),
-      __id: categories.__id
+      __id: categories?.__id
   }), [categories]);
 
   return [sidebarCollection, moveCategory, messageTagConnections]

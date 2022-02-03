@@ -10,14 +10,17 @@ import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
   query Tag_HomeQuery($organization: Int, $tag: [Int]) {
-    ...NavFragment_organization
-    ...NavFragment_organizationUsers
-    ...NavFragment_userConfig
-    ...NavFragment_invite
-    ...TilesFragment_messages @arguments(organization: $organization, tag: $tag)
-    ...SidebarFragment_messages
-      @arguments(organization: $organization, tag: $tag)
-    ...SidebarFragment_categories @arguments(organization: $organization)
+    query {
+      ...NavFragment_organization
+      ...NavFragment_organizationUsers
+      ...NavFragment_userConfig
+      ...NavFragment_invite
+      ...TilesFragment_messages
+        @arguments(organization: $organization, tag: $tag)
+      ...SidebarFragment_messages
+        @arguments(organization: $organization, tag: $tag)
+      ...SidebarFragment_categories @arguments(organization: $organization)
+    }
   }
 `;
 
@@ -48,7 +51,7 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles query={(query as any).tile} />
+          <Tiles {...{ query }} />
         </Box>
       </Grid>
       <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
@@ -105,13 +108,3 @@ export default withRelay(Home, HomeQuery, {
     };
   },
 });
-
-// needs to move in SSG, getServerSideProps
-/*if (!organization) {
-        // if user config exists, use as default organization. If not, use first row in organization query
-        if (userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization > 0) {
-            focusOrganization(userConfig.allUserConfigs?.edges[0]?.node.defaultOrganization);
-        } else {
-            focusOrganization(organizationUsers.allOrganizationUsers?.edges[0]?.node?.organizationByOrganizationId.rowId);
-        }
-    }*/
