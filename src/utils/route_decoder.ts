@@ -6,3 +6,7 @@
 export function decode(parameter:string):Array<string> {
     return parameter.split('&');
 }
+
+export function encode(parameter:Array<string>):string {
+    return parameter.join('&');
+}
