@@ -66,7 +66,7 @@ export function Sidebar({ query }) {
     <>
       <Accordion minHeight="85vh" allowMultiple={true} >
         {sidebarCollection.categories?.map((edge, index) => {
-          return <Category key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={sidebarCollection.categories.__id} />
+          return <Category index={index} key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={sidebarCollection.categories.__id} />
         }
         )}
       </Accordion>
