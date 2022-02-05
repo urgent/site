@@ -166,7 +166,6 @@ export default function Tag({ id, color, name }) {
         minWidth="inherit"
         height="inherit"
         border="2px"
-        isActive={active}
         {...style({ active, color })}
         data-cy="tag"
       >
