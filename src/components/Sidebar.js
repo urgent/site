@@ -6,7 +6,7 @@ import { graphql, useFragment } from 'react-relay';
 
 const categoriesFragment = graphql`
 fragment SidebarFragment_categories on Query
-@argumentDefinitions(organization: {type: "Int"}) {
+@argumentDefinitions(organization: {type: "Int"}, tag: {type: "[Int]"}) {
   allCategories(condition: { organizationId: $organization }) {
     __id
     edges {
@@ -31,6 +31,15 @@ fragment SidebarFragment_categories on Query
               sort
             }
           }
+        }
+      }
+    }
+  }
+  sidebar(tagId: $tag) {
+    edges {
+      node {
+        categoryByCategoryId {
+          rowId
         }
       }
     }
@@ -62,9 +71,19 @@ export function Sidebar({ query }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
   const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({ categories: categories.allCategories, messages });
+
+  // need collection index, to open dropdown
+  const active_categories = [...new Set(categories.sidebar.edges.map(edge => edge.node.categoryByCategoryId.rowId))];
+  const active_index = sidebarCollection.categories.reduce((previousValue, currentValue, index) => {
+    if (active_categories.includes(currentValue.node.rowId)) {
+      previousValue = [...previousValue, index]
+    }
+    return previousValue;
+  }, []);
+
   return (
     <>
-      <Accordion minHeight="85vh" allowMultiple={true} >
+      <Accordion minHeight="85vh" allowMultiple={true} defaultIndex={active_index}>
         {sidebarCollection.categories?.map((edge, index) => {
           return <Category index={index} key={edge.node.rowId} category={edge.node} moveCategory={moveCategory} messageTagConnections={messageTagConnections} sidebarConnection={sidebarCollection.categories.__id} />
         }

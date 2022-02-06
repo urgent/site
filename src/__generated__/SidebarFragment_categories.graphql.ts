@@ -34,6 +34,15 @@ export type SidebarFragment_categories = {
             } | null;
         }>;
     } | null;
+    readonly sidebar: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly categoryByCategoryId: {
+                    readonly rowId: number;
+                } | null;
+            } | null;
+        }>;
+    } | null;
     readonly " $refType": "SidebarFragment_categories";
 };
 export type SidebarFragment_categories$data = SidebarFragment_categories;
@@ -77,6 +86,11 @@ return {
       "defaultValue": null,
       "kind": "LocalArgument",
       "name": "organization"
+    },
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "tag"
     }
   ],
   "kind": "Fragment",
@@ -227,11 +241,62 @@ return {
         (v2/*: any*/)
       ],
       "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": [
+        {
+          "kind": "Variable",
+          "name": "tagId",
+          "variableName": "tag"
+        }
+      ],
+      "concreteType": "TagsConnection",
+      "kind": "LinkedField",
+      "name": "sidebar",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "concreteType": "TagsEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "Tag",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "Category",
+                  "kind": "LinkedField",
+                  "name": "categoryByCategoryId",
+                  "plural": false,
+                  "selections": [
+                    (v0/*: any*/)
+                  ],
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
     }
   ],
   "type": "Query",
   "abstractKey": null
 };
 })();
-(node as any).hash = 'e2c116e773c811178e089817d399639c';
+(node as any).hash = '45d2638dda882e043c70cacee68cfb21';
 export default node;

@@ -7,6 +7,7 @@ import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
+import { decode } from "../../utils/route_decoder";
 
 const HomeQuery = graphql`
   query Tag_HomeQuery($organization: Int, $tag: [Int]) {
@@ -19,7 +20,8 @@ const HomeQuery = graphql`
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
-      ...SidebarFragment_categories @arguments(organization: $organization)
+      ...SidebarFragment_categories
+        @arguments(organization: $organization, tag: $tag)
     }
   }
 `;
@@ -102,7 +104,10 @@ export default withRelay(Home, HomeQuery, {
     return {
       ...ctx.query,
       ...{
-        tag: (ctx.query.tag as string).split("&").map(parseInt),
+        tag: decode(ctx.query.tag as string).map((tag) => {
+          const res = parseInt(tag);
+          return res;
+        }),
         organization: parseInt(ctx.query.organization as string),
       },
     };
