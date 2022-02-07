@@ -20,6 +20,7 @@ import useMutation from "./useMutation";
 import AlertDialog from "./AlertDialog";
 import { graphql } from "react-relay";
 import { useRouter } from "next/router";
+import { decode } from "../utils/route";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation(
@@ -111,6 +112,9 @@ export function AddCategory({ connectionId }) {
 export function Category({ category, index, moveCategory }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
+  const router = useRouter();
+  const { organization, tag } = router.query;
+  const tags = decode(tag as string).map((tag) => parseInt(tag));
 
   return (
     <AccordionItem key={category.rowId} ref={ref}>
@@ -125,22 +129,24 @@ export function Category({ category, index, moveCategory }) {
         <AccordionButton>
           <Box flex="1" textAlign="left">
             {category.name}
-            {category.tagsByCategoryId?.edges.map((tag) => {
-              return (
-                <Badge
-                  data-cy="category_title_tag"
-                  key={tag.node.rowId}
-                  variant="outline"
-                  color="white"
-                  bg={`#${category.color}`}
-                  px={2}
-                  mx={2}
-                  boxShadow="none"
-                >
-                  <Box>{tag.node.name}</Box>
-                </Badge>
-              );
-            })}
+            {category.tagsByCategoryId?.edges
+              .filter((edge) => tags.includes(edge.node.rowId))
+              .map((edge) => {
+                return (
+                  <Badge
+                    data-cy="category_title_tag"
+                    key={edge.node.rowId}
+                    variant="outline"
+                    color="white"
+                    bg={`#${category.color}`}
+                    px={2}
+                    mx={2}
+                    boxShadow="none"
+                  >
+                    <Box>{edge.node.name}</Box>
+                  </Badge>
+                );
+              })}
           </Box>
           <AccordionIcon />
         </AccordionButton>
