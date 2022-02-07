@@ -4,7 +4,7 @@ import useMutation from "./useMutation";
 import useStore from "../utils/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { encode, decode } from "../utils/route_decoder";
+import { isActive, link } from "../utils/route";
 import { graphql, useFragment } from "react-relay";
 
 const InsertTagMutation = graphql`
@@ -134,23 +134,6 @@ function style({ active, color }) {
       _active: { bg: `white` },
       _hover: { bg: `white`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" },
     };
-  }
-}
-
-function isActive({ tag, id }) {
-  // handle routes with no tag
-  return decode(tag)
-    .map((el) => parseInt(el))
-    .includes(id);
-}
-
-function link({ organization, tag, id }) {
-  const tags = decode(tag);
-  const tag_id = id.toString();
-  if (tags.includes(tag_id)) {
-    return `/${organization}/${encode(tags.filter((tag) => tag !== tag_id))}`;
-  } else {
-    return `/${organization}/${encode([tag, id])}`;
   }
 }
 
