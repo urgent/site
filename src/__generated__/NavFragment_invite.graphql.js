@@ -1,32 +1,41 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<ebb48b1e310cfc59cc47c8a5d895df04>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+'use strict';
 
-import { FragmentRefs } from "relay-runtime";
-export type NavFragment_invite = {
-    readonly allInvites: {
-        readonly __id: string;
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly id: string;
-                readonly organizationId: number;
-                readonly email: string | null;
-            } | null;
-        }>;
-    } | null;
-    readonly " $refType": "NavFragment_invite";
-};
-export type NavFragment_invite$data = NavFragment_invite;
+/*::
+import type { Fragment, ReaderFragment } from 'relay-runtime';
+import type { FragmentType } from "relay-runtime";
+declare export opaque type NavFragment_invite$fragmentType: FragmentType;
+export type NavFragment_invite$ref = NavFragment_invite$fragmentType;
+export type NavFragment_invite$data = {|
+  +allInvites: ?{|
+    +__id: string,
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +id: string,
+        +organizationId: number,
+        +email: ?string,
+      |},
+    |}>,
+  |},
+  +$fragmentType: NavFragment_invite$fragmentType,
+|};
+export type NavFragment_invite = NavFragment_invite$data;
 export type NavFragment_invite$key = {
-    readonly " $data"?: NavFragment_invite$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"NavFragment_invite">;
+  +$data?: NavFragment_invite$data,
+  +$fragmentSpreads: NavFragment_invite$fragmentType,
+  ...
 };
+*/
 
-
-
-const node: ReaderFragment = {
+var node/*: ReaderFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -102,5 +111,10 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '9e7eeb0d4ff538526afeb424b73b69a5';
-export default node;
+
+(node/*: any*/).hash = "9e7eeb0d4ff538526afeb424b73b69a5";
+
+module.exports = ((node/*: any*/)/*: Fragment<
+  NavFragment_invite$fragmentType,
+  NavFragment_invite$data,
+>*/);

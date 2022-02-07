@@ -1,48 +1,42 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<dfc56cfa9299b99930e0dd06a67d4f6a>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type CreateInviteInput = {
-    clientMutationId?: string | null | undefined;
-    organizationId: number;
-    email: string;
-};
-export type NavInsertInviteMutationVariables = {
-    input: CreateInviteInput;
-    connections: Array<string>;
-};
-export type NavInsertInviteMutationResponse = {
-    readonly createInvite: {
-        readonly invite: {
-            readonly organizationId: number;
-            readonly email: string | null;
-        } | null;
-    } | null;
-};
-export type NavInsertInviteMutation = {
-    readonly response: NavInsertInviteMutationResponse;
-    readonly variables: NavInsertInviteMutationVariables;
-};
-
-
-
-/*
-mutation NavInsertInviteMutation(
-  $input: CreateInviteInput!
-) {
-  createInvite(input: $input) {
-    invite {
-      organizationId
-      email
-      id
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type CreateInviteInput = {|
+  clientMutationId?: ?string,
+  organizationId: number,
+  email: string,
+|};
+export type NavInsertInviteMutation$variables = {|
+  input: CreateInviteInput,
+  connections: $ReadOnlyArray<string>,
+|};
+export type NavInsertInviteMutationVariables = NavInsertInviteMutation$variables;
+export type NavInsertInviteMutation$data = {|
+  +createInvite: ?{|
+    +invite: ?{|
+      +organizationId: number,
+      +email: ?string,
+    |},
+  |},
+|};
+export type NavInsertInviteMutationResponse = NavInsertInviteMutation$data;
+export type NavInsertInviteMutation = {|
+  variables: NavInsertInviteMutationVariables,
+  response: NavInsertInviteMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -185,5 +179,10 @@ return {
   }
 };
 })();
-(node as any).hash = 'f0d5d55840dbdcf9211011f8ec35b161';
-export default node;
+
+(node/*: any*/).hash = "f0d5d55840dbdcf9211011f8ec35b161";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  NavInsertInviteMutation$variables,
+  NavInsertInviteMutation$data,
+>*/);

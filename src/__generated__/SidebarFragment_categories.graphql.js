@@ -1,59 +1,68 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<a2220ee3a3dc80706cfd541c6f4f636f>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+'use strict';
 
-import { FragmentRefs } from "relay-runtime";
-export type SidebarFragment_categories = {
-    readonly allCategories: {
-        readonly __id: string;
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly tagsByCategoryId: {
-                    readonly __id: string;
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly rowId: number;
-                            readonly name: string | null;
-                        } | null;
-                    }>;
-                };
-                readonly rowId: number;
-                readonly name: string | null;
-                readonly color: string | null;
-                readonly organizationId: number;
-                readonly configCategoriesByCategoryId: {
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly collapse: boolean | null;
-                            readonly sort: number | null;
-                        } | null;
-                    }>;
-                };
-            } | null;
-        }>;
-    } | null;
-    readonly sidebar: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly categoryByCategoryId: {
-                    readonly rowId: number;
-                } | null;
-            } | null;
-        }>;
-    } | null;
-    readonly " $refType": "SidebarFragment_categories";
-};
-export type SidebarFragment_categories$data = SidebarFragment_categories;
+/*::
+import type { Fragment, ReaderFragment } from 'relay-runtime';
+import type { FragmentType } from "relay-runtime";
+declare export opaque type SidebarFragment_categories$fragmentType: FragmentType;
+export type SidebarFragment_categories$ref = SidebarFragment_categories$fragmentType;
+export type SidebarFragment_categories$data = {|
+  +allCategories: ?{|
+    +__id: string,
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +tagsByCategoryId: {|
+          +__id: string,
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +rowId: number,
+              +name: ?string,
+            |},
+          |}>,
+        |},
+        +rowId: number,
+        +name: ?string,
+        +color: ?string,
+        +organizationId: number,
+        +configCategoriesByCategoryId: {|
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +collapse: ?boolean,
+              +sort: ?number,
+            |},
+          |}>,
+        |},
+      |},
+    |}>,
+  |},
+  +sidebar: ?{|
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +categoryByCategoryId: ?{|
+          +rowId: number,
+        |},
+      |},
+    |}>,
+  |},
+  +$fragmentType: SidebarFragment_categories$fragmentType,
+|};
+export type SidebarFragment_categories = SidebarFragment_categories$data;
 export type SidebarFragment_categories$key = {
-    readonly " $data"?: SidebarFragment_categories$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"SidebarFragment_categories">;
+  +$data?: SidebarFragment_categories$data,
+  +$fragmentSpreads: SidebarFragment_categories$fragmentType,
+  ...
 };
+*/
 
-
-
-const node: ReaderFragment = (function(){
+var node/*: ReaderFragment*/ = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -298,5 +307,10 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '45d2638dda882e043c70cacee68cfb21';
-export default node;
+
+(node/*: any*/).hash = "45d2638dda882e043c70cacee68cfb21";
+
+module.exports = ((node/*: any*/)/*: Fragment<
+  SidebarFragment_categories$fragmentType,
+  SidebarFragment_categories$data,
+>*/);

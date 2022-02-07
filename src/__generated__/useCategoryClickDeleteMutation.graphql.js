@@ -1,79 +1,58 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<cb4d32183d9ba29303a3bf49521672b8>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type DeleteCategoryInput = {
-    clientMutationId?: string | null | undefined;
-    categoryId: number;
-};
-export type useCategoryClickDeleteMutationVariables = {
-    input: DeleteCategoryInput;
-    connections: Array<string>;
-};
-export type useCategoryClickDeleteMutationResponse = {
-    readonly deleteCategory: {
-        readonly category: {
-            readonly __id: string;
-        } | null;
-        readonly query: {
-            readonly allMessages: {
-                readonly nodes: ReadonlyArray<{
-                    readonly messageTagsByMessageId: {
-                        readonly __id: string;
-                        readonly edges: ReadonlyArray<{
-                            readonly node: {
-                                readonly messageId: number;
-                            } | null;
-                        }>;
-                    };
-                    readonly content: string | null;
-                } | null>;
-            } | null;
-            readonly allCategories: {
-                readonly __id: string;
-            } | null;
-        } | null;
-    } | null;
-};
-export type useCategoryClickDeleteMutation = {
-    readonly response: useCategoryClickDeleteMutationResponse;
-    readonly variables: useCategoryClickDeleteMutationVariables;
-};
-
-
-
-/*
-mutation useCategoryClickDeleteMutation(
-  $input: DeleteCategoryInput!
-) {
-  deleteCategory(input: $input) {
-    category {
-      id
-    }
-    query {
-      allMessages {
-        nodes {
-          messageTagsByMessageId {
-            edges {
-              node {
-                messageId
-                id
-              }
-            }
-          }
-          content
-          id
-        }
-      }
-      id
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type DeleteCategoryInput = {|
+  clientMutationId?: ?string,
+  categoryId: number,
+|};
+export type useCategoryClickDeleteMutation$variables = {|
+  input: DeleteCategoryInput,
+  connections: $ReadOnlyArray<string>,
+|};
+export type useCategoryClickDeleteMutationVariables = useCategoryClickDeleteMutation$variables;
+export type useCategoryClickDeleteMutation$data = {|
+  +deleteCategory: ?{|
+    +category: ?{|
+      +__id: string,
+    |},
+    +query: ?{|
+      +allMessages: ?{|
+        +nodes: $ReadOnlyArray<?{|
+          +messageTagsByMessageId: {|
+            +__id: string,
+            +edges: $ReadOnlyArray<{|
+              +node: ?{|
+                +messageId: number,
+              |},
+            |}>,
+          |},
+          +content: ?string,
+        |}>,
+      |},
+      +allCategories: ?{|
+        +__id: string,
+      |},
+    |},
+  |},
+|};
+export type useCategoryClickDeleteMutationResponse = useCategoryClickDeleteMutation$data;
+export type useCategoryClickDeleteMutation = {|
+  variables: useCategoryClickDeleteMutationVariables,
+  response: useCategoryClickDeleteMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -393,5 +372,10 @@ return {
   }
 };
 })();
-(node as any).hash = 'b1806be3e5da71375ed261eddf597eed';
-export default node;
+
+(node/*: any*/).hash = "b1806be3e5da71375ed261eddf597eed";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  useCategoryClickDeleteMutation$variables,
+  useCategoryClickDeleteMutation$data,
+>*/);

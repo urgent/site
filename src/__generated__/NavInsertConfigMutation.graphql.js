@@ -1,44 +1,39 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<f48c9571ec11a3a881fe47c3501fb03b>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type CreateUserConfigInput = {
-    clientMutationId?: string | null | undefined;
-    defaultOrganization: number;
-};
-export type NavInsertConfigMutationVariables = {
-    input: CreateUserConfigInput;
-};
-export type NavInsertConfigMutationResponse = {
-    readonly createUserConfig: {
-        readonly userConfig: {
-            readonly defaultOrganization: number;
-        } | null;
-    } | null;
-};
-export type NavInsertConfigMutation = {
-    readonly response: NavInsertConfigMutationResponse;
-    readonly variables: NavInsertConfigMutationVariables;
-};
-
-
-
-/*
-mutation NavInsertConfigMutation(
-  $input: CreateUserConfigInput!
-) {
-  createUserConfig(input: $input) {
-    userConfig {
-      defaultOrganization
-      id
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type CreateUserConfigInput = {|
+  clientMutationId?: ?string,
+  defaultOrganization: number,
+|};
+export type NavInsertConfigMutation$variables = {|
+  input: CreateUserConfigInput,
+|};
+export type NavInsertConfigMutationVariables = NavInsertConfigMutation$variables;
+export type NavInsertConfigMutation$data = {|
+  +createUserConfig: ?{|
+    +userConfig: ?{|
+      +defaultOrganization: number,
+    |},
+  |},
+|};
+export type NavInsertConfigMutationResponse = NavInsertConfigMutation$data;
+export type NavInsertConfigMutation = {|
+  variables: NavInsertConfigMutationVariables,
+  response: NavInsertConfigMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -142,5 +137,10 @@ return {
   }
 };
 })();
-(node as any).hash = '84e9b4074e58a383db3d5e4112bbf38e';
-export default node;
+
+(node/*: any*/).hash = "84e9b4074e58a383db3d5e4112bbf38e";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  NavInsertConfigMutation$variables,
+  NavInsertConfigMutation$data,
+>*/);

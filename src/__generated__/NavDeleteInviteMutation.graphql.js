@@ -1,49 +1,43 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<4f0fafc8ba5d136404189440d8874b4a>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type DeleteInviteInput = {
-    clientMutationId?: string | null | undefined;
-    organizationId: number;
-    email: string;
-};
-export type NavDeleteInviteMutationVariables = {
-    input: DeleteInviteInput;
-    connections: Array<string>;
-};
-export type NavDeleteInviteMutationResponse = {
-    readonly deleteInvite: {
-        readonly invite: {
-            readonly id: string;
-            readonly organizationId: number;
-            readonly email: string | null;
-        } | null;
-    } | null;
-};
-export type NavDeleteInviteMutation = {
-    readonly response: NavDeleteInviteMutationResponse;
-    readonly variables: NavDeleteInviteMutationVariables;
-};
-
-
-
-/*
-mutation NavDeleteInviteMutation(
-  $input: DeleteInviteInput!
-) {
-  deleteInvite(input: $input) {
-    invite {
-      id
-      organizationId
-      email
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type DeleteInviteInput = {|
+  clientMutationId?: ?string,
+  organizationId: number,
+  email: string,
+|};
+export type NavDeleteInviteMutation$variables = {|
+  input: DeleteInviteInput,
+  connections: $ReadOnlyArray<string>,
+|};
+export type NavDeleteInviteMutationVariables = NavDeleteInviteMutation$variables;
+export type NavDeleteInviteMutation$data = {|
+  +deleteInvite: ?{|
+    +invite: ?{|
+      +id: string,
+      +organizationId: number,
+      +email: ?string,
+    |},
+  |},
+|};
+export type NavDeleteInviteMutationResponse = NavDeleteInviteMutation$data;
+export type NavDeleteInviteMutation = {|
+  variables: NavDeleteInviteMutationVariables,
+  response: NavDeleteInviteMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -183,5 +177,10 @@ return {
   }
 };
 })();
-(node as any).hash = 'fcab9aa7afda09c58cf1882e6b330924';
-export default node;
+
+(node/*: any*/).hash = "fcab9aa7afda09c58cf1882e6b330924";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  NavDeleteInviteMutation$variables,
+  NavDeleteInviteMutation$data,
+>*/);

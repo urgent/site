@@ -1,36 +1,45 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<15757c874e88fef4d9499a607104a5c0>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+'use strict';
 
-import { FragmentRefs } from "relay-runtime";
-export type SidebarFragment_messages = {
-    readonly tile: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly messageTagsByMessageId: {
-                    readonly __id: string;
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly messageId: number;
-                        } | null;
-                    }>;
-                };
-            } | null;
-        }>;
-    } | null;
-    readonly " $refType": "SidebarFragment_messages";
-};
-export type SidebarFragment_messages$data = SidebarFragment_messages;
+/*::
+import type { Fragment, ReaderFragment } from 'relay-runtime';
+import type { FragmentType } from "relay-runtime";
+declare export opaque type SidebarFragment_messages$fragmentType: FragmentType;
+export type SidebarFragment_messages$ref = SidebarFragment_messages$fragmentType;
+export type SidebarFragment_messages$data = {|
+  +tile: ?{|
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +messageTagsByMessageId: {|
+          +__id: string,
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +messageId: number,
+            |},
+          |}>,
+        |},
+      |},
+    |}>,
+  |},
+  +$fragmentType: SidebarFragment_messages$fragmentType,
+|};
+export type SidebarFragment_messages = SidebarFragment_messages$data;
 export type SidebarFragment_messages$key = {
-    readonly " $data"?: SidebarFragment_messages$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"SidebarFragment_messages">;
+  +$data?: SidebarFragment_messages$data,
+  +$fragmentSpreads: SidebarFragment_messages$fragmentType,
+  ...
 };
+*/
 
-
-
-const node: ReaderFragment = {
+var node/*: ReaderFragment*/ = {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -147,5 +156,10 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = 'ae9df0156cc36bb914ac9b56f3744ba7';
-export default node;
+
+(node/*: any*/).hash = "ae9df0156cc36bb914ac9b56f3744ba7";
+
+module.exports = ((node/*: any*/)/*: Fragment<
+  SidebarFragment_messages$fragmentType,
+  SidebarFragment_messages$data,
+>*/);

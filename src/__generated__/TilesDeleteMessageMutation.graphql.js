@@ -1,44 +1,40 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<f40fac40c3cfef24e31577191087eaf9>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type DeleteMessageInput = {
-    clientMutationId?: string | null | undefined;
-    messageId: number;
-};
-export type TilesDeleteMessageMutationVariables = {
-    input: DeleteMessageInput;
-    connections: Array<string>;
-};
-export type TilesDeleteMessageMutationResponse = {
-    readonly deleteMessage: {
-        readonly message: {
-            readonly id: string;
-        } | null;
-    } | null;
-};
-export type TilesDeleteMessageMutation = {
-    readonly response: TilesDeleteMessageMutationResponse;
-    readonly variables: TilesDeleteMessageMutationVariables;
-};
-
-
-
-/*
-mutation TilesDeleteMessageMutation(
-  $input: DeleteMessageInput!
-) {
-  deleteMessage(input: $input) {
-    message {
-      id
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type DeleteMessageInput = {|
+  clientMutationId?: ?string,
+  messageId: number,
+|};
+export type TilesDeleteMessageMutation$variables = {|
+  input: DeleteMessageInput,
+  connections: $ReadOnlyArray<string>,
+|};
+export type TilesDeleteMessageMutationVariables = TilesDeleteMessageMutation$variables;
+export type TilesDeleteMessageMutation$data = {|
+  +deleteMessage: ?{|
+    +message: ?{|
+      +id: string,
+    |},
+  |},
+|};
+export type TilesDeleteMessageMutationResponse = TilesDeleteMessageMutation$data;
+export type TilesDeleteMessageMutation = {|
+  variables: TilesDeleteMessageMutationVariables,
+  response: TilesDeleteMessageMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -160,5 +156,10 @@ return {
   }
 };
 })();
-(node as any).hash = '80258f25ab58bd841bcf6df03eda0185';
-export default node;
+
+(node/*: any*/).hash = "80258f25ab58bd841bcf6df03eda0185";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  TilesDeleteMessageMutation$variables,
+  TilesDeleteMessageMutation$data,
+>*/);

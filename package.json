@@ -6,7 +6,7 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && next build",
     "start": "export SET NODE_OPTIONS=--openssl-legacy-provider && next start",
-    "relay": "relay-compiler --language typescript --src ./src --schema ./schema.graphql --extensions js jsx ts tsx",
+    "relay": "relay-compiler",
     "test": "jest --watch --setupFiles dotenv/config",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
@@ -44,7 +44,6 @@
     "react-final-form": "^6.5.7",
     "react-icons": "^4.2.0",
     "react-relay": "^13.0.1",
-    "relay-compiler-language-typescript": "^15.0.0",
     "relay-nextjs": "^0.6.0",
     "stripe": "^8.191.0",
     "zustand": "^3.5.7"
@@ -58,8 +57,8 @@
     "dotenv": "^10.0.0",
     "graphql": "^15.5.0",
     "jest": "^26.6.3",
-    "relay-compiler": "^12.0.0",
-    "relay-config": "^12.0.0",
+    "relay-compiler": "^13.0.2",
+    "relay-config": "^12.0.1",
     "typescript": "^4.5.5"
   }
 }

@@ -1,50 +1,59 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<5dcdbfcf1ed1cb2d22ce4fadf8885e90>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ReaderFragment } from "relay-runtime";
+'use strict';
 
-import { FragmentRefs } from "relay-runtime";
-export type TilesFragment_messages = {
-    readonly tile: {
-        readonly edges: ReadonlyArray<{
-            readonly node: {
-                readonly rowId: number;
-                readonly content: string | null;
-                readonly loomSharedUrl: string | null;
-                readonly organizationId: number;
-                readonly messageTagsByMessageId: {
-                    readonly __id: string;
-                    readonly edges: ReadonlyArray<{
-                        readonly node: {
-                            readonly __id: string;
-                            readonly tagId: number;
-                            readonly messageId: number;
-                            readonly tagByTagId: {
-                                readonly __id: string;
-                                readonly rowId: number;
-                                readonly name: string | null;
-                                readonly categoryByCategoryId: {
-                                    readonly color: string | null;
-                                } | null;
-                            } | null;
-                        } | null;
-                    }>;
-                };
-            } | null;
-        }>;
-    } | null;
-    readonly " $refType": "TilesFragment_messages";
-};
-export type TilesFragment_messages$data = TilesFragment_messages;
+/*::
+import type { Fragment, ReaderFragment } from 'relay-runtime';
+import type { FragmentType } from "relay-runtime";
+declare export opaque type TilesFragment_messages$fragmentType: FragmentType;
+export type TilesFragment_messages$ref = TilesFragment_messages$fragmentType;
+export type TilesFragment_messages$data = {|
+  +tile: ?{|
+    +edges: $ReadOnlyArray<{|
+      +node: ?{|
+        +rowId: number,
+        +content: ?string,
+        +loomSharedUrl: ?string,
+        +organizationId: number,
+        +messageTagsByMessageId: {|
+          +__id: string,
+          +edges: $ReadOnlyArray<{|
+            +node: ?{|
+              +__id: string,
+              +tagId: number,
+              +messageId: number,
+              +tagByTagId: ?{|
+                +__id: string,
+                +rowId: number,
+                +name: ?string,
+                +categoryByCategoryId: ?{|
+                  +color: ?string,
+                |},
+              |},
+            |},
+          |}>,
+        |},
+      |},
+    |}>,
+  |},
+  +$fragmentType: TilesFragment_messages$fragmentType,
+|};
+export type TilesFragment_messages = TilesFragment_messages$data;
 export type TilesFragment_messages$key = {
-    readonly " $data"?: TilesFragment_messages$data | undefined;
-    readonly " $fragmentRefs": FragmentRefs<"TilesFragment_messages">;
+  +$data?: TilesFragment_messages$data,
+  +$fragmentSpreads: TilesFragment_messages$fragmentType,
+  ...
 };
+*/
 
-
-
-const node: ReaderFragment = (function(){
+var node/*: ReaderFragment*/ = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -239,5 +248,10 @@ return {
   "abstractKey": null
 };
 })();
-(node as any).hash = '89da8f09d28819390907c1dd4e47d16f';
-export default node;
+
+(node/*: any*/).hash = "89da8f09d28819390907c1dd4e47d16f";
+
+module.exports = ((node/*: any*/)/*: Fragment<
+  TilesFragment_messages$fragmentType,
+  TilesFragment_messages$data,
+>*/);

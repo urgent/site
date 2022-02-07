@@ -1,76 +1,55 @@
-/* tslint:disable */
+/**
+ * @generated SignedSource<<0c1498caf555bef5a034d3c8a77309fc>>
+ * @flow
+ * @lightSyntaxTransform
+ * @nogrep
+ */
+
 /* eslint-disable */
-// @ts-nocheck
 
-import { ConcreteRequest } from "relay-runtime";
+'use strict';
 
-export type RemoveMessageTagInput = {
-    clientMutationId?: string | null | undefined;
-    tagId: number;
-    messageId: number;
-};
-export type MessageDeleteTagMutationVariables = {
-    input: RemoveMessageTagInput;
-    connections: Array<string>;
-};
-export type MessageDeleteTagMutationResponse = {
-    readonly removeMessageTag: {
-        readonly query: {
-            readonly allMessages: {
-                readonly nodes: ReadonlyArray<{
-                    readonly messageTagsByMessageId: {
-                        readonly edges: ReadonlyArray<{
-                            readonly node: {
-                                readonly messageId: number;
-                                readonly tagByTagId: {
-                                    readonly id: string;
-                                } | null;
-                            } | null;
-                        }>;
-                    };
-                    readonly content: string | null;
-                } | null>;
-            } | null;
-        } | null;
-    } | null;
-};
-export type MessageDeleteTagMutation = {
-    readonly response: MessageDeleteTagMutationResponse;
-    readonly variables: MessageDeleteTagMutationVariables;
-};
-
-
-
-/*
-mutation MessageDeleteTagMutation(
-  $input: RemoveMessageTagInput!
-) {
-  removeMessageTag(input: $input) {
-    query {
-      allMessages {
-        nodes {
-          messageTagsByMessageId {
-            edges {
-              node {
-                messageId
-                tagByTagId {
-                  id
-                }
-                id
-              }
-            }
-          }
-          content
-          id
-        }
-      }
-      id
-    }
-  }
-}
+/*::
+import type { ConcreteRequest, Mutation } from 'relay-runtime';
+export type RemoveMessageTagInput = {|
+  clientMutationId?: ?string,
+  tagId: number,
+  messageId: number,
+|};
+export type MessageDeleteTagMutation$variables = {|
+  input: RemoveMessageTagInput,
+  connections: $ReadOnlyArray<string>,
+|};
+export type MessageDeleteTagMutationVariables = MessageDeleteTagMutation$variables;
+export type MessageDeleteTagMutation$data = {|
+  +removeMessageTag: ?{|
+    +query: ?{|
+      +allMessages: ?{|
+        +nodes: $ReadOnlyArray<?{|
+          +messageTagsByMessageId: {|
+            +edges: $ReadOnlyArray<{|
+              +node: ?{|
+                +messageId: number,
+                +tagByTagId: ?{|
+                  +id: string,
+                |},
+              |},
+            |}>,
+          |},
+          +content: ?string,
+        |}>,
+      |},
+    |},
+  |},
+|};
+export type MessageDeleteTagMutationResponse = MessageDeleteTagMutation$data;
+export type MessageDeleteTagMutation = {|
+  variables: MessageDeleteTagMutationVariables,
+  response: MessageDeleteTagMutation$data,
+|};
 */
 
-const node: ConcreteRequest = (function(){
+var node/*: ConcreteRequest*/ = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -345,5 +324,10 @@ return {
   }
 };
 })();
-(node as any).hash = '8ec8f6560f2136e88b8fba9cc61cb2c9';
-export default node;
+
+(node/*: any*/).hash = "8ec8f6560f2136e88b8fba9cc61cb2c9";
+
+module.exports = ((node/*: any*/)/*: Mutation<
+  MessageDeleteTagMutation$variables,
+  MessageDeleteTagMutation$data,
+>*/);
