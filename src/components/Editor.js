@@ -4,6 +4,7 @@ import { graphql } from 'react-relay';
 import useMutation from './useMutation'
 import useStore from "../utils/store";
 import dynamic from 'next/dynamic';
+import { useRouter } from "next/router";
 
 const InsertMessageMutation = graphql`
   mutation EditorInsertMessageMutation($input:CreateMessageInput!, $connections: [ID!]!) {
@@ -69,57 +70,51 @@ const DynamicLoomSDK = dynamic(() => import('./LoomSDK'), {
   ssr: false,
 });
 
-export default function Editor({ tileConnections }) {
+export default function Editor({ id, connections }) {
+  const router = useRouter();
+  const { organization, tag } = router.query;
   const [isMessagePending, insertMessage] = useMutation(InsertMessageMutation);
   const [isUpdateMessagePending, updateMessage] = useMutation(UpdateMessageMutation);
-  const organization = useStore((state) => state.organization);
-  const edit = useStore((state) => state.edit);
-  const [message] = useStore((state) => state.message);
-  const filter = useStore((state) => state.filter);
-  const editorValue = useStore((state) => state.editorValue);
-  const setEditorValue = useStore((state) => state.setEditorValue);
-  const editMessage = useStore((state) => state.editMessage);
-  const setEditMessage = useStore((state) => state.setEditMessage);
+  const [content, setContent] = useState("");
   const [loomSharedUrl, setLoomSharedUrl] = useState("");
 
   // Editor submit
   function onSubmit(event) {
     event.preventDefault();
-
-    if (edit && editMessage) {
+    if (id) {
       updateMessage({
         variables: {
           input: {
-            id: message,
-            content: editorValue,
-            loomSharedUrl: loomSharedUrl
+            id,
+            content,
+            loomSharedUrl,
           },
         },
         updater: store => { },
       });
-      setEditMessage(false)
-      setEditorValue('');
+      // Reset the comment text
+      setContent('');
     } else {
       insertMessage({
         variables: {
           input: {
             organizationId: organization,
-            content: editorValue,
-            loomSharedUrl: loomSharedUrl,
-            tags: filter,
+            content,
+            loomSharedUrl,
+            tags: tag,
           },
-          connections: [tileConnections]
+          connections: [connections]
         },
         updater: store => { },
       });
       // Reset the comment text
-      setEditorValue('');
+      setContent('');
     }
   }
 
   return (
     <>
-      <div data-cy="editor"><Textarea value={editorValue} onChange={(e) => setEditorValue(e.target.value)} /></div>
+      <div data-cy="editor"><Textarea value={content} onChange={(e) => setContent(e.target.value)} /></div>
       <br /><br /><br />
       <Stack spacing={4} direction='row' align='center'>
         <Button data-cy="save" onClick={onSubmit} width="170px" borderRadius={20}>Save</Button>
