@@ -8,7 +8,6 @@ import {
   WrapItem,
   Button,
   Input,
-  Text,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
@@ -21,7 +20,7 @@ import useMutation from "./useMutation";
 import AlertDialog from "./AlertDialog";
 import useStore from "../utils/store";
 import { useCategory } from "./useCategory";
-import { graphql, useFragment } from "react-relay";
+import { graphql } from "react-relay";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation(
@@ -55,7 +54,7 @@ export function AddCategory({ connectionId }) {
   const [colorText, setColorText] = useState("E53E3E");
   const [isCategoryPending, insertCategory] = useMutation(
     InsertCategoryMutation
-  );
+  ) as [boolean, (config?: any) => void];
   const edit = useStore((state) => state.edit);
   const organization = useStore((state) => state.organization);
 

@@ -1,7 +1,7 @@
 import React from "react";
 import Toolbar from "./Toolbar"
 import useMutation from './useMutation'
-import { Grid, Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
+import { Box, Badge, Button, IconButton, HStack } from "@chakra-ui/react"
 import { HiOutlineTrash } from "react-icons/hi"
 import useStore from "../utils/store";
 import dynamic from 'next/dynamic';

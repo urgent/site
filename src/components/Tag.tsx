@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Button, Box, VStack, Input, Text } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
 import useMutation from "./useMutation";
 import useStore from "../utils/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isActive, link } from "../utils/route";
-import { graphql, useFragment } from "react-relay";
+import { graphql } from "react-relay";
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input: CreateTagInput!, $connections: [ID!]!) {
