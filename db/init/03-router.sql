@@ -7,8 +7,9 @@ with message_filter AS (
     SELECT message.*, message_tag.tag_id
     FROM public.message
     INNER JOIN public.message_tag ON message_tag.message_id = message.id
+    -- join to handle null $2
+    LEFT JOIN UNNEST($2::integer[]) AS tag_id(tag_id) ON message_tag.tag_id = tag_id.tag_id
     WHERE message.organization_id = $1
-    AND message_tag.tag_id = any($2)
 ),
 -- aggregate to get unique array of tags
 message_flat AS (
@@ -18,9 +19,11 @@ message_flat AS (
 ),
 -- AND condition on tags, need all tags to match
 message_ids AS (
-    SELECT message_flat.id FROM message_flat WHERE message_tag_ids @> $2
+    SELECT message_flat.id FROM message_flat WHERE message_tag_ids @> $2::integer[]
 )
 -- get messages
 SELECT message.* FROM message INNER JOIN message_ids ON message.id = message_ids.id;
 $$ LANGUAGE sql STABLE;
 COMMIT;
+
+
