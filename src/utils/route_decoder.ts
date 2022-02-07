@@ -4,9 +4,11 @@
  * @returns {Array <string>} The decoded parameter
  */
 export function decode(parameter:string):Array<string> {
+    if(!parameter) return [];
     return parameter.split('&');
 }
 
 export function encode(parameter:Array<string>):string {
-    return parameter.join('&');
+    if(!parameter) return '';
+    return parameter.filter(value => !!value).join('&');
 }

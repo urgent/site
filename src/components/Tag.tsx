@@ -138,6 +138,7 @@ function style({ active, color }) {
 }
 
 function isActive({ tag, id }) {
+  // handle routes with no tag
   return decode(tag)
     .map((el) => parseInt(el))
     .includes(id);
@@ -149,7 +150,7 @@ function link({ organization, tag, id }) {
   if (tags.includes(tag_id)) {
     return `/${organization}/${encode(tags.filter((tag) => tag !== tag_id))}`;
   } else {
-    return `/${organization}/${tag}&${id}`;
+    return `/${organization}/${encode([tag, id])}`;
   }
 }
 
@@ -159,18 +160,18 @@ export default function Tag({ id, color, name }) {
   const active = isActive({ tag, id });
 
   return (
-    <Link href={link({ organization, tag, id })}>
-      <Box
-        fontSize={[10, 10, 12, 12, 12]}
-        p={2}
-        minWidth="inherit"
-        height="inherit"
-        border="2px"
-        {...style({ active, color })}
-        data-cy="tag"
-      >
-        <Text mt={1}>{name}</Text>
-      </Box>
-    </Link>
+    <Box
+      fontSize={[10, 10, 12, 12, 12]}
+      p={2}
+      minWidth="inherit"
+      height="inherit"
+      border="2px"
+      {...style({ active, color })}
+      data-cy="tag"
+    >
+      <Text mt={1}>
+        <Link href={link({ organization, tag, id })}>{name}</Link>
+      </Text>
+    </Box>
   );
 }
