@@ -1,68 +1,62 @@
 /**
- * @generated SignedSource<<a2220ee3a3dc80706cfd541c6f4f636f>>
- * @flow
+ * @generated SignedSource<<ec9b26502881faa112bca50d0aa2a5de>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type SidebarFragment_categories$fragmentType: FragmentType;
-export type SidebarFragment_categories$ref = SidebarFragment_categories$fragmentType;
-export type SidebarFragment_categories$data = {|
-  +allCategories: ?{|
-    +__id: string,
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +tagsByCategoryId: {|
-          +__id: string,
-          +edges: $ReadOnlyArray<{|
-            +node: ?{|
-              +rowId: number,
-              +name: ?string,
-            |},
-          |}>,
-        |},
-        +rowId: number,
-        +name: ?string,
-        +color: ?string,
-        +organizationId: number,
-        +configCategoriesByCategoryId: {|
-          +edges: $ReadOnlyArray<{|
-            +node: ?{|
-              +collapse: ?boolean,
-              +sort: ?number,
-            |},
-          |}>,
-        |},
-      |},
-    |}>,
-  |},
-  +sidebar: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +categoryByCategoryId: ?{|
-          +rowId: number,
-        |},
-      |},
-    |}>,
-  |},
-  +$fragmentType: SidebarFragment_categories$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type SidebarFragment_categories$data = {
+  readonly allCategories: {
+    readonly __id: string;
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly tagsByCategoryId: {
+          readonly __id: string;
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly rowId: number;
+              readonly name: string | null;
+            } | null;
+          }>;
+        };
+        readonly rowId: number;
+        readonly name: string | null;
+        readonly color: string | null;
+        readonly organizationId: number;
+        readonly configCategoriesByCategoryId: {
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly collapse: boolean | null;
+              readonly sort: number | null;
+            } | null;
+          }>;
+        };
+      } | null;
+    }>;
+  } | null;
+  readonly sidebar: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly categoryByCategoryId: {
+          readonly rowId: number;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "SidebarFragment_categories";
+};
 export type SidebarFragment_categories = SidebarFragment_categories$data;
 export type SidebarFragment_categories$key = {
-  +$data?: SidebarFragment_categories$data,
-  +$fragmentSpreads: SidebarFragment_categories$fragmentType,
-  ...
+  readonly " $data"?: SidebarFragment_categories$data;
+  readonly " $fragmentSpreads": FragmentRefs<"SidebarFragment_categories">;
 };
-*/
 
-var node/*: ReaderFragment*/ = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -308,9 +302,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "45d2638dda882e043c70cacee68cfb21";
+(node as any).hash = "45d2638dda882e043c70cacee68cfb21";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  SidebarFragment_categories$fragmentType,
-  SidebarFragment_categories$data,
->*/);
+export default node;

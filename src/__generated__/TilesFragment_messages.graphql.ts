@@ -1,59 +1,53 @@
 /**
- * @generated SignedSource<<5dcdbfcf1ed1cb2d22ce4fadf8885e90>>
- * @flow
+ * @generated SignedSource<<5cd0de6b5dfb20b8e7c177f688eaa7b8>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type TilesFragment_messages$fragmentType: FragmentType;
-export type TilesFragment_messages$ref = TilesFragment_messages$fragmentType;
-export type TilesFragment_messages$data = {|
-  +tile: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +rowId: number,
-        +content: ?string,
-        +loomSharedUrl: ?string,
-        +organizationId: number,
-        +messageTagsByMessageId: {|
-          +__id: string,
-          +edges: $ReadOnlyArray<{|
-            +node: ?{|
-              +__id: string,
-              +tagId: number,
-              +messageId: number,
-              +tagByTagId: ?{|
-                +__id: string,
-                +rowId: number,
-                +name: ?string,
-                +categoryByCategoryId: ?{|
-                  +color: ?string,
-                |},
-              |},
-            |},
-          |}>,
-        |},
-      |},
-    |}>,
-  |},
-  +$fragmentType: TilesFragment_messages$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type TilesFragment_messages$data = {
+  readonly tile: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly rowId: number;
+        readonly content: string | null;
+        readonly loomSharedUrl: string | null;
+        readonly organizationId: number;
+        readonly messageTagsByMessageId: {
+          readonly __id: string;
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly __id: string;
+              readonly tagId: number;
+              readonly messageId: number;
+              readonly tagByTagId: {
+                readonly __id: string;
+                readonly rowId: number;
+                readonly name: string | null;
+                readonly categoryByCategoryId: {
+                  readonly color: string | null;
+                } | null;
+              } | null;
+            } | null;
+          }>;
+        };
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "TilesFragment_messages";
+};
 export type TilesFragment_messages = TilesFragment_messages$data;
 export type TilesFragment_messages$key = {
-  +$data?: TilesFragment_messages$data,
-  +$fragmentSpreads: TilesFragment_messages$fragmentType,
-  ...
+  readonly " $data"?: TilesFragment_messages$data;
+  readonly " $fragmentSpreads": FragmentRefs<"TilesFragment_messages">;
 };
-*/
 
-var node/*: ReaderFragment*/ = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -249,9 +243,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "89da8f09d28819390907c1dd4e47d16f";
+(node as any).hash = "89da8f09d28819390907c1dd4e47d16f";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  TilesFragment_messages$fragmentType,
-  TilesFragment_messages$data,
->*/);
+export default node;

@@ -1,50 +1,44 @@
 /**
- * @generated SignedSource<<4904dbb4fa73fbb0d6ad8370700af483>>
- * @flow
+ * @generated SignedSource<<7ffb617cc11e0863ff8925f865c5951f>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type NavFragment_organizationUsers$fragmentType: FragmentType;
-export type NavFragment_organizationUsers$ref = NavFragment_organizationUsers$fragmentType;
-export type NavFragment_organizationUsers$data = {|
-  +allOrganizationUsers: ?{|
-    +__id: string,
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +userId: number,
-        +organizationId: number,
-        +userByUserId: ?{|
-          +email: ?string,
-        |},
-        +organizationByOrganizationId: ?{|
-          +rowId: number,
-          +slug: ?string,
-          +userByUserId: ?{|
-            +email: ?string,
-          |},
-        |},
-      |},
-    |}>,
-  |},
-  +$fragmentType: NavFragment_organizationUsers$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_organizationUsers$data = {
+  readonly allOrganizationUsers: {
+    readonly __id: string;
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly userId: number;
+        readonly organizationId: number;
+        readonly userByUserId: {
+          readonly email: string | null;
+        } | null;
+        readonly organizationByOrganizationId: {
+          readonly rowId: number;
+          readonly slug: string | null;
+          readonly userByUserId: {
+            readonly email: string | null;
+          } | null;
+        } | null;
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "NavFragment_organizationUsers";
+};
 export type NavFragment_organizationUsers = NavFragment_organizationUsers$data;
 export type NavFragment_organizationUsers$key = {
-  +$data?: NavFragment_organizationUsers$data,
-  +$fragmentSpreads: NavFragment_organizationUsers$fragmentType,
-  ...
+  readonly " $data"?: NavFragment_organizationUsers$data;
+  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_organizationUsers">;
 };
-*/
 
-var node/*: ReaderFragment*/ = (function(){
+const node: ReaderFragment = (function(){
 var v0 = {
   "alias": null,
   "args": null,
@@ -161,9 +155,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "c9398b702442d87af861a27a7c2c70e9";
+(node as any).hash = "c9398b702442d87af861a27a7c2c70e9";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  NavFragment_organizationUsers$fragmentType,
-  NavFragment_organizationUsers$data,
->*/);
+export default node;

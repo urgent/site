@@ -1,40 +1,37 @@
 /**
- * @generated SignedSource<<f40fac40c3cfef24e31577191087eaf9>>
- * @flow
+ * @generated SignedSource<<05cc4bf1c362a169962a4cfee0ad5ba5>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type DeleteMessageInput = {|
-  clientMutationId?: ?string,
-  messageId: number,
-|};
-export type TilesDeleteMessageMutation$variables = {|
-  input: DeleteMessageInput,
-  connections: $ReadOnlyArray<string>,
-|};
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type DeleteMessageInput = {
+  clientMutationId?: string | null;
+  messageId: number;
+};
+export type TilesDeleteMessageMutation$variables = {
+  input: DeleteMessageInput;
+  connections: ReadonlyArray<string>;
+};
 export type TilesDeleteMessageMutationVariables = TilesDeleteMessageMutation$variables;
-export type TilesDeleteMessageMutation$data = {|
-  +deleteMessage: ?{|
-    +message: ?{|
-      +id: string,
-    |},
-  |},
-|};
+export type TilesDeleteMessageMutation$data = {
+  readonly deleteMessage: {
+    readonly message: {
+      readonly id: string;
+    } | null;
+  } | null;
+};
 export type TilesDeleteMessageMutationResponse = TilesDeleteMessageMutation$data;
-export type TilesDeleteMessageMutation = {|
-  variables: TilesDeleteMessageMutationVariables,
-  response: TilesDeleteMessageMutation$data,
-|};
-*/
+export type TilesDeleteMessageMutation = {
+  variables: TilesDeleteMessageMutationVariables;
+  response: TilesDeleteMessageMutation$data;
+};
 
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -157,9 +154,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "80258f25ab58bd841bcf6df03eda0185";
+(node as any).hash = "80258f25ab58bd841bcf6df03eda0185";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  TilesDeleteMessageMutation$variables,
-  TilesDeleteMessageMutation$data,
->*/);
+export default node;

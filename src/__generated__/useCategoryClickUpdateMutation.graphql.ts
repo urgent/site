@@ -1,51 +1,48 @@
 /**
- * @generated SignedSource<<5d2b878d2ecf33ce3ad95bc874bf7b12>>
- * @flow
+ * @generated SignedSource<<07b734caf4dea30b917ba0e65c705393>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type UpdateCategoryInput = {|
-  clientMutationId?: ?string,
-  id: number,
-  name: string,
-  color: string,
-|};
-export type useCategoryClickUpdateMutation$variables = {|
-  input: UpdateCategoryInput,
-|};
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type UpdateCategoryInput = {
+  clientMutationId?: string | null;
+  id: number;
+  name: string;
+  color: string;
+};
+export type useCategoryClickUpdateMutation$variables = {
+  input: UpdateCategoryInput;
+};
 export type useCategoryClickUpdateMutationVariables = useCategoryClickUpdateMutation$variables;
-export type useCategoryClickUpdateMutation$data = {|
-  +updateCategory: ?{|
-    +category: ?{|
-      +rowId: number,
-      +name: ?string,
-      +color: ?string,
-      +tagsByCategoryId: {|
-        +__id: string,
-        +edges: $ReadOnlyArray<{|
-          +node: ?{|
-            +name: ?string,
-          |},
-        |}>,
-      |},
-    |},
-  |},
-|};
+export type useCategoryClickUpdateMutation$data = {
+  readonly updateCategory: {
+    readonly category: {
+      readonly rowId: number;
+      readonly name: string | null;
+      readonly color: string | null;
+      readonly tagsByCategoryId: {
+        readonly __id: string;
+        readonly edges: ReadonlyArray<{
+          readonly node: {
+            readonly name: string | null;
+          } | null;
+        }>;
+      };
+    } | null;
+  } | null;
+};
 export type useCategoryClickUpdateMutationResponse = useCategoryClickUpdateMutation$data;
-export type useCategoryClickUpdateMutation = {|
-  variables: useCategoryClickUpdateMutationVariables,
-  response: useCategoryClickUpdateMutation$data,
-|};
-*/
+export type useCategoryClickUpdateMutation = {
+  variables: useCategoryClickUpdateMutationVariables;
+  response: useCategoryClickUpdateMutation$data;
+};
 
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -252,9 +249,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "2fd3d97d6c605823b747bfa1a2e676ba";
+(node as any).hash = "2fd3d97d6c605823b747bfa1a2e676ba";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  useCategoryClickUpdateMutation$variables,
-  useCategoryClickUpdateMutation$data,
->*/);
+export default node;

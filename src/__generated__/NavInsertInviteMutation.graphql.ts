@@ -1,42 +1,39 @@
 /**
- * @generated SignedSource<<dfc56cfa9299b99930e0dd06a67d4f6a>>
- * @flow
+ * @generated SignedSource<<7f5111335fb07f1171619a88e1bf6ae5>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type CreateInviteInput = {|
-  clientMutationId?: ?string,
-  organizationId: number,
-  email: string,
-|};
-export type NavInsertInviteMutation$variables = {|
-  input: CreateInviteInput,
-  connections: $ReadOnlyArray<string>,
-|};
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type CreateInviteInput = {
+  clientMutationId?: string | null;
+  organizationId: number;
+  email: string;
+};
+export type NavInsertInviteMutation$variables = {
+  input: CreateInviteInput;
+  connections: ReadonlyArray<string>;
+};
 export type NavInsertInviteMutationVariables = NavInsertInviteMutation$variables;
-export type NavInsertInviteMutation$data = {|
-  +createInvite: ?{|
-    +invite: ?{|
-      +organizationId: number,
-      +email: ?string,
-    |},
-  |},
-|};
+export type NavInsertInviteMutation$data = {
+  readonly createInvite: {
+    readonly invite: {
+      readonly organizationId: number;
+      readonly email: string | null;
+    } | null;
+  } | null;
+};
 export type NavInsertInviteMutationResponse = NavInsertInviteMutation$data;
-export type NavInsertInviteMutation = {|
-  variables: NavInsertInviteMutationVariables,
-  response: NavInsertInviteMutation$data,
-|};
-*/
+export type NavInsertInviteMutation = {
+  variables: NavInsertInviteMutationVariables;
+  response: NavInsertInviteMutation$data;
+};
 
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -180,9 +177,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "f0d5d55840dbdcf9211011f8ec35b161";
+(node as any).hash = "f0d5d55840dbdcf9211011f8ec35b161";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  NavInsertInviteMutation$variables,
-  NavInsertInviteMutation$data,
->*/);
+export default node;

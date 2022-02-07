@@ -1,43 +1,40 @@
 /**
- * @generated SignedSource<<4f0fafc8ba5d136404189440d8874b4a>>
- * @flow
+ * @generated SignedSource<<fa46b13c4a30a2547e130da9fe131b29>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type DeleteInviteInput = {|
-  clientMutationId?: ?string,
-  organizationId: number,
-  email: string,
-|};
-export type NavDeleteInviteMutation$variables = {|
-  input: DeleteInviteInput,
-  connections: $ReadOnlyArray<string>,
-|};
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type DeleteInviteInput = {
+  clientMutationId?: string | null;
+  organizationId: number;
+  email: string;
+};
+export type NavDeleteInviteMutation$variables = {
+  input: DeleteInviteInput;
+  connections: ReadonlyArray<string>;
+};
 export type NavDeleteInviteMutationVariables = NavDeleteInviteMutation$variables;
-export type NavDeleteInviteMutation$data = {|
-  +deleteInvite: ?{|
-    +invite: ?{|
-      +id: string,
-      +organizationId: number,
-      +email: ?string,
-    |},
-  |},
-|};
+export type NavDeleteInviteMutation$data = {
+  readonly deleteInvite: {
+    readonly invite: {
+      readonly id: string;
+      readonly organizationId: number;
+      readonly email: string | null;
+    } | null;
+  } | null;
+};
 export type NavDeleteInviteMutationResponse = NavDeleteInviteMutation$data;
-export type NavDeleteInviteMutation = {|
-  variables: NavDeleteInviteMutationVariables,
-  response: NavDeleteInviteMutation$data,
-|};
-*/
+export type NavDeleteInviteMutation = {
+  variables: NavDeleteInviteMutationVariables;
+  response: NavDeleteInviteMutation$data;
+};
 
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -178,9 +175,6 @@ return {
 };
 })();
 
-(node/*: any*/).hash = "fcab9aa7afda09c58cf1882e6b330924";
+(node as any).hash = "fcab9aa7afda09c58cf1882e6b330924";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  NavDeleteInviteMutation$variables,
-  NavDeleteInviteMutation$data,
->*/);
+export default node;

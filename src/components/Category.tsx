@@ -18,9 +18,8 @@ import {
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
 import AlertDialog from "./AlertDialog";
-import useStore from "../utils/store";
-import { useCategory } from "./useCategory";
 import { graphql } from "react-relay";
+import { useRouter } from "next/router";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation(
@@ -50,161 +49,98 @@ const InsertCategoryMutation = graphql`
 `;
 
 export function AddCategory({ connectionId }) {
-  const [nameText, setNameText] = useState("");
-  const [colorText, setColorText] = useState("E53E3E");
+  const [name, setName] = useState("");
+  const [color, setColor] = useState("E53E3E");
   const [isCategoryPending, insertCategory] = useMutation(
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
-  const edit = useStore((state) => state.edit);
-  const organization = useStore((state) => state.organization);
+  const router = useRouter();
+  const { organization, tag } = router.query;
 
   // Editor submit callback
   function onSubmit(event) {
     event.preventDefault();
-    if (typeof insertCategory === "function") {
-      insertCategory({
-        variables: {
-          input: {
-            organizationId: organization,
-            name: nameText,
-            color: colorText,
-          },
-          connections: [connectionId],
+    insertCategory({
+      variables: {
+        input: {
+          organizationId: organization,
+          name,
+          color,
         },
-        updater: (store) => {},
-      });
-    }
+        connections: [connectionId],
+      },
+      updater: (store) => {},
+    });
     // Reset form text
-    setNameText("");
-    setColorText("");
+    setName("");
+    setColor("");
   }
 
   const size = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
 
   return (
-    <>
-      {edit && (
-        <VStack paddingX={2}>
-          <Input
-            size={size}
-            maxWidth={28}
-            borderRadius={8}
-            paddingX={2}
-            paddingY={1}
-            onChange={(e) => setNameText(e.target.value)}
-            placeholder="Name"
-            value={nameText}
-            data-cy="add_category_name"
-          />
-          <Input
-            size={size}
-            maxWidth={28}
-            borderRadius={8}
-            paddingX={2}
-            paddingY={1}
-            onChange={(e) => setColorText(e.target.value)}
-            placeholder="Color"
-            value={colorText}
-          />
-          <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>
-            Add
-          </Button>
-        </VStack>
-      )}
-    </>
+    <VStack paddingX={2}>
+      <Input
+        size={size}
+        maxWidth={28}
+        borderRadius={8}
+        paddingX={2}
+        paddingY={1}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Name"
+        value={name}
+        data-cy="add_category_name"
+      />
+      <Input
+        size={size}
+        maxWidth={28}
+        borderRadius={8}
+        paddingX={2}
+        paddingY={1}
+        onChange={(e) => setColor(e.target.value)}
+        placeholder="Color"
+        value={color}
+      />
+      <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>
+        Add
+      </Button>
+    </VStack>
   );
 }
 
-export function Category({
-  category,
-  index,
-  moveCategory,
-  messageTagConnections,
-  sidebarConnection,
-}) {
+export function Category({ category, index, moveCategory }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
-  const [focusedCategory, setFocusedCategory] = useState();
-  const edit = useStore((state) => state.edit);
-  const [editCategoryText, setEditCategoryText] = useState(category?.name);
-  const [editCategoryColor, setEditCategoryColor] = useState(category?.color);
-  const [onEnter, del] = useCategory({
-    focusedCategory,
-    setFocusedCategory,
-    editCategoryText,
-    editCategoryColor,
-  });
-  const filter = useStore((state) => state.filter);
 
   return (
     <AccordionItem key={category.rowId} ref={ref}>
       <AlertDialog
         title={`Delete ${category?.name}`}
         body={`Tags on messages will be lost. Are you sure you want to delete the ${category?.name} category?`}
-        click={() =>
-          del({
-            categoryId: category?.rowId,
-            messageTagConnections: messageTagConnections,
-            sidebarConnection: sidebarConnection,
-          })
-        }
         isOpen={isConfirmOpen}
+        click={() => setConfirmIsOpen(false)}
         setIsOpen={setConfirmIsOpen}
       />
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            {!edit && (
-              <>
-                {category.name}
-                {category.tagsByCategoryId?.edges
-                  .filter((tag) => {
-                    return filter.includes(tag.node.rowId);
-                  })
-                  .map((tag) => {
-                    return (
-                      <Badge
-                        data-cy="category_title_tag"
-                        key={tag.node.rowId}
-                        variant="outline"
-                        color="white"
-                        bg={`#${category.color}`}
-                        px={2}
-                        mx={2}
-                        boxShadow="none"
-                      >
-                        <Box>{tag.node.name}</Box>
-                      </Badge>
-                    );
-                  })}
-              </>
-            )}
-            {edit && focusedCategory === category.rowId && (
-              <>
-                <Input
-                  type="text"
-                  name="editCategoryText"
-                  onChange={(e) => setEditCategoryText(e.target.value)}
-                  size={"xs"}
-                  boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-                  borderRadius={1}
-                  mt={1}
-                  onKeyDown={onEnter}
-                  value={editCategoryText}
-                />
-                <Input
-                  type="text"
-                  name="editCategoryColor"
-                  onChange={(e) => setEditCategoryColor(e.target.value)}
-                  size={"xs"}
-                  boxShadow="1px 1px 4px rgb(0 0 0 / 20%);"
-                  borderRadius={1}
-                  mt={1}
-                  onKeyDown={onEnter}
-                  value={editCategoryColor}
-                />
-              </>
-            )}
+            {category.name}
+            {category.tagsByCategoryId?.edges.map((tag) => {
+              return (
+                <Badge
+                  data-cy="category_title_tag"
+                  key={tag.node.rowId}
+                  variant="outline"
+                  color="white"
+                  bg={`#${category.color}`}
+                  px={2}
+                  mx={2}
+                  boxShadow="none"
+                >
+                  <Box>{tag.node.name}</Box>
+                </Badge>
+              );
+            })}
           </Box>
           <AccordionIcon />
         </AccordionButton>

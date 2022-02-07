@@ -1,45 +1,39 @@
 /**
- * @generated SignedSource<<15757c874e88fef4d9499a607104a5c0>>
- * @flow
+ * @generated SignedSource<<a1f1d1e2314a546170e0ebfdc01c28c6>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type SidebarFragment_messages$fragmentType: FragmentType;
-export type SidebarFragment_messages$ref = SidebarFragment_messages$fragmentType;
-export type SidebarFragment_messages$data = {|
-  +tile: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +messageTagsByMessageId: {|
-          +__id: string,
-          +edges: $ReadOnlyArray<{|
-            +node: ?{|
-              +messageId: number,
-            |},
-          |}>,
-        |},
-      |},
-    |}>,
-  |},
-  +$fragmentType: SidebarFragment_messages$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type SidebarFragment_messages$data = {
+  readonly tile: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly messageTagsByMessageId: {
+          readonly __id: string;
+          readonly edges: ReadonlyArray<{
+            readonly node: {
+              readonly messageId: number;
+            } | null;
+          }>;
+        };
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "SidebarFragment_messages";
+};
 export type SidebarFragment_messages = SidebarFragment_messages$data;
 export type SidebarFragment_messages$key = {
-  +$data?: SidebarFragment_messages$data,
-  +$fragmentSpreads: SidebarFragment_messages$fragmentType,
-  ...
+  readonly " $data"?: SidebarFragment_messages$data;
+  readonly " $fragmentSpreads": FragmentRefs<"SidebarFragment_messages">;
 };
-*/
 
-var node/*: ReaderFragment*/ = {
+const node: ReaderFragment = {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -157,9 +151,6 @@ var node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 
-(node/*: any*/).hash = "ae9df0156cc36bb914ac9b56f3744ba7";
+(node as any).hash = "ae9df0156cc36bb914ac9b56f3744ba7";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  SidebarFragment_messages$fragmentType,
-  SidebarFragment_messages$data,
->*/);
+export default node;

@@ -9,7 +9,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 
 const HomeQuery = graphql`
-  query Tag_HomeQuery($organization: Int, $tag: [Int]) {
+  query Organization_HomeQuery($organization: Int, $tag: [Int]) {
     query {
       ...NavFragment_organization
       ...NavFragment_organizationUsers

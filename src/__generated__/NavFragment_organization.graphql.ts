@@ -1,39 +1,33 @@
 /**
- * @generated SignedSource<<df4c7cd0859f8c2ace5abb31ec9c2769>>
- * @flow
+ * @generated SignedSource<<833918254661c08ccf6eac50d7bface0>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type NavFragment_organization$fragmentType: FragmentType;
-export type NavFragment_organization$ref = NavFragment_organization$fragmentType;
-export type NavFragment_organization$data = {|
-  +allOrganizations: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +rowId: number,
-        +slug: ?string,
-      |},
-    |}>,
-  |},
-  +$fragmentType: NavFragment_organization$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_organization$data = {
+  readonly allOrganizations: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly rowId: number;
+        readonly slug: string | null;
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "NavFragment_organization";
+};
 export type NavFragment_organization = NavFragment_organization$data;
 export type NavFragment_organization$key = {
-  +$data?: NavFragment_organization$data,
-  +$fragmentSpreads: NavFragment_organization$fragmentType,
-  ...
+  readonly " $data"?: NavFragment_organization$data;
+  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_organization">;
 };
-*/
 
-var node/*: ReaderFragment*/ = {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -91,9 +85,6 @@ var node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 
-(node/*: any*/).hash = "d3072876c7e88137c81479dd074cabba";
+(node as any).hash = "d3072876c7e88137c81479dd074cabba";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  NavFragment_organization$fragmentType,
-  NavFragment_organization$data,
->*/);
+export default node;

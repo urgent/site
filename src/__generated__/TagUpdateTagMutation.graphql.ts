@@ -1,39 +1,38 @@
 /**
- * @generated SignedSource<<f48c9571ec11a3a881fe47c3501fb03b>>
- * @flow
+ * @generated SignedSource<<01c194557d0c496fe8053fa0eb1562e3>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type UpdateTagInput = {
+  clientMutationId?: string | null;
+  id: number;
+  name: string;
+};
+export type TagUpdateTagMutation$variables = {
+  input: UpdateTagInput;
+};
+export type TagUpdateTagMutationVariables = TagUpdateTagMutation$variables;
+export type TagUpdateTagMutation$data = {
+  readonly updateTag: {
+    readonly tag: {
+      readonly rowId: number;
+      readonly name: string | null;
+    } | null;
+  } | null;
+};
+export type TagUpdateTagMutationResponse = TagUpdateTagMutation$data;
+export type TagUpdateTagMutation = {
+  variables: TagUpdateTagMutationVariables;
+  response: TagUpdateTagMutation$data;
+};
 
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type CreateUserConfigInput = {|
-  clientMutationId?: ?string,
-  defaultOrganization: number,
-|};
-export type NavInsertConfigMutation$variables = {|
-  input: CreateUserConfigInput,
-|};
-export type NavInsertConfigMutationVariables = NavInsertConfigMutation$variables;
-export type NavInsertConfigMutation$data = {|
-  +createUserConfig: ?{|
-    +userConfig: ?{|
-      +defaultOrganization: number,
-    |},
-  |},
-|};
-export type NavInsertConfigMutationResponse = NavInsertConfigMutation$data;
-export type NavInsertConfigMutation = {|
-  variables: NavInsertConfigMutationVariables,
-  response: NavInsertConfigMutation$data,
-|};
-*/
-
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = [
   {
     "defaultValue": null,
@@ -52,7 +51,14 @@ v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "defaultOrganization",
+  "name": "rowId",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
   "storageKey": null
 };
 return {
@@ -60,25 +66,26 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "NavInsertConfigMutation",
+    "name": "TagUpdateTagMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateUserConfigPayload",
+        "concreteType": "UpdateTagPayload",
         "kind": "LinkedField",
-        "name": "createUserConfig",
+        "name": "updateTag",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "UserConfig",
+            "concreteType": "Tag",
             "kind": "LinkedField",
-            "name": "userConfig",
+            "name": "tag",
             "plural": false,
             "selections": [
-              (v2/*: any*/)
+              (v2/*: any*/),
+              (v3/*: any*/)
             ],
             "storageKey": null
           }
@@ -93,25 +100,26 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "NavInsertConfigMutation",
+    "name": "TagUpdateTagMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateUserConfigPayload",
+        "concreteType": "UpdateTagPayload",
         "kind": "LinkedField",
-        "name": "createUserConfig",
+        "name": "updateTag",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "UserConfig",
+            "concreteType": "Tag",
             "kind": "LinkedField",
-            "name": "userConfig",
+            "name": "tag",
             "plural": false,
             "selections": [
               (v2/*: any*/),
+              (v3/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -128,19 +136,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "948433cd49dafc45998add5a558f7a26",
+    "cacheID": "6234f41f7e1ad0462658b7f9c32a4939",
     "id": null,
     "metadata": {},
-    "name": "NavInsertConfigMutation",
+    "name": "TagUpdateTagMutation",
     "operationKind": "mutation",
-    "text": "mutation NavInsertConfigMutation(\n  $input: CreateUserConfigInput!\n) {\n  createUserConfig(input: $input) {\n    userConfig {\n      defaultOrganization\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagUpdateTagMutation(\n  $input: UpdateTagInput!\n) {\n  updateTag(input: $input) {\n    tag {\n      rowId\n      name\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "84e9b4074e58a383db3d5e4112bbf38e";
+(node as any).hash = "a4338a579269c6ff9a6a27c5fba5b554";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  NavInsertConfigMutation$variables,
-  NavInsertConfigMutation$data,
->*/);
+export default node;

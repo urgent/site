@@ -1,41 +1,35 @@
 /**
- * @generated SignedSource<<ebb48b1e310cfc59cc47c8a5d895df04>>
- * @flow
+ * @generated SignedSource<<df058d8249b9119173815d13eac31da8>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type NavFragment_invite$fragmentType: FragmentType;
-export type NavFragment_invite$ref = NavFragment_invite$fragmentType;
-export type NavFragment_invite$data = {|
-  +allInvites: ?{|
-    +__id: string,
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +id: string,
-        +organizationId: number,
-        +email: ?string,
-      |},
-    |}>,
-  |},
-  +$fragmentType: NavFragment_invite$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_invite$data = {
+  readonly allInvites: {
+    readonly __id: string;
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly id: string;
+        readonly organizationId: number;
+        readonly email: string | null;
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "NavFragment_invite";
+};
 export type NavFragment_invite = NavFragment_invite$data;
 export type NavFragment_invite$key = {
-  +$data?: NavFragment_invite$data,
-  +$fragmentSpreads: NavFragment_invite$fragmentType,
-  ...
+  readonly " $data"?: NavFragment_invite$data;
+  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_invite">;
 };
-*/
 
-var node/*: ReaderFragment*/ = {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -112,9 +106,6 @@ var node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 
-(node/*: any*/).hash = "9e7eeb0d4ff538526afeb424b73b69a5";
+(node as any).hash = "9e7eeb0d4ff538526afeb424b73b69a5";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  NavFragment_invite$fragmentType,
-  NavFragment_invite$data,
->*/);
+export default node;

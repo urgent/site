@@ -1,38 +1,32 @@
 /**
- * @generated SignedSource<<02ae92cd16f47924e1311cb09ef58917>>
- * @flow
+ * @generated SignedSource<<cf4457d274dce4a20f851309c633b016>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
-
-/*::
-import type { Fragment, ReaderFragment } from 'relay-runtime';
-import type { FragmentType } from "relay-runtime";
-declare export opaque type NavFragment_userConfig$fragmentType: FragmentType;
-export type NavFragment_userConfig$ref = NavFragment_userConfig$fragmentType;
-export type NavFragment_userConfig$data = {|
-  +allUserConfigs: ?{|
-    +edges: $ReadOnlyArray<{|
-      +node: ?{|
-        +defaultOrganization: number,
-      |},
-    |}>,
-  |},
-  +$fragmentType: NavFragment_userConfig$fragmentType,
-|};
+import { Fragment, ReaderFragment } from 'relay-runtime';
+import { FragmentRefs } from "relay-runtime";
+export type NavFragment_userConfig$data = {
+  readonly allUserConfigs: {
+    readonly edges: ReadonlyArray<{
+      readonly node: {
+        readonly defaultOrganization: number;
+      } | null;
+    }>;
+  } | null;
+  readonly " $fragmentType": "NavFragment_userConfig";
+};
 export type NavFragment_userConfig = NavFragment_userConfig$data;
 export type NavFragment_userConfig$key = {
-  +$data?: NavFragment_userConfig$data,
-  +$fragmentSpreads: NavFragment_userConfig$fragmentType,
-  ...
+  readonly " $data"?: NavFragment_userConfig$data;
+  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_userConfig">;
 };
-*/
 
-var node/*: ReaderFragment*/ = {
+const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
@@ -83,9 +77,6 @@ var node/*: ReaderFragment*/ = {
   "abstractKey": null
 };
 
-(node/*: any*/).hash = "dfb994149c2d6f72883abefbe7c20bc6";
+(node as any).hash = "dfb994149c2d6f72883abefbe7c20bc6";
 
-module.exports = ((node/*: any*/)/*: Fragment<
-  NavFragment_userConfig$fragmentType,
-  NavFragment_userConfig$data,
->*/);
+export default node;

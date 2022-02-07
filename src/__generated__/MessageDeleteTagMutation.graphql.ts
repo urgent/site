@@ -1,58 +1,52 @@
 /**
- * @generated SignedSource<<cb4d32183d9ba29303a3bf49521672b8>>
- * @flow
+ * @generated SignedSource<<a808a2591af5bbc5a81810f908b20511>>
  * @lightSyntaxTransform
  * @nogrep
  */
 
+/* tslint:disable */
 /* eslint-disable */
+// @ts-nocheck
 
-'use strict';
+import { ConcreteRequest, Mutation } from 'relay-runtime';
+export type RemoveMessageTagInput = {
+  clientMutationId?: string | null;
+  tagId: number;
+  messageId: number;
+};
+export type MessageDeleteTagMutation$variables = {
+  input: RemoveMessageTagInput;
+  connections: ReadonlyArray<string>;
+};
+export type MessageDeleteTagMutationVariables = MessageDeleteTagMutation$variables;
+export type MessageDeleteTagMutation$data = {
+  readonly removeMessageTag: {
+    readonly query: {
+      readonly allMessages: {
+        readonly nodes: ReadonlyArray<{
+          readonly messageTagsByMessageId: {
+            readonly edges: ReadonlyArray<{
+              readonly node: {
+                readonly messageId: number;
+                readonly tagByTagId: {
+                  readonly id: string;
+                } | null;
+              } | null;
+            }>;
+          };
+          readonly content: string | null;
+        } | null>;
+      } | null;
+    } | null;
+  } | null;
+};
+export type MessageDeleteTagMutationResponse = MessageDeleteTagMutation$data;
+export type MessageDeleteTagMutation = {
+  variables: MessageDeleteTagMutationVariables;
+  response: MessageDeleteTagMutation$data;
+};
 
-/*::
-import type { ConcreteRequest, Mutation } from 'relay-runtime';
-export type DeleteCategoryInput = {|
-  clientMutationId?: ?string,
-  categoryId: number,
-|};
-export type useCategoryClickDeleteMutation$variables = {|
-  input: DeleteCategoryInput,
-  connections: $ReadOnlyArray<string>,
-|};
-export type useCategoryClickDeleteMutationVariables = useCategoryClickDeleteMutation$variables;
-export type useCategoryClickDeleteMutation$data = {|
-  +deleteCategory: ?{|
-    +category: ?{|
-      +__id: string,
-    |},
-    +query: ?{|
-      +allMessages: ?{|
-        +nodes: $ReadOnlyArray<?{|
-          +messageTagsByMessageId: {|
-            +__id: string,
-            +edges: $ReadOnlyArray<{|
-              +node: ?{|
-                +messageId: number,
-              |},
-            |}>,
-          |},
-          +content: ?string,
-        |}>,
-      |},
-      +allCategories: ?{|
-        +__id: string,
-      |},
-    |},
-  |},
-|};
-export type useCategoryClickDeleteMutationResponse = useCategoryClickDeleteMutation$data;
-export type useCategoryClickDeleteMutation = {|
-  variables: useCategoryClickDeleteMutationVariables,
-  response: useCategoryClickDeleteMutation$data,
-|};
-*/
-
-var node/*: ConcreteRequest*/ = (function(){
+const node: ConcreteRequest = (function(){
 var v0 = {
   "defaultValue": null,
   "kind": "LocalArgument",
@@ -74,60 +68,22 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "__id",
-  "storageKey": null
-},
-v4 = {
-  "kind": "ClientExtension",
-  "selections": [
-    (v3/*: any*/)
-  ]
-},
-v5 = [
-  (v4/*: any*/)
-],
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "messageId",
   "storageKey": null
 },
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "content",
-  "storageKey": null
-},
-v8 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v9 = {
-  "kind": "ClientExtension",
-  "selections": [
-    (v3/*: any*/),
-    {
-      "alias": null,
-      "args": null,
-      "filters": null,
-      "handle": "deleteEdge",
-      "key": "",
-      "kind": "ScalarHandle",
-      "name": "__id",
-      "handleArgs": [
-        {
-          "kind": "Variable",
-          "name": "connections",
-          "variableName": "connections"
-        }
-      ]
-    }
-  ]
+v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "content",
+  "storageKey": null
 };
 return {
   "fragment": {
@@ -137,26 +93,16 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "useCategoryClickDeleteMutation",
+    "name": "MessageDeleteTagMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteCategoryPayload",
+        "concreteType": "RemoveMessageTagPayload",
         "kind": "LinkedField",
-        "name": "deleteCategory",
+        "name": "removeMessageTag",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Category",
-            "kind": "LinkedField",
-            "name": "category",
-            "plural": false,
-            "selections": (v5/*: any*/),
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": null,
@@ -205,32 +151,33 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/)
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v4/*: any*/)
+                                    ],
+                                    "storageKey": null
+                                  }
                                 ],
                                 "storageKey": null
                               }
                             ],
                             "storageKey": null
-                          },
-                          (v4/*: any*/)
+                          }
                         ],
                         "storageKey": null
                       },
-                      (v7/*: any*/)
+                      (v5/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
-                "storageKey": null
-              },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "CategoriesConnection",
-                "kind": "LinkedField",
-                "name": "allCategories",
-                "plural": false,
-                "selections": (v5/*: any*/),
                 "storageKey": null
               }
             ],
@@ -250,29 +197,16 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "useCategoryClickDeleteMutation",
+    "name": "MessageDeleteTagMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteCategoryPayload",
+        "concreteType": "RemoveMessageTagPayload",
         "kind": "LinkedField",
-        "name": "deleteCategory",
+        "name": "removeMessageTag",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "concreteType": "Category",
-            "kind": "LinkedField",
-            "name": "category",
-            "plural": false,
-            "selections": [
-              (v8/*: any*/),
-              (v9/*: any*/)
-            ],
-            "storageKey": null
-          },
           {
             "alias": null,
             "args": null,
@@ -321,39 +255,54 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
-                                  (v6/*: any*/),
-                                  (v8/*: any*/)
+                                  (v3/*: any*/),
+                                  {
+                                    "alias": null,
+                                    "args": null,
+                                    "concreteType": "Tag",
+                                    "kind": "LinkedField",
+                                    "name": "tagByTagId",
+                                    "plural": false,
+                                    "selections": [
+                                      (v4/*: any*/),
+                                      {
+                                        "alias": null,
+                                        "args": null,
+                                        "filters": null,
+                                        "handle": "deleteEdge",
+                                        "key": "",
+                                        "kind": "ScalarHandle",
+                                        "name": "id",
+                                        "handleArgs": [
+                                          {
+                                            "kind": "Variable",
+                                            "name": "connections",
+                                            "variableName": "connections"
+                                          }
+                                        ]
+                                      }
+                                    ],
+                                    "storageKey": null
+                                  },
+                                  (v4/*: any*/)
                                 ],
                                 "storageKey": null
                               }
                             ],
                             "storageKey": null
-                          },
-                          (v9/*: any*/)
+                          }
                         ],
                         "storageKey": null
                       },
-                      (v7/*: any*/),
-                      (v8/*: any*/)
+                      (v5/*: any*/),
+                      (v4/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "CategoriesConnection",
-                "kind": "LinkedField",
-                "name": "allCategories",
-                "plural": false,
-                "selections": [
-                  (v9/*: any*/)
-                ],
-                "storageKey": null
-              },
-              (v8/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -363,19 +312,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ca7c7232a8264612d80e68f2fbcdf3bf",
+    "cacheID": "ff0953328110dd51253800e8d98d1513",
     "id": null,
     "metadata": {},
-    "name": "useCategoryClickDeleteMutation",
+    "name": "MessageDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation useCategoryClickDeleteMutation(\n  $input: DeleteCategoryInput!\n) {\n  deleteCategory(input: $input) {\n    category {\n      id\n    }\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                id\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n                id\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node/*: any*/).hash = "b1806be3e5da71375ed261eddf597eed";
+(node as any).hash = "8ec8f6560f2136e88b8fba9cc61cb2c9";
 
-module.exports = ((node/*: any*/)/*: Mutation<
-  useCategoryClickDeleteMutation$variables,
-  useCategoryClickDeleteMutation$data,
->*/);
+export default node;
