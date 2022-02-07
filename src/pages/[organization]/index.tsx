@@ -7,7 +7,6 @@ import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
-import { decode } from "../../utils/route_decoder";
 
 const HomeQuery = graphql`
   query Tag_HomeQuery($organization: Int, $tag: [Int]) {
