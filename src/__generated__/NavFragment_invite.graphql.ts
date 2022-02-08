@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<df058d8249b9119173815d13eac31da8>>
+ * @generated SignedSource<<274ffa1050b36cc389f83e03fb70a640>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,14 +30,32 @@ export type NavFragment_invite$key = {
 };
 
 const node: ReaderFragment = {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "organization"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "NavFragment_invite",
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "fields": [
+            {
+              "kind": "Variable",
+              "name": "organizationId",
+              "variableName": "organization"
+            }
+          ],
+          "kind": "ObjectValue",
+          "name": "condition"
+        }
+      ],
       "concreteType": "InvitesConnection",
       "kind": "LinkedField",
       "name": "allInvites",
@@ -106,6 +124,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "9e7eeb0d4ff538526afeb424b73b69a5";
+(node as any).hash = "bc3a249ccea955874e0f85e2d8291a8c";
 
 export default node;

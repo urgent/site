@@ -7,6 +7,8 @@ import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiOutlineUserRe
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
+import { useRouter } from "next/router";
+import { decode } from "../utils/route";
 
 const gridButtonStyle = {
     color: "white",
@@ -72,8 +74,9 @@ const DeleteInviteMutation = graphql`
 `;
 
 const organizationUsersFragment = graphql`
-  fragment NavFragment_organizationUsers on Query {
-    allOrganizationUsers {
+  fragment NavFragment_organizationUsers on Query 
+  @argumentDefinitions(organization: {type: "Int"}) {
+    allOrganizationUsers(condition: {organizationId: $organization}) {
       __id
       edges {
         node {
@@ -109,8 +112,9 @@ const organizationFragment = graphql`
 `
 
 const inviteFragment = graphql`
-  fragment NavFragment_invite on Query {
-    allInvites {
+  fragment NavFragment_invite on Query 
+  @argumentDefinitions(organization: {type: "Int"}) {
+    allInvites(condition: {organizationId: $organization}) {
       __id
       edges {
         node {
@@ -135,37 +139,41 @@ const userConfigFragment = graphql`
   }
 `;
 
+function sendEmail(email, slug) {
+    return fetch('/api/invite', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: 'same-origin', // include, *same-origin, omit
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+        body: `email=${email}&slug=${slug}` // body data type must match "Content-Type" header
+    });
+}
+
+
 function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
-    const organization = useStore((state) => state.organization);
-    const focusOrganization = useStore((state) => state.focusOrganization);
-    const userConfig = useFragment(userConfigFragment, query);
     const [addEmail, setAddEmail] = useState('');
     const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation);
     const [isInvitePending, insertInvite] = useMutation(InsertInviteMutation)
     const [isDeleteOrgUserPending, deleteOrgUser] = useMutation(DeleteOrganizationUserMutation)
     const [isDeleteInvitePending, deleteInvite] = useMutation(DeleteInviteMutation)
-    const organizationUsers = useFragment(organizationUsersFragment, query);
-    const organizations = useFragment(organizationFragment, query);
-    const invites = useFragment(inviteFragment, query);
+    const { allOrganizationUsers } = useFragment(organizationUsersFragment, query);
+    const defaultOrganization = allOrganizationUsers?.edges[0].node.organizationByOrganizationId;
+    const defaultUser = allOrganizationUsers?.edges[0].node.userByUserId;
+    const { allOrganizations } = useFragment(organizationFragment, query);
+    const { allInvites } = useFragment(inviteFragment, query);
+    const router = useRouter();
+    const { organization, tag } = router.query;
+    const tags = decode(tag).map((tag) => parseInt(tag));
 
-    function sendEmail(email) {
-        const slug = organizationUsers.allOrganizationUsers.edges[0].node.organizationByOrganizationId.slug;
-        return fetch('/api/invite', {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: `email=${email}&slug=${slug}` // body data type must match "Content-Type" header
-        });
-    }
 
     function onAddUser() {
-        sendEmail(addEmail);
+        // slug not used in insert invite
+        sendEmail(addEmail, defaultOrganization.slug);
         // run relay mutation
         insertInvite({
             variables: {
@@ -173,7 +181,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     organizationId: organization,
                     email: addEmail,
                 },
-                connections: [invites.allInvites.__id]
+                connections: [allInvites.__id]
             },
             updater: store => { },
         })
@@ -186,7 +194,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     organizationId: organization,
                     userId,
                 },
-                connections: [organizationUsers.allOrganizationUsers.__id]
+                connections: [allOrganizationUsers.__id]
             }
         })
     }
@@ -198,7 +206,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     organizationId: organization,
                     email,
                 },
-                connections: [invites.allInvites.__id]
+                connections: [allInvites.__id]
             }
         })
     }
@@ -225,7 +233,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                                 },
                                 updater: store => { },
                             });
-                            focusOrganization(parseInt(e.target.value));
+                            window.location(`/${e.target.value}`);
                         }}
                         width='200px'
                         bg='black'
@@ -233,7 +241,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                         borderRadius="20"
                         value={organization}
                     >
-                        {organizations?.allOrganizations?.edges?.map((edge) => {
+                        {allOrganizations?.edges?.map((edge) => {
                             const { rowId, slug } = edge.node;
                             return <option key={rowId} value={rowId} defaultValue={organization} style={{ backgroundColor: "black" }}>{slug}</option>
                         })}
@@ -249,7 +257,7 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     gap={6}
                     mb="5"
                 >
-                    <Box>{organizationUsers?.allOrganizationUsers.edges[0]?.node.userByUserId?.email}</Box>
+                    <Box>{defaultUser?.email}</Box>
                 </Grid>
 
                 <Divider orientation="horizontal" />
@@ -262,27 +270,32 @@ function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
                     gap={6}
                     mb="5"
                 >
-                    {invites?.allInvites?.edges?.filter((edge) => {
+                    {allInvites?.edges?.filter((edge) => {
+                        const { email } = edge.node;
                         // do not show user's own invite, and show only focused organization
-                        return (edge.node.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
+                        return (email !== defaultUser?.email)
                     }).map((edge) => {
+                        const { email } = edge.node;
                         return (
-                            <span key={edge.node.email}>
-                                <Box>{edge.node.email}</Box>
-                                <Button size="sm" onClick={() => onRemoveInvite(edge.node.email)} style={gridButtonStyle}>Remove</Button>
-                                <Button size="sm" onClick={() => sendEmail(edge.node.email)} style={gridButtonStyle}>Resend Invite</Button>
+                            <span key={email}>
+                                <Box>{email}</Box>
+                                <Button size="sm" onClick={() => onRemoveInvite(email)} style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" onClick={() => sendEmail(email)} style={gridButtonStyle}>Resend Invite</Button>
                             </span>
                         )
                     })}
-                    {organizationUsers?.allOrganizationUsers?.edges?.filter((edge) => {
+                    {allOrganizationUsers?.edges?.filter((edge) => {
                         // do not show user's own organization entry
-                        return (edge.node.userByUserId.email !== organizationUsers.allOrganizationUsers.edges[0]?.node.userByUserId?.email && edge.node.organizationId === organization)
+                        return (edge.node.userByUserId.email !== defaultUser?.email)
                     }).map((edge) => {
+                        const { userByUserId, organizationByOrganizationId, userId } = edge.node;
+                        const { slug } = organizationByOrganizationId;
+                        const { email } = userByUserId;
                         return (
-                            <span key={edge.node.organizationByOrganizationId.slug}>
-                                <Box>{edge.node.userByUserId.email}</Box>
-                                <Button size="sm" onClick={() => onRemoveUser(edge.node.userId)} style={gridButtonStyle}>Remove</Button>
-                                <Button size="sm" onClick={() => sendEmail(edge.node.userByUserId.email)} style={gridButtonStyle}>Reset Password</Button>
+                            <span key={slug}>
+                                <Box>{email}</Box>
+                                <Button size="sm" onClick={() => onRemoveUser(userId)} style={gridButtonStyle}>Remove</Button>
+                                <Button size="sm" onClick={() => sendEmail(email)} style={gridButtonStyle}>Reset Password</Button>
                             </span>
                         )
                     })}

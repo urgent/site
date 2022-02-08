@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7ffb617cc11e0863ff8925f865c5951f>>
+ * @generated SignedSource<<4f0d3723aa524e102d3df6fcae8715f3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -58,14 +58,32 @@ var v0 = {
   "storageKey": null
 };
 return {
-  "argumentDefinitions": [],
+  "argumentDefinitions": [
+    {
+      "defaultValue": null,
+      "kind": "LocalArgument",
+      "name": "organization"
+    }
+  ],
   "kind": "Fragment",
   "metadata": null,
   "name": "NavFragment_organizationUsers",
   "selections": [
     {
       "alias": null,
-      "args": null,
+      "args": [
+        {
+          "fields": [
+            {
+              "kind": "Variable",
+              "name": "organizationId",
+              "variableName": "organization"
+            }
+          ],
+          "kind": "ObjectValue",
+          "name": "condition"
+        }
+      ],
       "concreteType": "OrganizationUsersConnection",
       "kind": "LinkedField",
       "name": "allOrganizationUsers",
@@ -155,6 +173,6 @@ return {
 };
 })();
 
-(node as any).hash = "c9398b702442d87af861a27a7c2c70e9";
+(node as any).hash = "dc957a6ce88d02c3df7023fbc68028a7";
 
 export default node;

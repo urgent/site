@@ -56,11 +56,9 @@ export default function Message({ message }) {
   const messageTags = messageTagsByMessageId.edges.map(
     ({ node }) => node.tagByTagId
   );
-
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(
     DeleteTagMutation
   ) as [boolean, (config?: any) => void];
-  // need tag from route, tag category color
   const router = useRouter();
   const { organization, tag } = router.query;
   const tags = decode(tag as string).map((tag) => parseInt(tag));

@@ -12,9 +12,9 @@ const HomeQuery = graphql`
   query Organization_HomeQuery($organization: Int, $tag: [Int]) {
     query {
       ...NavFragment_organization
-      ...NavFragment_organizationUsers
+      ...NavFragment_organizationUsers @arguments(organization: $organization)
       ...NavFragment_userConfig
-      ...NavFragment_invite
+      ...NavFragment_invite @arguments(organization: $organization)
       ...TilesFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_messages
