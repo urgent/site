@@ -57,7 +57,6 @@ export default function Tiles({ query }) {
     DeleteMessageMutation
   ) as [boolean, (config?: any) => void];
 
-  // Toolbar on delete
   function onDelete(messageId, collectionId) {
     deleteMessage({
       variables: {
