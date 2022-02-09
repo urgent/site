@@ -15,11 +15,13 @@ export default function Nav() {
     const edit = useStore((state) => state.edit);
     const toggleEdit = useStore((state) => state.toggleEdit);
     const router = useRouter();
-    const { organization } = router.query;
+    const { query, pathname } = router;
+    const { organization } = query;
+    const menu = pathname.split('/')[2];
 
     const colors = {
         edit: "none",
-        org: "none",
+        admin: "none",
         card: "none",
         user: "none",
         bar: "none",
@@ -27,10 +29,7 @@ export default function Nav() {
         layout: "none",
     };
 
-    if (edit) {
-        colors.edit = 'secondary.400';
-    }
-    colors[focus] = 'secondary.400'
+    colors[menu] = 'secondary.400'
 
     if (session) {
         return (
@@ -49,9 +48,12 @@ export default function Nav() {
                 }}>
                     <Icon as={FiEdit} w={6} h={6} />
                 </Button>
-                <Button bg={colors.org} color="white" _hover={{ bg: 'secondary.400' }} ref={btnRef} onClick={(e) => {
-                    setFocus('org');
-                    window.location.href = `/${organization}/admin`
+                <Button bg={colors.admin} color="white" _hover={{ bg: 'secondary.400' }} ref={btnRef} onClick={(e) => {
+                    if (menu === 'admin') {
+                        window.location.href = `/${organization}`;
+                    } else {
+                        window.location.href = `/${organization}/admin`
+                    }
                 }} >
                     <Icon as={HiOutlineUserGroup} w={6} h={6} />
                 </Button>
