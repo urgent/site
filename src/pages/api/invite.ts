@@ -1,11 +1,11 @@
 import qs from 'qs';
 import cookie from 'cookie';
-import axios from 'axios';
+import axios, { Method } from 'axios';
 
 export async function invite({ email, slug }) {
     // create next-auth user via email provider
     const options = {
-        method: 'GET',
+        method: 'GET' as Method,
         url: `${process.env.FRONT_URL}/api/auth/csrf`
     };
 
@@ -31,7 +31,7 @@ export async function invite({ email, slug }) {
         .join('; ');
 
     const signinOptions = {
-        method: 'POST',
+        method: 'POST' as Method,
         url: `${process.env.FRONT_URL}/api/auth/signin/email`, // http://locahost:300 endpoint that creates the new user
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
@@ -49,7 +49,7 @@ export default async (req, res) => {
         body: { email, slug },
     } = req
 
-    const status = invite({ email })
+    const status = invite({ email, slug })
 
     res.status(200).json({ email, slug, status })
 }

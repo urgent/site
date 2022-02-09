@@ -13,7 +13,10 @@ export async function pay(intent) {
     });
     const { created, data } = intent;
     const { amount_total, metadata, customer_email } = data;
-    const { seats, user_id } = { ...metadata };
+    const { seats=0, user_id=0 } = { ...metadata };
+    
+    if(user_id === 0) return;
+
     try {
         await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, email, user_id) VALUES(to_timestamp($1), $2, $3, $4, $5)`, [
             created,
@@ -28,7 +31,7 @@ export async function pay(intent) {
     pool.end();
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new (Stripe as any)(process.env.STRIPE_SECRET_KEY);
 
 const cors = Cors({
     allowMethods: ['POST', 'HEAD'],
