@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fce2f4fc3d734de56a8f9a6a099f4276>>
+ * @generated SignedSource<<becebdc17ad8b02be48fb3515a5e4e5b>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,21 +13,21 @@ export type CreateUserConfigInput = {
   clientMutationId?: string | null;
   defaultOrganization: number;
 };
-export type NavInsertConfigMutation$variables = {
+export type OrganizationMenuInsertConfigMutation$variables = {
   input: CreateUserConfigInput;
 };
-export type NavInsertConfigMutationVariables = NavInsertConfigMutation$variables;
-export type NavInsertConfigMutation$data = {
+export type OrganizationMenuInsertConfigMutationVariables = OrganizationMenuInsertConfigMutation$variables;
+export type OrganizationMenuInsertConfigMutation$data = {
   readonly createUserConfig: {
     readonly userConfig: {
       readonly defaultOrganization: number;
     } | null;
   } | null;
 };
-export type NavInsertConfigMutationResponse = NavInsertConfigMutation$data;
-export type NavInsertConfigMutation = {
-  variables: NavInsertConfigMutationVariables;
-  response: NavInsertConfigMutation$data;
+export type OrganizationMenuInsertConfigMutationResponse = OrganizationMenuInsertConfigMutation$data;
+export type OrganizationMenuInsertConfigMutation = {
+  variables: OrganizationMenuInsertConfigMutationVariables;
+  response: OrganizationMenuInsertConfigMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -57,7 +57,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "NavInsertConfigMutation",
+    "name": "OrganizationMenuInsertConfigMutation",
     "selections": [
       {
         "alias": null,
@@ -90,7 +90,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "NavInsertConfigMutation",
+    "name": "OrganizationMenuInsertConfigMutation",
     "selections": [
       {
         "alias": null,
@@ -125,16 +125,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "948433cd49dafc45998add5a558f7a26",
+    "cacheID": "5db121a57a5a11a26177c686aa4c90ba",
     "id": null,
     "metadata": {},
-    "name": "NavInsertConfigMutation",
+    "name": "OrganizationMenuInsertConfigMutation",
     "operationKind": "mutation",
-    "text": "mutation NavInsertConfigMutation(\n  $input: CreateUserConfigInput!\n) {\n  createUserConfig(input: $input) {\n    userConfig {\n      defaultOrganization\n      id\n    }\n  }\n}\n"
+    "text": "mutation OrganizationMenuInsertConfigMutation(\n  $input: CreateUserConfigInput!\n) {\n  createUserConfig(input: $input) {\n    userConfig {\n      defaultOrganization\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "84e9b4074e58a383db3d5e4112bbf38e";
+(node as any).hash = "7c0cd16dc403e74fc1f30635d556718d";
 
 export default node;

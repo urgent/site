@@ -11,10 +11,6 @@ import { getClientEnvironment } from "../../lib/client_environment";
 const HomeQuery = graphql`
   query Organization_HomeQuery($organization: Int, $tag: [Int]) {
     query {
-      ...NavFragment_organization
-      ...NavFragment_organizationUsers @arguments(organization: $organization)
-      ...NavFragment_userConfig
-      ...NavFragment_invite @arguments(organization: $organization)
       ...TilesFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_messages
@@ -38,7 +34,7 @@ function Home({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav query={query} />
+        <Nav />
         <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
           <Sidebar {...{ query }} />
         </Box>

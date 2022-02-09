@@ -1,16 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Select,
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  DrawerFooter,
-  Input,
-} from "@chakra-ui/react";
+import { Box, Button, Select, Input } from "@chakra-ui/react";
 import { Grid, Heading, Divider, Flex, Spacer } from "@chakra-ui/react";
 import { graphql, useFragment } from "react-relay/hooks";
 import useMutation from "./useMutation";
@@ -31,7 +20,9 @@ const gridInputStyle = {
 };
 
 const InsertConfigMutation = graphql`
-  mutation NavInsertConfigMutation($input: CreateUserConfigInput!) {
+  mutation OrganizationMenuInsertConfigMutation(
+    $input: CreateUserConfigInput!
+  ) {
     createUserConfig(input: $input) {
       userConfig {
         defaultOrganization
@@ -41,7 +32,7 @@ const InsertConfigMutation = graphql`
 `;
 
 const InsertInviteMutation = graphql`
-  mutation NavInsertInviteMutation(
+  mutation OrganizationMenuInsertInviteMutation(
     $input: CreateInviteInput!
     $connections: [ID!]!
   ) {
@@ -56,7 +47,7 @@ const InsertInviteMutation = graphql`
 `;
 
 const DeleteOrganizationUserMutation = graphql`
-  mutation NavDeleteOrganizationUserMutation(
+  mutation OrganizationMenuDeleteOrganizationUserMutation(
     $input: DeleteOrganizationUserInput!
     $connections: [ID!]!
   ) {
@@ -76,7 +67,7 @@ const DeleteOrganizationUserMutation = graphql`
 `;
 
 const DeleteInviteMutation = graphql`
-  mutation NavDeleteInviteMutation(
+  mutation OrganizationMenuDeleteInviteMutation(
     $input: DeleteInviteInput!
     $connections: [ID!]!
   ) {
@@ -91,7 +82,7 @@ const DeleteInviteMutation = graphql`
 `;
 
 const organizationUsersFragment = graphql`
-  fragment NavFragment_organizationUsers on Query
+  fragment OrganizationMenuFragment_organizationUsers on Query
   @argumentDefinitions(organization: { type: "Int" }) {
     allOrganizationUsers(condition: { organizationId: $organization }) {
       __id
@@ -116,7 +107,7 @@ const organizationUsersFragment = graphql`
 `;
 
 const organizationFragment = graphql`
-  fragment NavFragment_organization on Query {
+  fragment OrganizationMenuFragment_organization on Query {
     allOrganizations {
       edges {
         node {
@@ -129,7 +120,7 @@ const organizationFragment = graphql`
 `;
 
 const inviteFragment = graphql`
-  fragment NavFragment_invite on Query
+  fragment OrganizationMenuFragment_invite on Query
   @argumentDefinitions(organization: { type: "Int" }) {
     allInvites(condition: { organizationId: $organization }) {
       __id
@@ -145,7 +136,7 @@ const inviteFragment = graphql`
 `;
 
 const userConfigFragment = graphql`
-  fragment NavFragment_userConfig on Query {
+  fragment OrganizationMenuFragment_userConfig on Query {
     allUserConfigs {
       edges {
         node {
@@ -171,7 +162,7 @@ function sendEmail(email, slug) {
   });
 }
 
-export function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
+export function OrganizationMenu({ query }) {
   const [addEmail, setAddEmail] = useState("");
   const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation) as [
     boolean,
@@ -198,7 +189,6 @@ export function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
   const { allInvites } = useFragment(inviteFragment, query);
   const router = useRouter();
   const { organization, tag } = router.query;
-  const tags = decode(tag as string).map((tag) => parseInt(tag));
 
   function onAddUser() {
     // slug not used in insert invite
@@ -241,142 +231,124 @@ export function OrganizationMenu({ isOpen, onClose, btnRef, query }) {
   }
 
   return (
-    <Drawer
-      isOpen={isOpen}
-      placement="right"
-      onClose={onClose}
-      finalFocusRef={btnRef}
-      size="full"
-    >
-      <DrawerOverlay />
-      <DrawerContent sx={{ left: "3.5rem", paddingRight: "3.5rem" }}>
-        <DrawerHeader>
-          <Flex>
-            <Spacer />
-            <Select
-              onChange={(e) => {
-                insertConfig({
-                  variables: {
-                    input: {
-                      defaultOrganization: parseInt(e.target.value),
-                    },
-                  },
-                  updater: (store) => {},
-                });
-                window.location.href = `/${e.target.value}`;
-              }}
-              width="200px"
-              bg="black"
-              color="white"
-              borderRadius="20"
-              value={organization}
-            >
-              {allOrganizations?.edges?.map((edge) => {
-                const { rowId, slug } = edge.node;
-                return (
-                  <option
-                    key={rowId}
-                    value={rowId}
-                    defaultValue={organization}
-                    style={{ backgroundColor: "black" }}
-                  >
-                    {slug}
-                  </option>
-                );
-              })}
-            </Select>
-          </Flex>
-        </DrawerHeader>
-        <DrawerBody m="5">
-          <Heading as="h2" size="xl" my="5" color="#666666">
-            Admins
-          </Heading>
-          <Grid templateColumns="repeat(6, 1fr)" gap={6} mb="5">
-            <Box>{defaultUser?.email}</Box>
-          </Grid>
+    <>
+      <Flex>
+        <Spacer />
+        <Select
+          onChange={(e) => {
+            insertConfig({
+              variables: {
+                input: {
+                  defaultOrganization: parseInt(e.target.value),
+                },
+              },
+              updater: (store) => {},
+            });
+            window.location.href = `/${e.target.value}`;
+          }}
+          width="200px"
+          bg="black"
+          color="white"
+          borderRadius="20"
+          value={organization}
+        >
+          {allOrganizations?.edges?.map((edge) => {
+            const { rowId, slug } = edge.node;
+            return (
+              <option
+                key={rowId}
+                value={rowId}
+                defaultValue={organization}
+                style={{ backgroundColor: "black" }}
+              >
+                {slug}
+              </option>
+            );
+          })}
+        </Select>
+      </Flex>
 
-          <Divider orientation="horizontal" />
+      <Heading as="h2" size="xl" my="5" color="#666666">
+        Admins
+      </Heading>
+      <Grid templateColumns="repeat(6, 1fr)" gap={6} mb="5">
+        <Box>{defaultUser?.email}</Box>
+      </Grid>
 
-          <Heading as="h2" size="xl" my="5" color="#666666">
-            Users
-          </Heading>
-          <Grid templateColumns="repeat(6, 1fr)" gap={6} mb="5">
-            {allInvites?.edges
-              ?.filter((edge) => {
-                const { email } = edge.node;
-                // do not show user's own invite, and show only focused organization
-                return email !== defaultUser?.email;
-              })
-              .map((edge) => {
-                const { email } = edge.node;
-                return (
-                  <span key={email}>
-                    <Box>{email}</Box>
-                    <Button
-                      size="sm"
-                      onClick={() => onRemoveInvite(email)}
-                      style={gridButtonStyle}
-                    >
-                      Remove
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => sendEmail(email, defaultOrganization.slug)}
-                      style={gridButtonStyle}
-                    >
-                      Resend Invite
-                    </Button>
-                  </span>
-                );
-              })}
-            {allOrganizationUsers?.edges
-              ?.filter((edge) => {
-                // do not show user's own organization entry
-                return edge.node.userByUserId.email !== defaultUser?.email;
-              })
-              .map((edge) => {
-                const { userByUserId, organizationByOrganizationId, userId } =
-                  edge.node;
-                const { slug } = organizationByOrganizationId;
-                const { email } = userByUserId;
-                return (
-                  <span key={slug}>
-                    <Box>{email}</Box>
-                    <Button
-                      size="sm"
-                      onClick={() => onRemoveUser(userId)}
-                      style={gridButtonStyle}
-                    >
-                      Remove
-                    </Button>
-                    <Button
-                      size="sm"
-                      onClick={() => sendEmail(email, slug)}
-                      style={gridButtonStyle}
-                    >
-                      Reset Password
-                    </Button>
-                  </span>
-                );
-              })}
-            <Input
-              type="email"
-              placeholder="Email"
-              style={gridInputStyle}
-              onChange={(e) => setAddEmail(e.target.value)}
-            />
-            <Button size="sm" style={gridButtonStyle} onClick={onAddUser}>
-              Add
-            </Button>
-          </Grid>
-        </DrawerBody>
+      <Divider orientation="horizontal" />
 
-        <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Close
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+      <Heading as="h2" size="xl" my="5" color="#666666">
+        Users
+      </Heading>
+      <Grid templateColumns="repeat(6, 1fr)" gap={6} mb="5">
+        {allInvites?.edges
+          ?.filter((edge) => {
+            const { email } = edge.node;
+            // do not show user's own invite, and show only focused organization
+            return email !== defaultUser?.email;
+          })
+          .map((edge) => {
+            const { email } = edge.node;
+            return (
+              <span key={email}>
+                <Box>{email}</Box>
+                <Button
+                  size="sm"
+                  onClick={() => onRemoveInvite(email)}
+                  style={gridButtonStyle}
+                >
+                  Remove
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => sendEmail(email, defaultOrganization.slug)}
+                  style={gridButtonStyle}
+                >
+                  Resend Invite
+                </Button>
+              </span>
+            );
+          })}
+        {allOrganizationUsers?.edges
+          ?.filter((edge) => {
+            // do not show user's own organization entry
+            return edge.node.userByUserId.email !== defaultUser?.email;
+          })
+          .map((edge) => {
+            const { userByUserId, organizationByOrganizationId, userId } =
+              edge.node;
+            const { slug } = organizationByOrganizationId;
+            const { email } = userByUserId;
+            return (
+              <span key={slug}>
+                <Box>{email}</Box>
+                <Button
+                  size="sm"
+                  onClick={() => onRemoveUser(userId)}
+                  style={gridButtonStyle}
+                >
+                  Remove
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => sendEmail(email, slug)}
+                  style={gridButtonStyle}
+                >
+                  Reset Password
+                </Button>
+              </span>
+            );
+          })}
+        <Input
+          type="email"
+          placeholder="Email"
+          style={gridInputStyle}
+          onChange={(e) => setAddEmail(e.target.value)}
+        />
+        <Button size="sm" style={gridButtonStyle} onClick={onAddUser}>
+          Add
+        </Button>
+      </Grid>
+    </>
   );
 }

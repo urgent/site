@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8c61789b8b4afa973ed03882944f3c4e>>
+ * @generated SignedSource<<e655a94b7ce49e370e5ccceff0f89ec8>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,12 +14,12 @@ export type DeleteOrganizationUserInput = {
   organizationId: number;
   userId: number;
 };
-export type NavDeleteOrganizationUserMutation$variables = {
+export type OrganizationMenuDeleteOrganizationUserMutation$variables = {
   input: DeleteOrganizationUserInput;
   connections: ReadonlyArray<string>;
 };
-export type NavDeleteOrganizationUserMutationVariables = NavDeleteOrganizationUserMutation$variables;
-export type NavDeleteOrganizationUserMutation$data = {
+export type OrganizationMenuDeleteOrganizationUserMutationVariables = OrganizationMenuDeleteOrganizationUserMutation$variables;
+export type OrganizationMenuDeleteOrganizationUserMutation$data = {
   readonly deleteOrganizationUser: {
     readonly organizationUser: {
       readonly id: string;
@@ -33,10 +33,10 @@ export type NavDeleteOrganizationUserMutation$data = {
     } | null;
   } | null;
 };
-export type NavDeleteOrganizationUserMutationResponse = NavDeleteOrganizationUserMutation$data;
-export type NavDeleteOrganizationUserMutation = {
-  variables: NavDeleteOrganizationUserMutationVariables;
-  response: NavDeleteOrganizationUserMutation$data;
+export type OrganizationMenuDeleteOrganizationUserMutationResponse = OrganizationMenuDeleteOrganizationUserMutation$data;
+export type OrganizationMenuDeleteOrganizationUserMutation = {
+  variables: OrganizationMenuDeleteOrganizationUserMutationVariables;
+  response: OrganizationMenuDeleteOrganizationUserMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -93,7 +93,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "NavDeleteOrganizationUserMutation",
+    "name": "OrganizationMenuDeleteOrganizationUserMutation",
     "selections": [
       {
         "alias": null,
@@ -154,7 +154,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "NavDeleteOrganizationUserMutation",
+    "name": "OrganizationMenuDeleteOrganizationUserMutation",
     "selections": [
       {
         "alias": null,
@@ -225,16 +225,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "4dac4ad90bd5b32f3f01de8055ad6aa4",
+    "cacheID": "c240c555f69a897b7f2b3fa52c862688",
     "id": null,
     "metadata": {},
-    "name": "NavDeleteOrganizationUserMutation",
+    "name": "OrganizationMenuDeleteOrganizationUserMutation",
     "operationKind": "mutation",
-    "text": "mutation NavDeleteOrganizationUserMutation(\n  $input: DeleteOrganizationUserInput!\n) {\n  deleteOrganizationUser(input: $input) {\n    organizationUser {\n      id\n      organizationByOrganizationId {\n        rowId\n        slug\n        userByUserId {\n          email\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "mutation OrganizationMenuDeleteOrganizationUserMutation(\n  $input: DeleteOrganizationUserInput!\n) {\n  deleteOrganizationUser(input: $input) {\n    organizationUser {\n      id\n      organizationByOrganizationId {\n        rowId\n        slug\n        userByUserId {\n          email\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "2d21ea84b711a3e7f4465d3fad331ad1";
+(node as any).hash = "c12cba8c81c07ec8a449c986859e0a6f";
 
 export default node;

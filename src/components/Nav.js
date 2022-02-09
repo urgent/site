@@ -4,6 +4,7 @@ import { HiOutlineCreditCard, HiOutlineChip, HiOutlineUserGroup, HiChartBar } fr
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from 'react-icons/fi';
 import { signIn, signOut, useSession } from 'next-auth/client'
 import useStore from "../utils/store";
+import { useRouter } from "next/router";
 
 export default function Nav() {
     const { isOpen, onOpen, onClose } = useDisclosure()
@@ -13,6 +14,8 @@ export default function Nav() {
     const [focus, setFocus] = useState();
     const edit = useStore((state) => state.edit);
     const toggleEdit = useStore((state) => state.toggleEdit);
+    const router = useRouter();
+    const { organization } = router.query;
 
     const colors = {
         edit: "none",
@@ -48,7 +51,7 @@ export default function Nav() {
                 </Button>
                 <Button bg={colors.org} color="white" _hover={{ bg: 'secondary.400' }} ref={btnRef} onClick={(e) => {
                     setFocus('org');
-                    onOpen(e);
+                    window.location.href = `/${organization}/admin`
                 }} >
                     <Icon as={HiOutlineUserGroup} w={6} h={6} />
                 </Button>

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<274ffa1050b36cc389f83e03fb70a640>>
+ * @generated SignedSource<<ea8c6ec7c0101e44002b1c1c396bc78f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type NavFragment_invite$data = {
+export type OrganizationMenuFragment_invite$data = {
   readonly allInvites: {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
@@ -21,12 +21,12 @@ export type NavFragment_invite$data = {
       } | null;
     }>;
   } | null;
-  readonly " $fragmentType": "NavFragment_invite";
+  readonly " $fragmentType": "OrganizationMenuFragment_invite";
 };
-export type NavFragment_invite = NavFragment_invite$data;
-export type NavFragment_invite$key = {
-  readonly " $data"?: NavFragment_invite$data;
-  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_invite">;
+export type OrganizationMenuFragment_invite = OrganizationMenuFragment_invite$data;
+export type OrganizationMenuFragment_invite$key = {
+  readonly " $data"?: OrganizationMenuFragment_invite$data;
+  readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_invite">;
 };
 
 const node: ReaderFragment = {
@@ -39,7 +39,7 @@ const node: ReaderFragment = {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "NavFragment_invite",
+  "name": "OrganizationMenuFragment_invite",
   "selections": [
     {
       "alias": null,
@@ -124,6 +124,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "bc3a249ccea955874e0f85e2d8291a8c";
+(node as any).hash = "ef32f32d2a5d82ee31fefb2ac8ea3300";
 
 export default node;

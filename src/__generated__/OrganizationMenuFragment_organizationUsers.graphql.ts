@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4f0d3723aa524e102d3df6fcae8715f3>>
+ * @generated SignedSource<<8063747c87f76939d043954e981bbe17>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type NavFragment_organizationUsers$data = {
+export type OrganizationMenuFragment_organizationUsers$data = {
   readonly allOrganizationUsers: {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
@@ -30,12 +30,12 @@ export type NavFragment_organizationUsers$data = {
       } | null;
     }>;
   } | null;
-  readonly " $fragmentType": "NavFragment_organizationUsers";
+  readonly " $fragmentType": "OrganizationMenuFragment_organizationUsers";
 };
-export type NavFragment_organizationUsers = NavFragment_organizationUsers$data;
-export type NavFragment_organizationUsers$key = {
-  readonly " $data"?: NavFragment_organizationUsers$data;
-  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_organizationUsers">;
+export type OrganizationMenuFragment_organizationUsers = OrganizationMenuFragment_organizationUsers$data;
+export type OrganizationMenuFragment_organizationUsers$key = {
+  readonly " $data"?: OrganizationMenuFragment_organizationUsers$data;
+  readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organizationUsers">;
 };
 
 const node: ReaderFragment = (function(){
@@ -67,7 +67,7 @@ return {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "NavFragment_organizationUsers",
+  "name": "OrganizationMenuFragment_organizationUsers",
   "selections": [
     {
       "alias": null,
@@ -173,6 +173,6 @@ return {
 };
 })();
 
-(node as any).hash = "dc957a6ce88d02c3df7023fbc68028a7";
+(node as any).hash = "9c88895a4ec06ff460e3ba35247b321b";
 
 export default node;

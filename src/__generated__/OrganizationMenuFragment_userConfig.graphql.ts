@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<833918254661c08ccf6eac50d7bface0>>
+ * @generated SignedSource<<6f8440c61a507766a964cd0f44f28183>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,41 +10,40 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type NavFragment_organization$data = {
-  readonly allOrganizations: {
+export type OrganizationMenuFragment_userConfig$data = {
+  readonly allUserConfigs: {
     readonly edges: ReadonlyArray<{
       readonly node: {
-        readonly rowId: number;
-        readonly slug: string | null;
+        readonly defaultOrganization: number;
       } | null;
     }>;
   } | null;
-  readonly " $fragmentType": "NavFragment_organization";
+  readonly " $fragmentType": "OrganizationMenuFragment_userConfig";
 };
-export type NavFragment_organization = NavFragment_organization$data;
-export type NavFragment_organization$key = {
-  readonly " $data"?: NavFragment_organization$data;
-  readonly " $fragmentSpreads": FragmentRefs<"NavFragment_organization">;
+export type OrganizationMenuFragment_userConfig = OrganizationMenuFragment_userConfig$data;
+export type OrganizationMenuFragment_userConfig$key = {
+  readonly " $data"?: OrganizationMenuFragment_userConfig$data;
+  readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_userConfig">;
 };
 
 const node: ReaderFragment = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "NavFragment_organization",
+  "name": "OrganizationMenuFragment_userConfig",
   "selections": [
     {
       "alias": null,
       "args": null,
-      "concreteType": "OrganizationsConnection",
+      "concreteType": "UserConfigsConnection",
       "kind": "LinkedField",
-      "name": "allOrganizations",
+      "name": "allUserConfigs",
       "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "concreteType": "OrganizationsEdge",
+          "concreteType": "UserConfigsEdge",
           "kind": "LinkedField",
           "name": "edges",
           "plural": true,
@@ -52,7 +51,7 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
-              "concreteType": "Organization",
+              "concreteType": "UserConfig",
               "kind": "LinkedField",
               "name": "node",
               "plural": false,
@@ -61,14 +60,7 @@ const node: ReaderFragment = {
                   "alias": null,
                   "args": null,
                   "kind": "ScalarField",
-                  "name": "rowId",
-                  "storageKey": null
-                },
-                {
-                  "alias": null,
-                  "args": null,
-                  "kind": "ScalarField",
-                  "name": "slug",
+                  "name": "defaultOrganization",
                   "storageKey": null
                 }
               ],
@@ -85,6 +77,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "d3072876c7e88137c81479dd074cabba";
+(node as any).hash = "4f8dcfff3591e8bf022a0491f7096d41";
 
 export default node;

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fa46b13c4a30a2547e130da9fe131b29>>
+ * @generated SignedSource<<215e209fbec440634a571bf6d9364e5c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,29 +9,28 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
-export type DeleteInviteInput = {
+export type CreateInviteInput = {
   clientMutationId?: string | null;
   organizationId: number;
   email: string;
 };
-export type NavDeleteInviteMutation$variables = {
-  input: DeleteInviteInput;
+export type OrganizationMenuInsertInviteMutation$variables = {
+  input: CreateInviteInput;
   connections: ReadonlyArray<string>;
 };
-export type NavDeleteInviteMutationVariables = NavDeleteInviteMutation$variables;
-export type NavDeleteInviteMutation$data = {
-  readonly deleteInvite: {
+export type OrganizationMenuInsertInviteMutationVariables = OrganizationMenuInsertInviteMutation$variables;
+export type OrganizationMenuInsertInviteMutation$data = {
+  readonly createInvite: {
     readonly invite: {
-      readonly id: string;
       readonly organizationId: number;
       readonly email: string | null;
     } | null;
   } | null;
 };
-export type NavDeleteInviteMutationResponse = NavDeleteInviteMutation$data;
-export type NavDeleteInviteMutation = {
-  variables: NavDeleteInviteMutationVariables;
-  response: NavDeleteInviteMutation$data;
+export type OrganizationMenuInsertInviteMutationResponse = OrganizationMenuInsertInviteMutation$data;
+export type OrganizationMenuInsertInviteMutation = {
+  variables: OrganizationMenuInsertInviteMutationVariables;
+  response: OrganizationMenuInsertInviteMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -56,17 +55,10 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "id",
-  "storageKey": null
-},
-v4 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
   "name": "organizationId",
   "storageKey": null
 },
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -81,14 +73,14 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "NavDeleteInviteMutation",
+    "name": "OrganizationMenuInsertInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteInvitePayload",
+        "concreteType": "CreateInvitePayload",
         "kind": "LinkedField",
-        "name": "deleteInvite",
+        "name": "createInvite",
         "plural": false,
         "selections": [
           {
@@ -100,8 +92,7 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
-              (v4/*: any*/),
-              (v5/*: any*/)
+              (v4/*: any*/)
             ],
             "storageKey": null
           }
@@ -119,14 +110,14 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "NavDeleteInviteMutation",
+    "name": "OrganizationMenuInsertInviteMutation",
     "selections": [
       {
         "alias": null,
         "args": (v2/*: any*/),
-        "concreteType": "DeleteInvitePayload",
+        "concreteType": "CreateInvitePayload",
         "kind": "LinkedField",
-        "name": "deleteInvite",
+        "name": "createInvite",
         "plural": false,
         "selections": [
           {
@@ -138,26 +129,37 @@ return {
             "plural": false,
             "selections": [
               (v3/*: any*/),
+              (v4/*: any*/),
               {
                 "alias": null,
                 "args": null,
-                "filters": null,
-                "handle": "deleteEdge",
-                "key": "",
-                "kind": "ScalarHandle",
+                "kind": "ScalarField",
                 "name": "id",
-                "handleArgs": [
-                  {
-                    "kind": "Variable",
-                    "name": "connections",
-                    "variableName": "connections"
-                  }
-                ]
-              },
-              (v4/*: any*/),
-              (v5/*: any*/)
+                "storageKey": null
+              }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "appendNode",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "invite",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              },
+              {
+                "kind": "Literal",
+                "name": "edgeTypeName",
+                "value": "InvitesEdge"
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -165,16 +167,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "3a1ff0f8241106c24fab66044346d178",
+    "cacheID": "56e4e06f598b621bb73045dc217ae328",
     "id": null,
     "metadata": {},
-    "name": "NavDeleteInviteMutation",
+    "name": "OrganizationMenuInsertInviteMutation",
     "operationKind": "mutation",
-    "text": "mutation NavDeleteInviteMutation(\n  $input: DeleteInviteInput!\n) {\n  deleteInvite(input: $input) {\n    invite {\n      id\n      organizationId\n      email\n    }\n  }\n}\n"
+    "text": "mutation OrganizationMenuInsertInviteMutation(\n  $input: CreateInviteInput!\n) {\n  createInvite(input: $input) {\n    invite {\n      organizationId\n      email\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "fcab9aa7afda09c58cf1882e6b330924";
+(node as any).hash = "53da07343627afa9300288819adc3720";
 
 export default node;

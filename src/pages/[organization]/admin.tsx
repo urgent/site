@@ -1,44 +1,37 @@
 import React from "react";
 import Nav from "../../components/Nav";
-import { Sidebar } from "../../components/Sidebar";
-import Tiles from "../../components/Tiles";
-import Mobile from "../../components/Mobile";
+import { OrganizationMenu } from "../../components/OrganizationMenu";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
-import { decode } from "../../utils/route";
 
-const HomeQuery = graphql`
-  query Tag_HomeQuery($organization: Int, $tag: [Int]) {
+const OrganizationQuery = graphql`
+  query organization_Query($organization: Int) {
     query {
-      ...TilesFragment_messages
-        @arguments(organization: $organization, tag: $tag)
-      ...SidebarFragment_messages
-        @arguments(organization: $organization, tag: $tag)
-      ...SidebarFragment_categories
-        @arguments(organization: $organization, tag: $tag)
+      ...OrganizationMenuFragment_organization
+      ...OrganizationMenuFragment_organizationUsers
+        @arguments(organization: $organization)
+      ...OrganizationMenuFragment_userConfig
+      ...OrganizationMenuFragment_invite @arguments(organization: $organization)
     }
   }
 `;
 
-function Home({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
+function Organization({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(OrganizationQuery, preloadedQuery) as any;
 
   return (
     <>
       <Grid
         data-cy="grid"
-        templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+        templateColumns="[nav] 4rem [content] 9fr"
         bg={"background.50"}
         color={"text.600"}
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
         <Nav />
-        <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Sidebar {...{ query }} />
-        </Box>
         <Box
           as="main"
           gridColumn="content"
@@ -49,12 +42,9 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles {...{ query }} />
+          <OrganizationMenu query={query} />
         </Box>
       </Grid>
-      <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
-        <Mobile query={query} />
-      </Box>
     </>
   );
 }
@@ -66,7 +56,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Home, HomeQuery, {
+export default withRelay(Organization, OrganizationQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
@@ -99,13 +89,7 @@ export default withRelay(Home, HomeQuery, {
   variablesFromContext: (ctx) => {
     return {
       ...ctx.query,
-      ...{
-        tag: decode(ctx.query.tag as string).map((tag) => {
-          const res = parseInt(tag);
-          return res;
-        }),
-        organization: parseInt(ctx.query.organization as string),
-      },
+      organization: parseInt(ctx.query.organization as string),
     };
   },
 });
