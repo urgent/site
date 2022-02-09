@@ -1,15 +1,14 @@
-import { getRelaySerializedState } from 'relay-nextjs';
-import { withHydrateDatetime } from 'relay-nextjs/date';
-import { Environment, Network, Store, RecordSource } from 'relay-runtime';
+import { getRelaySerializedState } from "relay-nextjs";
+import { withHydrateDatetime } from "relay-nextjs/date";
+import { Environment, Network, Store, RecordSource } from "relay-runtime";
 
 export function createClientNetwork() {
-
   return Network.create(async (params, variables) => {
     const response = await fetch(process.env.NEXT_PUBLIC_API_URL_CLIENT, {
-      method: 'POST',
-      credentials: 'include',
+      method: "POST",
+      credentials: "include",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: params.text,
@@ -23,12 +22,12 @@ export function createClientNetwork() {
 }
 
 let clientEnv;
-export function getClientEnvironment(token) {
-  if (typeof window === 'undefined') return null;
+export function getClientEnvironment() {
+  if (typeof window === "undefined") return null;
 
   if (clientEnv == null) {
     clientEnv = new Environment({
-      network: createClientNetwork(token),
+      network: createClientNetwork(),
       store: new Store(new RecordSource(getRelaySerializedState()?.records)),
       isServer: false,
     });
