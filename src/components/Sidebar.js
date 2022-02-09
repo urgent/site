@@ -73,7 +73,7 @@ export function Sidebar({ query }) {
   const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({ categories: categories.allCategories, messages });
 
   // need collection index, to open dropdown
-  const active_categories = [...new Set(categories.sidebar.edges.map(edge => edge.node.categoryByCategoryId.rowId))];
+  const active_categories = [...new Set(categories?.sidebar.edges.map(edge => edge.node.categoryByCategoryId.rowId))];
   const active_index = sidebarCollection.categories.reduce((previousValue, currentValue, index) => {
     if (active_categories.includes(currentValue.node.rowId)) {
       previousValue = [...previousValue, index]
