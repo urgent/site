@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import useMutation from "./useMutation";
-import useStore from "../utils/store";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { isActive, link } from "../utils/route";
@@ -91,7 +90,6 @@ const InsertMessageTagMutation = graphql`
 export function AddTag({ connectionId, categoryId }) {
   const [name, setName] = useState("");
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
-  const edit = useStore((state) => state.edit);
 
   // Editor submit callback
   function onSubmit(event) {

@@ -8,15 +8,11 @@ import {
 } from "react-icons/hi";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/client";
-import useStore from "../utils/store";
 import { useRouter } from "next/router";
 
 export default function Nav() {
   const btnRef = React.useRef();
   const [session] = useSession();
-  // used for nav button colors
-  const [focus, setFocus] = useState();
-  const toggleEdit = useStore((state) => state.toggleEdit);
   const router = useRouter();
   const { query, pathname } = router;
   const { organization } = query;

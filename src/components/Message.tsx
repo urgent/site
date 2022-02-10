@@ -2,7 +2,6 @@ import React from "react";
 import { graphql } from "react-relay";
 import useMutation from "./useMutation";
 import { Box, Badge, Button } from "@chakra-ui/react";
-import useStore from "../utils/store";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { decode } from "../utils/route";
@@ -39,15 +38,10 @@ const LoomEmbed = dynamic(() => import("./LoomEmbed"), {
 });
 
 export function AddTagToMessage({ click }) {
-  const edit = useStore((state) => state.edit);
   return (
-    <>
-      {edit && (
-        <Button mr={1} data-cy="add_tag_to_message" onClick={click}>
-          +
-        </Button>
-      )}
-    </>
+    <Button mr={1} data-cy="add_tag_to_message" onClick={click}>
+      +
+    </Button>
   );
 }
 
