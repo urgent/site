@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7b2e8255d1dc497269dcbd53ca72b673>>
+ * @generated SignedSource<<71586ac8dde755a2166731308aae5f7a>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -86,8 +86,30 @@ v5 = [
 v6 = {
   "alias": null,
   "args": null,
-  "kind": "ScalarField",
-  "name": "messageId",
+  "concreteType": "MessageTagsEdge",
+  "kind": "LinkedField",
+  "name": "edges",
+  "plural": true,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "concreteType": "MessageTag",
+      "kind": "LinkedField",
+      "name": "node",
+      "plural": false,
+      "selections": [
+        {
+          "alias": null,
+          "args": null,
+          "kind": "ScalarField",
+          "name": "messageId",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    }
+  ],
   "storageKey": null
 },
 v7 = {
@@ -186,29 +208,7 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "MessageTagsEdge",
-                            "kind": "LinkedField",
-                            "name": "edges",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "MessageTag",
-                                "kind": "LinkedField",
-                                "name": "node",
-                                "plural": false,
-                                "selections": [
-                                  (v6/*: any*/)
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
+                          (v6/*: any*/),
                           (v4/*: any*/)
                         ],
                         "storageKey": null
@@ -302,30 +302,7 @@ return {
                         "name": "messageTagsByMessageId",
                         "plural": false,
                         "selections": [
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "MessageTagsEdge",
-                            "kind": "LinkedField",
-                            "name": "edges",
-                            "plural": true,
-                            "selections": [
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "MessageTag",
-                                "kind": "LinkedField",
-                                "name": "node",
-                                "plural": false,
-                                "selections": [
-                                  (v6/*: any*/),
-                                  (v8/*: any*/)
-                                ],
-                                "storageKey": null
-                              }
-                            ],
-                            "storageKey": null
-                          },
+                          (v6/*: any*/),
                           (v9/*: any*/)
                         ],
                         "storageKey": null
@@ -360,12 +337,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ca7c7232a8264612d80e68f2fbcdf3bf",
+    "cacheID": "fe60422f6ccd59469ade3e96ea3d518a",
     "id": null,
     "metadata": {},
     "name": "useCategoryClickDeleteMutation",
     "operationKind": "mutation",
-    "text": "mutation useCategoryClickDeleteMutation(\n  $input: DeleteCategoryInput!\n) {\n  deleteCategory(input: $input) {\n    category {\n      id\n    }\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                id\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation useCategoryClickDeleteMutation(\n  $input: DeleteCategoryInput!\n) {\n  deleteCategory(input: $input) {\n    category {\n      id\n    }\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();

@@ -71,7 +71,7 @@ export default function Tiles({ query }) {
 
   return (
     <Box sx={{ columnCount: "4" }} columnGap="1em" data-cy="tiles">
-      {messages?.tile.edges?.map((edge) => (
+      {messages?.tile?.edges?.map((edge) => (
         <Message key={edge.node.rowId} message={edge.node} />
       ))}
     </Box>

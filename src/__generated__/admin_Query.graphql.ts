@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<381d5de076940c7cce3ca1ffa2af24d5>>
+ * @generated SignedSource<<9bd769381440c108cad8b0d0045c30ca>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,19 +10,19 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type organization_Query$variables = {
+export type admin_Query$variables = {
   organization?: number | null;
 };
-export type organization_QueryVariables = organization_Query$variables;
-export type organization_Query$data = {
+export type admin_QueryVariables = admin_Query$variables;
+export type admin_Query$data = {
   readonly query: {
     readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite">;
   };
 };
-export type organization_QueryResponse = organization_Query$data;
-export type organization_Query = {
-  variables: organization_QueryVariables;
-  response: organization_Query$data;
+export type admin_QueryResponse = admin_Query$data;
+export type admin_Query = {
+  variables: admin_QueryVariables;
+  response: admin_Query$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -118,7 +118,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "organization_Query",
+    "name": "admin_Query",
     "selections": [
       {
         "alias": null,
@@ -159,7 +159,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "organization_Query",
+    "name": "admin_Query",
     "selections": [
       {
         "alias": null,
@@ -349,16 +349,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "794e88756b9e41e1ebf98455128e3483",
+    "cacheID": "1b777e80a7ca8be73f9ab38085a488f7",
     "id": null,
     "metadata": {},
-    "name": "organization_Query",
+    "name": "admin_Query",
     "operationKind": "query",
-    "text": "query organization_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    id\n  }\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    id\n  }\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "c8d62e9e5dfdf82c8f430d311af5deaf";
+(node as any).hash = "02d712af0f14f858687560655bec2080";
 
 export default node;

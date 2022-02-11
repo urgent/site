@@ -7,7 +7,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 
 const OrganizationQuery = graphql`
-  query organization_Query($organization: Int) {
+  query admin_Query($organization: Int) {
     query {
       ...OrganizationMenuFragment_organization
       ...OrganizationMenuFragment_organizationUsers

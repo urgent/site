@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0017308b8b7b654236f505477d60ddcb>>
+ * @generated SignedSource<<862f6d068e9310fdd0a841cae28c3faf>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -313,7 +313,6 @@ return {
                             ],
                             "storageKey": null
                           },
-                          (v10/*: any*/),
                           (v9/*: any*/)
                         ],
                         "storageKey": null
@@ -335,12 +334,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "ca0e5abea07bca06fa6a06f83831bef1",
+    "cacheID": "717bf2b50f653b1f1aaa5df765587c3a",
     "id": null,
     "metadata": {},
     "name": "EditorUpdateMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n            id\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation EditorUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<932632e29660c75f64780b2fcb0a5da1>>
+ * @generated SignedSource<<eb14822811534547d490d4a5dd2f36e1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -207,8 +207,7 @@ return {
                   (v7/*: any*/)
                 ],
                 "storageKey": null
-              },
-              (v7/*: any*/)
+              }
             ],
             "storageKey": null
           },
@@ -239,12 +238,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "d3c2e1dacfae101ab1c20684c57c5d16",
+    "cacheID": "e1068d5ceac1f96caab6686400aaea55",
     "id": null,
     "metadata": {},
     "name": "TagInsertMessageTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagInsertMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      messageId\n      tagId\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagInsertMessageTagMutation(\n  $input: CreateMessageTagInput!\n) {\n  createMessageTag(input: $input) {\n    messageTag {\n      messageId\n      tagId\n      tagByTagId {\n        name\n        categoryByCategoryId {\n          color\n          id\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

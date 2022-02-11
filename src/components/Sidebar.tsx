@@ -79,12 +79,12 @@ export function Sidebar({ query }) {
   // need collection index, to open dropdown
   const active_categories = Array.from(
     new Set(
-      categories?.sidebar.edges.map(
+      categories?.sidebar?.edges.map(
         (edge) => edge.node.categoryByCategoryId.rowId
       )
     )
   );
-  const active_index = sidebarCollection.categories.reduce(
+  const active_index = sidebarCollection?.categories?.reduce(
     (previousValue, currentValue, index) => {
       if (active_categories.includes(currentValue.node.rowId)) {
         previousValue = [...previousValue, index];
