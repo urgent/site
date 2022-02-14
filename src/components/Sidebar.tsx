@@ -95,24 +95,21 @@ export function Sidebar({ query }) {
   );
 
   return (
-    <>
-      <Accordion
-        minHeight="85vh"
-        allowMultiple={true}
-        defaultIndex={active_index}
-      >
-        {sidebarCollection.categories?.map((edge, index) => {
-          return (
-            <Category
-              index={index}
-              key={edge.node.rowId}
-              category={edge.node}
-              moveCategory={moveCategory}
-            />
-          );
-        })}
-      </Accordion>
-      <AddCategory connectionId={sidebarCollection.categories?.__id} />
-    </>
+    <Accordion
+      minHeight="85vh"
+      allowMultiple={true}
+      defaultIndex={active_index}
+    >
+      {sidebarCollection.categories?.map((edge, index) => {
+        return (
+          <Category
+            index={index}
+            key={edge.node.rowId}
+            category={edge.node}
+            moveCategory={moveCategory}
+          />
+        );
+      })}
+    </Accordion>
   );
 }

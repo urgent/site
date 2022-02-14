@@ -9,7 +9,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../lib/client_environment";
 
 const HomeQuery = graphql`
-  query pages_HomeQuery($organization: Int, $tag: [Int]) {
+  query Organization_HomeQuery($organization: Int, $tag: [Int]) {
     query {
       ...TilesFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -25,33 +25,31 @@ function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
 
   return (
-    <>
-      <Grid
-        data-cy="grid"
-        templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
-        bg={"background.50"}
-        color={"text.600"}
-        minHeight="100vh"
-        d={["none", "none", "none", "grid", "grid"]}
+    <Grid
+      data-cy="grid"
+      templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+      bg={"background.50"}
+      color={"text.600"}
+      minHeight="100vh"
+      d={["none", "none", "none", "grid", "grid"]}
+    >
+      <Nav />
+      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
+        <Sidebar {...{ query }} />
+      </Box>
+      <Box
+        as="main"
+        gridColumn="content"
+        pt={2}
+        mx="auto"
+        sx={{ textAlign: "center" }}
+        width="100%"
+        maxHeight="99vh"
+        overflowY="scroll"
       >
-        <Nav />
-        <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Sidebar {...{ query }} />
-        </Box>
-        <Box
-          as="main"
-          gridColumn="content"
-          pt={2}
-          mx="auto"
-          sx={{ textAlign: "center" }}
-          width="100%"
-          maxHeight="99vh"
-          overflowY="scroll"
-        >
-          <Tiles {...{ query }} />
-        </Box>
-      </Grid>
-    </>
+        <Tiles {...{ query }} />
+      </Box>
+    </Grid>
   );
 }
 
@@ -97,7 +95,7 @@ export default withRelay(Home, HomeQuery, {
       ...ctx.query,
       ...{
         tag: [],
-        organization: parseInt(ctx.query.organization as string),
+        organization: null,
       },
     };
   },

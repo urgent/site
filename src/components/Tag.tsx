@@ -110,7 +110,7 @@ export function AddTag({ connectionId, categoryId }) {
     }
   }
 
-  return <></>;
+  return;
 }
 
 function style({ active, color }) {

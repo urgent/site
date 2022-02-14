@@ -118,13 +118,6 @@ export function Category({ category, index, moveCategory }) {
 
   return (
     <AccordionItem key={category.rowId} ref={ref}>
-      <AlertDialog
-        title={`Delete ${category?.name}`}
-        body={`Tags on messages will be lost. Are you sure you want to delete the ${category?.name} category?`}
-        isOpen={isConfirmOpen}
-        click={() => setConfirmIsOpen(false)}
-        setIsOpen={setConfirmIsOpen}
-      />
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
@@ -165,10 +158,6 @@ export function Category({ category, index, moveCategory }) {
             );
           })}
         </Wrap>
-        <AddTag
-          connectionId={category?.tagsByCategoryId?.__id}
-          categoryId={category?.rowId}
-        />
       </AccordionPanel>
     </AccordionItem>
   );
