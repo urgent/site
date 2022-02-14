@@ -7,7 +7,7 @@ import { graphql, useFragment } from "react-relay";
 const categoriesFragment = graphql`
   fragment SidebarFragment_categories on Query
   @argumentDefinitions(organization: { type: "Int" }, tag: { type: "[Int]" }) {
-    allCategories(condition: { organizationId: $organization }) {
+    sidebarCategories(organizationId: $organization) {
       __id
       edges {
         node {
@@ -72,7 +72,7 @@ export function Sidebar({ query }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
   const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({
-    categories: categories.allCategories,
+    categories: categories.sidebarCategories,
     messages,
   });
 

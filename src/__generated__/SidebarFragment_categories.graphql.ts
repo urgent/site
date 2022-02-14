@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ec9b26502881faa112bca50d0aa2a5de>>
+ * @generated SignedSource<<fea3fbd3ea42f5346a8ee6da6f0d8fe4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type SidebarFragment_categories$data = {
-  readonly allCategories: {
+  readonly sidebarCategories: {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
@@ -104,20 +104,14 @@ return {
       "alias": null,
       "args": [
         {
-          "fields": [
-            {
-              "kind": "Variable",
-              "name": "organizationId",
-              "variableName": "organization"
-            }
-          ],
-          "kind": "ObjectValue",
-          "name": "condition"
+          "kind": "Variable",
+          "name": "organizationId",
+          "variableName": "organization"
         }
       ],
       "concreteType": "CategoriesConnection",
       "kind": "LinkedField",
-      "name": "allCategories",
+      "name": "sidebarCategories",
       "plural": false,
       "selections": [
         {
@@ -302,6 +296,6 @@ return {
 };
 })();
 
-(node as any).hash = "45d2638dda882e043c70cacee68cfb21";
+(node as any).hash = "5b6f9bc1070796ea24d074002547c3f6";
 
 export default node;
