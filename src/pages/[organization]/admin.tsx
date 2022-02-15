@@ -14,6 +14,7 @@ const OrganizationQuery = graphql`
         @arguments(organization: $organization)
       ...OrganizationMenuFragment_userConfig
       ...OrganizationMenuFragment_invite @arguments(organization: $organization)
+      ...NavFragment_organization @arguments(organization: $organization)
     }
   }
 `;
@@ -31,7 +32,7 @@ function Organization({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav />
+        <Nav {...{ query }} />
         <Box
           as="main"
           gridColumn="content"

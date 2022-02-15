@@ -17,6 +17,7 @@ const HomeQuery = graphql`
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
         @arguments(organization: $organization, tag: $tag)
+      ...NavFragment_organization @arguments(organization: $organization)
     }
   }
 `;
@@ -34,7 +35,7 @@ function Home({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav />
+        <Nav {...{ query }} />
         <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
           <Sidebar {...{ query }} />
         </Box>

@@ -293,6 +293,7 @@ type Query implements Node {
   verificationRequestByRowId(rowId: Int!): VerificationRequest
   currentUserId: String
   organizationActiveSeats(organizationId: Int): Int
+  organizationDefault(organizationId: Int): Int
   organizationOwner(
     """Only read the first `n` values of the set."""
     first: Int

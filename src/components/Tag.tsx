@@ -135,9 +135,9 @@ function style({ active, color }) {
   }
 }
 
-export default function Tag({ id, color, name }) {
+export default function Tag({ id, color, name, organization }) {
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { _organization, tag } = router.query;
   const active = isActive({ tag, id });
 
   return (

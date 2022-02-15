@@ -1,12 +1,16 @@
 BEGIN;
+--- get the organization, handles nulls
+CREATE FUNCTION organization_default(organization_id INTEGER)
+RETURNS INTEGER AS $$
+    SELECT id FROM (SELECT $1 AS id, 1 as rank UNION (SELECT default_organization as id, 2 as rank FROM user_config LIMIT 1)
+    UNION (SELECT id, 3 as rank FROM organization LIMIT 1)) as org_list WHERE id IS NOT NULL ORDER BY rank ASC LIMIT 1
+$$ LANGUAGE sql STABLE;
+
 DROP FUNCTION tile;
 CREATE FUNCTION tile(organization_id INTEGER, tag_id INTEGER[])
 RETURNS setof public.message AS $$
 --- if organization_id is null, lookup from user_config table
-with focused_organization as (
-    SELECT id FROM (SELECT $1 AS id, 1 as rank UNION (SELECT default_organization as id, 2 as rank FROM user_config LIMIT 1)
-    UNION (SELECT id, 3 as rank FROM organization LIMIT 1)) as org_list WHERE id IS NOT NULL ORDER BY rank ASC LIMIT 1
-),
+with
 -- filter as much as possible across indexes
 message_filter AS (
     SELECT message.*, message_tag.tag_id
@@ -14,7 +18,7 @@ message_filter AS (
     INNER JOIN public.message_tag ON message_tag.message_id = message.id
     -- join to handle null $2
     LEFT JOIN UNNEST($2::integer[]) AS tag_id(tag_id) ON message_tag.tag_id = tag_id.tag_id
-    INNER JOIN focused_organization ON message.organization_id = focused_organization.id
+    INNER JOIN organization_default($1) as focused_organization ON message.organization_id = focused_organization.organization_default
 ),
 -- aggregate to get unique array of tags
 message_flat AS (
@@ -33,13 +37,9 @@ $$ LANGUAGE sql STABLE;
 CREATE FUNCTION sidebar_categories(organization_id INTEGER)
 RETURNS setof public.category AS $$
     --- if organization_id is null, lookup from user_config table
-    with focused_organization as (
-        SELECT id FROM (SELECT $1 AS id, 1 as rank UNION (SELECT default_organization as id, 2 as rank FROM user_config LIMIT 1)
-        UNION (SELECT id, 3 as rank FROM organization LIMIT 1)) as org_list WHERE id IS NOT NULL ORDER BY rank ASC LIMIT 1
-    )
     SELECT public.category.*
     FROM public.category
-    INNER JOIN focused_organization ON category.organization_id = focused_organization.id
+    INNER JOIN organization_default($1) as focused_organization ON category.organization_id = focused_organization.organization_default
 $$ LANGUAGE sql STABLE;
 
 COMMIT;

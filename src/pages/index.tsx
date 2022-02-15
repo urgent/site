@@ -9,7 +9,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../lib/client_environment";
 
 const HomeQuery = graphql`
-  query Organization_HomeQuery($organization: Int, $tag: [Int]) {
+  query pages_HomeQuery($organization: Int, $tag: [Int]) {
     query {
       ...TilesFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -17,6 +17,7 @@ const HomeQuery = graphql`
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
         @arguments(organization: $organization, tag: $tag)
+      ...NavFragment_organization @arguments(organization: $organization)
     }
   }
 `;
@@ -33,7 +34,7 @@ function Home({ preloadedQuery }) {
       minHeight="100vh"
       d={["none", "none", "none", "grid", "grid"]}
     >
-      <Nav />
+      <Nav {...{ query }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
         <Sidebar {...{ query }} />
       </Box>

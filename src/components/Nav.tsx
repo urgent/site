@@ -9,14 +9,30 @@ import {
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { useRouter } from "next/router";
+import { graphql, useFragment } from "react-relay";
 
-export default function Nav() {
+const navFragment = graphql`
+  fragment NavFragment_organization on Query
+  @argumentDefinitions(organization: { type: "Int" }) {
+    organizationDefault(organizationId: $organization)
+  }
+`;
+
+function link({ organization, organizationDefault }) {
+  if (organization) {
+    return organization;
+  } else {
+    return organizationDefault;
+  }
+}
+
+export default function Nav({ query }) {
   const btnRef = React.useRef();
   const [session] = useSession();
+  const { organizationDefault } = useFragment(navFragment, query);
   const router = useRouter();
-  const { query, pathname } = router;
-  const { organization } = query;
-  const menu = pathname.split("/")[2];
+  const { organization } = router.query;
+  const menu = router.pathname.split("/")[2];
 
   const colors = {
     edit: "none",
@@ -63,9 +79,15 @@ export default function Nav() {
           ref={btnRef}
           onClick={(e) => {
             if (menu === "admin") {
-              window.location.href = `/${organization}`;
+              window.location.href = `/${link({
+                organization,
+                organizationDefault,
+              })}`;
             } else {
-              window.location.href = `/${organization}/admin`;
+              window.location.href = `/${link({
+                organization,
+                organizationDefault,
+              })}/admin`;
             }
           }}
         >

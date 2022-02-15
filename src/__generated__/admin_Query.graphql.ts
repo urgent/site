@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9bd769381440c108cad8b0d0045c30ca>>
+ * @generated SignedSource<<a560bdcf9861d75dd1ce314ad6bc47f6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,7 @@ export type admin_Query$variables = {
 export type admin_QueryVariables = admin_Query$variables;
 export type admin_Query$data = {
   readonly query: {
-    readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite">;
+    readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite" | "NavFragment_organization">;
   };
 };
 export type admin_QueryResponse = admin_Query$data;
@@ -63,32 +63,33 @@ v4 = {
 },
 v5 = [
   {
-    "fields": [
-      {
-        "kind": "Variable",
-        "name": "organizationId",
-        "variableName": "organization"
-      }
-    ],
+    "kind": "Variable",
+    "name": "organizationId",
+    "variableName": "organization"
+  }
+],
+v6 = [
+  {
+    "fields": (v5/*: any*/),
     "kind": "ObjectValue",
     "name": "condition"
   }
 ],
-v6 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "organizationId",
   "storageKey": null
 },
-v7 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "email",
   "storageKey": null
 },
-v8 = {
+v9 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -96,12 +97,12 @@ v8 = {
   "name": "userByUserId",
   "plural": false,
   "selections": [
-    (v7/*: any*/),
+    (v8/*: any*/),
     (v4/*: any*/)
   ],
   "storageKey": null
 },
-v9 = {
+v10 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -147,6 +148,11 @@ return {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
             "name": "OrganizationMenuFragment_invite"
+          },
+          {
+            "args": (v1/*: any*/),
+            "kind": "FragmentSpread",
+            "name": "NavFragment_organization"
           }
         ],
         "storageKey": null
@@ -207,7 +213,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "concreteType": "OrganizationUsersConnection",
             "kind": "LinkedField",
             "name": "allOrganizationUsers",
@@ -236,8 +242,8 @@ return {
                         "name": "userId",
                         "storageKey": null
                       },
-                      (v6/*: any*/),
-                      (v8/*: any*/),
+                      (v7/*: any*/),
+                      (v9/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -248,7 +254,7 @@ return {
                         "selections": [
                           (v2/*: any*/),
                           (v3/*: any*/),
-                          (v8/*: any*/),
+                          (v9/*: any*/),
                           (v4/*: any*/)
                         ],
                         "storageKey": null
@@ -260,7 +266,7 @@ return {
                 ],
                 "storageKey": null
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ],
             "storageKey": null
           },
@@ -307,7 +313,7 @@ return {
           },
           {
             "alias": null,
-            "args": (v5/*: any*/),
+            "args": (v6/*: any*/),
             "concreteType": "InvitesConnection",
             "kind": "LinkedField",
             "name": "allInvites",
@@ -330,16 +336,23 @@ return {
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
-                      (v6/*: any*/),
-                      (v7/*: any*/)
+                      (v7/*: any*/),
+                      (v8/*: any*/)
                     ],
                     "storageKey": null
                   }
                 ],
                 "storageKey": null
               },
-              (v9/*: any*/)
+              (v10/*: any*/)
             ],
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": (v5/*: any*/),
+            "kind": "ScalarField",
+            "name": "organizationDefault",
             "storageKey": null
           },
           (v4/*: any*/)
@@ -349,16 +362,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "1b777e80a7ca8be73f9ab38085a488f7",
+    "cacheID": "0f410064a7f4be24538d0d8119eb574e",
     "id": null,
     "metadata": {},
     "name": "admin_Query",
     "operationKind": "query",
-    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    id\n  }\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "02d712af0f14f858687560655bec2080";
+(node as any).hash = "e57332eee8212036305c9ba064e6c8af";
 
 export default node;

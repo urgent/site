@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Tag from "../components/Tag";
-import { AddTag } from "./Tag";
 import {
   VStack,
   Box,
@@ -17,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
-import AlertDialog from "./AlertDialog";
 import { graphql } from "react-relay";
 import { useRouter } from "next/router";
 import { decode } from "../utils/route";
@@ -153,6 +151,7 @@ export function Category({ category, index, moveCategory }) {
                   id={tag.node.rowId}
                   color={category?.color}
                   name={tag.node.name}
+                  organization={category.organizationId}
                 />
               </WrapItem>
             );
