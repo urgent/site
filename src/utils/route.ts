@@ -1,10 +1,11 @@
 /**
  * Decode a route query parameter from a string
- * @param {string} parameter The parameter to decode 
+ * @param {string | string[]} parameter The parameter to decode 
  * @returns {Array <string>} The decoded parameter
  */
-export function decode(parameter:string):Array<string> {
+export function decode(parameter:(string | string[])):Array<string> {
     if(!parameter) return [];
+    if(Array.isArray(parameter)) return parameter;
     return parameter.split('&');
 }
 
@@ -28,4 +29,14 @@ export function link({ organization, tag, id }) {
     } else {
         return `/${organization}/${encode([tag, id])}`;
     }
-  }
+}
+
+export function arrayCast(cast) {
+    return function (value) {
+        if(Array.isArray(value)) {
+            return value.map(cast);
+        } else {
+            return cast(value);
+        }
+    }
+}

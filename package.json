@@ -21,6 +21,8 @@
     "@loomhq/loom-embed": "^1.2.12",
     "@loomhq/loom-sdk": "^2.29.0",
     "@stripe/stripe-js": "^1.22.0",
+    "@tiptap/react": "^2.0.0-beta.108",
+    "@tiptap/starter-kit": "^2.0.0-beta.183",
     "axios": "^0.25",
     "babel-polyfill": "^6.26.0",
     "cookie": "^0.4.1",

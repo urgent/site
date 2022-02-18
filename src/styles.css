@@ -1,11 +1,5 @@
-.quill h1 {
-  font-size: 3rem;
-}
-
-.quill h2 {
-  font-size: 2rem;
-}
-
-.quill h3 {
-  font-size: 1.5rem;
+.ProseMirror {
+  position: relative;
+  min-height: 100%;
+  padding-bottom: 2em;
 }
