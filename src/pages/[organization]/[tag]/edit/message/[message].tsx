@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Nav from "../../../../../components/Nav";
 import { Sidebar } from "../../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
@@ -8,6 +8,8 @@ import { getClientEnvironment } from "../../../../../lib/client_environment";
 import Editor from "../../../../../components/Editor";
 import { arrayCast, decode } from "../../../../../utils/route";
 import useMutation from "../../../../../components/useMutation";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const InsertMessageMutation = graphql`
   mutation EditorInsertMessageMutation(
@@ -73,7 +75,7 @@ const UpdateMessageMutation = graphql`
   }
 `;
 
-const HomeQuery = graphql`
+const EditQuery = graphql`
   query Tag_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
     query {
       ...Tag_messageFragment @arguments(message: $message)
@@ -97,16 +99,31 @@ const messageFragment = graphql`
   }
 `;
 
-function Home({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
-  const { messageByRowId } = useFragment(messageFragment, query);
-  const [isMessagePending, insertMessage] = useMutation(
-    InsertMessageMutation
-  ) as [boolean, (config?: any) => void];
-
+function Edit({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
+  const { messageByRowId } = useFragment(messageFragment, query).query;
   const [isUpdateMessagePending, updateMessage] = useMutation(
     UpdateMessageMutation
   ) as [boolean, (config?: any) => void];
+  const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
+
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: messageByRowId.content,
+  });
+
+  function onSubmit() {
+    updateMessage({
+      variables: {
+        input: {
+          id: messageByRowId.rowId,
+          editor: editor.getJSON(),
+          loomSharedUrl: loom,
+        },
+      },
+      updater: (store) => {},
+    });
+  }
 
   return (
     <Grid
@@ -132,11 +149,7 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Editor
-          content={messageByRowId.content}
-          onSubmit={() => {}}
-          onChange={() => {}}
-        />
+        <Editor {...{ editor, onSubmit }} />
       </Box>
     </Grid>
   );
@@ -149,7 +162,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Home, HomeQuery, {
+export default withRelay(Edit, EditQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

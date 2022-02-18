@@ -1,20 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Button, Stack } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
+import { EditorContent } from "@tiptap/react";
 
 const DynamicLoomSDK = dynamic(() => import("./LoomSDK"), {
   ssr: false,
 });
 
-export default function Editor({ content, onChange, onSubmit }) {
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content,
-  });
-
+export default function Editor({ editor, onSubmit }) {
   return (
     <>
       <Box height={100} data-cy="editor">
