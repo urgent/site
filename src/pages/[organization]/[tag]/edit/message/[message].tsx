@@ -99,7 +99,7 @@ const messageFragment = graphql`
 
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
-  const { categoryByRowId } = useFragment(messageFragment, query);
+  const { messageByRowId } = useFragment(messageFragment, query);
   const [isMessagePending, insertMessage] = useMutation(
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
@@ -132,7 +132,11 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Editor content={"test"} onSubmit={() => {}} onChange={() => {}} />
+        <Editor
+          content={messageByRowId.content}
+          onSubmit={() => {}}
+          onChange={() => {}}
+        />
       </Box>
     </Grid>
   );
