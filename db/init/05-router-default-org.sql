@@ -6,7 +6,7 @@ RETURNS INTEGER AS $$
     UNION (SELECT id, 3 as rank FROM organization LIMIT 1)) as org_list WHERE id IS NOT NULL ORDER BY rank ASC LIMIT 1
 $$ LANGUAGE sql STABLE;
 
-DROP FUNCTION tile;
+DROP FUNCTION IF EXISTS tile;
 CREATE FUNCTION tile(organization_id INTEGER, tag_id INTEGER[])
 RETURNS setof public.message AS $$
 --- if organization_id is null, lookup from user_config table
@@ -34,6 +34,7 @@ message_ids AS (
 SELECT message.* FROM message INNER JOIN message_ids ON message.id = message_ids.id;
 $$ LANGUAGE sql STABLE;
 
+DROP FUNCTION IF EXISTS sidebar_categories;
 CREATE FUNCTION sidebar_categories(organization_id INTEGER)
 RETURNS setof public.category AS $$
     --- if organization_id is null, lookup from user_config table
