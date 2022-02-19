@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<10afc510358a9b436cd56c78da19ae41>>
+ * @generated SignedSource<<5e43255314292bfd33709ad50b728bb4>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,8 @@ export type Message_messageFragment$data = {
     readonly messageByRowId: {
       readonly content: string | null;
       readonly organizationId: number;
+      readonly rowId: number;
+      readonly loomSharedUrl: string | null;
       readonly messageTagsByMessageId: {
         readonly edges: ReadonlyArray<{
           readonly node: {
@@ -83,6 +85,20 @@ const node: ReaderFragment = {
             {
               "alias": null,
               "args": null,
+              "kind": "ScalarField",
+              "name": "rowId",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "loomSharedUrl",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
               "concreteType": "MessageTagsConnection",
               "kind": "LinkedField",
               "name": "messageTagsByMessageId",
@@ -131,6 +147,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "073b3f1b40adba84c8a6b3511be72704";
+(node as any).hash = "9ea48b7c16971c139e96ae6a88e13741";
 
 export default node;

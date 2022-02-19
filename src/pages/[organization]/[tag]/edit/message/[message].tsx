@@ -95,6 +95,8 @@ const messageFragment = graphql`
       messageByRowId(rowId: $message) {
         content
         organizationId
+        rowId
+        loomSharedUrl
         messageTagsByMessageId {
           edges {
             node {
@@ -121,12 +123,15 @@ function Edit({ preloadedQuery }) {
   });
 
   function onClick() {
+    const id = messageByRowId.rowId;
+    const content = JSON.stringify(editor.getJSON());
+    const loomSharedUrl = loom;
     updateMessage({
       variables: {
         input: {
-          id: messageByRowId.rowId,
-          content: editor.getJSON(),
-          loomSharedUrl: loom,
+          id,
+          content,
+          loomSharedUrl,
         },
       },
       updater: (store) => {},
