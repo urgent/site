@@ -91,7 +91,7 @@ export default function Message({ message }) {
       display="inline-block"
       data-cy="message"
     >
-      <Box p={4} data-cy="body" wordBreak="break-all">
+      <Box p={4} data-cy="body">
         {content}
         {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
