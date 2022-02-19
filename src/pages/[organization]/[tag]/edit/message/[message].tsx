@@ -120,7 +120,7 @@ function Edit({ preloadedQuery }) {
     content: messageByRowId.content,
   });
 
-  function onSubmit() {
+  function onClick() {
     updateMessage({
       variables: {
         input: {
@@ -157,7 +157,7 @@ function Edit({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Editor {...{ editor, onSubmit }} />
+        <Editor {...{ editor, onClick }} />
       </Box>
     </Grid>
   );

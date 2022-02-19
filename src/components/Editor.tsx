@@ -7,7 +7,7 @@ const DynamicLoomSDK = dynamic(() => import("./LoomSDK"), {
   ssr: false,
 });
 
-export default function Editor({ editor, onSubmit }) {
+export default function Editor({ editor, onClick }) {
   return (
     <>
       <Box height={100} data-cy="editor">
@@ -17,12 +17,7 @@ export default function Editor({ editor, onSubmit }) {
       <br />
       <br />
       <Stack spacing={4} direction="row" align="center">
-        <Button
-          data-cy="save"
-          onClick={onSubmit}
-          width="170px"
-          borderRadius={20}
-        >
+        <Button data-cy="save" width="170px" borderRadius={20} {...{ onClick }}>
           Save
         </Button>
       </Stack>
