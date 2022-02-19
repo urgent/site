@@ -12,7 +12,7 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
 const InsertMessageMutation = graphql`
-  mutation EditorInsertMessageMutation(
+  mutation MessageInsertMessageMutation(
     $input: CreateMessageInput!
     $connections: [ID!]!
   ) {
@@ -46,7 +46,7 @@ const InsertMessageMutation = graphql`
 `;
 
 const UpdateMessageMutation = graphql`
-  mutation EditorUpdateMessageMutation($input: UpdateMessageInput!) {
+  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
     updateMessage(input: $input) {
       messages {
         rowId
@@ -76,9 +76,9 @@ const UpdateMessageMutation = graphql`
 `;
 
 const EditQuery = graphql`
-  query Tag_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
+  query Message_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
     query {
-      ...Tag_messageFragment @arguments(message: $message)
+      ...Message_messageFragment @arguments(message: $message)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -89,11 +89,19 @@ const EditQuery = graphql`
 `;
 
 const messageFragment = graphql`
-  fragment Tag_messageFragment on Query
+  fragment Message_messageFragment on Query
   @argumentDefinitions(message: { type: "Int!" }) {
     query {
       messageByRowId(rowId: $message) {
         content
+        organizationId
+        messageTagsByMessageId {
+          edges {
+            node {
+              tagId
+            }
+          }
+        }
       }
     }
   }
@@ -117,7 +125,7 @@ function Edit({ preloadedQuery }) {
       variables: {
         input: {
           id: messageByRowId.rowId,
-          editor: editor.getJSON(),
+          content: editor.getJSON(),
           loomSharedUrl: loom,
         },
       },

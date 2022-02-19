@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<862f6d068e9310fdd0a841cae28c3faf>>
+ * @generated SignedSource<<966dcad026db9c2335fa79ce04da3aa0>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,11 +15,11 @@ export type UpdateMessageInput = {
   content: string;
   loomSharedUrl?: string | null;
 };
-export type EditorUpdateMessageMutation$variables = {
+export type CategoryUpdateMessageMutation$variables = {
   input: UpdateMessageInput;
 };
-export type EditorUpdateMessageMutationVariables = EditorUpdateMessageMutation$variables;
-export type EditorUpdateMessageMutation$data = {
+export type CategoryUpdateMessageMutationVariables = CategoryUpdateMessageMutation$variables;
+export type CategoryUpdateMessageMutation$data = {
   readonly updateMessage: {
     readonly messages: ReadonlyArray<{
       readonly rowId: number;
@@ -46,10 +46,10 @@ export type EditorUpdateMessageMutation$data = {
     } | null> | null;
   } | null;
 };
-export type EditorUpdateMessageMutationResponse = EditorUpdateMessageMutation$data;
-export type EditorUpdateMessageMutation = {
-  variables: EditorUpdateMessageMutationVariables;
-  response: EditorUpdateMessageMutation$data;
+export type CategoryUpdateMessageMutationResponse = CategoryUpdateMessageMutation$data;
+export type CategoryUpdateMessageMutation = {
+  variables: CategoryUpdateMessageMutationVariables;
+  response: CategoryUpdateMessageMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -140,7 +140,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "EditorUpdateMessageMutation",
+    "name": "CategoryUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -238,7 +238,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "EditorUpdateMessageMutation",
+    "name": "CategoryUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -334,16 +334,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "717bf2b50f653b1f1aaa5df765587c3a",
+    "cacheID": "c932ea1fbe8826016676e30acae3f41d",
     "id": null,
     "metadata": {},
-    "name": "EditorUpdateMessageMutation",
+    "name": "CategoryUpdateMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation CategoryUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "eaba5d00db8af5c43ce234d1a2f7e7aa";
+(node as any).hash = "3674d9214d0526b1e3c9d374ef8c36d2";
 
 export default node;

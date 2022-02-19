@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<74fe17b17bc3ebce08ddc46a39ae2385>>
+ * @generated SignedSource<<985b0acc31919694925720af7eace925>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,12 +16,12 @@ export type CreateMessageInput = {
   tags: ReadonlyArray<number | null>;
   loomSharedUrl?: string | null;
 };
-export type EditorInsertMessageMutation$variables = {
+export type MessageInsertMessageMutation$variables = {
   input: CreateMessageInput;
   connections: ReadonlyArray<string>;
 };
-export type EditorInsertMessageMutationVariables = EditorInsertMessageMutation$variables;
-export type EditorInsertMessageMutation$data = {
+export type MessageInsertMessageMutationVariables = MessageInsertMessageMutation$variables;
+export type MessageInsertMessageMutation$data = {
   readonly createMessage: {
     readonly messages: ReadonlyArray<{
       readonly rowId: number;
@@ -48,10 +48,10 @@ export type EditorInsertMessageMutation$data = {
     } | null> | null;
   } | null;
 };
-export type EditorInsertMessageMutationResponse = EditorInsertMessageMutation$data;
-export type EditorInsertMessageMutation = {
-  variables: EditorInsertMessageMutationVariables;
-  response: EditorInsertMessageMutation$data;
+export type MessageInsertMessageMutationResponse = MessageInsertMessageMutation$data;
+export type MessageInsertMessageMutation = {
+  variables: MessageInsertMessageMutationVariables;
+  response: MessageInsertMessageMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -148,7 +148,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "EditorInsertMessageMutation",
+    "name": "MessageInsertMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -249,7 +249,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "EditorInsertMessageMutation",
+    "name": "MessageInsertMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -366,16 +366,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e9465af544b87fde10a1fae60d1e95ea",
+    "cacheID": "a416bf36ae1da512f5d2f8ebf4875400",
     "id": null,
     "metadata": {},
-    "name": "EditorInsertMessageMutation",
+    "name": "MessageInsertMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation EditorInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageInsertMessageMutation(\n  $input: CreateMessageInput!\n) {\n  createMessage(input: $input) {\n    messages {\n      rowId\n      content\n      organizationId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "54ed4eb25a5b92415f01d83bc3bdfce2";
+(node as any).hash = "8867acd68a1efe95bb1149516af5a0bb";
 
 export default node;

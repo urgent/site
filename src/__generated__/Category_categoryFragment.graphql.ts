@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<eb1acb05fc63a3c2bfebba40ac5aa02b>>
+ * @generated SignedSource<<d140cc0a21c42e7fc2f1753f2d4df716>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,7 +10,7 @@
 
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type Tag_categoryFragment$data = {
+export type Category_categoryFragment$data = {
   readonly query: {
     readonly categoryByRowId: {
       readonly name: string | null;
@@ -18,12 +18,12 @@ export type Tag_categoryFragment$data = {
       readonly sort: number | null;
     } | null;
   };
-  readonly " $fragmentType": "Tag_categoryFragment";
+  readonly " $fragmentType": "Category_categoryFragment";
 };
-export type Tag_categoryFragment = Tag_categoryFragment$data;
-export type Tag_categoryFragment$key = {
-  readonly " $data"?: Tag_categoryFragment$data;
-  readonly " $fragmentSpreads": FragmentRefs<"Tag_categoryFragment">;
+export type Category_categoryFragment = Category_categoryFragment$data;
+export type Category_categoryFragment$key = {
+  readonly " $data"?: Category_categoryFragment$data;
+  readonly " $fragmentSpreads": FragmentRefs<"Category_categoryFragment">;
 };
 
 const node: ReaderFragment = {
@@ -36,7 +36,7 @@ const node: ReaderFragment = {
   ],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Tag_categoryFragment",
+  "name": "Category_categoryFragment",
   "selections": [
     {
       "alias": null,
@@ -92,6 +92,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "e8d6eeae5385588067f12bbd44f457c8";
+(node as any).hash = "b2f7b0d2ec63976fe9c4d141afe1d287";
 
 export default node;

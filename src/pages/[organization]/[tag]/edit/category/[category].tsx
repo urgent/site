@@ -2,16 +2,27 @@ import React from "react";
 import Nav from "../../../../../components/Nav";
 import { Sidebar } from "../../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
-import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
+import {
+  graphql,
+  usePreloadedQuery,
+  useFragment,
+  useMutation,
+} from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../../lib/client_environment";
 import Editor from "../../../../../components/Editor";
 import { arrayCast, decode } from "../../../../../utils/route";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const EditQuery = graphql`
-  query Tag_categoryQuery($category: Int!, $organization: Int!, $tag: [Int]) {
+  query Category_categoryQuery(
+    $category: Int!
+    $organization: Int!
+    $tag: [Int]
+  ) {
     query {
-      ...Tag_categoryFragment @arguments(category: $category)
+      ...Category_categoryFragment @arguments(category: $category)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -22,7 +33,7 @@ const EditQuery = graphql`
 `;
 
 const categoryFragment = graphql`
-  fragment Tag_categoryFragment on Query
+  fragment Category_categoryFragment on Query
   @argumentDefinitions(category: { type: "Int!" }) {
     query {
       categoryByRowId(rowId: $category) {
@@ -34,10 +45,60 @@ const categoryFragment = graphql`
   }
 `;
 
+const UpdateMessageMutation = graphql`
+  mutation CategoryUpdateMessageMutation($input: UpdateMessageInput!) {
+    updateMessage(input: $input) {
+      messages {
+        rowId
+        content
+        loomSharedUrl
+        organizationId
+        messageTagsByMessageId {
+          __id
+          edges {
+            node {
+              __id
+              tagId
+              tagByTagId {
+                __id
+                rowId
+                name
+                categoryByCategoryId {
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
 function Edit({ preloadedQuery }) {
   const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
   const data = useFragment(categoryFragment, query);
   const { categoryByRowId } = data.query;
+  const [isUpdateMessagePending, updateMessage] = useMutation(
+    UpdateMessageMutation
+  ) as [boolean, (config?: any) => void];
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: categoryByRowId.name,
+  });
+
+  function onSubmit() {
+    updateMessage({
+      variables: {
+        input: {
+          id: categoryByRowId.rowId,
+          name: editor.getJSON(),
+        },
+      },
+      updater: (store) => {},
+    });
+  }
+
   return (
     <Grid
       data-cy="grid"
@@ -62,11 +123,7 @@ function Edit({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Editor
-          content={categoryByRowId.name}
-          onSubmit={() => {}}
-          onChange={() => {}}
-        />
+        <Editor {...{ editor, onSubmit }} />
       </Box>
     </Grid>
   );
