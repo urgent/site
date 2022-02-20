@@ -2,18 +2,27 @@ import React from "react";
 import Nav from "../../../../../components/Nav";
 import { Sidebar } from "../../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
-import {
-  graphql,
-  usePreloadedQuery,
-  useFragment,
-  useMutation,
-} from "react-relay/hooks";
+import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../../lib/client_environment";
 import Editor from "../../../../../components/Editor";
 import { arrayCast, decode } from "../../../../../utils/route";
+import useMutation from "../../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+
+const UpdateCategoryMutation = graphql`
+  mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
+        rowId
+        name
+        color
+        sort
+      }
+    }
+  }
+`;
 
 const EditQuery = graphql`
   query Category_categoryQuery(
@@ -37,6 +46,7 @@ const categoryFragment = graphql`
   @argumentDefinitions(category: { type: "Int!" }) {
     query {
       categoryByRowId(rowId: $category) {
+        rowId
         name
         color
         sort
@@ -45,42 +55,11 @@ const categoryFragment = graphql`
   }
 `;
 
-const UpdateMessageMutation = graphql`
-  mutation CategoryUpdateMessageMutation($input: UpdateMessageInput!) {
-    updateMessage(input: $input) {
-      messages {
-        rowId
-        content
-        loomSharedUrl
-        organizationId
-        messageTagsByMessageId {
-          __id
-          edges {
-            node {
-              __id
-              tagId
-              tagByTagId {
-                __id
-                rowId
-                name
-                categoryByCategoryId {
-                  color
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 function Edit({ preloadedQuery }) {
   const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
-  const data = useFragment(categoryFragment, query);
-  const { categoryByRowId } = data.query;
-  const [isUpdateMessagePending, updateMessage] = useMutation(
-    UpdateMessageMutation
+  const { categoryByRowId } = useFragment(categoryFragment, query).query;
+  const [isUpdateMessagePending, updateCategory] = useMutation(
+    UpdateCategoryMutation
   ) as [boolean, (config?: any) => void];
   const editor = useEditor({
     extensions: [StarterKit],
@@ -88,11 +67,15 @@ function Edit({ preloadedQuery }) {
   });
 
   function onClick() {
-    updateMessage({
+    const id = categoryByRowId.rowId;
+    const name = JSON.stringify(editor.getJSON());
+    const color = categoryByRowId.color;
+    updateCategory({
       variables: {
         input: {
-          id: categoryByRowId.rowId,
-          name: editor.getJSON(),
+          id,
+          name,
+          color,
         },
       },
       updater: (store) => {},

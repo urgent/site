@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<966dcad026db9c2335fa79ce04da3aa0>>
+ * @generated SignedSource<<21c3397056ab709ea615d26f0e9dd359>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,41 +9,24 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
-export type UpdateMessageInput = {
+export type UpdateCategoryInput = {
   clientMutationId?: string | null;
   id: number;
-  content: string;
-  loomSharedUrl?: string | null;
+  name: string;
+  color: string;
 };
 export type CategoryUpdateMessageMutation$variables = {
-  input: UpdateMessageInput;
+  input: UpdateCategoryInput;
 };
 export type CategoryUpdateMessageMutationVariables = CategoryUpdateMessageMutation$variables;
 export type CategoryUpdateMessageMutation$data = {
-  readonly updateMessage: {
-    readonly messages: ReadonlyArray<{
+  readonly updateCategory: {
+    readonly category: {
       readonly rowId: number;
-      readonly content: string | null;
-      readonly loomSharedUrl: string | null;
-      readonly organizationId: number;
-      readonly messageTagsByMessageId: {
-        readonly __id: string;
-        readonly edges: ReadonlyArray<{
-          readonly node: {
-            readonly __id: string;
-            readonly tagId: number;
-            readonly tagByTagId: {
-              readonly __id: string;
-              readonly rowId: number;
-              readonly name: string | null;
-              readonly categoryByCategoryId: {
-                readonly color: string | null;
-              } | null;
-            } | null;
-          } | null;
-        }>;
-      };
-    } | null> | null;
+      readonly name: string | null;
+      readonly color: string | null;
+      readonly sort: number | null;
+    } | null;
   } | null;
 };
 export type CategoryUpdateMessageMutationResponse = CategoryUpdateMessageMutation$data;
@@ -78,61 +61,21 @@ v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "content",
+  "name": "name",
   "storageKey": null
 },
 v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "loomSharedUrl",
+  "name": "color",
   "storageKey": null
 },
 v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "organizationId",
-  "storageKey": null
-},
-v6 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "tagId",
-  "storageKey": null
-},
-v7 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "name",
-  "storageKey": null
-},
-v8 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "color",
-  "storageKey": null
-},
-v9 = {
-  "kind": "ClientExtension",
-  "selections": [
-    {
-      "alias": null,
-      "args": null,
-      "kind": "ScalarField",
-      "name": "__id",
-      "storageKey": null
-    }
-  ]
-},
-v10 = {
-  "alias": null,
-  "args": null,
-  "kind": "ScalarField",
-  "name": "id",
+  "name": "sort",
   "storageKey": null
 };
 return {
@@ -145,85 +88,23 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "UpdateMessagePayload",
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "updateMessage",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Message",
+            "concreteType": "Category",
             "kind": "LinkedField",
-            "name": "messages",
-            "plural": true,
+            "name": "category",
+            "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/),
-              {
-                "alias": null,
-                "args": null,
-                "concreteType": "MessageTagsConnection",
-                "kind": "LinkedField",
-                "name": "messageTagsByMessageId",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "MessageTagsEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "MessageTag",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v6/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Tag",
-                            "kind": "LinkedField",
-                            "name": "tagByTagId",
-                            "plural": false,
-                            "selections": [
-                              (v2/*: any*/),
-                              (v7/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Category",
-                                "kind": "LinkedField",
-                                "name": "categoryByCategoryId",
-                                "plural": false,
-                                "selections": [
-                                  (v8/*: any*/)
-                                ],
-                                "storageKey": null
-                              },
-                              (v9/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v9/*: any*/)
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  (v9/*: any*/)
-                ],
-                "storageKey": null
-              }
+              (v5/*: any*/)
             ],
             "storageKey": null
           }
@@ -243,18 +124,18 @@ return {
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "UpdateMessagePayload",
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "updateMessage",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "concreteType": "Message",
+            "concreteType": "Category",
             "kind": "LinkedField",
-            "name": "messages",
-            "plural": true,
+            "name": "category",
+            "plural": false,
             "selections": [
               (v2/*: any*/),
               (v3/*: any*/),
@@ -263,68 +144,10 @@ return {
               {
                 "alias": null,
                 "args": null,
-                "concreteType": "MessageTagsConnection",
-                "kind": "LinkedField",
-                "name": "messageTagsByMessageId",
-                "plural": false,
-                "selections": [
-                  {
-                    "alias": null,
-                    "args": null,
-                    "concreteType": "MessageTagsEdge",
-                    "kind": "LinkedField",
-                    "name": "edges",
-                    "plural": true,
-                    "selections": [
-                      {
-                        "alias": null,
-                        "args": null,
-                        "concreteType": "MessageTag",
-                        "kind": "LinkedField",
-                        "name": "node",
-                        "plural": false,
-                        "selections": [
-                          (v6/*: any*/),
-                          {
-                            "alias": null,
-                            "args": null,
-                            "concreteType": "Tag",
-                            "kind": "LinkedField",
-                            "name": "tagByTagId",
-                            "plural": false,
-                            "selections": [
-                              (v2/*: any*/),
-                              (v7/*: any*/),
-                              {
-                                "alias": null,
-                                "args": null,
-                                "concreteType": "Category",
-                                "kind": "LinkedField",
-                                "name": "categoryByCategoryId",
-                                "plural": false,
-                                "selections": [
-                                  (v8/*: any*/),
-                                  (v10/*: any*/)
-                                ],
-                                "storageKey": null
-                              },
-                              (v10/*: any*/),
-                              (v9/*: any*/)
-                            ],
-                            "storageKey": null
-                          },
-                          (v9/*: any*/)
-                        ],
-                        "storageKey": null
-                      }
-                    ],
-                    "storageKey": null
-                  },
-                  (v9/*: any*/)
-                ],
+                "kind": "ScalarField",
+                "name": "id",
                 "storageKey": null
-              },
-              (v10/*: any*/)
+              }
             ],
             "storageKey": null
           }
@@ -334,16 +157,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c932ea1fbe8826016676e30acae3f41d",
+    "cacheID": "ad4540f5191cf42f5be75139c64e9286",
     "id": null,
     "metadata": {},
     "name": "CategoryUpdateMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation CategoryUpdateMessageMutation(\n  $input: UpdateMessageInput!\n) {\n  updateMessage(input: $input) {\n    messages {\n      rowId\n      content\n      loomSharedUrl\n      organizationId\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n            tagByTagId {\n              rowId\n              name\n              categoryByCategoryId {\n                color\n                id\n              }\n              id\n            }\n          }\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation CategoryUpdateMessageMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      sort\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3674d9214d0526b1e3c9d374ef8c36d2";
+(node as any).hash = "12e77d0db834c3a629daa761f7466698";
 
 export default node;

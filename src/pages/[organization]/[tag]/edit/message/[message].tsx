@@ -116,7 +116,6 @@ function Edit({ preloadedQuery }) {
     UpdateMessageMutation
   ) as [boolean, (config?: any) => void];
   const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
-
   const editor = useEditor({
     extensions: [StarterKit],
     content: messageByRowId.content,

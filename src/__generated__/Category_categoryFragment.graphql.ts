@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d140cc0a21c42e7fc2f1753f2d4df716>>
+ * @generated SignedSource<<c94d7454b8af26e4d56f3199f627740d>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,6 +13,7 @@ import { FragmentRefs } from "relay-runtime";
 export type Category_categoryFragment$data = {
   readonly query: {
     readonly categoryByRowId: {
+      readonly rowId: number;
       readonly name: string | null;
       readonly color: string | null;
       readonly sort: number | null;
@@ -64,6 +65,13 @@ const node: ReaderFragment = {
               "alias": null,
               "args": null,
               "kind": "ScalarField",
+              "name": "rowId",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
               "name": "name",
               "storageKey": null
             },
@@ -92,6 +100,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "b2f7b0d2ec63976fe9c4d141afe1d287";
+(node as any).hash = "7c1dd4b02f60cdfd1b1434fd279b8e0a";
 
 export default node;
