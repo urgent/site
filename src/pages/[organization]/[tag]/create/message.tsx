@@ -1,24 +1,29 @@
 import React, { useState } from "react";
-import Nav from "../../../../../components/Nav";
-import { Sidebar } from "../../../../../components/Sidebar";
+import Nav from "../../../../components/Nav";
+import { Sidebar } from "../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
-import { getClientEnvironment } from "../../../../../lib/client_environment";
-import Editor from "../../../../../components/Editor";
-import { arrayCast, decode } from "../../../../../utils/route";
-import useMutation from "../../../../../components/useMutation";
+import { getClientEnvironment } from "../../../../lib/client_environment";
+import Editor from "../../../../components/Editor";
+import { arrayCast, decode } from "../../../../utils/route";
+import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useRouter } from "next/router";
 
-const UpdateMessageMutation = graphql`
-  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
-    updateMessage(input: $input) {
-      messages {
+const InsertMessageMutation = graphql`
+  mutation MessageInsertMessageMutation(
+    $input: CreateMessageInput!
+    $connections: [ID!]!
+  ) {
+    createMessage(input: $input) {
+      messages
+        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
         rowId
         content
-        loomSharedUrl
         organizationId
+        loomSharedUrl
         messageTagsByMessageId {
           __id
           edges {
@@ -42,9 +47,8 @@ const UpdateMessageMutation = graphql`
 `;
 
 const EditQuery = graphql`
-  query Message_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
+  query Message_createQuery($organization: Int!, $tag: [Int]) {
     query {
-      ...Message_messageFragment @arguments(message: $message)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -54,49 +58,31 @@ const EditQuery = graphql`
   }
 `;
 
-const messageFragment = graphql`
-  fragment Message_messageFragment on Query
-  @argumentDefinitions(message: { type: "Int!" }) {
-    query {
-      messageByRowId(rowId: $message) {
-        content
-        organizationId
-        rowId
-        loomSharedUrl
-        messageTagsByMessageId {
-          edges {
-            node {
-              tagId
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 function Edit({ preloadedQuery }) {
   const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
-  const { messageByRowId } = useFragment(messageFragment, query).query;
-  const [isUpdateMessagePending, updateMessage] = useMutation(
-    UpdateMessageMutation
+  const [isInsertMessagePending, insertMessage] = useMutation(
+    InsertMessageMutation
   ) as [boolean, (config?: any) => void];
-  const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
+  const router = useRouter();
+  const { organization, tag } = router.query;
+  const tags = decode(tag as string).map((tag) => parseInt(tag));
+  const [loom, setLoom] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
-    content: messageByRowId.content,
+    content: "",
   });
 
   function onClick() {
-    const id = messageByRowId.rowId;
+    const organizationId = arrayCast(parseInt)(organization);
     const content = JSON.stringify(editor.getJSON());
     const loomSharedUrl = loom;
-    updateMessage({
+    insertMessage({
       variables: {
         input: {
-          id,
+          organizationId,
           content,
           loomSharedUrl,
+          tags,
         },
       },
       updater: (store) => {},
@@ -166,7 +152,7 @@ export default withRelay(Edit, EditQuery, {
     { token }
   ) => {
     const { createServerEnvironment } = await import(
-      "../../../../../lib/server_environment"
+      "../../../../lib/server_environment"
     );
     return createServerEnvironment(token);
   },

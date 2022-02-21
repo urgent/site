@@ -1,50 +1,19 @@
-import React, { useState } from "react";
-import Nav from "../../../../../components/Nav";
-import { Sidebar } from "../../../../../components/Sidebar";
+import React from "react";
+import Nav from "../../../../components/Nav";
+import { Sidebar } from "../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
-import { getClientEnvironment } from "../../../../../lib/client_environment";
-import Editor from "../../../../../components/Editor";
-import { arrayCast, decode } from "../../../../../utils/route";
-import useMutation from "../../../../../components/useMutation";
+import { getClientEnvironment } from "../../../../lib/client_environment";
+import Editor from "../../../../components/Editor";
+import { arrayCast, decode } from "../../../../utils/route";
+import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-const UpdateMessageMutation = graphql`
-  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
-    updateMessage(input: $input) {
-      messages {
-        rowId
-        content
-        loomSharedUrl
-        organizationId
-        messageTagsByMessageId {
-          __id
-          edges {
-            node {
-              __id
-              tagId
-              tagByTagId {
-                __id
-                rowId
-                name
-                categoryByCategoryId {
-                  color
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 const EditQuery = graphql`
-  query Message_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
+  query Category_insertQuery($organization: Int!, $tag: [Int]) {
     query {
-      ...Message_messageFragment @arguments(message: $message)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -54,53 +23,16 @@ const EditQuery = graphql`
   }
 `;
 
-const messageFragment = graphql`
-  fragment Message_messageFragment on Query
-  @argumentDefinitions(message: { type: "Int!" }) {
-    query {
-      messageByRowId(rowId: $message) {
-        content
-        organizationId
-        rowId
-        loomSharedUrl
-        messageTagsByMessageId {
-          edges {
-            node {
-              tagId
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 function Edit({ preloadedQuery }) {
   const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
-  const { messageByRowId } = useFragment(messageFragment, query).query;
-  const [isUpdateMessagePending, updateMessage] = useMutation(
-    UpdateMessageMutation
-  ) as [boolean, (config?: any) => void];
-  const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
   const editor = useEditor({
     extensions: [StarterKit],
-    content: messageByRowId.content,
+    content: "",
   });
 
   function onClick() {
-    const id = messageByRowId.rowId;
-    const content = JSON.stringify(editor.getJSON());
-    const loomSharedUrl = loom;
-    updateMessage({
-      variables: {
-        input: {
-          id,
-          content,
-          loomSharedUrl,
-        },
-      },
-      updater: (store) => {},
-    });
+    const name = JSON.stringify(editor.getJSON());
+    const color = "";
   }
 
   return (
@@ -166,7 +98,7 @@ export default withRelay(Edit, EditQuery, {
     { token }
   ) => {
     const { createServerEnvironment } = await import(
-      "../../../../../lib/server_environment"
+      "../../../../lib/server_environment"
     );
     return createServerEnvironment(token);
   },
@@ -174,7 +106,7 @@ export default withRelay(Edit, EditQuery, {
     return {
       ...ctx.query,
       ...{
-        message: arrayCast(parseInt)(ctx.query.message),
+        category: arrayCast(parseInt)(ctx.query.category),
         tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
         organization: arrayCast(parseInt)(ctx.query.organization),
       },
