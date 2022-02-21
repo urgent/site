@@ -5,6 +5,9 @@ import { Box, Badge, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { decode } from "../utils/route";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { catchJSON } from "../utils/editor";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -47,6 +50,7 @@ export function AddTagToMessage({ click }) {
 
 export default function Message({ message }) {
   const { rowId, content, loomSharedUrl, messageTagsByMessageId } = message;
+  const parsed = catchJSON(content);
   const messageTags = messageTagsByMessageId.edges.map(
     ({ node }) => node.tagByTagId
   );
@@ -56,6 +60,11 @@ export default function Message({ message }) {
   const router = useRouter();
   const { organization, tag } = router.query;
   const tags = decode(tag as string).map((tag) => parseInt(tag));
+  const editor = useEditor({
+    editable: false,
+    content: parsed,
+    extensions: [StarterKit],
+  });
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
@@ -92,10 +101,10 @@ export default function Message({ message }) {
       data-cy="message"
     >
       <Box p={4} data-cy="body">
-        {content}
+        <EditorContent editor={editor} />
         {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
-      <Box data-cy="tags" px={4} py={2}>
+      <Box data-cy="tags" px={4} py={2} minWidth="340px">
         {messageTags.map((messageTag, index) => {
           const { name, categoryByCategoryId, rowId } = messageTag;
           const { color } = categoryByCategoryId;

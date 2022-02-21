@@ -19,6 +19,9 @@ import useMutation from "./useMutation";
 import { graphql } from "react-relay";
 import { useRouter } from "next/router";
 import { decode } from "../utils/route";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { catchJSON } from "../utils/editor";
 
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation(
@@ -109,18 +112,25 @@ export function AddCategory({ connectionId }) {
 
 export function Category({ category, index, moveCategory }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
+  const { rowId, color, name, tagsByCategoryId, organizationId } = category;
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
   const router = useRouter();
   const { organization, tag } = router.query;
   const tags = decode(tag as string).map((tag) => parseInt(tag));
+  const parsed = catchJSON(name);
+  const editor = useEditor({
+    editable: false,
+    content: parsed,
+    extensions: [StarterKit],
+  });
 
   return (
-    <AccordionItem key={category.rowId} ref={ref}>
+    <AccordionItem key={rowId} ref={ref}>
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            {category.name}
-            {category.tagsByCategoryId?.edges
+            <EditorContent editor={editor} />
+            {tagsByCategoryId?.edges
               .filter((edge) => tags.includes(edge.node.rowId))
               .map((edge) => {
                 return (
@@ -129,7 +139,7 @@ export function Category({ category, index, moveCategory }) {
                     key={edge.node.rowId}
                     variant="outline"
                     color="white"
-                    bg={`#${category.color}`}
+                    bg={`#${color}`}
                     px={2}
                     mx={2}
                     boxShadow="none"
@@ -144,14 +154,14 @@ export function Category({ category, index, moveCategory }) {
       </h2>
       <AccordionPanel pb={4}>
         <Wrap>
-          {category.tagsByCategoryId?.edges.map((tag, index) => {
+          {tagsByCategoryId?.edges.map((tag, index) => {
             return (
               <WrapItem key={index}>
                 <Tag
                   id={tag.node.rowId}
-                  color={category?.color}
+                  color={color}
                   name={tag.node.name}
-                  organization={category.organizationId}
+                  organization={organizationId}
                 />
               </WrapItem>
             );
