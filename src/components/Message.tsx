@@ -3,8 +3,6 @@ import { graphql } from "react-relay";
 import useMutation from "./useMutation";
 import { Box, Badge, Button } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/router";
-import { decode } from "../utils/route";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
@@ -48,7 +46,7 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({ message }) {
+export default function Message({ message, tags }) {
   const { rowId, content, loomSharedUrl, messageTagsByMessageId } = message;
   const parsed = catchJSON(content);
   const messageTags = messageTagsByMessageId.edges.map(
@@ -57,9 +55,6 @@ export default function Message({ message }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(
     DeleteTagMutation
   ) as [boolean, (config?: any) => void];
-  const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag as string).map((tag) => parseInt(tag));
   const editor = useEditor({
     editable: false,
     content: parsed,

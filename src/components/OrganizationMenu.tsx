@@ -3,8 +3,6 @@ import { Box, Button, Select, Input } from "@chakra-ui/react";
 import { Grid, Heading, Divider, Flex, Spacer } from "@chakra-ui/react";
 import { graphql, useFragment } from "react-relay/hooks";
 import useMutation from "./useMutation";
-import { useRouter } from "next/router";
-import { decode } from "../utils/route";
 
 const gridButtonStyle = {
   color: "white",
@@ -162,7 +160,7 @@ function sendEmail(email, slug) {
   });
 }
 
-export function OrganizationMenu({ query }) {
+export function OrganizationMenu({ query, organization }) {
   const [addEmail, setAddEmail] = useState("");
   const [isConfigPending, insertConfig] = useMutation(InsertConfigMutation) as [
     boolean,
@@ -187,8 +185,6 @@ export function OrganizationMenu({ query }) {
   const defaultUser = allOrganizationUsers?.edges[0].node.userByUserId;
   const { allOrganizations } = useFragment(organizationFragment, query);
   const { allInvites } = useFragment(inviteFragment, query);
-  const router = useRouter();
-  const { organization, tag } = router.query;
 
   function onAddUser() {
     // slug not used in insert invite

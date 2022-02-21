@@ -48,10 +48,15 @@ function Create({ preloadedQuery }) {
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
   const { organization, tag } = router.query;
+  const tags = decode(tag).map((_tag) => {
+    const res = parseInt(_tag);
+    return res;
+  });
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
   });
+  const path = router.pathname.split("/");
 
   function onClick() {
     const name = JSON.stringify(editor.getJSON());
@@ -78,9 +83,9 @@ function Create({ preloadedQuery }) {
       minHeight="100vh"
       d={["none", "none", "none", "grid", "grid"]}
     >
-      <Nav {...{ query }} />
+      <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar {...{ query }} />
+        <Sidebar {...{ query, tags }} />
       </Box>
       <Box
         as="main"

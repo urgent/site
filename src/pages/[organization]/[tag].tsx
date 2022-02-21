@@ -7,6 +7,7 @@ import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
+import { useRouter } from "next/router";
 import { decode } from "../../utils/route";
 
 const HomeQuery = graphql`
@@ -25,6 +26,13 @@ const HomeQuery = graphql`
 
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
+  const router = useRouter();
+  const { organization, tag } = router.query;
+  const tags = decode(tag).map((_tag) => {
+    const res = parseInt(_tag);
+    return res;
+  });
+  const path = router.pathname.split("/");
 
   return (
     <>
@@ -36,9 +44,9 @@ function Home({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav {...{ query }} />
+        <Nav {...{ query, organization, path }} />
         <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Sidebar {...{ query }} />
+          <Sidebar {...{ query, tags }} />
         </Box>
         <Box
           as="main"
@@ -50,7 +58,7 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles {...{ query }} />
+          <Tiles {...{ query, tags }} />
         </Box>
       </Grid>
       <Box d={["inherit", "inherit", "inherit", "none", "none"]}>

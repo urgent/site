@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { VStack, Image, Icon, Button, useDisclosure } from "@chakra-ui/react";
+import React from "react";
+import { VStack, Image, Icon, Button } from "@chakra-ui/react";
 import {
   HiOutlineCreditCard,
   HiOutlineChip,
@@ -8,7 +8,6 @@ import {
 } from "react-icons/hi";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/client";
-import { useRouter } from "next/router";
 import { graphql, useFragment } from "react-relay";
 
 const navFragment = graphql`
@@ -26,13 +25,10 @@ function link({ organization, organizationDefault }) {
   }
 }
 
-export default function Nav({ query }) {
+export default function Nav({ query, organization, path }) {
   const btnRef = React.useRef();
   const [session] = useSession();
   const { organizationDefault } = useFragment(navFragment, query);
-  const router = useRouter();
-  const { organization } = router.query;
-  const menu = router.pathname.split("/")[2];
 
   const colors = {
     edit: "none",
@@ -44,7 +40,7 @@ export default function Nav({ query }) {
     layout: "none",
   };
 
-  colors[menu] = "secondary.400";
+  colors[path[2]] = "secondary.400";
 
   if (session) {
     return (
@@ -78,7 +74,7 @@ export default function Nav({ query }) {
           _hover={{ bg: "secondary.400" }}
           ref={btnRef}
           onClick={(e) => {
-            if (menu === "admin") {
+            if (path[2] === "admin") {
               window.location.href = `/${link({
                 organization,
                 organizationDefault,

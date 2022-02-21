@@ -5,6 +5,8 @@ import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
+import { useRouter } from "next/router";
+import { decode } from "../../utils/route";
 
 const OrganizationQuery = graphql`
   query admin_Query($organization: Int) {
@@ -21,6 +23,13 @@ const OrganizationQuery = graphql`
 
 function Organization({ preloadedQuery }) {
   const { query } = usePreloadedQuery(OrganizationQuery, preloadedQuery) as any;
+  const router = useRouter();
+  const { organization, tag } = router.query;
+  const tags = decode(tag).map((_tag) => {
+    const res = parseInt(_tag);
+    return res;
+  });
+  const path = router.pathname.split("/");
 
   return (
     <>
@@ -32,7 +41,7 @@ function Organization({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav {...{ query }} />
+        <Nav {...{ query, organization, path }} />
         <Box
           as="main"
           gridColumn="content"
@@ -43,7 +52,7 @@ function Organization({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <OrganizationMenu query={query} />
+          <OrganizationMenu {...{ query, organization }} />
         </Box>
       </Grid>
     </>

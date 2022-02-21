@@ -17,8 +17,7 @@ import {
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
 import { graphql } from "react-relay";
-import { useRouter } from "next/router";
-import { decode } from "../utils/route";
+import { isActive, link, encode } from "../utils/route";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
@@ -50,14 +49,12 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-export function AddCategory({ connectionId }) {
+export function AddCategory({ connectionId, organization }) {
   const [name, setName] = useState("");
   const [color, setColor] = useState("E53E3E");
   const [isCategoryPending, insertCategory] = useMutation(
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
-  const router = useRouter();
-  const { organization, tag } = router.query;
 
   // Editor submit callback
   function onSubmit(event) {
@@ -110,13 +107,11 @@ export function AddCategory({ connectionId }) {
   );
 }
 
-export function Category({ category, index, moveCategory }) {
+export function Category({ category, index, moveCategory, tags }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
-  const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag as string).map((tag) => parseInt(tag));
+
   const parsed = catchJSON(name);
   const editor = useEditor({
     editable: false,
@@ -131,7 +126,7 @@ export function Category({ category, index, moveCategory }) {
           <Box flex="1" textAlign="left">
             <EditorContent editor={editor} />
             {tagsByCategoryId?.edges
-              .filter((edge) => tags.includes(edge.node.rowId))
+              .filter((edge) => tags?.includes(edge.node.rowId))
               .map((edge) => {
                 return (
                   <Badge
@@ -155,13 +150,18 @@ export function Category({ category, index, moveCategory }) {
       <AccordionPanel pb={4}>
         <Wrap>
           {tagsByCategoryId?.edges.map((tag, index) => {
+            const { name, rowId } = tag.node;
             return (
               <WrapItem key={index}>
                 <Tag
-                  id={tag.node.rowId}
                   color={color}
-                  name={tag.node.name}
-                  organization={organizationId}
+                  name={name}
+                  active={isActive({ tag: tags, id: rowId })}
+                  href={link({
+                    organization: organizationId,
+                    tag: encode(tags),
+                    id: rowId,
+                  })}
                 />
               </WrapItem>
             );

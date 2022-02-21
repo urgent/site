@@ -10,6 +10,7 @@ import { arrayCast, decode } from "../../../../../utils/route";
 import useMutation from "../../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useRouter } from "next/router";
 
 const UpdateCategoryMutation = graphql`
   mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
@@ -65,6 +66,13 @@ function Edit({ preloadedQuery }) {
     extensions: [StarterKit],
     content: categoryByRowId.name,
   });
+  const router = useRouter();
+  const { organization, tag } = router.query;
+  const tags = decode(tag).map((_tag) => {
+    const res = parseInt(_tag);
+    return res;
+  });
+  const path = router.pathname.split("/");
 
   function onClick() {
     const id = categoryByRowId.rowId;
@@ -91,9 +99,9 @@ function Edit({ preloadedQuery }) {
       minHeight="100vh"
       d={["none", "none", "none", "grid", "grid"]}
     >
-      <Nav {...{ query }} />
+      <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar {...{ query }} />
+        <Sidebar {...{ query, tags }} />
       </Box>
       <Box
         as="main"

@@ -51,7 +51,7 @@ const messageFragment = graphql`
   }
 `;
 
-export default function Tiles({ query }) {
+export default function Tiles({ query, tags }) {
   const messages = useFragment(messageFragment, query);
   const [isDeleteMessagePending, deleteMessage] = useMutation(
     DeleteMessageMutation
@@ -72,7 +72,7 @@ export default function Tiles({ query }) {
   return (
     <Box sx={{ columnCount: "4" }} columnGap="1em" data-cy="tiles">
       {messages?.tile?.edges?.map((edge) => (
-        <Message key={edge.node.rowId} message={edge.node} />
+        <Message key={edge.node.rowId} message={edge.node} {...{ tags }} />
       ))}
     </Box>
   );

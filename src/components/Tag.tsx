@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Box, Text } from "@chakra-ui/react";
 import useMutation from "./useMutation";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { isActive, link } from "../utils/route";
 import { graphql } from "react-relay";
 
 const InsertTagMutation = graphql`
@@ -135,11 +133,7 @@ function style({ active, color }) {
   }
 }
 
-export default function Tag({ id, color, name, organization }) {
-  const router = useRouter();
-  const { _organization, tag } = router.query;
-  const active = isActive({ tag, id });
-
+export default function Tag({ color, name, active, href }) {
   return (
     <Box
       fontSize={[10, 10, 12, 12, 12]}
@@ -151,7 +145,7 @@ export default function Tag({ id, color, name, organization }) {
       data-cy="tag"
     >
       <Text mt={1}>
-        <Link href={link({ organization, tag, id })}>{name}</Link>
+        <Link {...{ href }}>{name}</Link>
       </Text>
     </Box>
   );
