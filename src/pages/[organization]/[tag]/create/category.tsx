@@ -10,9 +10,27 @@ import { arrayCast, decode } from "../../../../utils/route";
 import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import { useRouter } from "next/router";
 
-const EditQuery = graphql`
-  query Category_insertQuery($organization: Int!, $tag: [Int]) {
+const InsertCategoryMutation = graphql`
+  mutation categoryInsertMutation(
+    $input: CreateCategoryInput!
+    $connections: [ID!]!
+  ) {
+    createCategory(input: $input) {
+      category
+        @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
+        rowId
+        name
+        color
+        organizationId
+      }
+    }
+  }
+`;
+
+const CreateQuery = graphql`
+  query categoryCreateQuery($organization: Int!, $tag: [Int]) {
     query {
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -23,8 +41,13 @@ const EditQuery = graphql`
   }
 `;
 
-function Edit({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
+function Create({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(CreateQuery, preloadedQuery) as any;
+  const [isInsertCategoryPending, insertCategory] = useMutation(
+    InsertCategoryMutation
+  ) as [boolean, (config?: any) => void];
+  const router = useRouter();
+  const { organization, tag } = router.query;
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
@@ -33,6 +56,17 @@ function Edit({ preloadedQuery }) {
   function onClick() {
     const name = JSON.stringify(editor.getJSON());
     const color = "";
+    const organizationId = arrayCast(parseInt)(organization);
+    insertCategory({
+      variables: {
+        input: {
+          name,
+          color,
+          organizationId,
+        },
+      },
+      updater: (store) => {},
+    });
   }
 
   return (
@@ -72,7 +106,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Edit, EditQuery, {
+export default withRelay(Create, CreateQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

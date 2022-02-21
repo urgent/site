@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<53ea3575eac26903361f9e616c17e6cf>>
+ * @generated SignedSource<<8f6afea748fc701c74035a53f27baa73>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -10,20 +10,20 @@
 
 import { ConcreteRequest, Query } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
-export type Message_createQuery$variables = {
+export type categoryCreateQuery$variables = {
   organization: number;
   tag?: ReadonlyArray<number | null> | null;
 };
-export type Message_createQueryVariables = Message_createQuery$variables;
-export type Message_createQuery$data = {
+export type categoryCreateQueryVariables = categoryCreateQuery$variables;
+export type categoryCreateQuery$data = {
   readonly query: {
     readonly " $fragmentSpreads": FragmentRefs<"SidebarFragment_messages" | "SidebarFragment_categories" | "NavFragment_organization">;
   };
 };
-export type Message_createQueryResponse = Message_createQuery$data;
-export type Message_createQuery = {
-  variables: Message_createQueryVariables;
-  response: Message_createQuery$data;
+export type categoryCreateQueryResponse = categoryCreateQuery$data;
+export type categoryCreateQuery = {
+  variables: categoryCreateQueryVariables;
+  response: categoryCreateQuery$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -103,7 +103,7 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "Message_createQuery",
+    "name": "categoryCreateQuery",
     "selections": [
       {
         "alias": null,
@@ -141,7 +141,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "Message_createQuery",
+    "name": "categoryCreateQuery",
     "selections": [
       {
         "alias": null,
@@ -428,16 +428,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "f5cc28f14e3e55751e25c2592be1b2e3",
+    "cacheID": "bc3fd1859f7a62c9773d11e6f2b2a360",
     "id": null,
     "metadata": {},
-    "name": "Message_createQuery",
+    "name": "categoryCreateQuery",
     "operationKind": "query",
-    "text": "query Message_createQuery(\n  $organization: Int!\n  $tag: [Int]\n) {\n  query {\n    ...SidebarFragment_messages_46bejI\n    ...SidebarFragment_categories_46bejI\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment SidebarFragment_categories_46bejI on Query {\n  sidebarCategories(organizationId: $organization) {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n  sidebar(tagId: $tag) {\n    edges {\n      node {\n        categoryByCategoryId {\n          rowId\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages_46bejI on Query {\n  tile(organizationId: $organization, tagId: $tag) {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query categoryCreateQuery(\n  $organization: Int!\n  $tag: [Int]\n) {\n  query {\n    ...SidebarFragment_messages_46bejI\n    ...SidebarFragment_categories_46bejI\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment SidebarFragment_categories_46bejI on Query {\n  sidebarCategories(organizationId: $organization) {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n  sidebar(tagId: $tag) {\n    edges {\n      node {\n        categoryByCategoryId {\n          rowId\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages_46bejI on Query {\n  tile(organizationId: $organization, tagId: $tag) {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "1502a5825a036fd05e0027362e471740";
+(node as any).hash = "c0d8f84393ed653c8f8d01241626c139";
 
 export default node;

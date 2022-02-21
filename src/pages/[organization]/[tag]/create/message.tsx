@@ -13,7 +13,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
 const InsertMessageMutation = graphql`
-  mutation MessageInsertMessageMutation(
+  mutation messageInsertMutation(
     $input: CreateMessageInput!
     $connections: [ID!]!
   ) {
@@ -46,8 +46,8 @@ const InsertMessageMutation = graphql`
   }
 `;
 
-const EditQuery = graphql`
-  query Message_createQuery($organization: Int!, $tag: [Int]) {
+const CreateQuery = graphql`
+  query messageCreateQuery($organization: Int!, $tag: [Int]) {
     query {
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -58,8 +58,8 @@ const EditQuery = graphql`
   }
 `;
 
-function Edit({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
+function Create({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(CreateQuery, preloadedQuery) as any;
   const [isInsertMessagePending, insertMessage] = useMutation(
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
@@ -126,7 +126,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Edit, EditQuery, {
+export default withRelay(Create, CreateQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
