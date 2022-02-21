@@ -88,7 +88,7 @@ function Edit({ preloadedQuery }) {
     content: messageByRowId.content,
   });
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { organization, tag, message } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
@@ -122,7 +122,7 @@ function Edit({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar {...{ query, tags }} />
+        <Sidebar path={`edit/message/${message}`} {...{ query, tags }} />
       </Box>
       <Box
         as="main"

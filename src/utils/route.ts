@@ -21,13 +21,13 @@ export function isActive({ tag, id }) {
     .includes(id);
 }
 
-export function link({ organization, tag, id }) {
+export function link({ organization, tag, id, path }) {
     const tags = decode(tag);
     const tag_id = id.toString();
     if (tags.includes(tag_id)) {
-        return `/${organization}/${encode(tags.filter((tag) => tag !== tag_id))}`;
+        return `/${organization}/${encode(tags.filter((tag) => tag !== tag_id))}/${path}`;
     } else {
-        return `/${organization}/${encode([tag, id])}`;
+        return `/${organization}/${encode([tag, id])}/${path}`;
     }
 }
 

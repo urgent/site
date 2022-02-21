@@ -45,7 +45,7 @@ function Home({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar {...{ query, tags }} />
+        <Sidebar path="" {...{ query, tags }} />
       </Box>
       <Box
         as="main"

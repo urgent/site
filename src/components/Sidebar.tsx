@@ -68,7 +68,7 @@ const messageFragment = graphql`
   }
 `;
 
-export function Sidebar({ query, tags }) {
+export function Sidebar({ query, tags, path }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
   const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({
@@ -106,8 +106,7 @@ export function Sidebar({ query, tags }) {
             index={index}
             key={edge.node.rowId}
             category={edge.node}
-            moveCategory={moveCategory}
-            tags={tags}
+            {...{ moveCategory, tags, path }}
           />
         );
       })}

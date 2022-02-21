@@ -107,7 +107,7 @@ export function AddCategory({ connectionId, organization }) {
   );
 }
 
-export function Category({ category, index, moveCategory, tags }) {
+export function Category({ category, index, moveCategory, tags, path }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
@@ -161,6 +161,7 @@ export function Category({ category, index, moveCategory, tags }) {
                     organization: organizationId,
                     tag: encode(tags),
                     id: rowId,
+                    path,
                   })}
                 />
               </WrapItem>
