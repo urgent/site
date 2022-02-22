@@ -7,6 +7,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../../lib/client_environment";
 import Editor from "../../../../../components/Editor";
 import { arrayCast, decode } from "../../../../../utils/route";
+import { catchJSON } from "../../../../../utils/editor";
 import useMutation from "../../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -85,7 +86,7 @@ function Edit({ preloadedQuery }) {
   const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
   const editor = useEditor({
     extensions: [StarterKit],
-    content: messageByRowId.content,
+    content: catchJSON(messageByRowId.content),
   });
   const router = useRouter();
   const { organization, tag, message } = router.query;

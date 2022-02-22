@@ -7,6 +7,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../../lib/client_environment";
 import Editor from "../../../../../components/Editor";
 import { arrayCast, decode } from "../../../../../utils/route";
+import { catchJSON } from "../../../../../utils/editor";
 import useMutation from "../../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -64,7 +65,7 @@ function Edit({ preloadedQuery }) {
   ) as [boolean, (config?: any) => void];
   const editor = useEditor({
     extensions: [StarterKit],
-    content: categoryByRowId.name,
+    content: catchJSON(categoryByRowId.name),
   });
   const router = useRouter();
   const { organization, tag, category } = router.query;
