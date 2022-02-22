@@ -2,7 +2,7 @@ import React from "react";
 import Nav from "../../../../components/Nav";
 import { Sidebar } from "../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
-import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
+import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";

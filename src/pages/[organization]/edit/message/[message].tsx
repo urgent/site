@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Nav from "../../../../components/Nav";
 import { Sidebar } from "../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";
@@ -12,18 +12,14 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
-const InsertMessageMutation = graphql`
-  mutation messageInsertMutation(
-    $input: CreateMessageInput!
-    $connections: [ID!]!
-  ) {
-    createMessage(input: $input) {
-      messages
-        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+const UpdateMessageMutation = graphql`
+  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
+    updateMessage(input: $input) {
+      messages {
         rowId
         content
-        organizationId
         loomSharedUrl
+        organizationId
         messageTagsByMessageId {
           __id
           edges {
@@ -46,9 +42,10 @@ const InsertMessageMutation = graphql`
   }
 `;
 
-const CreateQuery = graphql`
-  query messageCreateQuery($organization: Int!, $tag: [Int]) {
+const EditQuery = graphql`
+  query Message_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
     query {
+      ...Message_messageFragment @arguments(message: $message)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -58,35 +55,56 @@ const CreateQuery = graphql`
   }
 `;
 
-function Create({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(CreateQuery, preloadedQuery) as any;
-  const [isInsertMessagePending, insertMessage] = useMutation(
-    InsertMessageMutation
+const messageFragment = graphql`
+  fragment Message_messageFragment on Query
+  @argumentDefinitions(message: { type: "Int!" }) {
+    query {
+      messageByRowId(rowId: $message) {
+        content
+        organizationId
+        rowId
+        loomSharedUrl
+        messageTagsByMessageId {
+          edges {
+            node {
+              tagId
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+function Edit({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
+  const { messageByRowId } = useFragment(messageFragment, query).query;
+  const [isUpdateMessagePending, updateMessage] = useMutation(
+    UpdateMessageMutation
   ) as [boolean, (config?: any) => void];
+  const [loom, setLoom] = useState(messageByRowId.loomSharedUrl);
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: messageByRowId.content,
+  });
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { organization, tag, message } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
   });
-  const [loom, setLoom] = useState("");
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-  });
   const path = router.pathname.split("/");
 
   function onClick() {
-    const organizationId = arrayCast(parseInt)(organization);
+    const id = messageByRowId.rowId;
     const content = JSON.stringify(editor.getJSON());
     const loomSharedUrl = loom;
-    insertMessage({
+    updateMessage({
       variables: {
         input: {
-          organizationId,
+          id,
           content,
           loomSharedUrl,
-          tags,
         },
       },
       updater: (store) => {},
@@ -104,7 +122,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar path={`edit/message/${message}`} {...{ query, tags }} />
       </Box>
       <Box
         as="main"
@@ -130,7 +148,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Create, CreateQuery, {
+export default withRelay(Edit, EditQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

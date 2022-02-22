@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import Nav from "../../../../components/Nav";
 import { Sidebar } from "../../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
-import { graphql, usePreloadedQuery } from "react-relay/hooks";
+import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";
@@ -12,43 +12,27 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
-const InsertMessageMutation = graphql`
-  mutation messageInsertMutation(
-    $input: CreateMessageInput!
-    $connections: [ID!]!
-  ) {
-    createMessage(input: $input) {
-      messages
-        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+const UpdateCategoryMutation = graphql`
+  mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
         rowId
-        content
-        organizationId
-        loomSharedUrl
-        messageTagsByMessageId {
-          __id
-          edges {
-            node {
-              __id
-              tagId
-              tagByTagId {
-                __id
-                rowId
-                name
-                categoryByCategoryId {
-                  color
-                }
-              }
-            }
-          }
-        }
+        name
+        color
+        sort
       }
     }
   }
 `;
 
-const CreateQuery = graphql`
-  query messageCreateQuery($organization: Int!, $tag: [Int]) {
+const EditQuery = graphql`
+  query Category_categoryQuery(
+    $category: Int!
+    $organization: Int!
+    $tag: [Int]
+  ) {
     query {
+      ...Category_categoryFragment @arguments(category: $category)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -58,35 +42,48 @@ const CreateQuery = graphql`
   }
 `;
 
-function Create({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(CreateQuery, preloadedQuery) as any;
-  const [isInsertMessagePending, insertMessage] = useMutation(
-    InsertMessageMutation
+const categoryFragment = graphql`
+  fragment Category_categoryFragment on Query
+  @argumentDefinitions(category: { type: "Int!" }) {
+    query {
+      categoryByRowId(rowId: $category) {
+        rowId
+        name
+        color
+        sort
+      }
+    }
+  }
+`;
+
+function Edit({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
+  const { categoryByRowId } = useFragment(categoryFragment, query).query;
+  const [isUpdateMessagePending, updateCategory] = useMutation(
+    UpdateCategoryMutation
   ) as [boolean, (config?: any) => void];
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: categoryByRowId.name,
+  });
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { organization, tag, category } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
   });
-  const [loom, setLoom] = useState("");
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-  });
   const path = router.pathname.split("/");
 
   function onClick() {
-    const organizationId = arrayCast(parseInt)(organization);
-    const content = JSON.stringify(editor.getJSON());
-    const loomSharedUrl = loom;
-    insertMessage({
+    const id = categoryByRowId.rowId;
+    const name = JSON.stringify(editor.getJSON());
+    const color = categoryByRowId.color;
+    updateCategory({
       variables: {
         input: {
-          organizationId,
-          content,
-          loomSharedUrl,
-          tags,
+          id,
+          name,
+          color,
         },
       },
       updater: (store) => {},
@@ -104,7 +101,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar path={`edit/category/${category}`} {...{ query, tags }} />
       </Box>
       <Box
         as="main"
@@ -130,7 +127,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Create, CreateQuery, {
+export default withRelay(Edit, EditQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
@@ -164,7 +161,7 @@ export default withRelay(Create, CreateQuery, {
     return {
       ...ctx.query,
       ...{
-        message: arrayCast(parseInt)(ctx.query.message),
+        category: arrayCast(parseInt)(ctx.query.category),
         tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
         organization: arrayCast(parseInt)(ctx.query.organization),
       },

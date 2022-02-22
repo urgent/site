@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import Nav from "../../../../components/Nav";
-import { Sidebar } from "../../../../components/Sidebar";
+import Nav from "../../../components/Nav";
+import { Sidebar } from "../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
-import { getClientEnvironment } from "../../../../lib/client_environment";
-import Editor from "../../../../components/Editor";
-import { arrayCast, decode } from "../../../../utils/route";
-import useMutation from "../../../../components/useMutation";
+import { getClientEnvironment } from "../../../lib/client_environment";
+import Editor from "../../../components/Editor";
+import { arrayCast, decode } from "../../../utils/route";
+import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
@@ -156,7 +156,7 @@ export default withRelay(Create, CreateQuery, {
     { token }
   ) => {
     const { createServerEnvironment } = await import(
-      "../../../../lib/server_environment"
+      "../../../lib/server_environment"
     );
     return createServerEnvironment(token);
   },

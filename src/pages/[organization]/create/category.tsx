@@ -1,53 +1,36 @@
-import React, { useState } from "react";
-import Nav from "../../../../components/Nav";
-import { Sidebar } from "../../../../components/Sidebar";
+import React from "react";
+import Nav from "../../../components/Nav";
+import { Sidebar } from "../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
-import { getClientEnvironment } from "../../../../lib/client_environment";
-import Editor from "../../../../components/Editor";
-import { arrayCast, decode } from "../../../../utils/route";
-import useMutation from "../../../../components/useMutation";
+import { getClientEnvironment } from "../../../lib/client_environment";
+import Editor from "../../../components/Editor";
+import { arrayCast, decode } from "../../../utils/route";
+import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
-const InsertMessageMutation = graphql`
-  mutation messageInsertMutation(
-    $input: CreateMessageInput!
+const InsertCategoryMutation = graphql`
+  mutation categoryInsertMutation(
+    $input: CreateCategoryInput!
     $connections: [ID!]!
   ) {
-    createMessage(input: $input) {
-      messages
-        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+    createCategory(input: $input) {
+      category
+        @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
         rowId
-        content
+        name
+        color
         organizationId
-        loomSharedUrl
-        messageTagsByMessageId {
-          __id
-          edges {
-            node {
-              __id
-              tagId
-              tagByTagId {
-                __id
-                rowId
-                name
-                categoryByCategoryId {
-                  color
-                }
-              }
-            }
-          }
-        }
       }
     }
   }
 `;
 
 const CreateQuery = graphql`
-  query messageCreateQuery($organization: Int!, $tag: [Int]) {
+  query categoryCreateQuery($organization: Int!, $tag: [Int]) {
     query {
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -60,8 +43,8 @@ const CreateQuery = graphql`
 
 function Create({ preloadedQuery }) {
   const { query } = usePreloadedQuery(CreateQuery, preloadedQuery) as any;
-  const [isInsertMessagePending, insertMessage] = useMutation(
-    InsertMessageMutation
+  const [isInsertCategoryPending, insertCategory] = useMutation(
+    InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
   const { organization, tag } = router.query;
@@ -69,7 +52,6 @@ function Create({ preloadedQuery }) {
     const res = parseInt(_tag);
     return res;
   });
-  const [loom, setLoom] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
@@ -77,16 +59,15 @@ function Create({ preloadedQuery }) {
   const path = router.pathname.split("/");
 
   function onClick() {
+    const name = JSON.stringify(editor.getJSON());
+    const color = "";
     const organizationId = arrayCast(parseInt)(organization);
-    const content = JSON.stringify(editor.getJSON());
-    const loomSharedUrl = loom;
-    insertMessage({
+    insertCategory({
       variables: {
         input: {
+          name,
+          color,
           organizationId,
-          content,
-          loomSharedUrl,
-          tags,
         },
       },
       updater: (store) => {},
@@ -104,7 +85,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar path="create/category" {...{ query, tags }} />
       </Box>
       <Box
         as="main"
@@ -156,7 +137,7 @@ export default withRelay(Create, CreateQuery, {
     { token }
   ) => {
     const { createServerEnvironment } = await import(
-      "../../../../lib/server_environment"
+      "../../../lib/server_environment"
     );
     return createServerEnvironment(token);
   },
@@ -164,7 +145,7 @@ export default withRelay(Create, CreateQuery, {
     return {
       ...ctx.query,
       ...{
-        message: arrayCast(parseInt)(ctx.query.message),
+        category: arrayCast(parseInt)(ctx.query.category),
         tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
         organization: arrayCast(parseInt)(ctx.query.organization),
       },
