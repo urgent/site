@@ -42,7 +42,7 @@ function Create({ preloadedQuery }) {
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag, category } = router.query;
+  const { organization, tag } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
@@ -65,7 +65,12 @@ function Create({ preloadedQuery }) {
           organizationId,
         },
       },
-      updater: (store) => {},
+      updater: (store) => {
+        const payload = store.getRootField("createCategory");
+        const category = payload.getLinkedRecord("category");
+        const rowId = category.getValue("rowId");
+        router.push(`/${organization}/edit/category/${rowId}`);
+      },
     });
   }
 
