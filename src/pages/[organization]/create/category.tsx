@@ -1,6 +1,5 @@
 import React from "react";
 import Nav from "../../../components/Nav";
-import { Sidebar } from "../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
@@ -13,13 +12,9 @@ import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
 const InsertCategoryMutation = graphql`
-  mutation categoryInsertMutation(
-    $input: CreateCategoryInput!
-    $connections: [ID!]!
-  ) {
+  mutation categoryInsertMutation($input: CreateCategoryInput!) {
     createCategory(input: $input) {
-      category
-        @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
+      category {
         rowId
         name
         color
@@ -47,7 +42,7 @@ function Create({ preloadedQuery }) {
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { organization, tag, category } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
@@ -84,9 +79,7 @@ function Create({ preloadedQuery }) {
       d={["none", "none", "none", "grid", "grid"]}
     >
       <Nav {...{ query, organization, path }} />
-      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/category" {...{ query, tags }} />
-      </Box>
+      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll"></Box>
       <Box
         as="main"
         gridColumn="content"

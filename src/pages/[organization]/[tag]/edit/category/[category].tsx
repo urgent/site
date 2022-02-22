@@ -14,7 +14,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
 const UpdateCategoryMutation = graphql`
-  mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
+  mutation CategoryTagUpdateMessageMutation($input: UpdateCategoryInput!) {
     updateCategory(input: $input) {
       category {
         rowId
@@ -27,13 +27,13 @@ const UpdateCategoryMutation = graphql`
 `;
 
 const EditQuery = graphql`
-  query Category_categoryQuery(
+  query Category_categoryTagQuery(
     $category: Int!
     $organization: Int!
     $tag: [Int]
   ) {
     query {
-      ...Category_categoryFragment @arguments(category: $category)
+      ...Category_categoryTagFragment @arguments(category: $category)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -44,7 +44,7 @@ const EditQuery = graphql`
 `;
 
 const categoryFragment = graphql`
-  fragment Category_categoryFragment on Query
+  fragment Category_categoryTagFragment on Query
   @argumentDefinitions(category: { type: "Int!" }) {
     query {
       categoryByRowId(rowId: $category) {

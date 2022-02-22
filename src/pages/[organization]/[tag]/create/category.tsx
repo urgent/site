@@ -13,7 +13,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
 const InsertCategoryMutation = graphql`
-  mutation categoryInsertMutation(
+  mutation categoryTagInsertMutation(
     $input: CreateCategoryInput!
     $connections: [ID!]!
   ) {
@@ -30,7 +30,7 @@ const InsertCategoryMutation = graphql`
 `;
 
 const CreateQuery = graphql`
-  query categoryCreateQuery($organization: Int!, $tag: [Int]) {
+  query categoryTagCreateQuery($organization: Int!, $tag: [Int]) {
     query {
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)

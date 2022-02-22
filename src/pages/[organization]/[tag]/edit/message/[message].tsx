@@ -14,7 +14,7 @@ import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 
 const UpdateMessageMutation = graphql`
-  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
+  mutation MessageTagUpdateMessageMutation($input: UpdateMessageInput!) {
     updateMessage(input: $input) {
       messages {
         rowId
@@ -44,9 +44,13 @@ const UpdateMessageMutation = graphql`
 `;
 
 const EditQuery = graphql`
-  query Message_messageQuery($message: Int!, $organization: Int!, $tag: [Int]) {
+  query Message_messageTagQuery(
+    $message: Int!
+    $organization: Int!
+    $tag: [Int]
+  ) {
     query {
-      ...Message_messageFragment @arguments(message: $message)
+      ...Message_messageTagFragment @arguments(message: $message)
       ...SidebarFragment_messages
         @arguments(organization: $organization, tag: $tag)
       ...SidebarFragment_categories
@@ -57,7 +61,7 @@ const EditQuery = graphql`
 `;
 
 const messageFragment = graphql`
-  fragment Message_messageFragment on Query
+  fragment Message_messageTagFragment on Query
   @argumentDefinitions(message: { type: "Int!" }) {
     query {
       messageByRowId(rowId: $message) {

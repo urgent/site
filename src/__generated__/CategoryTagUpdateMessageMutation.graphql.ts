@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0fe703e8b97d08d1583034767966fa26>>
+ * @generated SignedSource<<a5f37149454ed85db896cab23ffe0fa3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,30 +9,30 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Mutation } from 'relay-runtime';
-export type CreateCategoryInput = {
+export type UpdateCategoryInput = {
   clientMutationId?: string | null;
-  organizationId: number;
+  id: number;
   name: string;
   color: string;
 };
-export type categoryInsertMutation$variables = {
-  input: CreateCategoryInput;
+export type CategoryTagUpdateMessageMutation$variables = {
+  input: UpdateCategoryInput;
 };
-export type categoryInsertMutationVariables = categoryInsertMutation$variables;
-export type categoryInsertMutation$data = {
-  readonly createCategory: {
+export type CategoryTagUpdateMessageMutationVariables = CategoryTagUpdateMessageMutation$variables;
+export type CategoryTagUpdateMessageMutation$data = {
+  readonly updateCategory: {
     readonly category: {
       readonly rowId: number;
       readonly name: string | null;
       readonly color: string | null;
-      readonly organizationId: number;
+      readonly sort: number | null;
     } | null;
   } | null;
 };
-export type categoryInsertMutationResponse = categoryInsertMutation$data;
-export type categoryInsertMutation = {
-  variables: categoryInsertMutationVariables;
-  response: categoryInsertMutation$data;
+export type CategoryTagUpdateMessageMutationResponse = CategoryTagUpdateMessageMutation$data;
+export type CategoryTagUpdateMessageMutation = {
+  variables: CategoryTagUpdateMessageMutationVariables;
+  response: CategoryTagUpdateMessageMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -75,7 +75,7 @@ v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
-  "name": "organizationId",
+  "name": "sort",
   "storageKey": null
 };
 return {
@@ -83,14 +83,14 @@ return {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "categoryInsertMutation",
+    "name": "CategoryTagUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateCategoryPayload",
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "createCategory",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
@@ -119,14 +119,14 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "categoryInsertMutation",
+    "name": "CategoryTagUpdateMessageMutation",
     "selections": [
       {
         "alias": null,
         "args": (v1/*: any*/),
-        "concreteType": "CreateCategoryPayload",
+        "concreteType": "UpdateCategoryPayload",
         "kind": "LinkedField",
-        "name": "createCategory",
+        "name": "updateCategory",
         "plural": false,
         "selections": [
           {
@@ -157,16 +157,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c85deafb598906d4ece3c0275a75aa7f",
+    "cacheID": "ed9e01c24af3efecdc1c0461cb6557b5",
     "id": null,
     "metadata": {},
-    "name": "categoryInsertMutation",
+    "name": "CategoryTagUpdateMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation categoryInsertMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      organizationId\n      id\n    }\n  }\n}\n"
+    "text": "mutation CategoryTagUpdateMessageMutation(\n  $input: UpdateCategoryInput!\n) {\n  updateCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      sort\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "926057b673c9bc1feb1e70d4c98aae9c";
+(node as any).hash = "d05fbd6491c4cab505bfa47112a5d9e6";
 
 export default node;

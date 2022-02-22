@@ -1,6 +1,6 @@
 import React from "react";
 import Nav from "../../../../components/Nav";
-import { Sidebar } from "../../../../components/Sidebar";
+import { AddTag } from "../../../../components/Tag";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
@@ -102,7 +102,7 @@ function Edit({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path={`edit/category/${category}`} {...{ query, tags }} />
+        <AddTag {...{ connection: "", category }} />
       </Box>
       <Box
         as="main"

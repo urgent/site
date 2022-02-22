@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Text } from "@chakra-ui/react";
+import { Box, Text, Input, Button, useBreakpointValue } from "@chakra-ui/react";
 import useMutation from "./useMutation";
 import Link from "next/link";
 import { graphql } from "react-relay";
@@ -85,7 +85,7 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
-export function AddTag({ connectionId, categoryId }) {
+export function AddTag({ connection, category }) {
   const [name, setName] = useState("");
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
 
@@ -97,9 +97,9 @@ export function AddTag({ connectionId, categoryId }) {
         variables: {
           input: {
             name: name,
-            categoryId: categoryId,
+            categoryId: category,
           },
-          connections: [connectionId],
+          connections: [connection],
         },
         updater: (store) => {},
       });
@@ -108,7 +108,26 @@ export function AddTag({ connectionId, categoryId }) {
     }
   }
 
-  return;
+  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
+
+  return (
+    <>
+      <Input
+        size={breakpoint}
+        maxWidth={28}
+        borderRadius={8}
+        paddingX={2}
+        paddingY={1}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Tag Name"
+        data-cy="add_tag_text"
+        value={name}
+      />
+      <Button data-cy="add_tag_button" size="xs" onClick={onSubmit}>
+        Add Tag
+      </Button>
+    </>
+  );
 }
 
 function style({ active, color }) {

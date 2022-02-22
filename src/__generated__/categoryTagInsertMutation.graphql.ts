@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<0fe703e8b97d08d1583034767966fa26>>
+ * @generated SignedSource<<29dd2f35d2ac15a2828b0ec2190b447f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,11 +15,12 @@ export type CreateCategoryInput = {
   name: string;
   color: string;
 };
-export type categoryInsertMutation$variables = {
+export type categoryTagInsertMutation$variables = {
   input: CreateCategoryInput;
+  connections: ReadonlyArray<string>;
 };
-export type categoryInsertMutationVariables = categoryInsertMutation$variables;
-export type categoryInsertMutation$data = {
+export type categoryTagInsertMutationVariables = categoryTagInsertMutation$variables;
+export type categoryTagInsertMutation$data = {
   readonly createCategory: {
     readonly category: {
       readonly rowId: number;
@@ -29,49 +30,52 @@ export type categoryInsertMutation$data = {
     } | null;
   } | null;
 };
-export type categoryInsertMutationResponse = categoryInsertMutation$data;
-export type categoryInsertMutation = {
-  variables: categoryInsertMutationVariables;
-  response: categoryInsertMutation$data;
+export type categoryTagInsertMutationResponse = categoryTagInsertMutation$data;
+export type categoryTagInsertMutation = {
+  variables: categoryTagInsertMutationVariables;
+  response: categoryTagInsertMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "defaultValue": null,
-    "kind": "LocalArgument",
-    "name": "input"
-  }
-],
-v1 = [
+var v0 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "connections"
+},
+v1 = {
+  "defaultValue": null,
+  "kind": "LocalArgument",
+  "name": "input"
+},
+v2 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v2 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "rowId",
   "storageKey": null
 },
-v3 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v4 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "color",
   "storageKey": null
 },
-v5 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -80,14 +84,17 @@ v5 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v0/*: any*/),
+      (v1/*: any*/)
+    ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "categoryInsertMutation",
+    "name": "categoryTagInsertMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "CreateCategoryPayload",
         "kind": "LinkedField",
         "name": "createCategory",
@@ -101,10 +108,10 @@ return {
             "name": "category",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
-              (v5/*: any*/)
+              (v5/*: any*/),
+              (v6/*: any*/)
             ],
             "storageKey": null
           }
@@ -117,13 +124,16 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": (v0/*: any*/),
+    "argumentDefinitions": [
+      (v1/*: any*/),
+      (v0/*: any*/)
+    ],
     "kind": "Operation",
-    "name": "categoryInsertMutation",
+    "name": "categoryTagInsertMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v1/*: any*/),
+        "args": (v2/*: any*/),
         "concreteType": "CreateCategoryPayload",
         "kind": "LinkedField",
         "name": "createCategory",
@@ -137,10 +147,10 @@ return {
             "name": "category",
             "plural": false,
             "selections": [
-              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
+              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -150,6 +160,27 @@ return {
               }
             ],
             "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "filters": null,
+            "handle": "appendNode",
+            "key": "",
+            "kind": "LinkedHandle",
+            "name": "category",
+            "handleArgs": [
+              {
+                "kind": "Variable",
+                "name": "connections",
+                "variableName": "connections"
+              },
+              {
+                "kind": "Literal",
+                "name": "edgeTypeName",
+                "value": "CategoriesEdge"
+              }
+            ]
           }
         ],
         "storageKey": null
@@ -157,16 +188,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "c85deafb598906d4ece3c0275a75aa7f",
+    "cacheID": "34a2c7e82f97ebfa4b92fec8459ce9a1",
     "id": null,
     "metadata": {},
-    "name": "categoryInsertMutation",
+    "name": "categoryTagInsertMutation",
     "operationKind": "mutation",
-    "text": "mutation categoryInsertMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      organizationId\n      id\n    }\n  }\n}\n"
+    "text": "mutation categoryTagInsertMutation(\n  $input: CreateCategoryInput!\n) {\n  createCategory(input: $input) {\n    category {\n      rowId\n      name\n      color\n      organizationId\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "926057b673c9bc1feb1e70d4c98aae9c";
+(node as any).hash = "bd63f16a78d62b4196acc5655bc73675";
 
 export default node;
