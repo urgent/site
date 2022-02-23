@@ -97,7 +97,7 @@ export function AddTag({ connection, category }) {
         variables: {
           input: {
             name: name,
-            categoryId: category,
+            categoryId: parseInt(category),
           },
           connections: [connection],
         },
@@ -111,11 +111,12 @@ export function AddTag({ connection, category }) {
   const breakpoint = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
 
   return (
-    <>
+    <Box>
       <Input
         size={breakpoint}
         maxWidth={28}
-        borderRadius={8}
+        borderLeftRadius={8}
+        borderRightRadius={0}
         paddingX={2}
         paddingY={1}
         onChange={(e) => setName(e.target.value)}
@@ -123,28 +124,34 @@ export function AddTag({ connection, category }) {
         data-cy="add_tag_text"
         value={name}
       />
-      <Button data-cy="add_tag_button" size="xs" onClick={onSubmit}>
-        Add Tag
+      <Button
+        data-cy="add_tag_button"
+        borderLeftRadius={0}
+        size={breakpoint}
+        onClick={onSubmit}
+      >
+        +
       </Button>
-    </>
+    </Box>
   );
 }
 
 function style({ active, color }) {
+  const valid = color.replace("#", "");
   if (active) {
     return {
       color: "white",
-      bg: `#${color}`,
-      _active: { bg: `#${color}` },
+      bg: `#${valid}`,
+      _active: { bg: `#${valid}` },
       _hover: {
-        bg: `#${color}`,
+        bg: `#${valid}`,
         boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)",
       },
     };
   } else {
     return {
-      color: `#${color}`,
-      borderColor: `#${color}`,
+      color: `#${valid}`,
+      borderColor: `#${valid}`,
       bg: "white",
       _active: { bg: `white` },
       _hover: { bg: `white`, boxShadow: "2px 2px 2px 2px rgba(0,0,0,0.15)" },

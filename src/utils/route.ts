@@ -25,9 +25,13 @@ export function link({ organization, tag, id, path }) {
     const tags = decode(tag);
     const tag_id = id.toString();
     if (tags.includes(tag_id)) {
-        return `/${organization}/${encode(tags.filter((tag) => tag !== tag_id))}/${path}`;
+        return ['/', organization, encode(tags.filter((tag) => tag !== tag_id)), path].filter((term) =>{ 
+            return !!term
+        }).join('/');
     } else {
-        return `/${organization}/${encode([tag, id])}/${path}`;
+        return ['/', organization, encode([tag, id]), path].filter((term) => {
+            return !!term
+        }).join('/');
     }
 }
 

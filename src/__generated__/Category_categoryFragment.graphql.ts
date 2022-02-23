@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c94d7454b8af26e4d56f3199f627740d>>
+ * @generated SignedSource<<ae48eeb85df2b759db6d9c56bdfc10ee>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,6 +17,16 @@ export type Category_categoryFragment$data = {
       readonly name: string | null;
       readonly color: string | null;
       readonly sort: number | null;
+      readonly organizationId: number;
+      readonly tagsByCategoryId: {
+        readonly __id: string;
+        readonly edges: ReadonlyArray<{
+          readonly node: {
+            readonly rowId: number;
+            readonly name: string | null;
+          } | null;
+        }>;
+      };
     } | null;
   };
   readonly " $fragmentType": "Category_categoryFragment";
@@ -27,7 +37,22 @@ export type Category_categoryFragment$key = {
   readonly " $fragmentSpreads": FragmentRefs<"Category_categoryFragment">;
 };
 
-const node: ReaderFragment = {
+const node: ReaderFragment = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "name",
+  "storageKey": null
+};
+return {
   "argumentDefinitions": [
     {
       "defaultValue": null,
@@ -61,20 +86,8 @@ const node: ReaderFragment = {
           "name": "categoryByRowId",
           "plural": false,
           "selections": [
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "rowId",
-              "storageKey": null
-            },
-            {
-              "alias": null,
-              "args": null,
-              "kind": "ScalarField",
-              "name": "name",
-              "storageKey": null
-            },
+            (v0/*: any*/),
+            (v1/*: any*/),
             {
               "alias": null,
               "args": null,
@@ -88,6 +101,60 @@ const node: ReaderFragment = {
               "kind": "ScalarField",
               "name": "sort",
               "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "kind": "ScalarField",
+              "name": "organizationId",
+              "storageKey": null
+            },
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "TagsConnection",
+              "kind": "LinkedField",
+              "name": "tagsByCategoryId",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "concreteType": "TagsEdge",
+                  "kind": "LinkedField",
+                  "name": "edges",
+                  "plural": true,
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "concreteType": "Tag",
+                      "kind": "LinkedField",
+                      "name": "node",
+                      "plural": false,
+                      "selections": [
+                        (v0/*: any*/),
+                        (v1/*: any*/)
+                      ],
+                      "storageKey": null
+                    }
+                  ],
+                  "storageKey": null
+                },
+                {
+                  "kind": "ClientExtension",
+                  "selections": [
+                    {
+                      "alias": null,
+                      "args": null,
+                      "kind": "ScalarField",
+                      "name": "__id",
+                      "storageKey": null
+                    }
+                  ]
+                }
+              ],
+              "storageKey": null
             }
           ],
           "storageKey": null
@@ -99,7 +166,8 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
+})();
 
-(node as any).hash = "7c1dd4b02f60cdfd1b1434fd279b8e0a";
+(node as any).hash = "7060976377893ca7ca20f855c5251e8d";
 
 export default node;

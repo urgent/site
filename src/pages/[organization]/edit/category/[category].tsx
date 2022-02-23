@@ -1,9 +1,10 @@
 import React from "react";
 import Nav from "../../../../components/Nav";
+import { Category } from "../../../../components/Category";
 import { AddTag } from "../../../../components/Tag";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
-import { Grid, Box } from "@chakra-ui/react";
+import { Grid, Box, Accordion } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";
 import { arrayCast, decode } from "../../../../utils/route";
@@ -52,6 +53,16 @@ const categoryFragment = graphql`
         name
         color
         sort
+        organizationId
+        tagsByCategoryId {
+          __id
+          edges {
+            node {
+              rowId
+              name
+            }
+          }
+        }
       }
     }
   }
@@ -101,8 +112,22 @@ function Edit({ preloadedQuery }) {
       d={["none", "none", "none", "grid", "grid"]}
     >
       <Nav {...{ query, organization, path }} />
-      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <AddTag {...{ connection: "", category }} />
+      <Box gridColumn="sidebar" pt={10} textAlign="center">
+        <Accordion minHeight="85vh" allowMultiple={true} defaultIndex={0}>
+          <Category
+            index={0}
+            category={categoryByRowId}
+            moveCategory={() => {}}
+            path=""
+            {...{ tags }}
+          />
+          <AddTag
+            {...{
+              connection: categoryByRowId?.tagsByCategoryId.__id,
+              category,
+            }}
+          />
+        </Accordion>
       </Box>
       <Box
         as="main"

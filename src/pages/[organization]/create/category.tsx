@@ -10,6 +10,7 @@ import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
+import { SketchPicker } from "react-color";
 
 const InsertCategoryMutation = graphql`
   mutation categoryInsertMutation($input: CreateCategoryInput!) {
@@ -52,16 +53,16 @@ function Create({ preloadedQuery }) {
     content: "",
   });
   const path = router.pathname.split("/");
+  const [color, setColor] = React.useState({ hex: "#000000" });
 
   function onClick() {
     const name = JSON.stringify(editor.getJSON());
-    const color = "";
     const organizationId = arrayCast(parseInt)(organization);
     insertCategory({
       variables: {
         input: {
           name,
-          color,
+          color: color.hex,
           organizationId,
         },
       },
@@ -84,7 +85,9 @@ function Create({ preloadedQuery }) {
       d={["none", "none", "none", "grid", "grid"]}
     >
       <Nav {...{ query, organization, path }} />
-      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll"></Box>
+      <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
+        <SketchPicker color={color} onChange={setColor} />
+      </Box>
       <Box
         as="main"
         gridColumn="content"
