@@ -23,7 +23,7 @@ export default function Mobile({ query }) {
           <>
             <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
               <Box gridRow="menu">
-                <Sidebar query={query} />
+                <Sidebar path="" tags="" {...{ query }} />
               </Box>
               <Flex>
                 <Box p="4">
@@ -66,7 +66,7 @@ export default function Mobile({ query }) {
                 <Image src="/images/logo.png" h={8} />
               </Box>
             </Flex>
-            <Tiles query={query} />
+            <Tiles tags={[]} query={query} />
           </>
         )}
       </>
