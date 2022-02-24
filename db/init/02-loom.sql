@@ -1,5 +1,5 @@
 BEGIN;
-ALTER TABLE message DROP COLUMN loomSharedUrl;
+ALTER TABLE message DROP COLUMN IF EXISTS loomSharedUrl;
 ALTER TABLE message ADD COLUMN loom_shared_url TEXT;
 
 DROP FUNCTION create_message;

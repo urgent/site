@@ -1,9 +1,19 @@
 BEGIN;
+
 --- get the organization, handles nulls
 CREATE FUNCTION organization_default(organization_id INTEGER)
 RETURNS INTEGER AS $$
     SELECT id FROM (SELECT $1 AS id, 1 as rank UNION (SELECT default_organization as id, 2 as rank FROM user_config LIMIT 1)
     UNION (SELECT id, 3 as rank FROM organization LIMIT 1)) as org_list WHERE id IS NOT NULL ORDER BY rank ASC LIMIT 1
+$$ LANGUAGE sql STABLE;
+
+DROP FUNCTION IF EXISTS sidebar_categories;
+CREATE FUNCTION sidebar_categories(organization_id INTEGER)
+RETURNS setof public.category AS $$
+    --- if organization_id is null, lookup from user_config table
+    SELECT public.category.*
+    FROM public.category
+    INNER JOIN organization_default($1) as focused_organization ON category.organization_id = focused_organization.organization_default
 $$ LANGUAGE sql STABLE;
 
 DROP FUNCTION IF EXISTS tile;
@@ -32,15 +42,6 @@ message_ids AS (
 )
 -- get messages
 SELECT message.* FROM message INNER JOIN message_ids ON message.id = message_ids.id;
-$$ LANGUAGE sql STABLE;
-
-DROP FUNCTION IF EXISTS sidebar_categories;
-CREATE FUNCTION sidebar_categories(organization_id INTEGER)
-RETURNS setof public.category AS $$
-    --- if organization_id is null, lookup from user_config table
-    SELECT public.category.*
-    FROM public.category
-    INNER JOIN organization_default($1) as focused_organization ON category.organization_id = focused_organization.organization_default
 $$ LANGUAGE sql STABLE;
 
 COMMIT;
