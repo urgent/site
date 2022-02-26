@@ -1,17 +1,13 @@
-<h1>Align | We build software that makes tech companies smarter.</h1>
-<h2>Align helps sales teams collaborate to find and create relevant, strategic messaging.</h2>
+<h1>Align | We help frontline technologists solve hard problems for their customers.</h1>
+<h2>Align helps sales teams collaborate to find, create, and automatically generate relevant, strategic messaging for specific customer contexts.</h2>
 
-We're here to accelerate market penetration, improve cross-team collaboration. We're here to help feed the hunger for real, true knowledge. We're committed to delivering great results at breakneck speeds for our customers.
-
-Whether it's a college grad making cold calls for the first time or an enterprise account executive closing multimillion dollar deals, our customers need us to deliver: the knowledge required to implement modern technology into monolithic titans of industry does not come easy. The current stack slows adoption of technology that makes the world better. We are the ones to change this. 
-
-
+World-changing technology is slowed down by the lack of knowledge cohesion on the frontlines. We're the ones to fix this.
 
 <h2>Team Principles</h2>
 <h3>BE BOLD</h3>
 <i>Fortis fortuna adiuvat</i>
 <h3>BE SCIENTIFIC</h3>
-Reinforce decisions with rigorous logic
+Reinforce decisions with rigorous logic and evidence
 
 Conduct exhaustive research
 
@@ -47,33 +43,9 @@ Evolve or dissolve
 
 Be cautious
 
+<h1>The MVP</h1>
+Align's solution is designed to add value to large enterprise sales teams with dedicated enablement functions - this is our beachhead, and we need to prepare our MVP accordingly.
 
-next chrome extension app - mvp
+These firms require a significant degree of polish before considering signing contracts - they need assurance that their data is secure, that we will provide uptime, and most importantly, they need to feel like Align is the most premium solution on the market.
 
-or search
-
-```
-import { useEffect } from 'react'
-
-useEffect(() => {
-  if (activeTags.length > 0) {
-      let newMssgs = [];
-      let mssgIDs = {};
-
-      messages.forEach(mssg => {
-          let tagsArr = mssg.tags.items
-          tagsArr.forEach(obj => {
-              if (activeTags.includes(obj.tagID) && !mssgIDs[mssg.id]) {
-                  newMssgs.push(mssg);
-                  mssgIDs[mssg.id] = true;
-                  return
-              }
-          });
-          return
-      });
-      dispatch({ type: "filterMssgs", payload: { messages: newMssgs } });
-  }
-}, [activeTags]);
-```
-
-TESTING BRANCHING
+To be considered minimally viable, we have to be certified SOC2 compliant, build our core integrations, and be listed on the Okta Integration network, Salesforce AppExchange, the Chrome Web Store, and the Slack App store. This comes after our core functionalities are frictionless (CRUD cats, tags, messages, tagsOnMessages)
