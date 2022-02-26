@@ -58,11 +58,11 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles {...{ query, tags }} />
+          <Tiles {...{ query, tags, organization }} />
         </Box>
       </Grid>
       <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
-        <Mobile query={query} />
+        <Mobile {...{ organization, query }} />
       </Box>
     </>
   );

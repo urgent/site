@@ -1,11 +1,12 @@
 import React from "react";
 import { graphql } from "react-relay";
 import useMutation from "./useMutation";
-import { Box, Badge, Button } from "@chakra-ui/react";
+import { Box, Badge, Button, HStack } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
+import Link from "next/link";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -46,7 +47,7 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({ message, tags }) {
+export default function Message({ message, tags, organization }) {
   const { rowId, content, loomSharedUrl, messageTagsByMessageId } = message;
   const parsed = catchJSON(content);
   const messageTags = messageTagsByMessageId.edges.map(
@@ -116,6 +117,9 @@ export default function Message({ message, tags }) {
             </Badge>
           );
         })}
+        <HStack>
+          <Link href={`/${organization}/edit/message/${rowId}`}>i</Link>
+        </HStack>
       </Box>
     </Box>
   );

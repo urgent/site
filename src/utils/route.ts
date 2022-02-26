@@ -21,6 +21,14 @@ export function isActive({ tag, id }) {
     .includes(id);
 }
 
+/**
+ * Adds selected tag to route
+ * @param {integer} organization organization id for route
+ * @param {string} tag current tags, query string & delimited
+ * @param {integer} id new tag to be added
+ * @param {string} path path suffix, for create and edit pages ie /create/message /edit/category
+ * @returns 
+ */
 export function link({ organization, tag, id, path }) {
     const tags = decode(tag);
     const tag_id = id.toString();
