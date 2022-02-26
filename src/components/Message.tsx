@@ -6,7 +6,8 @@ import dynamic from "next/dynamic";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
-import Link from "next/link";
+import { useRouter } from "next/router";
+import { encode } from "../utils/route";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -23,6 +24,7 @@ const DeleteTagMutation = graphql`
                   messageId
                   tagByTagId {
                     id @deleteEdge(connections: $connections)
+                    rowId
                   }
                 }
               }
@@ -47,8 +49,14 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({ message, tags, organization }) {
-  const { rowId, content, loomSharedUrl, messageTagsByMessageId } = message;
+export default function Message({ message, tags }) {
+  const {
+    rowId,
+    content,
+    loomSharedUrl,
+    messageTagsByMessageId,
+    organizationId,
+  } = message;
   const parsed = catchJSON(content);
   const messageTags = messageTagsByMessageId.edges.map(
     ({ node }) => node.tagByTagId
@@ -61,6 +69,7 @@ export default function Message({ message, tags, organization }) {
     content: parsed,
     extensions: [StarterKit],
   });
+  const router = useRouter();
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
@@ -73,6 +82,14 @@ export default function Message({ message, tags, organization }) {
       },
       updater: (store) => {},
     });
+  }
+
+  function onDoubleClick() {
+    router.push(
+      `/${organizationId}/${encode(
+        messageTags.map(({ rowId }) => rowId)
+      )}/edit/message/${rowId}`
+    );
   }
 
   function colorize({ active, color }) {
@@ -95,6 +112,7 @@ export default function Message({ message, tags, organization }) {
       textAlign="left"
       display="inline-block"
       data-cy="message"
+      {...{ onDoubleClick }}
     >
       <Box p={4} data-cy="body">
         <EditorContent editor={editor} />
@@ -117,9 +135,6 @@ export default function Message({ message, tags, organization }) {
             </Badge>
           );
         })}
-        <HStack>
-          <Link href={`/${organization}/edit/message/${rowId}`}>i</Link>
-        </HStack>
       </Box>
     </Box>
   );

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a8dd9111a54c8ce9e17daab2c870e83e>>
+ * @generated SignedSource<<e22dc18900d1547b10ed09fa55081819>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -30,6 +30,7 @@ export type MessageDeleteTagMutation$data = {
                 readonly messageId: number;
                 readonly tagByTagId: {
                   readonly id: string;
+                  readonly rowId: number;
                 } | null;
               } | null;
             }>;
@@ -79,6 +80,13 @@ v4 = {
   "storageKey": null
 },
 v5 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -160,7 +168,8 @@ return {
                                     "name": "tagByTagId",
                                     "plural": false,
                                     "selections": [
-                                      (v4/*: any*/)
+                                      (v4/*: any*/),
+                                      (v5/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
@@ -173,7 +182,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/)
+                      (v6/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -280,7 +289,8 @@ return {
                                             "variableName": "connections"
                                           }
                                         ]
-                                      }
+                                      },
+                                      (v5/*: any*/)
                                     ],
                                     "storageKey": null
                                   }
@@ -293,7 +303,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v5/*: any*/),
+                      (v6/*: any*/),
                       (v4/*: any*/)
                     ],
                     "storageKey": null
@@ -311,16 +321,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "7a0b144d5a3369173d84e3dad976b049",
+    "cacheID": "05b81de161b88b0d3bdde98bd9fb1a69",
     "id": null,
     "metadata": {},
     "name": "MessageDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageDeleteTagMutation(\n  $input: RemoveMessageTagInput!\n) {\n  removeMessageTag(input: $input) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                  rowId\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "8ec8f6560f2136e88b8fba9cc61cb2c9";
+(node as any).hash = "d851be8de9722b24278353104dd5dbdd";
 
 export default node;

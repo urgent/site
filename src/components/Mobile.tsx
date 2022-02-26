@@ -13,7 +13,7 @@ import {
 import { signIn, signOut, useSession } from "next-auth/client";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 
-export default function Mobile({ query, organization }) {
+export default function Mobile({ query }) {
   const [nav, setNav] = useState(true);
   const [session] = useSession();
   if (session) {
@@ -66,7 +66,7 @@ export default function Mobile({ query, organization }) {
                 <Image src="/images/logo.png" h={8} />
               </Box>
             </Flex>
-            <Tiles tags={[]} {...{ query, organization }} />
+            <Tiles tags={[]} {...{ query }} />
           </>
         )}
       </>

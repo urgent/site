@@ -57,7 +57,7 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Tiles {...{ query, tags, organization }} />
+        <Tiles {...{ query, tags }} />
       </Box>
     </Grid>
   );
