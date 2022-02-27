@@ -62,7 +62,7 @@ function Create({ preloadedQuery }) {
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag, content } = router.query;
+  const { organization, tag } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
@@ -70,7 +70,7 @@ function Create({ preloadedQuery }) {
   const [loom, setLoom] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
-    content: JSON.parse(content as string),
+    content: "",
   });
   const path = router.pathname.split("/");
 
@@ -105,7 +105,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags, editor }} />
+        <Sidebar path="create/message" {...{ query, tags }} />
       </Box>
       <Box
         as="main"

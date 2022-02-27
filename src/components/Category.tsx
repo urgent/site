@@ -113,7 +113,6 @@ export function Category({
   moveCategory,
   tags,
   path,
-  editor,
 }: {
   category: any;
   index: number;
@@ -165,10 +164,6 @@ export function Category({
         <Wrap>
           {tagsByCategoryId?.edges.map((tag, index) => {
             const { name, rowId } = tag.node;
-            let content;
-            if (editor) {
-              content = JSON.stringify(editor.getJSON());
-            }
             return (
               <WrapItem key={index}>
                 <Tag
@@ -178,13 +173,10 @@ export function Category({
                   href={{
                     pathname: link({
                       organization: organizationId,
-                      tag: encode(tags),
+                      tag: tags,
                       id: rowId,
                       path,
                     }),
-                    query: {
-                      content,
-                    },
                   }}
                 />
               </WrapItem>
