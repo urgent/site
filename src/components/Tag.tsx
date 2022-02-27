@@ -171,7 +171,9 @@ export default function Tag({ color, name, active, href }) {
       data-cy="tag"
     >
       <Text mt={1}>
-        <Link {...{ href }}>{name}</Link>
+        <Link {...{ href }} shallow={true}>
+          {name}
+        </Link>
       </Text>
     </Box>
   );

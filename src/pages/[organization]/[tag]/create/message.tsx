@@ -11,15 +11,13 @@ import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
+import { NextPageContext } from "next";
+import { parse } from "body-parser";
 
 const InsertMessageMutation = graphql`
-  mutation messageTagInsertMutation(
-    $input: CreateMessageInput!
-    $connections: [ID!]!
-  ) {
+  mutation messageTagInsertMutation($input: CreateMessageInput!) {
     createMessage(input: $input) {
-      messages
-        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+      messages {
         rowId
         content
         organizationId
@@ -64,7 +62,7 @@ function Create({ preloadedQuery }) {
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag } = router.query;
+  const { organization, tag, content } = router.query;
   const tags = decode(tag).map((_tag) => {
     const res = parseInt(_tag);
     return res;
@@ -72,7 +70,7 @@ function Create({ preloadedQuery }) {
   const [loom, setLoom] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
-    content: "",
+    content: JSON.parse(content as string),
   });
   const path = router.pathname.split("/");
 
@@ -89,7 +87,10 @@ function Create({ preloadedQuery }) {
           tags,
         },
       },
-      updater: (store) => {},
+      updater: (store) => {
+        // dont need this, use router tag
+        router.push(`/${organization}/${tag}`);
+      },
     });
   }
 
@@ -104,7 +105,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar path="create/message" {...{ query, tags, editor }} />
       </Box>
       <Box
         as="main"

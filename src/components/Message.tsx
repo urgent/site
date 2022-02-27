@@ -96,11 +96,11 @@ export default function Message({ message, tags }) {
     if (active) {
       return {
         color: "white",
-        bg: `#${color}`,
+        bg: `#${color.replace("#", "")}`,
       };
     }
     return {
-      color: `#${color}`,
+      color: `#${color.replace("#", "")}`,
       bg: "white",
     };
   }
@@ -128,7 +128,7 @@ export default function Message({ message, tags }) {
               key={index}
               px={2}
               mt={1}
-              border={`2px solid #${color}`}
+              border={`2px solid #${color.replace("#", "")}`}
               {...colorize({ active: tags.includes(rowId), color })}
             >
               <Box>{name}</Box>

@@ -25,6 +25,7 @@
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "axios": "^0.25",
     "babel-polyfill": "^6.26.0",
+    "body-parser": "^1.19.2",
     "cookie": "^0.4.1",
     "crypto": "^1.0.1",
     "final-form": "^4.20.4",

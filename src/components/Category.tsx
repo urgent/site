@@ -107,13 +107,27 @@ export function AddCategory({ connectionId, organization }) {
   );
 }
 
-export function Category({ category, index, moveCategory, tags, path }) {
+export function Category({
+  category,
+  index,
+  moveCategory,
+  tags,
+  path,
+  editor,
+}: {
+  category: any;
+  index: number;
+  moveCategory: any;
+  tags: string[];
+  path: string;
+  editor?: any;
+}) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
 
   const parsed = catchJSON(name);
-  const editor = useEditor({
+  const view = useEditor({
     editable: false,
     content: parsed,
     extensions: [StarterKit],
@@ -124,7 +138,7 @@ export function Category({ category, index, moveCategory, tags, path }) {
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">
-            <EditorContent editor={editor} />
+            <EditorContent editor={view} />
             {tagsByCategoryId?.edges
               .filter((edge) => tags?.includes(edge.node.rowId))
               .map((edge) => {
@@ -151,18 +165,27 @@ export function Category({ category, index, moveCategory, tags, path }) {
         <Wrap>
           {tagsByCategoryId?.edges.map((tag, index) => {
             const { name, rowId } = tag.node;
+            let content;
+            if (editor) {
+              content = JSON.stringify(editor.getJSON());
+            }
             return (
               <WrapItem key={index}>
                 <Tag
                   color={color}
                   name={name}
                   active={isActive({ tag: tags, id: rowId })}
-                  href={link({
-                    organization: organizationId,
-                    tag: encode(tags),
-                    id: rowId,
-                    path,
-                  })}
+                  href={{
+                    pathname: link({
+                      organization: organizationId,
+                      tag: encode(tags),
+                      id: rowId,
+                      path,
+                    }),
+                    query: {
+                      content,
+                    },
+                  }}
                 />
               </WrapItem>
             );

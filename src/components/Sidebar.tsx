@@ -68,7 +68,17 @@ const messageFragment = graphql`
   }
 `;
 
-export function Sidebar({ query, tags, path }) {
+export function Sidebar({
+  query,
+  tags,
+  path,
+  editor,
+}: {
+  query: any;
+  tags: number[];
+  path: string;
+  editor?: any;
+}) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
   const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({
@@ -100,13 +110,14 @@ export function Sidebar({ query, tags, path }) {
       allowMultiple={true}
       defaultIndex={active_index}
     >
-      {sidebarCollection.categories?.map((edge, index) => {
+      {sidebarCollection.categories?.map((edge: any, index: number) => {
         return (
           <Category
             index={index}
             key={edge.node.rowId}
             category={edge.node}
-            {...{ moveCategory, tags, path }}
+            tags={tags.map(toString)}
+            {...{ moveCategory, path, editor }}
           />
         );
       })}
