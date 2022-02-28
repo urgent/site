@@ -23,7 +23,7 @@ export default function Mobile({ query }) {
           <>
             <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
               <Box gridRow="menu">
-                <Sidebar path="" tags="" {...{ query }} />
+                <Sidebar path="" {...{ query }} />
               </Box>
               <Flex>
                 <Box p="4">

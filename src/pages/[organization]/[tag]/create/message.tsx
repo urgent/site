@@ -88,8 +88,11 @@ function Create({ preloadedQuery }) {
         },
       },
       updater: (store) => {
-        // dont need this, use router tag
-        router.push(`/${organization}/${tag}`);
+        // redirect to edit page on save
+        const payload = store.getRootField("createMessage");
+        const messages = payload.getLinkedRecords("messages");
+        const rowId = messages[0].getValue("rowId");
+        router.push(`/${organization}/${tag}/edit/message/${rowId}`);
       },
     });
   }
@@ -105,7 +108,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar path="create/message" {...{ query, tags, onClick }} />
       </Box>
       <Box
         as="main"

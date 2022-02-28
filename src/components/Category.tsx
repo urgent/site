@@ -113,13 +113,14 @@ export function Category({
   moveCategory,
   tags,
   path,
+  onClick,
 }: {
   category: any;
   index: number;
   moveCategory: any;
   tags: string[];
   path: string;
-  editor?: any;
+  onClick?: any;
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
@@ -167,8 +168,6 @@ export function Category({
             return (
               <WrapItem key={index}>
                 <Tag
-                  color={color}
-                  name={name}
                   active={isActive({ tag: tags, id: rowId })}
                   href={{
                     pathname: link({
@@ -178,6 +177,7 @@ export function Category({
                       path,
                     }),
                   }}
+                  {...{ color, name, onClick }}
                 />
               </WrapItem>
             );

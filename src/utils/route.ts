@@ -10,8 +10,11 @@ export function decode(parameter:(string | string[])):Array<string> {
 }
 
 export function encode(parameter:Array<string>):string {
-    if(!parameter) return '';
-    return parameter.filter(value => !!value).join('&');
+    if(!parameter || parameter?.length === 0) return '';
+    return parameter.filter(value => {
+        const res = !value || value?.length === 0;
+        return !res;
+    }).join('&');
 }
 
 export function isActive({ tag, id }) {

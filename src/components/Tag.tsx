@@ -159,7 +159,7 @@ function style({ active, color }) {
   }
 }
 
-export default function Tag({ color, name, active, href }) {
+export default function Tag({ color, name, active, href, onClick }) {
   return (
     <Box
       fontSize={[10, 10, 12, 12, 12]}
@@ -170,11 +170,18 @@ export default function Tag({ color, name, active, href }) {
       {...style({ active, color })}
       data-cy="tag"
     >
-      <Text mt={1}>
-        <Link {...{ href }} shallow={true}>
+      {!onClick && (
+        <Text mt={1}>
+          <Link {...{ href }} shallow={true}>
+            {name}
+          </Link>
+        </Text>
+      )}
+      {onClick && (
+        <Text mt={1} onClick={onClick} cursor="pointer">
           {name}
-        </Link>
-      </Text>
+        </Text>
+      )}
     </Box>
   );
 }

@@ -72,10 +72,12 @@ export function Sidebar({
   query,
   tags,
   path,
+  onClick,
 }: {
   query: any;
-  tags: number[];
   path: string;
+  tags?: number[];
+  onClick?: any;
 }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
@@ -114,8 +116,8 @@ export function Sidebar({
             index={index}
             key={edge.node.rowId}
             category={edge.node}
-            tags={tags.map((tag) => tag.toString())}
-            {...{ moveCategory, path }}
+            tags={tags?.filter((tag) => !!tag).map((tag) => tag.toString())}
+            {...{ moveCategory, path, onClick }}
           />
         );
       })}
