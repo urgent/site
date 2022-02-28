@@ -9,6 +9,7 @@ import {
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/client";
 import { graphql, useFragment } from "react-relay";
+import { useRouter } from "next/router";
 
 const navFragment = graphql`
   fragment NavFragment_organization on Query
@@ -29,9 +30,11 @@ export default function Nav({ query, organization, path }) {
   const btnRef = React.useRef();
   const [session] = useSession();
   const { organizationDefault } = useFragment(navFragment, query);
+  const router = useRouter();
 
   const colors = {
-    edit: "none",
+    home: "none",
+    create: "none",
     admin: "none",
     card: "none",
     user: "none",
@@ -41,6 +44,9 @@ export default function Nav({ query, organization, path }) {
   };
 
   colors[path[2]] = "secondary.400";
+  if (path[0] === "" && path[1] === "") {
+    colors["home"] = "secondary.400";
+  }
 
   if (session) {
     return (
@@ -52,19 +58,30 @@ export default function Nav({ query, organization, path }) {
         position={["static", "static", "static", "static", "fixed"]}
         height={["auto", "auto", "auto", "auto", "100vh"]}
       >
-        <Image
+        <Button
+          bg={colors["home"]}
           gridColumn="logo"
           mt={2}
-          width={8}
-          src="/images/align_white.png"
-          alt="smooms.io"
-        />
+          _hover={{ bg: "secondary.400" }}
+          onClick={(e) => {
+            router.push(`/`);
+          }}
+        >
+          <Image width={8} src="/images/align_white.png" alt="smooms.io" />
+        </Button>
         <Button
-          bg={colors.edit}
+          bg={colors.create}
           color="white"
           _hover={{ bg: "secondary.400" }}
           data-cy="edit_mode"
-          onClick={(e) => {}}
+          onClick={(e) => {
+            router.push(
+              `/${link({
+                organization,
+                organizationDefault,
+              })}/create/message`
+            );
+          }}
         >
           <Icon as={FiEdit} w={6} h={6} />
         </Button>
@@ -75,15 +92,19 @@ export default function Nav({ query, organization, path }) {
           ref={btnRef}
           onClick={(e) => {
             if (path[2] === "admin") {
-              window.location.href = `/${link({
-                organization,
-                organizationDefault,
-              })}`;
+              router.push(
+                `/${link({
+                  organization,
+                  organizationDefault,
+                })}`
+              );
             } else {
-              window.location.href = `/${link({
-                organization,
-                organizationDefault,
-              })}/admin`;
+              router.push(
+                `/${link({
+                  organization,
+                  organizationDefault,
+                })}/admin`
+              );
             }
           }}
         >
