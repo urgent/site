@@ -8,7 +8,7 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 import { useRouter } from "next/router";
-import { decode } from "../../utils/route";
+import { parse } from "../../utils/route";
 
 const HomeQuery = graphql`
   query Organization_HomeQuery($organization: Int, $tag: [Int]) {
@@ -27,12 +27,9 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags } = router.query;
   const path = router.pathname.split("/");
+  const parsedTags = parse(tags);
 
   return (
     <>
@@ -46,7 +43,7 @@ function Home({ preloadedQuery }) {
       >
         <Nav {...{ query, organization, path }} />
         <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Sidebar path="" {...{ query, tags }} />
+          <Sidebar path="" tags={parsedTags} {...{ query }} />
         </Box>
         <Box
           as="main"
@@ -58,12 +55,10 @@ function Home({ preloadedQuery }) {
           maxHeight="99vh"
           overflowY="scroll"
         >
-          <Tiles {...{ query, tags }} />
+          <Tiles tags={parsedTags} {...{ query }} />
         </Box>
       </Grid>
-      <Box d={["inherit", "inherit", "inherit", "none", "none"]}>
-        <Mobile {...{ organization, query }} />
-      </Box>
+      <Box d={["inherit", "inherit", "inherit", "none", "none"]}></Box>
     </>
   );
 }
@@ -109,8 +104,8 @@ export default withRelay(Home, HomeQuery, {
     return {
       ...ctx.query,
       ...{
-        tag: [],
-        organization: parseInt(ctx.query.organization as string),
+        tag: parse(ctx.query.tags),
+        organization: parse(ctx.query.organization)[0],
       },
     };
   },

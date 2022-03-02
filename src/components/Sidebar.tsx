@@ -116,8 +116,7 @@ export function Sidebar({
             index={index}
             key={edge.node.rowId}
             category={edge.node}
-            tags={tags?.filter((tag) => !!tag).map((tag) => tag.toString())}
-            {...{ moveCategory, path, onClick }}
+            {...{ tags, moveCategory, path, onClick }}
           />
         );
       })}

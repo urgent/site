@@ -5,12 +5,12 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../lib/client_environment";
 import Editor from "../../../components/Editor";
-import { arrayCast, decode } from "../../../utils/route";
 import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
 import { SketchPicker } from "react-color";
+import { parse } from "../../../utils/route";
 
 const InsertCategoryMutation = graphql`
   mutation categoryInsertMutation($input: CreateCategoryInput!) {
@@ -43,11 +43,7 @@ function Create({ preloadedQuery }) {
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags } = router.query;
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
@@ -57,7 +53,7 @@ function Create({ preloadedQuery }) {
 
   function onClick() {
     const name = JSON.stringify(editor.getJSON());
-    const organizationId = arrayCast(parseInt)(organization);
+    const organizationId = parse(organization)[0];
     insertCategory({
       variables: {
         input: {
@@ -70,7 +66,12 @@ function Create({ preloadedQuery }) {
         const payload = store.getRootField("createCategory");
         const category = payload.getLinkedRecord("category");
         const rowId = category.getValue("rowId");
-        router.push(`/${organization}/edit/category/${rowId}`);
+        router.push({
+          pathname: `/${organization}/edit/category/${rowId}`,
+          query: {
+            tags,
+          },
+        });
       },
     });
   }
@@ -146,9 +147,8 @@ export default withRelay(Create, CreateQuery, {
     return {
       ...ctx.query,
       ...{
-        category: arrayCast(parseInt)(ctx.query.category),
-        tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
-        organization: arrayCast(parseInt)(ctx.query.organization),
+        tags: parse(ctx.query.tag),
+        organization: parse(ctx.query.organization)[0],
       },
     };
   },

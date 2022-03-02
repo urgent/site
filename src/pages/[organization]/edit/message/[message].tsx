@@ -6,12 +6,12 @@ import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";
-import { arrayCast, decode } from "../../../../utils/route";
 import { catchJSON } from "../../../../utils/editor";
 import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
+import { parse } from "../../../../utils/route";
 
 const UpdateMessageMutation = graphql`
   mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
@@ -89,14 +89,11 @@ function Edit({ preloadedQuery }) {
     content: catchJSON(messageByRowId.content),
   });
   const router = useRouter();
-  const { organization, tag, message } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags, message } = router.query;
   const path = router.pathname.split("/");
+  const parsedTags = parse(tags);
 
-  function onClick() {
+  function onClick(href) {
     const id = messageByRowId.rowId;
     const content = JSON.stringify(editor.getJSON());
     const loomSharedUrl = loom;
@@ -108,7 +105,10 @@ function Edit({ preloadedQuery }) {
           loomSharedUrl,
         },
       },
-      updater: (store) => {},
+      updater: (store) => {
+        // redirect to tiles on save and edit on tag click
+        router.push(href);
+      },
     });
   }
 
@@ -123,7 +123,11 @@ function Edit({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path={`edit/message/${message}`} {...{ query, tags }} />
+        <Sidebar
+          path={`edit/message/${message}`}
+          tags={parsedTags}
+          {...{ query, onClick }}
+        />
       </Box>
       <Box
         as="main"
@@ -136,7 +140,17 @@ function Edit({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Editor {...{ editor, onClick }} />
+        <Editor
+          {...{ editor }}
+          onClick={() =>
+            onClick({
+              pathname: `/${organization}`,
+              query: {
+                tags: parsedTags,
+              },
+            })
+          }
+        />
       </Box>
     </Grid>
   );
@@ -183,9 +197,9 @@ export default withRelay(Edit, EditQuery, {
     return {
       ...ctx.query,
       ...{
-        message: arrayCast(parseInt)(ctx.query.message),
-        tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
-        organization: arrayCast(parseInt)(ctx.query.organization),
+        message: parse(ctx.query.message)[0],
+        tag: parse(ctx.query.tag),
+        organization: parse(ctx.query.organization)[0],
       },
     };
   },

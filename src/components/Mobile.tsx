@@ -13,7 +13,7 @@ import {
 import { signIn, signOut, useSession } from "next-auth/client";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 
-export default function Mobile({ query }) {
+export default function Mobile({ query, tags }) {
   const [nav, setNav] = useState(true);
   const [session] = useSession();
   if (session) {
@@ -23,7 +23,7 @@ export default function Mobile({ query }) {
           <>
             <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
               <Box gridRow="menu">
-                <Sidebar path="" {...{ query }} />
+                <Sidebar path="" {...{ query, tags }} />
               </Box>
               <Flex>
                 <Box p="4">
@@ -66,7 +66,7 @@ export default function Mobile({ query }) {
                 <Image src="/images/logo.png" h={8} />
               </Box>
             </Flex>
-            <Tiles tags={[]} {...{ query }} />
+            <Tiles {...{ query, tags }} />
           </>
         )}
       </>

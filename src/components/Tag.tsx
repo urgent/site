@@ -178,7 +178,7 @@ export default function Tag({ color, name, active, href, onClick }) {
         </Text>
       )}
       {onClick && (
-        <Text mt={1} onClick={onClick} cursor="pointer">
+        <Text mt={1} onClick={() => onClick(href)} cursor="pointer">
           {name}
         </Text>
       )}

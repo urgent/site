@@ -7,12 +7,12 @@ import { graphql, usePreloadedQuery, useFragment } from "react-relay/hooks";
 import { Grid, Box, Accordion } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../../lib/client_environment";
 import Editor from "../../../../components/Editor";
-import { arrayCast, decode } from "../../../../utils/route";
 import { catchJSON } from "../../../../utils/editor";
 import useMutation from "../../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
+import { parse } from "../../../../utils/route";
 
 const UpdateCategoryMutation = graphql`
   mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
@@ -79,11 +79,7 @@ function Edit({ preloadedQuery }) {
     content: catchJSON(categoryByRowId.name),
   });
   const router = useRouter();
-  const { organization, tag, category } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags, category } = router.query;
   const path = router.pathname.split("/");
 
   function onClick() {
@@ -119,7 +115,7 @@ function Edit({ preloadedQuery }) {
             category={categoryByRowId}
             moveCategory={() => {}}
             path=""
-            {...{ tags }}
+            tags={parse(tags)}
           />
           <AddTag
             {...{
@@ -187,9 +183,9 @@ export default withRelay(Edit, EditQuery, {
     return {
       ...ctx.query,
       ...{
-        category: arrayCast(parseInt)(ctx.query.category),
-        tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
-        organization: arrayCast(parseInt)(ctx.query.organization),
+        category: parse(ctx.query.category)[0],
+        tag: parse(ctx.query.tag),
+        organization: parse(ctx.query.organization)[0],
       },
     };
   },

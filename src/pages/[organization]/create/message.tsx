@@ -6,20 +6,16 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../lib/client_environment";
 import Editor from "../../../components/Editor";
-import { arrayCast, decode } from "../../../utils/route";
 import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useRouter } from "next/router";
+import { parse } from "../../../utils/route";
 
 const InsertMessageMutation = graphql`
-  mutation messageInsertMutation(
-    $input: CreateMessageInput!
-    $connections: [ID!]!
-  ) {
+  mutation messageInsertMutation($input: CreateMessageInput!) {
     createMessage(input: $input) {
-      messages
-        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+      messages {
         rowId
         content
         organizationId
@@ -64,21 +60,18 @@ function Create({ preloadedQuery }) {
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
   const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags } = router.query;
   const [loom, setLoom] = useState("");
   const editor = useEditor({
     extensions: [StarterKit],
     content: "",
   });
   const path = router.pathname.split("/");
+  const parsedTags = parse(tags);
 
-  function onClick() {
-    const organizationId = arrayCast(parseInt)(organization);
-    const content = JSON.stringify(editor.getJSON());
+  function onClick(href) {
+    const organizationId = parse(organization)[0];
+    const content = JSON.stringify(editor?.getJSON());
     const loomSharedUrl = loom;
     insertMessage({
       variables: {
@@ -86,10 +79,17 @@ function Create({ preloadedQuery }) {
           organizationId,
           content,
           loomSharedUrl,
-          tags,
+          tags: parsedTags,
         },
       },
-      updater: (store) => {},
+      updater: (store) => {
+        // redirect to edit page on save
+        const payload = store.getRootField("createMessage");
+        const messages = payload.getLinkedRecords("messages");
+        const rowId = messages[0].getValue("rowId");
+        href.pathname = `${href.pathname}/${rowId}`;
+        router.push(href);
+      },
     });
   }
 
@@ -104,7 +104,11 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="create/message" {...{ query, tags }} />
+        <Sidebar
+          path="edit/message"
+          tags={parsedTags}
+          {...{ query, onClick }}
+        />
       </Box>
       <Box
         as="main"
@@ -164,9 +168,8 @@ export default withRelay(Create, CreateQuery, {
     return {
       ...ctx.query,
       ...{
-        message: arrayCast(parseInt)(ctx.query.message),
-        tag: decode(ctx.query.tag).map(arrayCast(parseInt)),
-        organization: arrayCast(parseInt)(ctx.query.organization),
+        tags: parse(ctx.query.tag)[0],
+        organization: parse(ctx.query.organization)[0],
       },
     };
   },

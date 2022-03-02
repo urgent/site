@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7658020c5dcc7f5a5bf6892218ac2eb3>>
+ * @generated SignedSource<<9ce805eb3d4e507d35f1ea50ac5857bc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type CreateMessageInput = {
 };
 export type messageInsertMutation$variables = {
   input: CreateMessageInput;
-  connections: ReadonlyArray<string>;
 };
 export type messageInsertMutationVariables = messageInsertMutation$variables;
 export type messageInsertMutation$data = {
@@ -55,73 +54,70 @@ export type messageInsertMutation = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "connections"
-},
-v1 = {
-  "defaultValue": null,
-  "kind": "LocalArgument",
-  "name": "input"
-},
-v2 = [
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "input"
+  }
+],
+v1 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "input"
   }
 ],
-v3 = {
+v2 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "rowId",
   "storageKey": null
 },
-v4 = {
+v3 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "content",
   "storageKey": null
 },
-v5 = {
+v4 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "organizationId",
   "storageKey": null
 },
-v6 = {
+v5 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "loomSharedUrl",
   "storageKey": null
 },
-v7 = {
+v6 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "tagId",
   "storageKey": null
 },
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "name",
   "storageKey": null
 },
-v9 = {
+v8 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "color",
   "storageKey": null
 },
-v10 = {
+v9 = {
   "kind": "ClientExtension",
   "selections": [
     {
@@ -133,7 +129,7 @@ v10 = {
     }
   ]
 },
-v11 = {
+v10 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
@@ -142,17 +138,14 @@ v11 = {
 };
 return {
   "fragment": {
-    "argumentDefinitions": [
-      (v0/*: any*/),
-      (v1/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "messageInsertMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "CreateMessagePayload",
         "kind": "LinkedField",
         "name": "createMessage",
@@ -166,10 +159,10 @@ return {
             "name": "messages",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -194,7 +187,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v7/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -203,8 +196,8 @@ return {
                             "name": "tagByTagId",
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
-                              (v8/*: any*/),
+                              (v2/*: any*/),
+                              (v7/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -213,22 +206,22 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v9/*: any*/)
+                                  (v8/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v10/*: any*/)
+                              (v9/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v10/*: any*/)
+                          (v9/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v9/*: any*/)
                 ],
                 "storageKey": null
               }
@@ -244,16 +237,13 @@ return {
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [
-      (v1/*: any*/),
-      (v0/*: any*/)
-    ],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "messageInsertMutation",
     "selections": [
       {
         "alias": null,
-        "args": (v2/*: any*/),
+        "args": (v1/*: any*/),
         "concreteType": "CreateMessagePayload",
         "kind": "LinkedField",
         "name": "createMessage",
@@ -267,10 +257,10 @@ return {
             "name": "messages",
             "plural": true,
             "selections": [
+              (v2/*: any*/),
               (v3/*: any*/),
               (v4/*: any*/),
               (v5/*: any*/),
-              (v6/*: any*/),
               {
                 "alias": null,
                 "args": null,
@@ -295,7 +285,7 @@ return {
                         "name": "node",
                         "plural": false,
                         "selections": [
-                          (v7/*: any*/),
+                          (v6/*: any*/),
                           {
                             "alias": null,
                             "args": null,
@@ -304,8 +294,8 @@ return {
                             "name": "tagByTagId",
                             "plural": false,
                             "selections": [
-                              (v3/*: any*/),
-                              (v8/*: any*/),
+                              (v2/*: any*/),
+                              (v7/*: any*/),
                               {
                                 "alias": null,
                                 "args": null,
@@ -314,51 +304,30 @@ return {
                                 "name": "categoryByCategoryId",
                                 "plural": false,
                                 "selections": [
-                                  (v9/*: any*/),
-                                  (v11/*: any*/)
+                                  (v8/*: any*/),
+                                  (v10/*: any*/)
                                 ],
                                 "storageKey": null
                               },
-                              (v11/*: any*/),
-                              (v10/*: any*/)
+                              (v10/*: any*/),
+                              (v9/*: any*/)
                             ],
                             "storageKey": null
                           },
-                          (v10/*: any*/)
+                          (v9/*: any*/)
                         ],
                         "storageKey": null
                       }
                     ],
                     "storageKey": null
                   },
-                  (v10/*: any*/)
+                  (v9/*: any*/)
                 ],
                 "storageKey": null
               },
-              (v11/*: any*/)
+              (v10/*: any*/)
             ],
             "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "filters": null,
-            "handle": "appendNode",
-            "key": "",
-            "kind": "LinkedHandle",
-            "name": "messages",
-            "handleArgs": [
-              {
-                "kind": "Variable",
-                "name": "connections",
-                "variableName": "connections"
-              },
-              {
-                "kind": "Literal",
-                "name": "edgeTypeName",
-                "value": "MessagesEdge"
-              }
-            ]
           }
         ],
         "storageKey": null
@@ -376,6 +345,6 @@ return {
 };
 })();
 
-(node as any).hash = "2b8425ca4f8f645df3f4b7c284c9178a";
+(node as any).hash = "8857ab638cc24c9c42413745b944a60b";
 
 export default node;

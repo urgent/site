@@ -7,7 +7,6 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { useRouter } from "next/router";
-import { encode } from "../utils/route";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -85,11 +84,12 @@ export default function Message({ message, tags }) {
   }
 
   function onDoubleClick() {
-    router.push(
-      `/${organizationId}/${encode(
-        messageTags.map(({ rowId }) => rowId)
-      )}/edit/message/${rowId}`
-    );
+    router.push({
+      pathname: `/${organizationId}/edit/message/${rowId}`,
+      query: {
+        tags,
+      },
+    });
   }
 
   function colorize({ active, color }) {
@@ -129,7 +129,7 @@ export default function Message({ message, tags }) {
               px={2}
               mt={1}
               border={`2px solid #${color.replace("#", "")}`}
-              {...colorize({ active: tags.includes(rowId), color })}
+              {...colorize({ active: tags?.includes(rowId), color })}
             >
               <Box>{name}</Box>
             </Badge>

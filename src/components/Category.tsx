@@ -17,7 +17,6 @@ import {
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
 import { graphql } from "react-relay";
-import { isActive, link, encode } from "../utils/route";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
@@ -118,7 +117,7 @@ export function Category({
   category: any;
   index: number;
   moveCategory: any;
-  tags: string[];
+  tags: number[];
   path: string;
   onClick?: any;
 }) {
@@ -148,7 +147,7 @@ export function Category({
                     key={edge.node.rowId}
                     variant="outline"
                     color="white"
-                    bg={`#${color}`}
+                    bg={`#${color.replace("#", "")}`}
                     px={2}
                     mx={2}
                     boxShadow="none"
@@ -165,17 +164,20 @@ export function Category({
         <Wrap>
           {tagsByCategoryId?.edges.map((tag, index) => {
             const { name, rowId } = tag.node;
+            let query = { tags: [] };
+            if (tags?.includes(rowId)) {
+              query.tags = tags.filter((tag) => tag !== rowId);
+            } else {
+              query.tags = [...tags, rowId];
+            }
+
             return (
               <WrapItem key={index}>
                 <Tag
-                  active={isActive({ tag: tags, id: rowId })}
+                  active={tags.includes(rowId)}
                   href={{
-                    pathname: link({
-                      organization: organizationId,
-                      tag: tags,
-                      id: rowId,
-                      path,
-                    }),
+                    pathname: `/${organizationId}/${path}`,
+                    query,
                   }}
                   {...{ color, name, onClick }}
                 />

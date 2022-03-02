@@ -2,13 +2,12 @@ import React from "react";
 import Nav from "../components/Nav";
 import { Sidebar } from "../components/Sidebar";
 import Tiles from "../components/Tiles";
-import Mobile from "../components/Mobile";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../lib/client_environment";
 import { useRouter } from "next/router";
-import { decode } from "../utils/route";
+import { parse } from "../utils/route";
 
 const HomeQuery = graphql`
   query pages_HomeQuery($organization: Int, $tag: [Int]) {
@@ -27,12 +26,9 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
-  const { organization, tag } = router.query;
-  const tags = decode(tag).map((_tag) => {
-    const res = parseInt(_tag);
-    return res;
-  });
+  const { organization, tags } = router.query;
   const path = router.pathname.split("/");
+  const parsedTags = parse(tags);
 
   return (
     <Grid
@@ -45,7 +41,7 @@ function Home({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar path="" {...{ query, tags }} />
+        <Sidebar tags={parsedTags} path="" {...{ query }} />
       </Box>
       <Box
         as="main"
@@ -57,7 +53,7 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Tiles {...{ query, tags }} />
+        <Tiles tags={parsedTags} {...{ query, tags }} />
       </Box>
     </Grid>
   );
@@ -104,7 +100,7 @@ export default withRelay(Home, HomeQuery, {
     return {
       ...ctx.query,
       ...{
-        tag: [],
+        tags: [],
         organization: null,
       },
     };
