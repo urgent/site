@@ -104,12 +104,7 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar
-          path="edit/message"
-          tags={parsedTags}
-          {...{ query, onClick }}
-        />
-        <Center>
+        <Center my={5}>
           <Button
             onClick={() => router.push(`/${organization}/create/category`)}
             data-cy="create_category"
@@ -117,6 +112,11 @@ function Create({ preloadedQuery }) {
             New Category
           </Button>
         </Center>
+        <Sidebar
+          path="edit/message"
+          tags={parsedTags}
+          {...{ query, onClick }}
+        />
       </Box>
       <Box
         as="main"
