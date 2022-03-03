@@ -3,7 +3,7 @@ import Nav from "../../../components/Nav";
 import { Sidebar } from "../../../components/Sidebar";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { Grid, Box } from "@chakra-ui/react";
+import { Grid, Box, Button, Center } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../lib/client_environment";
 import Editor from "../../../components/Editor";
 import useMutation from "../../../components/useMutation";
@@ -109,6 +109,14 @@ function Create({ preloadedQuery }) {
           tags={parsedTags}
           {...{ query, onClick }}
         />
+        <Center>
+          <Button
+            onClick={() => router.push(`/${organization}/create/category`)}
+            data-cy="create_category"
+          >
+            New Category
+          </Button>
+        </Center>
       </Box>
       <Box
         as="main"

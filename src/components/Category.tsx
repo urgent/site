@@ -133,7 +133,7 @@ export function Category({
   });
 
   return (
-    <AccordionItem key={rowId} ref={ref}>
+    <AccordionItem key={rowId} ref={ref} data-cy="category">
       <h2>
         <AccordionButton>
           <Box flex="1" textAlign="left">

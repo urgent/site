@@ -11,7 +11,7 @@ export default function Editor({ editor, onClick }) {
   return (
     <>
       <Box height={100} data-cy="editor">
-        <Box as={EditorContent} editor={editor} h={100} />
+        <Box as={EditorContent} editor={editor} h={100} data-cy="editor" />
       </Box>
       <br />
       <br />

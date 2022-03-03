@@ -2,7 +2,7 @@ import React from "react";
 import Nav from "../../../components/Nav";
 import { withRelay } from "relay-nextjs";
 import { graphql, usePreloadedQuery } from "react-relay/hooks";
-import { Grid, Box } from "@chakra-ui/react";
+import { Grid, Box, Center } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../../lib/client_environment";
 import Editor from "../../../components/Editor";
 import useMutation from "../../../components/useMutation";
@@ -87,7 +87,9 @@ function Create({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <SketchPicker color={color} onChange={setColor} />
+        <Center mt={8}>
+          <SketchPicker color={color} onChange={setColor} />
+        </Center>
       </Box>
       <Box
         as="main"
