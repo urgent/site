@@ -73,11 +73,13 @@ export function Sidebar({
   tags,
   path,
   onClick,
+  edit,
 }: {
   query: any;
   path: string;
   tags?: number[];
   onClick?: any;
+  edit?: boolean;
 }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
@@ -117,6 +119,8 @@ export function Sidebar({
             key={edge.node.rowId}
             category={edge.node}
             {...{ tags, moveCategory, path, onClick }}
+            connections={[categories.sidebarCategories.__id]}
+            edit={edit}
           />
         );
       })}

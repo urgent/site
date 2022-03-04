@@ -21,6 +21,19 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 
+const DeleteCategoryMutation = graphql`
+  mutation CategoryDeleteMutation(
+    $input: DeleteCategoryInput!
+    $connections: [ID!]!
+  ) {
+    deleteCategory(input: $input) {
+      category {
+        __id @deleteEdge(connections: $connections)
+      }
+    }
+  }
+`;
+
 const InsertCategoryMutation = graphql`
   mutation CategoryInsertCategoryMutation(
     $input: CreateCategoryInput!
@@ -113,6 +126,8 @@ export function Category({
   tags,
   path,
   onClick,
+  connections,
+  edit,
 }: {
   category: any;
   index: number;
@@ -120,10 +135,15 @@ export function Category({
   tags: number[];
   path: string;
   onClick?: any;
+  connections?: any;
+  edit?: boolean;
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
   const [isConfirmOpen, setConfirmIsOpen] = useState(false);
+  const [isDeleteCategoryPending, deleteCategory] = useMutation(
+    DeleteCategoryMutation
+  ) as [boolean, (config?: any) => void];
 
   const parsed = catchJSON(name);
   const view = useEditor({
@@ -131,6 +151,18 @@ export function Category({
     content: parsed,
     extensions: [StarterKit],
   });
+
+  function onDelete({ categoryId, connections }) {
+    deleteCategory({
+      variables: {
+        input: {
+          categoryId,
+        },
+        connections,
+      },
+      updater: (store) => {},
+    });
+  }
 
   return (
     <AccordionItem key={rowId} ref={ref} data-cy="category">
@@ -159,6 +191,14 @@ export function Category({
           </Box>
           <AccordionIcon />
         </AccordionButton>
+        {edit && (
+          <Button
+            data-cy="delete_category"
+            onClick={(e) => onDelete({ categoryId: rowId, connections })}
+          >
+            Delete
+          </Button>
+        )}
       </h2>
       <AccordionPanel pb={4}>
         <Wrap>

@@ -115,6 +115,7 @@ function Create({ preloadedQuery }) {
         <Sidebar
           path="edit/message"
           tags={parsedTags}
+          edit={true}
           {...{ query, onClick }}
         />
       </Box>
