@@ -3,21 +3,27 @@ import axios, {AxiosRequestConfig} from 'axios'
 
 export default async (req:NextApiRequest, res:NextApiResponse) => {
     const {
-        body: { text, max_length },
+        body: { text },
     } = req;
 
+    const stop='.';
+    const creativity='70';
+    const only_response='true';
     // create next-auth user via email provider
     const options:AxiosRequestConfig<any> = {
         method: 'POST',
-        url: `${process.env.NLPCLOUD_ENDPOINT}/gpu/gpt-j/generation`,
+        url: `${process.env.GRAND_ENDPOINT}/generate`,
         headers: {
-            "Authorization":process.env.NLPCLOUD_TOKEN,
-            "Content-Type":"application/json"
+            "x-auth-key":process.env.GRAND_KEY,
+            "x-auth-secret":process.env.GRAND_SECRET,
         },
-        data: {text, max_length},
+        data: {text, stop, creativity, only_response},
     };
     
-    const generation = await axios(options);
-
-    res.status(200).json({ generation })
+    try {
+        const generation = await axios(options);
+        return res.status(200).json({ text: JSON.stringify(generation.data) });
+    } catch (error) {
+        return res.status(500).json({ error: error.message});
+    }    
 }
