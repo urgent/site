@@ -21,6 +21,8 @@
     "@loomhq/loom-embed": "^1.2.12",
     "@loomhq/loom-sdk": "^2.29.0",
     "@stripe/stripe-js": "^1.22.0",
+    "@tiptap/extension-character-count": "^2.0.0-beta.25",
+    "@tiptap/extension-mention": "^2.0.0-beta.95",
     "@tiptap/react": "^2.0.0-beta.108",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "axios": "^0.25",
@@ -49,7 +51,8 @@
     "react-icons": "^4.2.0",
     "react-relay": "^13.1.1",
     "relay-nextjs": "^0.6.0",
-    "stripe": "^8.191.0"
+    "stripe": "^8.191.0",
+    "tippy.js": "^6.3.7"
   },
   "devDependencies": {
     "@testing-library/cypress": "^8.0.2",

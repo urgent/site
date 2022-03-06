@@ -9,6 +9,8 @@ import Editor from "../../../components/Editor";
 import useMutation from "../../../components/useMutation";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Mention from "@tiptap/extension-mention";
+import CharaterCount from "@tiptap/extension-character-count";
 import { useRouter } from "next/router";
 import { parse } from "../../../utils/route";
 
@@ -63,7 +65,21 @@ function Create({ preloadedQuery }) {
   const { organization, tags } = router.query;
   const [loom, setLoom] = useState("");
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      CharaterCount,
+      Mention.configure({
+        suggestion: {
+          char: " ",
+          prefixSpace: false,
+          render: () => ({
+            onStart: (props) => {
+              console.log(props.editor.storage.characterCount.characters());
+            },
+          }),
+        },
+      }),
+    ],
     content: "",
   });
   const path = router.pathname.split("/");
