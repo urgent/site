@@ -73,9 +73,42 @@ function Create({ preloadedQuery }) {
           char: " ",
           prefixSpace: false,
           render: () => ({
-            onStart: (props) => {
-              console.log(props.editor.storage.characterCount.characters());
+            onStart: async (props) => {
+              const chars = props.editor.storage.characterCount.characters();
+              const { state } = props.editor.view;
+              const { $from, $to } = state.selection;
+
+              if (
+                chars > 20 &&
+                !props.editor.storage.predictiveSemaphore &&
+                (new Date() > props.editor.storage.predictiveTimeout ||
+                  props.editor.storage.predictiveTimeout === undefined)
+              ) {
+                props.editor.storage.predictiveSemaphore = true;
+                const res = await fetch("/api/nlp", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    text: props.editor.getText(),
+                  }),
+                });
+                const { text } = await res.json();
+                props.editor.storage.predictiveText =
+                  JSON.parse(text).data.text;
+                const dt = new Date();
+                dt.setSeconds(dt.getSeconds() + 30);
+                props.editor.storage.predictiveTimeout = dt;
+                const replaced = JSON.parse(text).data.text.replace(
+                  props.editor.getText(),
+                  ""
+                );
+                props.decorationNode.innerHTML = replaced.trimEnd();
+                props.editor.storage.predictiveSemaphore = false;
+              }
             },
+            decorationTag: "",
           }),
         },
       }),

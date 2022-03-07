@@ -8,4 +8,15 @@ describe('Category', () => {
             }
         })
     })
+
+    it('generates predictive text', () => {
+        cy.setCookie(Cypress.env('COOKIE_NAME'), Cypress.env('SESSION_TOKEN'));
+        cy.visit('/')
+        cy.get('[data-cy=edit_mode]').click()
+        cy.get('[data-cy=editor] .ProseMirror').click()
+        cy.get('[data-cy=editor] .ProseMirror').type('cy test')
+        cy.get('[data-cy=editor] .ProseMirror').invoke('text').then((text) => {
+            expect(text.length).to.be.at.least(8)
+        })
+    })
 })
