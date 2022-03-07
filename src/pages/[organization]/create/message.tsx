@@ -91,7 +91,7 @@ function Create({ preloadedQuery }) {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    text: props.editor.getText(),
+                    text: props.editor.getText().trimEnd(),
                   }),
                 });
                 const { text } = await res.json();
@@ -104,7 +104,7 @@ function Create({ preloadedQuery }) {
                   props.editor.getText(),
                   ""
                 );
-                props.decorationNode.innerHTML = replaced.trimEnd();
+                props.decorationNode.innerHTML = ` ${replaced.trimEnd()}`;
                 props.editor.storage.predictiveSemaphore = false;
               }
             },
