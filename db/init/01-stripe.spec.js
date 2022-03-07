@@ -115,8 +115,8 @@ describe('stripe policies', () => {
 
     test('payment create messages, select messages and add users', async () => {
         // unique test setup
-        const paymentRes = await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 1, ${user}, '${test_username}' RETURNING amount`);
-        expect(paymentRes.rows[0]['amount']).toEqual('$1.00');
+        const paymentRes = await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 100, 100, ${user}, '${test_username}' RETURNING amount`);
+        expect(paymentRes.rows[0]['amount']).toEqual('$100.00');
         await pool.query(`SELECT set_config('user.id', 'test12@test', false)`);
         await pool.query(`INSERT INTO message(organization_id, content) VALUES('${org}', '')`);
         const messageRes = await pool.query(`SELECT id FROM message WHERE organization_id=$1`, [org]);
@@ -129,7 +129,7 @@ describe('stripe policies', () => {
         // no stripe payment fails
         await expect(async () => await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user])).rejects.toThrow();
         // need stripe quantity = 2, for user and new organization member
-        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 2, $1, $2`, [user, test_username]);
+        await admin.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 100, 100, $1, $2`, [user, test_username]);
         // log user in again, switched pg instances
         await pool.query(`SELECT set_config('user.id', 'server', false)`);
         await pool.query(`INSERT INTO organization_user(organization_id, user_id) VALUES ($1, $2)`, [org, user]);
