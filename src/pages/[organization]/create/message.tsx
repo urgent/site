@@ -85,6 +85,7 @@ function Create({ preloadedQuery }) {
                   props.editor.storage.predictiveTimeout === undefined)
               ) {
                 props.editor.storage.predictiveSemaphore = true;
+                const existing = props.editor.getText();
                 const res = await fetch("/api/nlp", {
                   method: "POST",
                   headers: {
@@ -101,10 +102,10 @@ function Create({ preloadedQuery }) {
                 dt.setSeconds(dt.getSeconds() + 30);
                 props.editor.storage.predictiveTimeout = dt;
                 const replaced = JSON.parse(text).data.text.replace(
-                  props.editor.getText(),
+                  existing,
                   ""
                 );
-                props.decorationNode.innerHTML = ` ${replaced.trimEnd()}`;
+                props.editor.commands.insertContent(replaced.trimEnd());
                 props.editor.storage.predictiveSemaphore = false;
               }
             },
