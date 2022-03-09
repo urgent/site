@@ -210,6 +210,7 @@ export function Category({
             } else {
               query.tags = [...tags, rowId];
             }
+            query.tags = query.tags.filter((tag) => !!tag);
 
             return (
               <WrapItem key={index}>

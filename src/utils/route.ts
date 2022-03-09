@@ -1,14 +1,18 @@
 /**
  * Parse a query string into an array of numbers
  * 
- * @param {string | string[]} param Parameter to parse 
+ * @param {string | string[]} querystring Query string passed from next router
  * @returns {number[]} Array of numbers
  */
-export function parse(param: string | string[]): number[] {
-  if (typeof param === 'string') {
-    return [param].map(parseInt);
-  } else if (Array.isArray(param)) {
-    return param.map(parseInt);
+export function parse(querystring: string | string[]): number[] {
+  if (typeof querystring === 'string') {
+    return [querystring].map((queryvar) => {
+    return parseInt(queryvar)
+    });
+  } else if (Array.isArray(querystring)) {
+    return querystring.map((queryvar) => {
+      return parseInt(queryvar)
+    });
   } else {
     return [];
   }
