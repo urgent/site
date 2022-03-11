@@ -22,6 +22,7 @@ COMMENT ON TABLE stripe IS
   E'@omit all';
 
 --- Count of active users in organization
+DROP FUNCTION IF EXISTS organization_active_seats;
 CREATE FUNCTION organization_active_seats(organization_id int)
 RETURNS int AS $$
   SELECT COUNT(organization_user.id)::int
@@ -33,6 +34,7 @@ $$ LANGUAGE sql STABLE
 SECURITY DEFINER;
 
 --- Sum of stripe payment quantity for organization
+DROP FUNCTION IF EXISTS organization_paid;
 CREATE FUNCTION organization_paid(organization_id int)
 RETURNS int AS $$
   SELECT SUM(quantity)::int
@@ -46,6 +48,7 @@ SECURITY DEFINER;
 
 
 --- stripe payments minus active users
+DROP FUNCTION IF EXISTS organization_user_balance;
 CREATE FUNCTION organization_user_balance(organization_id int)
 RETURNS int AS $$
   SELECT organization_paid($1) - organization_active_seats($1)
