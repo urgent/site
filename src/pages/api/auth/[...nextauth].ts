@@ -22,7 +22,16 @@ export default NextAuth({
     events: {
         async createUser(message) {
             const pool = new Pool()
+            // stripe only credentials
+            await pool.query(`SELECT set_config('user.id', 'webhook', false)`);
+            // add a balance for stripe rls
+            await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW(), 1, 1, $1, $2` , [message.id, message.email])
+            // non-stripe credentials
             await pool.query(`SELECT set_config('user.id', 'server', false)`);
+            // create organization for user
+            var slug = crypto.randomBytes(20).toString('hex');
+            const res = await pool.query(`INSERT INTO public.organization(user_id, slug) VALUES($1, $2) RETURNING id`, [message.id, slug])
+            await pool.query(`INSERT INTO public.organization_user (organization_id, user_id)`, [res.rows[0]['id'], message.id])
             // is email auth provider?
             if (message.email) {
                 // look up invite by email to get organization id
@@ -35,9 +44,6 @@ export default NextAuth({
                     await pool.query(`INSERT INTO public.user_config(default_organization, user_id) VALUES($1,$2)`, [organizationRes.rows[0]['organization_id'], message.id]);
                 }
             }
-            // create organization for user
-            var slug = crypto.randomBytes(20).toString('hex');
-            await pool.query(`SELECT create_organization($1,$2)`, [message.id, slug])
             await pool.end()
         },
         async signIn(message) {
