@@ -119,7 +119,7 @@ function Create({ preloadedQuery }) {
   const path = router.pathname.split("/");
   const parsedTags = parse(tags);
 
-  function onClick(href) {
+  function onClick() {
     const organizationId = parse(organization)[0];
     const content = JSON.stringify(editor?.getJSON());
     const loomSharedUrl = loom;
@@ -137,7 +137,14 @@ function Create({ preloadedQuery }) {
         const payload = store.getRootField("createMessage");
         const messages = payload.getLinkedRecords("messages");
         const rowId = messages[0].getValue("rowId");
+        const href = {
+          pathname: `/${organization}/edit/message`,
+          query: {},
+        };
         href.pathname = `${href.pathname}/${rowId}`;
+        if (tags?.length > 0) {
+          href.query["tags"] = tags;
+        }
         router.push(href);
       },
     });

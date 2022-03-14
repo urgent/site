@@ -31,7 +31,7 @@ export default NextAuth({
             // create organization for user
             var slug = crypto.randomBytes(20).toString('hex');
             const res = await pool.query(`INSERT INTO public.organization(user_id, slug) VALUES($1, $2) RETURNING id`, [message.id, slug])
-            await pool.query(`INSERT INTO public.organization_user (organization_id, user_id)`, [res.rows[0]['id'], message.id])
+            await pool.query(`INSERT INTO public.organization_user (organization_id, user_id) VALUES($1, $2)`, [res.rows[0]['id'], message.id])
             // is email auth provider?
             if (message.email) {
                 // look up invite by email to get organization id
