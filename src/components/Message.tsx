@@ -108,7 +108,7 @@ export default function Message({ message, tags }) {
   return (
     <Box
       boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
-      borderRadius="10px"
+      borderRadius="md"
       textAlign="left"
       display="inline-block"
       data-cy="message"
