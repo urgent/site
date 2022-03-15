@@ -119,7 +119,7 @@ function Edit({ preloadedQuery }) {
           />
           <AddTag
             {...{
-              connection: categoryByRowId?.tagsByCategoryId.__id,
+              connections: categoryByRowId?.tagsByCategoryId.__id,
               category,
             }}
           />

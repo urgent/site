@@ -85,7 +85,7 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
-export function AddTag({ connection, category }) {
+export function AddTag({ connections, category }) {
   const [name, setName] = useState("");
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
 
@@ -99,7 +99,7 @@ export function AddTag({ connection, category }) {
             name: name,
             categoryId: parseInt(category),
           },
-          connections: [connection],
+          connections,
         },
         updater: (store) => {},
       });
@@ -130,7 +130,7 @@ export function AddTag({ connection, category }) {
         size={breakpoint}
         onClick={onSubmit}
       >
-        +
+        ✅
       </Button>
     </Box>
   );

@@ -20,6 +20,7 @@ import { graphql } from "react-relay";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
+import { AddTag } from "../components/Tag";
 
 const DeleteCategoryMutation = graphql`
   mutation CategoryDeleteMutation(
@@ -167,7 +168,7 @@ export function Category({
   return (
     <AccordionItem key={rowId} ref={ref} data-cy="category">
       <h2>
-        <AccordionButton>
+        <AccordionButton data-cy="category_title">
           <Box flex="1" textAlign="left">
             <EditorContent editor={view} />
             {tagsByCategoryId?.edges
@@ -192,12 +193,15 @@ export function Category({
           <AccordionIcon />
         </AccordionButton>
         {edit && (
-          <Button
-            data-cy="delete_category"
-            onClick={(e) => onDelete({ categoryId: rowId, connections })}
-          >
-            Delete
-          </Button>
+          <VStack>
+            <AddTag category={rowId} connections />
+            <Button
+              data-cy="delete_category"
+              onClick={(e) => onDelete({ categoryId: rowId, connections })}
+            >
+              Delete
+            </Button>
+          </VStack>
         )}
       </h2>
       <AccordionPanel pb={4}>
