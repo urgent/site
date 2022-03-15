@@ -79,7 +79,7 @@ export default function Nav({ query, organization, path }) {
               `/${link({
                 organization,
                 organizationDefault,
-              })}/create/message`
+              })}/edit`
             );
           }}
         >
