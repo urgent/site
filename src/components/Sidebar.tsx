@@ -110,7 +110,7 @@ export function Sidebar({
     <Accordion
       minHeight="85vh"
       allowMultiple={true}
-      defaultIndex={active_index}
+      defaultIndex={[...Array(sidebarCollection.categories.length).keys()]}
     >
       {sidebarCollection.categories?.map((edge: any, index: number) => {
         return (

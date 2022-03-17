@@ -6,7 +6,6 @@ describe('Tag', () => {
         // create tag
         cy.get('[data-cy=add_tag_text]').type('test')
         cy.get('[data-cy=add_tag_button]').click()
-        cy.get('[data-cy="category_title').click()
         cy.get('[data-cy=category]:first-child [data-cy=tag]:last-child').contains('test')
     })
 })

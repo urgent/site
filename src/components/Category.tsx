@@ -192,17 +192,6 @@ export function Category({
           </Box>
           <AccordionIcon />
         </AccordionButton>
-        {edit && (
-          <VStack>
-            <AddTag category={rowId} connections />
-            <Button
-              data-cy="delete_category"
-              onClick={(e) => onDelete({ categoryId: rowId, connections })}
-            >
-              Delete
-            </Button>
-          </VStack>
-        )}
       </h2>
       <AccordionPanel pb={4}>
         <Wrap>
@@ -230,6 +219,17 @@ export function Category({
             );
           })}
         </Wrap>
+        {edit && (
+          <VStack mt={10}>
+            <AddTag category={rowId} connections />
+            <Button
+              data-cy="delete_category"
+              onClick={(e) => onDelete({ categoryId: rowId, connections })}
+            >
+              Delete
+            </Button>
+          </VStack>
+        )}
       </AccordionPanel>
     </AccordionItem>
   );
