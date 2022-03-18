@@ -33,7 +33,7 @@ function Home({ preloadedQuery }) {
   return (
     <Grid
       data-cy="grid"
-      templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+      templateColumns="[nav] 4rem [sidebar] 250px [content] auto"
       bg={"background.50"}
       color={"text.600"}
       minHeight="100vh"
@@ -41,7 +41,13 @@ function Home({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar tags={parsedTags} path="" {...{ query }} edit={true} />
+        <Sidebar
+          tags={parsedTags}
+          path=""
+          {...{ query }}
+          organization={parse(organization)[0]}
+          edit={true}
+        />
       </Box>
       <Box
         as="main"

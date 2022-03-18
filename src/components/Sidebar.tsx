@@ -1,7 +1,14 @@
 import React from "react";
 import { Category, AddCategory } from "./Category";
 import { useSidebar } from "./useSidebar";
-import { Accordion } from "@chakra-ui/react";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
+} from "@chakra-ui/react";
 import { graphql, useFragment } from "react-relay";
 
 const categoriesFragment = graphql`
@@ -74,12 +81,14 @@ export function Sidebar({
   path,
   onClick,
   edit,
+  organization,
 }: {
   query: any;
   path: string;
   tags?: number[];
   onClick?: any;
   edit?: boolean;
+  organization?: number;
 }) {
   const categories = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
@@ -110,8 +119,26 @@ export function Sidebar({
     <Accordion
       minHeight="85vh"
       allowMultiple={true}
-      defaultIndex={[...Array(sidebarCollection.categories.length).keys()]}
+      defaultIndex={[0, ...Array(sidebarCollection.categories.length).keys()]}
     >
+      {edit && (
+        <AccordionItem key="addCategory" data-cy="add_category">
+          <h2>
+            <AccordionButton data-cy="category_title">
+              <Box flex="1" textAlign="left">
+                Add Category...
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            <AddCategory
+              connections={categories.sidebarCategories.__id}
+              organization
+            />
+          </AccordionPanel>
+        </AccordionItem>
+      )}
       {sidebarCollection.categories?.map((edge: any, index: number) => {
         return (
           <Category

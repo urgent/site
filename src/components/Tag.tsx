@@ -136,6 +136,57 @@ export function AddTag({ connections, category }) {
   );
 }
 
+export function EditTag({ connections, category }) {
+  const [name, setName] = useState("");
+  const [isTagPending, insertTag] = useMutation(InsertTagMutation);
+
+  // Editor submit callback
+  function onSubmit(event) {
+    event.preventDefault();
+    if (typeof insertTag === "function") {
+      insertTag({
+        variables: {
+          input: {
+            name: name,
+            categoryId: parseInt(category),
+          },
+          connections,
+        },
+        updater: (store) => {},
+      });
+      // Reset form text
+      setName("");
+    }
+  }
+
+  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
+
+  return (
+    <Box>
+      <Input
+        size={breakpoint}
+        maxWidth={28}
+        borderLeftRadius={8}
+        borderRightRadius={0}
+        paddingX={2}
+        paddingY={1}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Tag Name"
+        data-cy="add_tag_text"
+        value={name}
+      />
+      <Button
+        data-cy="add_tag_button"
+        borderLeftRadius={0}
+        size={breakpoint}
+        onClick={onSubmit}
+      >
+        ✅
+      </Button>
+    </Box>
+  );
+}
+
 function style({ active, color }) {
   const valid = color.replace("#", "");
   if (active) {

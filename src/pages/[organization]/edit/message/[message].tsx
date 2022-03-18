@@ -115,7 +115,7 @@ function Edit({ preloadedQuery }) {
   return (
     <Grid
       data-cy="grid"
-      templateColumns="[nav] 4rem [sidebar] 2fr [content] 7fr"
+      templateColumns="[nav] 4rem [sidebar] 250px [content] auto"
       bg={"background.50"}
       color={"text.600"}
       minHeight="100vh"

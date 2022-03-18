@@ -21,6 +21,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { AddTag } from "../components/Tag";
+import { SketchPicker } from "react-color";
 
 const DeleteCategoryMutation = graphql`
   mutation CategoryDeleteMutation(
@@ -62,9 +63,9 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-export function AddCategory({ connectionId, organization }) {
+export function AddCategory({ connections, organization }) {
   const [name, setName] = useState("");
-  const [color, setColor] = useState("E53E3E");
+  const [color, setColor] = useState({ hex: "#000000" });
   const [isCategoryPending, insertCategory] = useMutation(
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
@@ -79,43 +80,43 @@ export function AddCategory({ connectionId, organization }) {
           name,
           color,
         },
-        connections: [connectionId],
+        connections,
       },
       updater: (store) => {},
     });
     // Reset form text
     setName("");
-    setColor("");
   }
 
-  const size = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
+  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "sm", "sm"]);
 
   return (
     <VStack paddingX={2}>
-      <Input
-        size={size}
-        maxWidth={28}
-        borderRadius={8}
-        paddingX={2}
-        paddingY={1}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Name"
-        value={name}
-        data-cy="add_category_name"
-      />
-      <Input
-        size={size}
-        maxWidth={28}
-        borderRadius={8}
-        paddingX={2}
-        paddingY={1}
-        onChange={(e) => setColor(e.target.value)}
-        placeholder="Color"
-        value={color}
-      />
-      <Button data-cy="add_category_button" onClick={(e) => onSubmit(e)}>
-        Add
-      </Button>
+      <SketchPicker color={color} onChange={setColor} />
+      <Box>
+        <Input
+          size={breakpoint}
+          borderRadius={"md"}
+          py={2}
+          px={1}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Category Name"
+          value={name}
+          data-cy="add_category_name"
+          m={0}
+          maxWidth={36}
+          borderRightRadius={0}
+        />
+        <Button
+          data-cy="add_category_button"
+          borderLeftRadius={0}
+          size={breakpoint}
+          onClick={(e) => onSubmit(e)}
+          m={0}
+        >
+          ✅
+        </Button>
+      </Box>
     </VStack>
   );
 }
@@ -195,17 +196,17 @@ export function Category({
       </h2>
       <AccordionPanel pb={4}>
         <Wrap>
-          {tagsByCategoryId?.edges.map((tag, index) => {
-            const { name, rowId } = tag.node;
-            let query = { tags: [] };
-            if (tags?.includes(rowId)) {
-              query.tags = tags.filter((tag) => tag !== rowId);
-            } else {
-              query.tags = [...tags, rowId];
-            }
-            query.tags = query.tags.filter((tag) => !!tag);
-
-            return (
+          {!edit &&
+            tagsByCategoryId?.edges.map((tag, index) => {
+              const { name, rowId } = tag.node;
+              // for editing category, unselect tags to remove
+              let query = { tags: [] };
+              if (tags?.includes(rowId)) {
+                query.tags = tags.filter((tag) => tag !== rowId);
+              } else {
+                query.tags = [...tags, rowId];
+              }
+              query.tags = query.tags.filter((tag) => !!tag);
               <WrapItem key={index}>
                 <Tag
                   active={tags.includes(rowId)}
@@ -215,10 +216,31 @@ export function Category({
                   }}
                   {...{ color, name, onClick }}
                 />
-              </WrapItem>
-            );
-          })}
+              </WrapItem>;
+            })}
         </Wrap>
+        {edit &&
+          tagsByCategoryId?.edges?.map((tag, index) => {
+            const { name, rowId } = tag.node;
+            // for editing category, unselect tags to remove
+            let query = { tags: [] };
+            if (tags?.includes(rowId)) {
+              query.tags = tags.filter((tag) => tag !== rowId);
+            } else {
+              query.tags = [...tags, rowId];
+            }
+            query.tags = query.tags.filter((tag) => !!tag);
+            <WrapItem key={index}>
+              <Tag
+                active={tags.includes(rowId)}
+                href={{
+                  pathname: `/${organizationId}/${path}`,
+                  query,
+                }}
+                {...{ color, name, onClick }}
+              />
+            </WrapItem>;
+          })}
         {edit && (
           <VStack mt={10}>
             <AddTag category={rowId} connections />
