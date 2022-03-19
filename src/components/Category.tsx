@@ -86,16 +86,11 @@ export function AddCategory({ connections, organization, color }) {
     setName("");
   }
 
-  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "sm", "sm"]);
-
   return (
     <VStack paddingX={2}>
       <Box>
         <Input
-          size={breakpoint}
-          borderRadius={"md"}
-          py={2}
-          px={1}
+          size="sm"
           onChange={(e) => setName(e.target.value)}
           placeholder="Add Category"
           value={name}
@@ -106,8 +101,7 @@ export function AddCategory({ connections, organization, color }) {
         />
         <Button
           data-cy="add_category_button"
-          borderLeftRadius={0}
-          size={breakpoint}
+          size="sm"
           onClick={(e) => onSubmit(e)}
           m={0}
         >
@@ -150,6 +144,7 @@ export function Category({
     content: parsed,
     extensions: [StarterKit],
   });
+  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "sm", "sm"]);
 
   function onDelete({ categoryId, connections }) {
     deleteCategory({
@@ -164,7 +159,7 @@ export function Category({
   }
 
   return (
-    <AccordionItem key={rowId} ref={ref} data-cy="category">
+    <AccordionItem width="235px" key={rowId} ref={ref} data-cy="category">
       <h2>
         <AccordionButton data-cy="category_title">
           <Box flex="1" textAlign="left">
@@ -204,16 +199,18 @@ export function Category({
                 query.tags = [...tags, rowId];
               }
               query.tags = query.tags.filter((tag) => !!tag);
-              <WrapItem key={index}>
-                <Tag
-                  active={tags.includes(rowId)}
-                  href={{
-                    pathname: `/${organizationId}/${path}`,
-                    query,
-                  }}
-                  {...{ color, name, onClick }}
-                />
-              </WrapItem>;
+              return (
+                <WrapItem key={index}>
+                  <Tag
+                    active={tags.includes(rowId)}
+                    href={{
+                      pathname: `/${organizationId}/${path}`,
+                      query,
+                    }}
+                    {...{ color, name, onClick }}
+                  />
+                </WrapItem>
+              );
             })}
 
           {edit &&
@@ -229,29 +226,58 @@ export function Category({
               query.tags = query.tags.filter((tag) => !!tag);
               return (
                 <WrapItem key={index}>
-                  <Tag
-                    active={tags.includes(rowId)}
-                    href={{
-                      pathname: `/${organizationId}/${path}`,
-                      query,
-                    }}
-                    {...{ color, name, onClick }}
-                  />
+                  <Box>
+                    <Button
+                      data-cy="add_category_button"
+                      borderRightRadius={0}
+                      size="sm"
+                      onClick={(e) => /*onSubmit(e)}*/ {}}
+                      m={0}
+                    >
+                      ❌
+                    </Button>
+                    <Input
+                      size="sm"
+                      borderRadius={"md"}
+                      py={2}
+                      px={1}
+                      onChange={(e) => /*setName(e.target.value)*/ {}}
+                      placeholder="Add Category"
+                      value={name}
+                      data-cy="add_category_name"
+                      m={0}
+                      maxWidth={28}
+                      borderRightRadius={0}
+                    />
+                    <Button
+                      data-cy="add_category_button"
+                      borderLeftRadius={0}
+                      size="sm"
+                      onClick={(e) => /*onSubmit(e)}*/ {}}
+                      m={0}
+                    >
+                      ✅
+                    </Button>
+                  </Box>
                 </WrapItem>
               );
             })}
+          {edit && (
+            <WrapItem>
+              <AddTag category={rowId} connections={[tagsByCategoryId?.__id]} />
+            </WrapItem>
+          )}
+          {edit && (
+            <WrapItem>
+              <Button
+                data-cy="delete_category"
+                onClick={(e) => onDelete({ categoryId: rowId, connections })}
+              >
+                Delete
+              </Button>
+            </WrapItem>
+          )}
         </Wrap>
-        {edit && (
-          <VStack mt={10}>
-            <AddTag category={rowId} connections={[tagsByCategoryId?.__id]} />
-            <Button
-              data-cy="delete_category"
-              onClick={(e) => onDelete({ categoryId: rowId, connections })}
-            >
-              Delete
-            </Button>
-          </VStack>
-        )}
       </AccordionPanel>
     </AccordionItem>
   );

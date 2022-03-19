@@ -108,26 +108,24 @@ export function AddTag({ connections, category }) {
     }
   }
 
-  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
-
   return (
-    <Box>
+    <Box ml="2.6rem" my={2}>
       <Input
-        size={breakpoint}
+        size="sm"
         maxWidth={28}
-        borderLeftRadius={8}
+        borderLeftRadius={0}
         borderRightRadius={0}
         paddingX={2}
         paddingY={1}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Tag Name"
+        placeholder="Add Tag"
         data-cy="add_tag_text"
         value={name}
       />
       <Button
         data-cy="add_tag_button"
         borderLeftRadius={0}
-        size={breakpoint}
+        size="sm"
         onClick={onSubmit}
       >
         ✅
@@ -164,7 +162,7 @@ export function EditTag({ connections, category }) {
   return (
     <Box>
       <Input
-        size={breakpoint}
+        size="sm"
         maxWidth={28}
         borderLeftRadius={8}
         borderRightRadius={0}
@@ -178,7 +176,7 @@ export function EditTag({ connections, category }) {
       <Button
         data-cy="add_tag_button"
         borderLeftRadius={0}
-        size={breakpoint}
+        size="sm"
         onClick={onSubmit}
       >
         ✅
