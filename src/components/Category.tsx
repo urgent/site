@@ -214,6 +214,7 @@ export function Category({
             })}
 
           {edit &&
+            rowId == 1 &&
             tagsByCategoryId?.edges?.map((tag, index) => {
               const { name, rowId } = tag.node;
               // for editing category, unselect tags to remove
@@ -262,12 +263,12 @@ export function Category({
                 </WrapItem>
               );
             })}
-          {edit && (
+          {edit && rowId == 1 && (
             <WrapItem>
               <AddTag category={rowId} connections={[tagsByCategoryId?.__id]} />
             </WrapItem>
           )}
-          {edit && (
+          {edit && rowId == 1 && (
             <WrapItem>
               <Button
                 data-cy="delete_category"

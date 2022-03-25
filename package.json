@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "NODE_OPTIONS='--inspect' next dev",
-    "build": "export SET NODE_OPTIONS=--openssl-legacy-provider && next build",
-    "start": "export SET NODE_OPTIONS=--openssl-legacy-provider && next start",
+    "build": "next build",
+    "start": "next start",
     "relay": "relay-compiler",
     "test": "jest --watch --setupFiles dotenv/config",
     "test:e2e:open": "cypress open",
@@ -50,6 +50,7 @@
     "react-final-form": "^6.5.7",
     "react-icons": "^4.2.0",
     "react-relay": "^13.1.1",
+    "react-window": "^1.8.6",
     "relay-nextjs": "^0.6.0",
     "stripe": "^8.191.0",
     "tippy.js": "^6.3.7"

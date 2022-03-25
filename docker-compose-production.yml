@@ -45,17 +45,11 @@ services:
       context: ./graphql
     env_file:
       - ./.env
-    labels:
-      - traefik.enable=true
-      - traefik.http.services.graphql_green.loadbalancer.server.port=5433
-      - traefik.http.routers.graphql_green.rule=Host(`app.align.company`)
-      - traefik.http.routers.graphql_green.tls.certresolver=le
-      - traefik.http.routers.graphql_green.entrypoints=graphile
-    logging:
-      driver: awslogs
-      options:
-        awslogs-region: us-east-2
-        awslogs-group: graphql_green
+    #logging:
+    #  driver: awslogs
+    # options:
+    #    awslogs-region: us-east-2
+    #    awslogs-group: graphql_green
   nextjs_blue:
     build: .
     labels:
@@ -82,3 +76,15 @@ services:
       options:
         awslogs-region: us-east-2
         awslogs-group: nextjs_green
+  nginx:
+    restart: always
+    build:
+        context: ./nginx
+    ports:
+        - "5433:5433"
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.graphql_green.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql_green.rule=Host(`app.align.company`)
+      - traefik.http.routers.graphql_green.tls.certresolver=le
+      - traefik.http.routers.graphql_green.entrypoints=graphile
