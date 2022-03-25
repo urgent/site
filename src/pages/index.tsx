@@ -26,10 +26,10 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
-  const { organization, tags } = router.query;
+  const { organization, tags, edit } = router.query;
   const path = router.pathname.split("/");
   const parsedTags = parse(tags);
-
+  console.log(edit);
   return (
     <Grid
       data-cy="grid"
@@ -41,7 +41,7 @@ function Home({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar tags={parsedTags} path="" {...{ query }} />
+        <Sidebar tags={parsedTags} path="" {...{ query }} edit={!!edit} />
       </Box>
       <Box
         as="main"

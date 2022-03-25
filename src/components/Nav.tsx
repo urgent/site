@@ -64,7 +64,7 @@ export default function Nav({ query, organization, path }) {
           mt={2}
           _hover={{ bg: "secondary.400" }}
           onClick={(e) => {
-            router.push(`/`);
+            router.push(`/`, {}, { shallow: true });
           }}
         >
           <Image width={8} src="/images/align_white.png" alt="smooms.io" />
@@ -75,12 +75,7 @@ export default function Nav({ query, organization, path }) {
           _hover={{ bg: "secondary.400" }}
           data-cy="edit_mode"
           onClick={(e) => {
-            router.push(
-              `/${link({
-                organization,
-                organizationDefault,
-              })}/edit`
-            );
+            router.push(`/?edit=true`, {}, { shallow: true });
           }}
         >
           <Icon as={FiEdit} w={6} h={6} />

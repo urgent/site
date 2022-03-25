@@ -214,7 +214,6 @@ export function Category({
             })}
 
           {edit &&
-            rowId == 1 &&
             tagsByCategoryId?.edges?.map((tag, index) => {
               const { name, rowId } = tag.node;
               // for editing category, unselect tags to remove
