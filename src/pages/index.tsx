@@ -29,7 +29,9 @@ function Home({ preloadedQuery }) {
   const { organization, tags, edit } = router.query;
   const path = router.pathname.split("/");
   const parsedTags = parse(tags);
-  console.log(edit);
+  if (edit) {
+    path[2] = "create";
+  }
   return (
     <Grid
       data-cy="grid"

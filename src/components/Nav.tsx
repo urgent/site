@@ -44,7 +44,7 @@ export default function Nav({ query, organization, path }) {
   };
 
   colors[path[2]] = "secondary.400";
-  if (path[0] === "" && path[1] === "") {
+  if (path[0] === "" && path[1] === "" && path[2] !== "create") {
     colors["home"] = "secondary.400";
   }
 
@@ -64,7 +64,7 @@ export default function Nav({ query, organization, path }) {
           mt={2}
           _hover={{ bg: "secondary.400" }}
           onClick={(e) => {
-            router.push(`/`, {}, { shallow: true });
+            router.push(`/`, "/", { shallow: true });
           }}
         >
           <Image width={8} src="/images/align_white.png" alt="smooms.io" />
@@ -75,7 +75,11 @@ export default function Nav({ query, organization, path }) {
           _hover={{ bg: "secondary.400" }}
           data-cy="edit_mode"
           onClick={(e) => {
-            router.push(`/?edit=true`, {}, { shallow: true });
+            router.push(
+              `/?edit=true`,
+              { pathname: "/", query: { edit: true } },
+              { shallow: true }
+            );
           }}
         >
           <Icon as={FiEdit} w={6} h={6} />
@@ -86,21 +90,12 @@ export default function Nav({ query, organization, path }) {
           _hover={{ bg: "secondary.400" }}
           ref={btnRef}
           onClick={(e) => {
-            if (path[2] === "admin") {
-              router.push(
-                `/${link({
-                  organization,
-                  organizationDefault,
-                })}`
-              );
-            } else {
-              router.push(
-                `/${link({
-                  organization,
-                  organizationDefault,
-                })}/admin`
-              );
-            }
+            router.push(
+              `/${link({
+                organization,
+                organizationDefault,
+              })}/admin`
+            );
           }}
         >
           <Icon as={HiOutlineUserGroup} w={6} h={6} />
