@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 services:
   traefik:
     command:
@@ -6,7 +6,7 @@ services:
       - --providers.docker=true
       - --entrypoints.web.address=:80
       - --entrypoints.websecure.address=:443
-      - --entrypoints.graphile.address=:5433
+      - --entrypoints.nginx.address=:5433
       - --certificatesresolvers.le.acme.email=urgent.programmer@gmail.com
       - --certificatesresolvers.le.acme.storage=/letsencrypt/acme.json
       - --certificatesresolvers.le.acme.tlschallenge=true
@@ -33,7 +33,6 @@ services:
       - traefik.http.services.graphql_blue.loadbalancer.server.port=5433
       - traefik.http.routers.graphql_blue.rule=Host(`app.align.company`)
       - traefik.http.routers.graphql_blue.tls.certresolver=le
-      - traefik.http.routers.graphql_blue.entrypoints=graphile
     logging:
       driver: awslogs
       options:
@@ -45,6 +44,11 @@ services:
       context: ./graphql
     env_file:
       - ./.env
+    labels:
+      - traefik.enable=true
+      - traefik.http.services.graphql_blue.loadbalancer.server.port=5433
+      - traefik.http.routers.graphql_blue.rule=Host(`app.align.company`)
+      - traefik.http.routers.graphql_blue.tls.certresolver=le
     #logging:
     #  driver: awslogs
     # options:
@@ -80,11 +84,9 @@ services:
     restart: always
     build:
         context: ./nginx
-    ports:
-        - "5433:5433"
     labels:
       - traefik.enable=true
-      - traefik.http.services.nginx.loadbalancer.server.port=5433
+      - traefik.http.services.nginx.loadbalancer.server.port=5434
       - traefik.http.routers.nginx.rule=Host(`app.align.company`)
       - traefik.http.routers.nginx.tls.certresolver=le
-      - traefik.http.routers.nginx.entrypoints=graphile
+      - traefik.http.routers.nginx.entrypoints=nginx
