@@ -130,6 +130,7 @@ export default function Message({ message, tags }) {
               mt={1}
               border={`2px solid #${color.replace("#", "")}`}
               {...colorize({ active: tags?.includes(rowId), color })}
+              borderRadius={4}
             >
               <Box>{name}</Box>
             </Badge>

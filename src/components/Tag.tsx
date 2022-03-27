@@ -232,6 +232,7 @@ export default function Tag({ color, name, active, href, onClick }) {
       border="2px"
       {...style({ active, color })}
       data-cy="tag"
+      borderRadius="md"
     >
       {!onClick && (
         <Text mt={1}>
