@@ -20,7 +20,7 @@ import { graphql } from "react-relay";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
-import { AddTag } from "../components/Tag";
+import { AddTag, EditTag } from "../components/Tag";
 
 const DeleteCategoryMutation = graphql`
   mutation CategoryDeleteMutation(
@@ -227,37 +227,7 @@ export function Category({
               return (
                 <WrapItem key={index}>
                   <Box>
-                    <Button
-                      data-cy="add_category_button"
-                      borderRightRadius={0}
-                      size="sm"
-                      onClick={(e) => /*onSubmit(e)}*/ {}}
-                      m={0}
-                    >
-                      ❌
-                    </Button>
-                    <Input
-                      size="sm"
-                      borderRadius={"md"}
-                      py={2}
-                      px={1}
-                      onChange={(e) => /*setName(e.target.value)*/ {}}
-                      placeholder="Add Category"
-                      value={name}
-                      data-cy="add_category_name"
-                      m={0}
-                      maxWidth={28}
-                      borderRightRadius={0}
-                    />
-                    <Button
-                      data-cy="add_category_button"
-                      borderLeftRadius={0}
-                      size="sm"
-                      onClick={(e) => /*onSubmit(e)}*/ {}}
-                      m={0}
-                    >
-                      ✅
-                    </Button>
+                    <EditTag id={rowId} {...{ name }} />
                   </Box>
                 </WrapItem>
               );

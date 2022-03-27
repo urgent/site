@@ -85,60 +85,76 @@ const InsertMessageTagMutation = graphql`
   }
 `;
 
-export function AddTag({ connections, category }) {
-  const [name, setName] = useState("");
-  const [isTagPending, insertTag] = useMutation(InsertTagMutation);
-
-  // Editor submit callback
+export function EditTag({
+  id,
+  name,
+  connections,
+}: {
+  id: string;
+  name: string;
+  connections?: string[];
+}) {
+  const [isTagPending, updateTag] = useMutation(UpdateTagMutation);
+  const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
+  const [value, setValue] = useState(name);
   function onSubmit(event) {
     event.preventDefault();
-    if (typeof insertTag === "function") {
-      insertTag({
+    if (typeof updateTag === "function") {
+      updateTag({
         variables: {
           input: {
-            name: name,
-            categoryId: parseInt(category),
+            id: parseInt(id),
+            name: value,
           },
           connections,
         },
         updater: (store) => {},
       });
-      // Reset form text
-      setName("");
     }
   }
 
   return (
-    <Box ml="2.6rem" my={2}>
+    <>
+      <Button
+        data-cy="remove_tag_button"
+        borderRightRadius={0}
+        size="sm"
+        onClick={(e) => /*onSu
+                        bmit(e)}*/ {}}
+        m={0}
+      >
+        ❌
+      </Button>
       <Input
         size="sm"
+        borderRadius={"md"}
+        py={2}
+        px={1}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Add Category"
+        {...{ value }}
+        data-cy="add_category_name"
+        m={0}
         maxWidth={28}
-        borderLeftRadius={0}
         borderRightRadius={0}
-        paddingX={2}
-        paddingY={1}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Add Tag"
-        data-cy="add_tag_text"
-        value={name}
       />
       <Button
-        data-cy="add_tag_button"
+        data-cy="add_category_button"
         borderLeftRadius={0}
         size="sm"
         onClick={onSubmit}
+        m={0}
       >
         ✅
       </Button>
-    </Box>
+    </>
   );
 }
 
-export function EditTag({ connections, category }) {
+export function AddTag({ connections, category }) {
   const [name, setName] = useState("");
   const [isTagPending, insertTag] = useMutation(InsertTagMutation);
 
-  // Editor submit callback
   function onSubmit(event) {
     event.preventDefault();
     if (typeof insertTag === "function") {
@@ -156,8 +172,6 @@ export function EditTag({ connections, category }) {
       setName("");
     }
   }
-
-  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "md", "md"]);
 
   return (
     <Box>
