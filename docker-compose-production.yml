@@ -84,7 +84,7 @@ services:
         - "5433:5433"
     labels:
       - traefik.enable=true
-      - traefik.http.services.graphql_green.loadbalancer.server.port=5433
-      - traefik.http.routers.graphql_green.rule=Host(`app.align.company`)
-      - traefik.http.routers.graphql_green.tls.certresolver=le
-      - traefik.http.routers.graphql_green.entrypoints=graphile
+      - traefik.http.services.nginx.loadbalancer.server.port=5433
+      - traefik.http.routers.nginx.rule=Host(`app.align.company`)
+      - traefik.http.routers.nginx.tls.certresolver=le
+      - traefik.http.routers.nginx.entrypoints=graphile
