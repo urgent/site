@@ -9,8 +9,8 @@ import { getClientEnvironment } from "../../lib/client_environment";
 import { useRouter } from "next/router";
 import { parse } from "../../utils/route";
 
-const HomeQuery = graphql`
-  query pages_HomeQuery($organization: Int, $tag: [Int]) {
+const EditQuery = graphql`
+  query edit_EditQuery($organization: Int, $tag: [Int]) {
     query {
       ...TilesFragment_messages
         @arguments(organization: $organization, tag: $tag)
@@ -23,8 +23,8 @@ const HomeQuery = graphql`
   }
 `;
 
-function Home({ preloadedQuery }) {
-  const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
+function Edit({ preloadedQuery }) {
+  const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tags } = router.query;
   const path = router.pathname.split("/");
@@ -72,7 +72,7 @@ interface NextCtx {
   cookies: any;
 }
 
-export default withRelay(Home, HomeQuery, {
+export default withRelay(Edit, EditQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,

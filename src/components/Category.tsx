@@ -144,7 +144,6 @@ export function Category({
     content: parsed,
     extensions: [StarterKit],
   });
-  const breakpoint = useBreakpointValue(["sm", "sm", "sm", "sm", "sm"]);
 
   function onDelete({ categoryId, connections }) {
     deleteCategory({
@@ -227,17 +226,21 @@ export function Category({
               return (
                 <WrapItem key={index}>
                   <Box>
-                    <EditTag id={rowId} {...{ name }} />
+                    <EditTag
+                      id={rowId}
+                      {...{ name }}
+                      connections={[tagsByCategoryId.__id]}
+                    />
                   </Box>
                 </WrapItem>
               );
             })}
-          {edit && rowId == 1 && (
+          {edit && (
             <WrapItem>
               <AddTag category={rowId} connections={[tagsByCategoryId?.__id]} />
             </WrapItem>
           )}
-          {edit && rowId == 1 && (
+          {edit && (
             <WrapItem>
               <Button
                 data-cy="delete_category"

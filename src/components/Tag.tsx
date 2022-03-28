@@ -113,14 +113,32 @@ export function EditTag({
     }
   }
 
+  function onDelete(event) {
+    event.preventDefault();
+    if (typeof deleteTag === "function") {
+      deleteTag({
+        variables: {
+          tag: {
+            tagId: parseInt(id),
+          },
+          messageTag: {
+            tagId: parseInt(id),
+          },
+          tagConnections: connections,
+          messageTagConnections: [],
+        },
+        updater: (store) => {},
+      });
+    }
+  }
+
   return (
     <>
       <Button
         data-cy="remove_tag_button"
         borderRightRadius={0}
         size="sm"
-        onClick={(e) => /*onSu
-                        bmit(e)}*/ {}}
+        onClick={onDelete}
         m={0}
       >
         ❌
@@ -133,13 +151,13 @@ export function EditTag({
         onChange={(e) => setValue(e.target.value)}
         placeholder="Add Category"
         {...{ value }}
-        data-cy="add_category_name"
+        data-cy="add_category_tag"
         m={0}
         maxWidth={28}
         borderRightRadius={0}
       />
       <Button
-        data-cy="add_category_button"
+        data-cy="add_category_tag_button"
         borderLeftRadius={0}
         size="sm"
         onClick={onSubmit}
@@ -183,9 +201,10 @@ export function AddTag({ connections, category }) {
         paddingX={2}
         paddingY={1}
         onChange={(e) => setName(e.target.value)}
-        placeholder="Tag Name"
+        placeholder="Add Tag"
         data-cy="add_tag_text"
         value={name}
+        ml={10}
       />
       <Button
         data-cy="add_tag_button"
