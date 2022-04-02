@@ -43,13 +43,9 @@ const SortCategoryMutation = graphql`
 }
 `
 
-export function useSidebar({ categories, messages }) {
+export function useSidebar({ categories }) {
   const [isSortCategoryPending, sortCategory] = useMutation(SortCategoryMutation);
-  const messageTagConnections = useMemo(() => {
-    return messages?.allMessages?.edges?.map(edge => {
-      return edge.node.messageTagsByMessageId.__id;
-    })
-  }, [messages]);
+  
 
   /**
    * Run sort category mutation
@@ -99,5 +95,5 @@ export function useSidebar({ categories, messages }) {
       __id: categories?.__id
   }), [categories]);
 
-  return [sidebarCollection, moveCategory, messageTagConnections]
+  return [sidebarCollection, moveCategory]
 }

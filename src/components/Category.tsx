@@ -119,7 +119,8 @@ export function Category({
   tags,
   path,
   onClick,
-  connections,
+  sidebarConnections,
+  messageConnections,
   edit,
 }: {
   category: any;
@@ -128,7 +129,8 @@ export function Category({
   tags: number[];
   path: string;
   onClick?: any;
-  connections?: any;
+  sidebarConnections?: string[];
+  messageConnections?: string[];
   edit?: boolean;
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
@@ -228,8 +230,8 @@ export function Category({
                   <Box>
                     <EditTag
                       id={rowId}
-                      {...{ name }}
-                      connections={[tagsByCategoryId.__id]}
+                      {...{ name, messageConnections }}
+                      sidebarConnections={[tagsByCategoryId.__id]}
                     />
                   </Box>
                 </WrapItem>
@@ -244,7 +246,12 @@ export function Category({
             <WrapItem>
               <Button
                 data-cy="delete_category"
-                onClick={(e) => onDelete({ categoryId: rowId, connections })}
+                onClick={(e) =>
+                  onDelete({
+                    categoryId: rowId,
+                    connections: sidebarConnections,
+                  })
+                }
               >
                 Delete
               </Button>

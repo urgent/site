@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Category, AddCategory } from "./Category";
 import { useSidebar } from "./useSidebar";
 import { Accordion, VStack, Box, Grid } from "@chakra-ui/react";
@@ -84,46 +84,36 @@ export function Sidebar({
   edit?: boolean;
   organization?: number;
 }) {
-  const categories = useFragment(categoriesFragment, query);
+  const { sidebarCategories } = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
-  const [sidebarCollection, moveCategory, messageTagConnections] = useSidebar({
-    categories: categories.sidebarCategories,
-    messages,
+  const [sidebarCollection, moveCategory] = useSidebar({
+    categories: sidebarCategories,
   });
 
-  // need collection index, to open dropdown
-  const active_categories = Array.from(
-    new Set(
-      categories?.sidebar?.edges.map(
-        (edge) => edge.node.categoryByCategoryId.rowId
-      )
-    )
-  );
-  const active_index = sidebarCollection?.categories?.reduce(
-    (previousValue, currentValue, index) => {
-      if (active_categories.includes(currentValue.node.rowId)) {
-        previousValue = [...previousValue, index];
-      }
-      return previousValue;
-    },
-    []
-  );
+  const { categories } = sidebarCollection as any;
+
+  const messageTagConnections = useMemo(() => {
+    return messages?.allMessages?.edges?.map((edge) => {
+      return edge.node.messageTagsByMessageId.__id;
+    });
+  }, [messages]);
 
   return (
     <Grid gridTemplateRows={"[categories] auto [edit] 300px"} minHeight="85vh">
       <Accordion
         allowMultiple={true}
-        defaultIndex={[0, ...Array(sidebarCollection.categories.length).keys()]}
+        defaultIndex={[0, ...Array(categories.length).keys()]}
         gridArea="categories"
       >
-        {sidebarCollection.categories?.map((edge: any, index: number) => {
+        {categories?.map((edge: any, index: number) => {
           return (
             <Category
               index={index}
               key={edge.node.rowId}
               category={edge.node}
               {...{ tags, moveCategory, path, onClick }}
-              connections={[categories.sidebarCategories.__id]}
+              sidebarConnections={[sidebarCategories.__id]}
+              messageConnections={messageTagConnections}
               edit={edit}
             />
           );
@@ -131,7 +121,7 @@ export function Sidebar({
       </Accordion>
       {edit && (
         <EditSidebar
-          connections={[categories.sidebarCategories.__id]}
+          connections={[sidebarCategories.__id]}
           {...{ organization }}
           title="Persona"
         />

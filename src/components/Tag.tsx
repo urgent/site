@@ -88,11 +88,13 @@ const InsertMessageTagMutation = graphql`
 export function EditTag({
   id,
   name,
-  connections,
+  sidebarConnections,
+  messageConnections,
 }: {
   id: string;
   name: string;
-  connections?: string[];
+  sidebarConnections?: string[];
+  messageConnections?: string[];
 }) {
   const [isTagPending, updateTag] = useMutation(UpdateTagMutation);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
@@ -106,7 +108,7 @@ export function EditTag({
             id: parseInt(id),
             name: value,
           },
-          connections,
+          sidebarConnections,
         },
         updater: (store) => {},
       });
@@ -124,8 +126,8 @@ export function EditTag({
           messageTag: {
             tagId: parseInt(id),
           },
-          tagConnections: connections,
-          messageTagConnections: [],
+          tagConnections: sidebarConnections,
+          messageTagConnections: messageConnections,
         },
         updater: (store) => {},
       });
