@@ -12,7 +12,13 @@ import {
   AccordionPanel,
   AccordionIcon,
   Badge,
-  useBreakpointValue,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
@@ -135,7 +141,6 @@ export function Category({
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
-  const [isConfirmOpen, setConfirmIsOpen] = useState(false);
   const [isDeleteCategoryPending, deleteCategory] = useMutation(
     DeleteCategoryMutation
   ) as [boolean, (config?: any) => void];
@@ -146,6 +151,8 @@ export function Category({
     content: parsed,
     extensions: [StarterKit],
   });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
 
   function onDelete({ categoryId, connections }) {
     deleteCategory({
@@ -244,16 +251,54 @@ export function Category({
           )}
           {edit && (
             <WrapItem>
+              <AlertDialog
+                isOpen={isOpen}
+                leastDestructiveRef={cancelRef}
+                onClose={onClose}
+              >
+                <AlertDialogOverlay>
+                  <AlertDialogContent>
+                    <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                      Delete Customer
+                    </AlertDialogHeader>
+
+                    <AlertDialogBody>
+                      Are you sure? Tags on messages will be removed.
+                    </AlertDialogBody>
+
+                    <AlertDialogFooter>
+                      <Button ref={cancelRef} onClick={onClose}>
+                        Cancel
+                      </Button>
+                      <Button
+                        colorScheme="red"
+                        onClick={(e) => {
+                          onDelete({
+                            categoryId: rowId,
+                            connections: sidebarConnections,
+                          });
+                          onClose();
+                        }}
+                        ml={3}
+                      >
+                        Delete
+                      </Button>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialogOverlay>
+              </AlertDialog>
+
               <Button
                 data-cy="delete_category"
-                onClick={(e) =>
-                  onDelete({
-                    categoryId: rowId,
-                    connections: sidebarConnections,
-                  })
-                }
+                onClick={onOpen}
+                bg={"white"}
+                border="1px solid"
+                borderColor={"red.500"}
+                borderRadius={"md"}
+                color={"red.500"}
+                _hover={{ background: "red.500", color: "white" }}
               >
-                Delete
+                ❌ Delete Category
               </Button>
             </WrapItem>
           )}
