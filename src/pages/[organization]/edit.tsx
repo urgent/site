@@ -41,13 +41,7 @@ function Edit({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar
-          tags={parsedTags}
-          path=""
-          {...{ query }}
-          organization={parse(organization)[0]}
-          edit={true}
-        />
+        <Sidebar tags={parsedTags} path="" {...{ query }} edit={true} />
       </Box>
       <Box
         as="main"
