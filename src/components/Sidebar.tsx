@@ -75,14 +75,12 @@ export function Sidebar({
   path,
   onClick,
   edit,
-  organization,
 }: {
   query: any;
   path: string;
   tags?: number[];
   onClick?: any;
   edit?: boolean;
-  organization?: number;
 }) {
   const { sidebarCategories } = useFragment(categoriesFragment, query);
   const messages = useFragment(messageFragment, query);
@@ -122,7 +120,7 @@ export function Sidebar({
       {edit && (
         <EditSidebar
           connections={[sidebarCategories.__id]}
-          {...{ organization }}
+          organization={categories[0]?.node.organizationId}
           title="Persona"
         />
       )}
