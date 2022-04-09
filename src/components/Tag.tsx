@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Box, Text, Input, Button, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Input,
+  Button,
+  AlertDialog,
+  AlertDialogBody,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogContent,
+  AlertDialogOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import useMutation from "./useMutation";
 import Link from "next/link";
 import { graphql } from "react-relay";
@@ -45,6 +57,7 @@ const DeleteTagMutation = graphql`
     deleteTag(input: $tag) {
       tag {
         id @deleteEdge(connections: $tagConnections)
+        rowId
       }
     }
   }
@@ -99,6 +112,9 @@ export function EditTag({
   const [isTagPending, updateTag] = useMutation(UpdateTagMutation);
   const [isDeleteTagPending, deleteTag] = useMutation(DeleteTagMutation);
   const [value, setValue] = useState(name);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const cancelRef = React.useRef();
+
   function onSubmit(event) {
     event.preventDefault();
     if (typeof updateTag === "function") {
@@ -136,11 +152,44 @@ export function EditTag({
 
   return (
     <>
+      <AlertDialog
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Customer
+            </AlertDialogHeader>
+
+            <AlertDialogBody>
+              Are you sure? Tags on messages will be removed.
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button
+                colorScheme="red"
+                onClick={(e) => {
+                  onDelete(e);
+                  onClose();
+                }}
+                ml={3}
+              >
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
       <Button
         data-cy="remove_tag_button"
         borderRightRadius={0}
         size="sm"
-        onClick={onDelete}
+        onClick={onOpen}
         m={0}
       >
         ❌

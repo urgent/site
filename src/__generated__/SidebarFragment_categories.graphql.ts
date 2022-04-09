@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<fea3fbd3ea42f5346a8ee6da6f0d8fe4>>
+ * @generated SignedSource<<6010d20ccb0aec2ddd6a65c3f1a1ae06>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,6 +19,7 @@ export type SidebarFragment_categories$data = {
           readonly __id: string;
           readonly edges: ReadonlyArray<{
             readonly node: {
+              readonly id: string;
               readonly rowId: number;
               readonly name: string | null;
             } | null;
@@ -154,6 +155,13 @@ return {
                           "name": "node",
                           "plural": false,
                           "selections": [
+                            {
+                              "alias": null,
+                              "args": null,
+                              "kind": "ScalarField",
+                              "name": "id",
+                              "storageKey": null
+                            },
                             (v0/*: any*/),
                             (v1/*: any*/)
                           ],
@@ -296,6 +304,6 @@ return {
 };
 })();
 
-(node as any).hash = "5b6f9bc1070796ea24d074002547c3f6";
+(node as any).hash = "68e8b84b5139757592bd9e7ee5b2a363";
 
 export default node;

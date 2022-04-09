@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<bfd5620dce9c1b4f8b6080a442214da1>>
+ * @generated SignedSource<<27a0c8f270b8dd93964e0aa29d0a8837>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -387,9 +387,9 @@ return {
                                 "name": "node",
                                 "plural": false,
                                 "selections": [
+                                  (v5/*: any*/),
                                   (v4/*: any*/),
-                                  (v10/*: any*/),
-                                  (v5/*: any*/)
+                                  (v10/*: any*/)
                                 ],
                                 "storageKey": null
                               }
@@ -532,12 +532,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "8de7bf9071e0f2535ae17023a9235376",
+    "cacheID": "fae9d63f9b4071e810da28a1d12ce094",
     "id": null,
     "metadata": {},
     "name": "Message_messageQuery",
     "operationKind": "query",
-    "text": "query Message_messageQuery(\n  $message: Int!\n  $organization: Int!\n  $tag: [Int]\n) {\n  query {\n    ...Message_messageFragment_4mgSYr\n    ...SidebarFragment_messages_46bejI\n    ...SidebarFragment_categories_46bejI\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment Message_messageFragment_4mgSYr on Query {\n  query {\n    messageByRowId(rowId: $message) {\n      content\n      organizationId\n      rowId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n          }\n        }\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment SidebarFragment_categories_46bejI on Query {\n  sidebarCategories(organizationId: $organization) {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              rowId\n              name\n              id\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n  sidebar(tagId: $tag) {\n    edges {\n      node {\n        categoryByCategoryId {\n          rowId\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages_46bejI on Query {\n  tile(organizationId: $organization, tagId: $tag) {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query Message_messageQuery(\n  $message: Int!\n  $organization: Int!\n  $tag: [Int]\n) {\n  query {\n    ...Message_messageFragment_4mgSYr\n    ...SidebarFragment_messages_46bejI\n    ...SidebarFragment_categories_46bejI\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment Message_messageFragment_4mgSYr on Query {\n  query {\n    messageByRowId(rowId: $message) {\n      content\n      organizationId\n      rowId\n      loomSharedUrl\n      messageTagsByMessageId {\n        edges {\n          node {\n            tagId\n          }\n        }\n      }\n      id\n    }\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment SidebarFragment_categories_46bejI on Query {\n  sidebarCategories(organizationId: $organization) {\n    edges {\n      node {\n        tagsByCategoryId {\n          edges {\n            node {\n              id\n              rowId\n              name\n            }\n          }\n        }\n        rowId\n        name\n        color\n        organizationId\n        configCategoriesByCategoryId {\n          edges {\n            node {\n              collapse\n              sort\n              id\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n  sidebar(tagId: $tag) {\n    edges {\n      node {\n        categoryByCategoryId {\n          rowId\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment SidebarFragment_messages_46bejI on Query {\n  tile(organizationId: $organization, tagId: $tag) {\n    edges {\n      node {\n        messageTagsByMessageId {\n          edges {\n            node {\n              messageId\n            }\n          }\n        }\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

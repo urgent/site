@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<63765d2caa71d3e393a2375298d7be87>>
+ * @generated SignedSource<<7e3769a11d1c1977dd992f829424a581>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -47,6 +47,7 @@ export type TagDeleteTagMutation$data = {
   readonly deleteTag: {
     readonly tag: {
       readonly id: string;
+      readonly rowId: number;
     } | null;
   } | null;
 };
@@ -98,23 +99,27 @@ v6 = {
   "name": "id",
   "storageKey": null
 },
-v7 = [
-  (v6/*: any*/)
-],
-v8 = {
+v7 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "content",
   "storageKey": null
 },
-v9 = [
+v8 = [
   {
     "kind": "Variable",
     "name": "input",
     "variableName": "tag"
   }
-];
+],
+v9 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": [
@@ -191,7 +196,9 @@ return {
                                     "kind": "LinkedField",
                                     "name": "tagByTagId",
                                     "plural": false,
-                                    "selections": (v7/*: any*/),
+                                    "selections": [
+                                      (v6/*: any*/)
+                                    ],
                                     "storageKey": null
                                   }
                                 ],
@@ -203,7 +210,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v8/*: any*/)
+                      (v7/*: any*/)
                     ],
                     "storageKey": null
                   }
@@ -218,7 +225,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v8/*: any*/),
         "concreteType": "DeleteTagPayload",
         "kind": "LinkedField",
         "name": "deleteTag",
@@ -231,7 +238,10 @@ return {
             "kind": "LinkedField",
             "name": "tag",
             "plural": false,
-            "selections": (v7/*: any*/),
+            "selections": [
+              (v6/*: any*/),
+              (v9/*: any*/)
+            ],
             "storageKey": null
           }
         ],
@@ -346,7 +356,7 @@ return {
                         ],
                         "storageKey": null
                       },
-                      (v8/*: any*/),
+                      (v7/*: any*/),
                       (v6/*: any*/)
                     ],
                     "storageKey": null
@@ -363,7 +373,7 @@ return {
       },
       {
         "alias": null,
-        "args": (v9/*: any*/),
+        "args": (v8/*: any*/),
         "concreteType": "DeleteTagPayload",
         "kind": "LinkedField",
         "name": "deleteTag",
@@ -393,7 +403,8 @@ return {
                     "variableName": "tagConnections"
                   }
                 ]
-              }
+              },
+              (v9/*: any*/)
             ],
             "storageKey": null
           }
@@ -403,16 +414,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "93e199bb4ad090d77039a93a860a123e",
+    "cacheID": "8d74b85bcdfda71c7ec658191e51ead2",
     "id": null,
     "metadata": {},
     "name": "TagDeleteTagMutation",
     "operationKind": "mutation",
-    "text": "mutation TagDeleteTagMutation(\n  $tag: DeleteTagInput!\n  $messageTag: DeleteMessageTagInput!\n) {\n  deleteMessageTag(input: $messageTag) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n  deleteTag(input: $tag) {\n    tag {\n      id\n    }\n  }\n}\n"
+    "text": "mutation TagDeleteTagMutation(\n  $tag: DeleteTagInput!\n  $messageTag: DeleteMessageTagInput!\n) {\n  deleteMessageTag(input: $messageTag) {\n    query {\n      allMessages {\n        nodes {\n          messageTagsByMessageId {\n            edges {\n              node {\n                messageId\n                tagByTagId {\n                  id\n                }\n              }\n            }\n          }\n          content\n          id\n        }\n      }\n      id\n    }\n  }\n  deleteTag(input: $tag) {\n    tag {\n      id\n      rowId\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "11221e792186b0850bea87f28bb209d1";
+(node as any).hash = "e655768bb4174925d8251088f8c92e72";
 
 export default node;

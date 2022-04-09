@@ -233,7 +233,7 @@ export function Category({
               }
               query.tags = query.tags.filter((tag) => !!tag);
               return (
-                <WrapItem key={index}>
+                <WrapItem key={rowId}>
                   <Box>
                     <EditTag
                       id={rowId}

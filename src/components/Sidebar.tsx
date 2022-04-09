@@ -16,6 +16,7 @@ const categoriesFragment = graphql`
             __id
             edges {
               node {
+                id
                 rowId
                 name
               }
@@ -91,7 +92,7 @@ export function Sidebar({
   const { categories } = sidebarCollection as any;
 
   const messageTagConnections = useMemo(() => {
-    return messages?.allMessages?.edges?.map((edge) => {
+    return messages?.tile?.edges?.map((edge) => {
       return edge.node.messageTagsByMessageId.__id;
     });
   }, [messages]);
