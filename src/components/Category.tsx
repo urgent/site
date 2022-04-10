@@ -23,10 +23,9 @@ import {
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
 import { graphql } from "react-relay";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { AddTag, EditTag } from "../components/Tag";
+import { SketchPicker } from "react-color";
 
 const DeleteCategoryMutation = graphql`
   mutation CategoryDeleteMutation(
@@ -144,13 +143,8 @@ export function Category({
   const [isDeleteCategoryPending, deleteCategory] = useMutation(
     DeleteCategoryMutation
   ) as [boolean, (config?: any) => void];
-
+  const [editCategory, setEditCategory] = useState(false);
   const parsed = catchJSON(name);
-  const view = useEditor({
-    editable: false,
-    content: parsed,
-    extensions: [StarterKit],
-  });
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
 
@@ -171,7 +165,41 @@ export function Category({
       <h2>
         <AccordionButton data-cy="category_title">
           <Box flex="1" textAlign="left">
-            <EditorContent editor={view} />
+            <VStack spacing={2} className="sidebar category title">
+              {edit && !editCategory && (
+                <>
+                  <Box>{name}</Box>
+                  <Box>
+                    <Button
+                      bg={"white"}
+                      border="1px solid"
+                      borderColor={"gray.400"}
+                      _hover={{ bg: "white", borderColor: "gray.700" }}
+                      onClick={() => setEditCategory(!editCategory)}
+                    >
+                      ✏️ Edit
+                    </Button>
+                  </Box>
+                </>
+              )}
+              {edit && editCategory && (
+                <>
+                  <Box>
+                    <Input value={name} />
+                  </Box>
+                  <Box>
+                    <Button
+                      border="1px solid"
+                      borderColor={"gray.100"}
+                      _hover={{ bg: "gray.200" }}
+                      onClick={() => setEditCategory(!editCategory)}
+                    >
+                      ✏️ Edit
+                    </Button>
+                  </Box>
+                </>
+              )}
+            </VStack>
             {tagsByCategoryId?.edges
               .filter((edge) => tags?.includes(edge.node.rowId))
               .map((edge) => {
@@ -220,7 +248,6 @@ export function Category({
                 </WrapItem>
               );
             })}
-
           {edit &&
             tagsByCategoryId?.edges?.map((tag, index) => {
               const { name, rowId } = tag.node;

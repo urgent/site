@@ -7,3 +7,7 @@
 .ProseMirror p {
   word-break: break-word;
 }
+
+.sidebar.category.title .ProseMirror {
+  padding-bottom: 0;
+}
