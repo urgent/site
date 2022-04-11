@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Tag from "../components/Tag";
 import {
   VStack,
@@ -26,6 +26,19 @@ import { graphql } from "react-relay";
 import { catchJSON } from "../utils/editor";
 import { AddTag, EditTag } from "../components/Tag";
 import { SketchPicker } from "react-color";
+
+const UpdateCategoryMutation = graphql`
+  mutation CategoryUpdateMessageMutation($input: UpdateCategoryInput!) {
+    updateCategory(input: $input) {
+      category {
+        rowId
+        name
+        color
+        sort
+      }
+    }
+  }
+`;
 
 const DeleteCategoryMutation = graphql`
   mutation CategoryDeleteMutation(
@@ -143,10 +156,15 @@ export function Category({
   const [isDeleteCategoryPending, deleteCategory] = useMutation(
     DeleteCategoryMutation
   ) as [boolean, (config?: any) => void];
+  const [isUpdateMessagePending, updateCategory] = useMutation(
+    UpdateCategoryMutation
+  ) as [boolean, (config?: any) => void];
   const [editCategory, setEditCategory] = useState(false);
   const parsed = catchJSON(name);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
+  const [colorPicker, setColorPicker] = useState(color);
+  const [categoryName, setCategoryName] = useState(name);
 
   function onDelete({ categoryId, connections }) {
     deleteCategory({
@@ -160,44 +178,51 @@ export function Category({
     });
   }
 
+  function onUpdate({ id, name, color }) {
+    updateCategory({
+      variables: {
+        input: {
+          id,
+          name,
+          color,
+        },
+      },
+      updater: (store) => {},
+    });
+  }
+
+  // autosave
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if (colorPicker !== color || categoryName !== name) {
+        onUpdate({
+          id: rowId,
+          name: categoryName,
+          color: colorPicker,
+        });
+      }
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [colorPicker, categoryName]);
+
   return (
     <AccordionItem width="235px" key={rowId} ref={ref} data-cy="category">
       <h2>
         <AccordionButton data-cy="category_title">
           <Box flex="1" textAlign="left">
             <VStack spacing={2} className="sidebar category title">
-              {edit && !editCategory && (
-                <>
-                  <Box>{name}</Box>
-                  <Box>
-                    <Button
-                      bg={"white"}
-                      border="1px solid"
-                      borderColor={"gray.400"}
-                      _hover={{ bg: "white", borderColor: "gray.700" }}
-                      onClick={() => setEditCategory(!editCategory)}
-                    >
-                      ✏️ Edit
-                    </Button>
-                  </Box>
-                </>
-              )}
+              {edit && !editCategory && <Box>{name}</Box>}
               {edit && editCategory && (
-                <>
-                  <Box>
-                    <Input value={name} />
-                  </Box>
-                  <Box>
-                    <Button
-                      border="1px solid"
-                      borderColor={"gray.100"}
-                      _hover={{ bg: "gray.200" }}
-                      onClick={() => setEditCategory(!editCategory)}
-                    >
-                      ✏️ Edit
-                    </Button>
-                  </Box>
-                </>
+                <Box>
+                  <Input
+                    value={categoryName}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      e.preventDefault();
+                      setCategoryName(e.target.value);
+                    }}
+                  />
+                </Box>
               )}
             </VStack>
             {tagsByCategoryId?.edges
@@ -224,6 +249,44 @@ export function Category({
       </h2>
       <AccordionPanel pb={4}>
         <Wrap>
+          {edit && !editCategory && (
+            <>
+              <Box>
+                <Button
+                  bg={"white"}
+                  border="1px solid"
+                  borderColor={"gray.400"}
+                  _hover={{ bg: "white", borderColor: "gray.700" }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setEditCategory(!editCategory);
+                  }}
+                >
+                  ✏️ Edit
+                </Button>
+              </Box>
+            </>
+          )}
+          {edit && editCategory && (
+            <>
+              <Box>
+                <Button
+                  border="1px solid"
+                  borderColor={"gray.100"}
+                  _hover={{ bg: "gray.200" }}
+                  onClick={(e) => {
+                    setEditCategory(!editCategory);
+                  }}
+                >
+                  ✏️ Edit
+                </Button>
+              </Box>
+            </>
+          )}
+
+          {edit && editCategory && (
+            <SketchPicker color={colorPicker} onChange={setColorPicker} />
+          )}
           {!edit &&
             tagsByCategoryId?.edges.map((tag, index) => {
               const { name, rowId } = tag.node;
