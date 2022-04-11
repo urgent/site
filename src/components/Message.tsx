@@ -48,7 +48,15 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({ message, tags }) {
+export default function Message({
+  message,
+  tags,
+  edit,
+}: {
+  message: any;
+  tags: any;
+  edit?: boolean;
+}) {
   const {
     rowId,
     content,
@@ -128,6 +136,7 @@ export default function Message({ message, tags }) {
               key={index}
               px={2}
               mt={1}
+              mx={1}
               border={`2px solid #${color.replace("#", "")}`}
               {...colorize({ active: tags?.includes(rowId), color })}
               borderRadius={4}
@@ -136,6 +145,26 @@ export default function Message({ message, tags }) {
             </Badge>
           );
         })}
+        {edit && (
+          <Badge
+            data-cy="message_tag"
+            key="add"
+            px={2}
+            mt={1}
+            mx={1}
+            color="white"
+            border="2px solid"
+            borderColor="gray.400"
+            bg="gray.400"
+            borderRadius={4}
+            onClick={() => {
+              alert("here");
+            }}
+            cursor="pointer"
+          >
+            <Box>ADD ATTRIBUTE +</Box>
+          </Badge>
+        )}
       </Box>
     </Box>
   );
