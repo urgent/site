@@ -7,6 +7,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { useRouter } from "next/router";
+import { motion } from "framer-motion";
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -77,6 +78,7 @@ export default function Message({
     extensions: [StarterKit],
   });
   const router = useRouter();
+  const { editMessage } = router.query;
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
@@ -145,7 +147,42 @@ export default function Message({
             </Badge>
           );
         })}
-        {edit && (
+
+        {parseInt(editMessage as string) === rowId && (
+          <motion.span
+            animate={{ opacity: 0 }}
+            transition={{
+              repeat: Infinity,
+              duration: 1,
+              repeatType: "loop",
+            }}
+          >
+            <Badge
+              data-cy="message_tag"
+              key="add"
+              px={2}
+              mt={1}
+              mx={1}
+              color="white"
+              border="2px solid"
+              borderColor="gray.400"
+              bg="gray.400"
+              boxShadow={`inset 3px -3px 4px 0px rgb(0 0 0 / 10%)`}
+              borderRadius={4}
+              onClick={() => {
+                router.push({
+                  pathname: router.pathname,
+                  query: { ...router.query, ...{ editMessage: "" } },
+                });
+              }}
+              cursor="pointer"
+            >
+              ADD ATTRIBUTE +
+            </Badge>
+          </motion.span>
+        )}
+
+        {parseInt(editMessage as string) !== rowId && (
           <Badge
             data-cy="message_tag"
             key="add"
@@ -158,7 +195,10 @@ export default function Message({
             bg="gray.400"
             borderRadius={4}
             onClick={() => {
-              alert("here");
+              router.push({
+                pathname: router.pathname,
+                query: { ...router.query, ...{ editMessage: rowId } },
+              });
             }}
             cursor="pointer"
           >

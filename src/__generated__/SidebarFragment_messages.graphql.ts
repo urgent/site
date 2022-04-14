@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a1f1d1e2314a546170e0ebfdc01c28c6>>
+ * @generated SignedSource<<d6c615c5e215c70214958e90b57cce35>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,6 +14,7 @@ export type SidebarFragment_messages$data = {
   readonly tile: {
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly rowId: number;
         readonly messageTagsByMessageId: {
           readonly __id: string;
           readonly edges: ReadonlyArray<{
@@ -88,6 +89,13 @@ const node: ReaderFragment = {
                 {
                   "alias": null,
                   "args": null,
+                  "kind": "ScalarField",
+                  "name": "rowId",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
                   "concreteType": "MessageTagsConnection",
                   "kind": "LinkedField",
                   "name": "messageTagsByMessageId",
@@ -151,6 +159,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "ae9df0156cc36bb914ac9b56f3744ba7";
+(node as any).hash = "c9764d6a794fc8110c67217f0e308386";
 
 export default node;

@@ -136,20 +136,22 @@ export function Category({
   moveCategory,
   tags,
   path,
-  onClick,
   sidebarConnections,
   messageConnections,
   edit,
+  organization,
+  editMessageConnection,
 }: {
   category: any;
   index: number;
   moveCategory: any;
   tags: number[];
   path: string;
-  onClick?: any;
   sidebarConnections?: string[];
   messageConnections?: string[];
   edit?: boolean;
+  organization: number;
+  editMessageConnection: string;
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
@@ -306,7 +308,8 @@ export function Category({
                       pathname: `/${organizationId}/${path}`,
                       query,
                     }}
-                    {...{ color, name, onClick }}
+                    {...{ color, name, rowId, organization }}
+                    connections={editMessageConnection}
                   />
                 </WrapItem>
               );

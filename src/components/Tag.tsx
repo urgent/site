@@ -15,6 +15,7 @@ import {
 import useMutation from "./useMutation";
 import Link from "next/link";
 import { graphql } from "react-relay";
+import { useRouter } from "next/router";
 
 const InsertTagMutation = graphql`
   mutation TagInsertTagMutation($input: CreateTagInput!, $connections: [ID!]!) {
@@ -292,7 +293,38 @@ function style({ active, color }) {
   }
 }
 
-export default function Tag({ color, name, active, href, onClick }) {
+export default function Tag({
+  rowId,
+  color,
+  name,
+  active,
+  href,
+  connections,
+  organization,
+}) {
+  const router = useRouter();
+  const { editMessage } = router.query;
+  const [isTagPending, insertMessageTag] = useMutation(
+    InsertMessageTagMutation
+  );
+
+  function onSubmit(event) {
+    event.preventDefault();
+    if (typeof insertMessageTag === "function") {
+      insertMessageTag({
+        variables: {
+          input: {
+            messageId: parseInt(editMessage as string),
+            tagId: rowId,
+            organizationId: organization,
+          },
+          connections,
+        },
+        updater: (store) => {},
+      });
+    }
+  }
+
   return (
     <Box
       fontSize={[10, 10, 12, 12, 12]}
@@ -304,16 +336,16 @@ export default function Tag({ color, name, active, href, onClick }) {
       data-cy="tag"
       borderRadius="md"
     >
-      {!onClick && (
+      {editMessage && (
+        <Text mt={1} onClick={onSubmit}>
+          {name}
+        </Text>
+      )}
+      {!editMessage && (
         <Text mt={1}>
           <Link {...{ href }} shallow={true}>
             {name}
           </Link>
-        </Text>
-      )}
-      {onClick && (
-        <Text mt={1} onClick={() => onClick(href)} cursor="pointer">
-          {name}
         </Text>
       )}
     </Box>
