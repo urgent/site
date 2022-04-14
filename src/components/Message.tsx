@@ -78,7 +78,7 @@ export default function Message({
     extensions: [StarterKit],
   });
   const router = useRouter();
-  const { editMessage } = router.query;
+  const { editMessageTag } = router.query;
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
@@ -148,7 +148,7 @@ export default function Message({
           );
         })}
 
-        {parseInt(editMessage as string) === rowId && (
+        {parseInt(editMessageTag as string) === rowId && (
           <motion.span
             animate={{ opacity: 0 }}
             transition={{
@@ -172,7 +172,7 @@ export default function Message({
               onClick={() => {
                 router.push({
                   pathname: router.pathname,
-                  query: { ...router.query, ...{ editMessage: "" } },
+                  query: { ...router.query, ...{ editMessageTag: "" } },
                 });
               }}
               cursor="pointer"
@@ -182,7 +182,7 @@ export default function Message({
           </motion.span>
         )}
 
-        {parseInt(editMessage as string) !== rowId && (
+        {parseInt(editMessageTag as string) !== rowId && (
           <Badge
             data-cy="message_tag"
             key="add"
@@ -197,7 +197,7 @@ export default function Message({
             onClick={() => {
               router.push({
                 pathname: router.pathname,
-                query: { ...router.query, ...{ editMessage: rowId } },
+                query: { ...router.query, ...{ editMessageTag: rowId } },
               });
             }}
             cursor="pointer"

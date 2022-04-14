@@ -90,8 +90,8 @@ export function Sidebar({
   });
   const { categories } = sidebarCollection as any;
   const router = useRouter();
-  let { editMessage } = router.query;
-  const editMessageParsed = parseInt(editMessage as string);
+  let { editMessageTag } = router.query;
+  const editMessageParsed = parseInt(editMessageTag as string);
 
   const [messageTagConnections, editMessageConnection] = useMemo(() => {
     let messageTagConnections = [];
