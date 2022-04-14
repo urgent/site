@@ -214,6 +214,7 @@ export function Category({
           <Box flex="1" textAlign="left">
             <VStack spacing={2} className="sidebar category title">
               {edit && !editCategory && <Box>{name}</Box>}
+              {!edit && !editCategory && <Box>{name}</Box>}
               {edit && editCategory && (
                 <Box>
                   <Input
