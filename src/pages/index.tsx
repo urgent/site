@@ -26,7 +26,7 @@ const HomeQuery = graphql`
 function Home({ preloadedQuery }) {
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
-  const { organization, tags, edit } = router.query;
+  const { organization, tags, edit, editMessage } = router.query;
   const path = router.pathname.split("/");
   const parsedTags = parse(tags);
   if (edit) {
@@ -43,7 +43,12 @@ function Home({ preloadedQuery }) {
     >
       <Nav {...{ query, organization, path }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-        <Sidebar tags={parsedTags} path="" {...{ query }} edit={!!edit} />
+        <Sidebar
+          tags={parsedTags}
+          path=""
+          {...{ query }}
+          edit={edit === "true"}
+        />
       </Box>
       <Box
         as="main"
@@ -55,7 +60,7 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Tiles tags={parsedTags} {...{ query, tags }} edit={!!edit} />
+        <Tiles tags={parsedTags} {...{ query, editMessage }} edit={edit} />
       </Box>
     </Grid>
   );

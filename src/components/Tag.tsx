@@ -335,6 +335,7 @@ export default function Tag({
       {...style({ active, color })}
       data-cy="tag"
       borderRadius="md"
+      cursor="pointer"
     >
       {editMessageTag && (
         <Text mt={1} onClick={onSubmit}>
@@ -343,9 +344,7 @@ export default function Tag({
       )}
       {!editMessageTag && (
         <Text mt={1}>
-          <Link {...{ href }} shallow={true}>
-            {name}
-          </Link>
+          <Link {...{ href }}>{name}</Link>
         </Text>
       )}
     </Box>

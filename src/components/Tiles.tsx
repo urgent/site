@@ -55,10 +55,12 @@ export default function Tiles({
   query,
   tags,
   edit,
+  editMessage,
 }: {
   query: any;
   tags: any;
-  edit?: boolean;
+  edit?: string | string[];
+  editMessage?: string | string[];
 }) {
   const messages = useFragment(messageFragment, query);
   const [isDeleteMessagePending, deleteMessage] = useMutation(
@@ -79,13 +81,19 @@ export default function Tiles({
 
   return (
     <Box sx={{ columnCount: "4" }} columnGap="1em" data-cy="tiles">
-      {messages?.tile?.edges?.map((edge) => (
-        <Message
-          key={edge.node.rowId}
-          message={edge.node}
-          {...{ tags, edit }}
-        />
-      ))}
+      {messages?.tile?.edges?.map((edge) => {
+        return (
+          <Message
+            key={edge.node.rowId}
+            message={edge.node}
+            {...{ tags }}
+            edit={
+              edit === "true" ||
+              parseInt(editMessage as string) === edge.node.rowId
+            }
+          />
+        );
+      })}
     </Box>
   );
 }

@@ -72,13 +72,14 @@ export default function Message({
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(
     DeleteTagMutation
   ) as [boolean, (config?: any) => void];
+
+  const router = useRouter();
+  const { editMessageTag } = router.query;
   const editor = useEditor({
-    editable: false,
+    editable: edit,
     content: parsed,
     extensions: [StarterKit],
   });
-  const router = useRouter();
-  const { editMessageTag } = router.query;
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
@@ -95,10 +96,8 @@ export default function Message({
 
   function onDoubleClick() {
     router.push({
-      pathname: `/${organizationId}/edit/message/${rowId}`,
-      query: {
-        tags,
-      },
+      pathname: router.pathname,
+      query: { ...router.query, ...{ editMessage: rowId } },
     });
   }
 
@@ -125,6 +124,7 @@ export default function Message({
       {...{ onDoubleClick }}
     >
       <Box p={4} data-cy="body">
+        {edit}
         <EditorContent editor={editor} />
         {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
