@@ -60,7 +60,7 @@ function Home({ preloadedQuery }) {
         maxHeight="99vh"
         overflowY="scroll"
       >
-        <Tiles tags={parsedTags} {...{ query, editMessage }} edit={edit} />
+        <Tiles tags={parsedTags} {...{ query, editMessage }} />
       </Box>
     </Grid>
   );
