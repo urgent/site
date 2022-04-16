@@ -90,25 +90,11 @@ export function Sidebar({
   });
   const { categories } = sidebarCollection as any;
   const router = useRouter();
-  let { editMessageTag } = router.query;
-  const editMessageParsed = parseInt(editMessageTag as string);
 
-  const [messageTagConnections, editMessageConnection] = useMemo(() => {
-    let messageTagConnections = [];
-    let editMessageConnection;
-
-    messages?.tile?.edges?.forEach((edge) => {
-      const { node } = edge;
-      const { messageTagsByMessageId, rowId } = node;
-      if (rowId === editMessageParsed) {
-        editMessageConnection = [messageTagsByMessageId.__id];
-      }
-      messageTagConnections = [
-        ...messageTagConnections,
-        messageTagsByMessageId.__id,
-      ];
-    });
-    return [messageTagConnections, editMessageConnection];
+  const messageTagConnections = useMemo(() => {
+    return messages?.tile?.edges?.map(
+      (edge) => edge.node.messageTagsByMessageId.__id
+    );
   }, [messages]);
 
   return (
@@ -124,7 +110,7 @@ export function Sidebar({
               index={index}
               key={edge.node.rowId}
               category={edge.node}
-              {...{ tags, moveCategory, path, editMessageConnection }}
+              {...{ tags, moveCategory, path }}
               sidebarConnections={[sidebarCategories.__id]}
               messageConnections={messageTagConnections}
               edit={edit}

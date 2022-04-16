@@ -106,6 +106,8 @@ export default withRelay(Home, HomeQuery, {
       ...{
         tag: parse(ctx.query.tags),
         organization: parse(ctx.query.organization)[0],
+        edit: ctx.query.edit === "true",
+        editMessage: parseInt(ctx.query.editMessage as string),
       },
     };
   },

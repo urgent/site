@@ -299,11 +299,10 @@ export default function Tag({
   name,
   active,
   href,
-  connections,
   organization,
 }) {
   const router = useRouter();
-  const { editMessageTag } = router.query;
+  const { message, connection } = router.query;
   const [isTagPending, insertMessageTag] = useMutation(
     InsertMessageTagMutation
   );
@@ -314,11 +313,11 @@ export default function Tag({
       insertMessageTag({
         variables: {
           input: {
-            messageId: parseInt(editMessageTag as string),
+            messageId: parseInt(message as string),
             tagId: rowId,
             organizationId: organization,
           },
-          connections,
+          connections: [connection],
         },
         updater: (store) => {},
       });
@@ -337,12 +336,12 @@ export default function Tag({
       borderRadius="md"
       cursor="pointer"
     >
-      {editMessageTag && (
+      {message && (
         <Text mt={1} onClick={onSubmit}>
           {name}
         </Text>
       )}
-      {!editMessageTag && (
+      {!message && (
         <Text mt={1}>
           <Link {...{ href }}>{name}</Link>
         </Text>

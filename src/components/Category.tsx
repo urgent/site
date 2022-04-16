@@ -140,7 +140,6 @@ export function Category({
   messageConnections,
   edit,
   organization,
-  editMessageConnection,
 }: {
   category: any;
   index: number;
@@ -151,7 +150,6 @@ export function Category({
   messageConnections?: string[];
   edit?: boolean;
   organization: number;
-  editMessageConnection: string;
 }) {
   const [ref] = useCategoryDrag({ category, index, onDrop: moveCategory });
   const { rowId, color, name, tagsByCategoryId, organizationId } = category;
@@ -310,7 +308,6 @@ export function Category({
                       query,
                     }}
                     {...{ color, name, rowId, organization }}
-                    connections={editMessageConnection}
                   />
                 </WrapItem>
               );

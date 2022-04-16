@@ -49,22 +49,14 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({
-  message,
-  tags,
-  edit,
-}: {
-  message: any;
-  tags: any;
-  edit?: boolean;
-}) {
+export default function Message({ node, tags }: { node: any; tags: any }) {
   const {
     rowId,
     content,
     loomSharedUrl,
     messageTagsByMessageId,
     organizationId,
-  } = message;
+  } = node;
   const parsed = catchJSON(content);
   const messageTags = messageTagsByMessageId.edges.map(
     ({ node }) => node.tagByTagId
@@ -74,9 +66,14 @@ export default function Message({
   ) as [boolean, (config?: any) => void];
 
   const router = useRouter();
-  const { editMessageTag } = router.query;
+  const { message, editMessage } = router.query;
   const editor = useEditor({
-    editable: edit,
+    editable: true,
+    content: parsed,
+    extensions: [StarterKit],
+  });
+  const view = useEditor({
+    editable: false,
     content: parsed,
     extensions: [StarterKit],
   });
@@ -95,10 +92,14 @@ export default function Message({
   }
 
   function onDoubleClick() {
-    router.push({
-      pathname: router.pathname,
-      query: { ...router.query, ...{ editMessage: rowId } },
-    });
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, ...{ editMessage: rowId } },
+      },
+      undefined,
+      { shallow: true }
+    );
   }
 
   function colorize({ active, color }) {
@@ -124,13 +125,17 @@ export default function Message({
       {...{ onDoubleClick }}
     >
       <Box p={4} data-cy="body">
-        {edit}
-        <EditorContent editor={editor} />
+        {parseInt(editMessage as string) !== rowId && (
+          <EditorContent editor={view} />
+        )}
+        {parseInt(editMessage as string) === rowId && (
+          <EditorContent editor={editor} />
+        )}
         {loomSharedUrl && <LoomEmbed {...{ loomSharedUrl }} />}
       </Box>
       <Box data-cy="tags" px={4} py={2} minWidth="340px">
         {messageTags.map((messageTag, index) => {
-          const { name, categoryByCategoryId, rowId } = messageTag;
+          const { name, categoryByCategoryId, badgeRowId } = messageTag;
           const { color } = categoryByCategoryId;
           return (
             <Badge
@@ -140,15 +145,30 @@ export default function Message({
               mt={1}
               mx={1}
               border={`2px solid #${color.replace("#", "")}`}
-              {...colorize({ active: tags?.includes(rowId), color })}
+              {...colorize({ active: tags?.includes(badgeRowId), color })}
               borderRadius={4}
             >
-              <Box>{name}</Box>
+              <Box>
+                {name}
+                {parseInt(editMessage as string) === rowId && (
+                  <Button
+                    onClick={() => alert("here")}
+                    bg="none"
+                    fontSize={12}
+                    height={4}
+                    _hover={{ background: "none" }}
+                    p="0"
+                    ml={1}
+                  >
+                    🗑️
+                  </Button>
+                )}
+              </Box>
             </Badge>
           );
         })}
 
-        {parseInt(editMessageTag as string) === rowId && (
+        {parseInt(message as string) === rowId && (
           <motion.span
             animate={{ opacity: 0 }}
             transition={{
@@ -170,10 +190,17 @@ export default function Message({
               boxShadow={`inset 3px -3px 4px 0px rgb(0 0 0 / 10%)`}
               borderRadius={4}
               onClick={() => {
-                router.push({
-                  pathname: router.pathname,
-                  query: { ...router.query, ...{ editMessageTag: "" } },
-                });
+                router.push(
+                  {
+                    pathname: router.pathname,
+                    query: {
+                      ...router.query,
+                      ...{ message: "", connection: "" },
+                    },
+                  },
+                  undefined,
+                  { shallow: true }
+                );
               }}
               cursor="pointer"
             >
@@ -182,7 +209,7 @@ export default function Message({
           </motion.span>
         )}
 
-        {parseInt(editMessageTag as string) !== rowId && (
+        {parseInt(message as string) !== rowId && (
           <Badge
             data-cy="message_tag"
             key="add"
@@ -197,7 +224,13 @@ export default function Message({
             onClick={() => {
               router.push({
                 pathname: router.pathname,
-                query: { ...router.query, ...{ editMessageTag: rowId } },
+                query: {
+                  ...router.query,
+                  ...{
+                    message: rowId,
+                    connection: messageTagsByMessageId.__id,
+                  },
+                },
               });
             }}
             cursor="pointer"
