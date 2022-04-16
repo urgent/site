@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { graphql } from "react-relay";
 import useMutation from "./useMutation";
 import { Box, Badge, Button, HStack } from "@chakra-ui/react";
@@ -8,6 +8,36 @@ import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+
+const UpdateMessageMutation = graphql`
+  mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
+    updateMessage(input: $input) {
+      messages {
+        rowId
+        content
+        loomSharedUrl
+        organizationId
+        messageTagsByMessageId {
+          __id
+          edges {
+            node {
+              __id
+              tagId
+              tagByTagId {
+                __id
+                rowId
+                name
+                categoryByCategoryId {
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 const DeleteTagMutation = graphql`
   mutation MessageDeleteTagMutation(
@@ -64,7 +94,9 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
   const [isDeleteMessageTagPending, deleteMessageTag] = useMutation(
     DeleteTagMutation
   ) as [boolean, (config?: any) => void];
-
+  const [isUpdateMessagePending, updateMessage] = useMutation(
+    UpdateMessageMutation
+  ) as [boolean, (config?: any) => void];
   const router = useRouter();
   const { message, editMessage } = router.query;
   const editor = useEditor({
@@ -114,6 +146,56 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
       bg: "white",
     };
   }
+
+  function autoSave({ editor, transaction }) {
+    if (!editor.options.editorProps.autoSave) {
+      editor.options.editorProps.autoSave = true;
+      setTimeout(() => {
+        editor.options.editorProps.autoSave = false;
+        const content = JSON.stringify(editor.getJSON());
+        if (content !== node.content) {
+          updateMessage({
+            variables: {
+              input: {
+                id: rowId,
+                content,
+                loomSharedUrl,
+              },
+            },
+            updater: (store) => {},
+          });
+        }
+      }, 4000);
+    }
+  }
+
+  function save({ editor, transaction }) {
+    const content = JSON.stringify(editor.getJSON());
+    if (content !== node.content) {
+      updateMessage({
+        variables: {
+          input: {
+            id: rowId,
+            content,
+            loomSharedUrl,
+          },
+        },
+        updater: (store) => {},
+      });
+    }
+  }
+
+  // autosave
+  useEffect(() => {
+    if (editor && parseInt(editMessage as string) === rowId) {
+      editor.on("update", autoSave);
+      editor.on("blur", save);
+      return () => {
+        editor.off("update", autoSave);
+        editor.off("blur", save);
+      };
+    }
+  }, [editor, editMessage]);
 
   return (
     <Box
