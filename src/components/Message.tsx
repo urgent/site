@@ -135,7 +135,7 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
       </Box>
       <Box data-cy="tags" px={4} py={2} minWidth="340px">
         {messageTags.map((messageTag, index) => {
-          const { name, categoryByCategoryId, badgeRowId } = messageTag;
+          const { name, categoryByCategoryId, rowId } = messageTag;
           const { color } = categoryByCategoryId;
           return (
             <Badge
@@ -145,18 +145,22 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
               mt={1}
               mx={1}
               border={`2px solid #${color.replace("#", "")}`}
-              {...colorize({ active: tags?.includes(badgeRowId), color })}
+              {...colorize({ active: tags?.includes(rowId), color })}
               borderRadius={4}
             >
               <Box>
                 {name}
-                {parseInt(editMessage as string) === rowId && (
+                {parseInt(editMessage as string) === node.rowId && (
                   <Button
-                    onClick={() => alert("here")}
+                    onClick={() =>
+                      onDeleteMessageTag(rowId, messageTagsByMessageId.__id)
+                    }
                     bg="none"
                     fontSize={12}
                     height={4}
                     _hover={{ background: "none" }}
+                    _active={{ background: "none" }}
+                    _focus={{ background: "none", border: "none" }}
                     p="0"
                     ml={1}
                   >
