@@ -109,6 +109,9 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
     content: parsed,
     extensions: [StarterKit],
   });
+  if (view && rowId == editMessage) {
+    view.commands.setContent(parsed);
+  }
 
   function onDeleteMessageTag(tagId, connectionId) {
     deleteMessageTag({
