@@ -1,5 +1,5 @@
 import React from "react";
-import Message from "./Message";
+import Message, { CreateMessage } from "./Message";
 import { Box } from "@chakra-ui/react";
 import { graphql, useFragment } from "react-relay";
 import useMutation from "./useMutation";
@@ -21,6 +21,7 @@ const messageFragment = graphql`
   fragment TilesFragment_messages on Query
   @argumentDefinitions(organization: { type: "Int" }, tag: { type: "[Int]" }) {
     tile(organizationId: $organization, tagId: $tag) {
+      __id
       edges {
         node {
           rowId
@@ -74,6 +75,7 @@ export default function Tiles({ query, tags }: { query: any; tags: any }) {
       {messages?.tile?.edges?.map((edge) => {
         return <Message key={edge.node.rowId} node={edge.node} {...{ tags }} />;
       })}
+      <CreateMessage {...{ query }} connections={[messages.tile.__id]} />
     </Box>
   );
 }

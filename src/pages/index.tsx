@@ -19,6 +19,7 @@ const HomeQuery = graphql`
       ...SidebarFragment_categories
         @arguments(organization: $organization, tag: $tag)
       ...NavFragment_organization @arguments(organization: $organization)
+      ...MessageFragment_tags @arguments(tag: $tag)
     }
   }
 `;

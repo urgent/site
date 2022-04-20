@@ -23,6 +23,7 @@
     "@stripe/stripe-js": "^1.22.0",
     "@tiptap/extension-character-count": "^2.0.0-beta.25",
     "@tiptap/extension-mention": "^2.0.0-beta.95",
+    "@tiptap/extension-placeholder": "^2.0.0-beta.48",
     "@tiptap/react": "^2.0.0-beta.108",
     "@tiptap/starter-kit": "^2.0.0-beta.183",
     "axios": "^0.25",

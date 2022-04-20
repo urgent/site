@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { graphql } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import useMutation from "./useMutation";
 import { Box, Badge, Button, HStack } from "@chakra-ui/react";
 import dynamic from "next/dynamic";
@@ -8,6 +8,42 @@ import StarterKit from "@tiptap/starter-kit";
 import { catchJSON } from "../utils/editor";
 import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import Placeholder from "@tiptap/extension-placeholder";
+
+const InsertMessageMutation = graphql`
+  mutation MessageInsertMutation(
+    $input: CreateMessageInput!
+    $connections: [ID!]!
+  ) {
+    createMessage(input: $input) {
+      messages
+        @appendNode(connections: $connections, edgeTypeName: "MessagesEdge") {
+        id
+        rowId
+        content
+        organizationId
+        loomSharedUrl
+        messageTagsByMessageId {
+          __id
+          edges {
+            node {
+              __id
+              tagId
+              tagByTagId {
+                __id
+                rowId
+                name
+                categoryByCategoryId {
+                  color
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 const UpdateMessageMutation = graphql`
   mutation MessageUpdateMessageMutation($input: UpdateMessageInput!) {
@@ -67,9 +103,119 @@ const DeleteTagMutation = graphql`
   }
 `;
 
+const tagFragment = graphql`
+  fragment MessageFragment_tags on Query
+  @argumentDefinitions(tag: { type: "[Int]" }) {
+    routerTags(tagId: $tag) {
+      edges {
+        node {
+          rowId
+          name
+          categoryByCategoryId {
+            color
+            organizationId
+          }
+        }
+      }
+    }
+  }
+`;
+
 const LoomEmbed = dynamic(() => import("./LoomEmbed"), {
   ssr: false,
 });
+
+function colorize({ active, color }) {
+  if (active) {
+    return {
+      color: "white",
+      bg: `#${color.replace("#", "")}`,
+    };
+  }
+  return {
+    color: `#${color.replace("#", "")}`,
+    bg: "white",
+  };
+}
+
+export function CreateMessage({ query, connections }) {
+  const tags = useFragment(tagFragment, query);
+  const editor = useEditor({
+    editable: true,
+    extensions: [
+      StarterKit,
+      Placeholder.configure({
+        placeholder: "Create new ...",
+      }),
+    ],
+  });
+  const [isInsertMessagePending, insertMessage] = useMutation(
+    InsertMessageMutation
+  ) as [boolean, (config?: any) => void];
+
+  function create() {
+    const content = JSON.stringify(editor?.getJSON());
+    insertMessage({
+      variables: {
+        input: {
+          organizationId:
+            tags.routerTags.edges[0].node.categoryByCategoryId.organizationId,
+          content,
+          loomSharedUrl: "",
+          tags: tags.routerTags.edges.map(({ node }) => node.rowId),
+        },
+        connections,
+      },
+      updater: (store) => {},
+    });
+  }
+
+  return (
+    <Box
+      boxShadow="4px 4px 15px 0 rgb(10 8 59 / 6%)"
+      borderRadius="md"
+      textAlign="left"
+      display="inline-block"
+      data-cy="create_message"
+    >
+      <Box p={4}>
+        <EditorContent editor={editor} />
+      </Box>
+      <Box data-cy="tags" px={4} py={2} minWidth="340px">
+        {tags.routerTags.edges.map((messageTag, index) => {
+          const { name, categoryByCategoryId, rowId } = messageTag.node;
+          const { color } = categoryByCategoryId;
+          return (
+            <Badge
+              data-cy="message_tag"
+              key={rowId}
+              px={2}
+              mt={1}
+              mx={1}
+              border={`2px solid #${color.replace("#", "")}`}
+              color="white"
+              bg={`#${color.replace("#", "")}`}
+              borderRadius={4}
+            >
+              <Box>{name}</Box>
+            </Badge>
+          );
+        })}
+      </Box>
+      <HStack justify="end" m={1}>
+        <Button
+          color="white"
+          fontWeight="bold"
+          bg="#46E28E"
+          _hover={{ bg: "#46E28E" }}
+          onClick={(e) => create()}
+        >
+          Save New
+        </Button>
+      </HStack>
+    </Box>
+  );
+}
 
 export function AddTagToMessage({ click }) {
   return (
@@ -135,19 +281,6 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
       undefined,
       { shallow: true }
     );
-  }
-
-  function colorize({ active, color }) {
-    if (active) {
-      return {
-        color: "white",
-        bg: `#${color.replace("#", "")}`,
-      };
-    }
-    return {
-      color: `#${color.replace("#", "")}`,
-      bg: "white",
-    };
   }
 
   function autoSave({ editor, transaction }) {
@@ -225,7 +358,7 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
           return (
             <Badge
               data-cy="message_tag"
-              key={index}
+              key={rowId}
               px={2}
               mt={1}
               mx={1}
