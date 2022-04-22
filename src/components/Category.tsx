@@ -60,7 +60,10 @@ const InsertCategoryMutation = graphql`
   ) {
     createCategory(input: $input) {
       category
-        @appendNode(connections: $connections, edgeTypeName: "CategoriesEdge") {
+        @prependNode(
+          connections: $connections
+          edgeTypeName: "CategoriesEdge"
+        ) {
         id
         rowId
         name
@@ -362,6 +365,7 @@ export function Category({
                         Cancel
                       </Button>
                       <Button
+                        data-cy="confirm_delete_category"
                         colorScheme="red"
                         onClick={(e) => {
                           onDelete({
