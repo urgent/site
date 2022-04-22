@@ -19,7 +19,9 @@ describe('webhook', () => {
         done();
     })
 
+
     test('insert database records with payment intent event', async (done) => {
+        jest.setTimeout(30000);
         // simulate user creation:
         checkoutSession.data.metadata.user_id = 1;
         // not in db
@@ -39,14 +41,16 @@ describe('webhook', () => {
     })
 
     test('create new user with payment intent event', async (done) => {
+        jest.setTimeout(30000);
         // simulate user creation:
         checkoutSession.data.metadata.user_id = 'new';
         // delete test user
-        await pool.query(`DELETE FROM users WHERE email=$1`, [checkoutSession.data.customer_email]);
+        await pool.query(`DELETE FROM verification_requests WHERE identifier=$1`, [checkoutSession.data.customer_email]);
         //pay
         await pay(checkoutSession);
         //check test user
-        const userRes = await pool.query(`SELECT * FROM users WHERE email=$1`, [checkoutSession.data.customer_email]);
+        const userRes = await pool.query(`SELECT * FROM verification_requests WHERE identifier=$1`, [checkoutSession.data.customer_email]);
         expect(userRes.rows.length).toBeGreaterThan(0);
+        done();
     })
 });
