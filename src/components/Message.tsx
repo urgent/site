@@ -121,6 +121,19 @@ const tagFragment = graphql`
   }
 `;
 
+const DeleteMessageMutation = graphql`
+  mutation TilesDeleteMessageMutation(
+    $input: DeleteMessageInput!
+    $connections: [ID!]!
+  ) {
+    deleteMessage(input: $input) {
+      message {
+        id @deleteEdge(connections: $connections)
+      }
+    }
+  }
+`;
+
 const LoomEmbed = dynamic(() => import("./LoomEmbed"), {
   ssr: false,
 });
@@ -226,7 +239,15 @@ export function AddTagToMessage({ click }) {
   );
 }
 
-export default function Message({ node, tags }: { node: any; tags: any }) {
+export default function Message({
+  node,
+  tags,
+  connections,
+}: {
+  node: any;
+  tags: any;
+  connections: any;
+}) {
   const {
     rowId,
     content,
@@ -258,6 +279,21 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
   });
   if (view && rowId == editMessage) {
     view.commands.setContent(parsed);
+  }
+  const [isDeleteMessagePending, deleteMessage] = useMutation(
+    DeleteMessageMutation
+  ) as [boolean, (config?: any) => void];
+
+  function onDelete() {
+    deleteMessage({
+      variables: {
+        input: {
+          messageId: rowId,
+        },
+        connections,
+      },
+      updater: (store) => {},
+    });
   }
 
   function onDeleteMessageTag(tagId, connectionId) {
@@ -460,6 +496,19 @@ export default function Message({ node, tags }: { node: any; tags: any }) {
           >
             <Box>ADD ATTRIBUTE +</Box>
           </Badge>
+        )}
+        {parseInt(editMessage as string) === rowId && (
+          <Box textAlign="right" mt={10}>
+            <Button
+              bg="#FF4E4E"
+              _hover={{ bg: "#FF4E4E" }}
+              color="white"
+              onClick={onDelete}
+              data-cy="delete_message"
+            >
+              Delete
+            </Button>
+          </Box>
         )}
       </Box>
     </Box>

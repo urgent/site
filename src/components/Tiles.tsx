@@ -4,19 +4,6 @@ import { Box } from "@chakra-ui/react";
 import { graphql, useFragment } from "react-relay";
 import useMutation from "./useMutation";
 
-const DeleteMessageMutation = graphql`
-  mutation TilesDeleteMessageMutation(
-    $input: DeleteMessageInput!
-    $connections: [ID!]!
-  ) {
-    deleteMessage(input: $input) {
-      message {
-        id @deleteEdge(connections: $connections)
-      }
-    }
-  }
-`;
-
 const messageFragment = graphql`
   fragment TilesFragment_messages on Query
   @argumentDefinitions(organization: { type: "Int" }, tag: { type: "[Int]" }) {
@@ -54,26 +41,18 @@ const messageFragment = graphql`
 
 export default function Tiles({ query, tags }: { query: any; tags: any }) {
   const messages = useFragment(messageFragment, query);
-  const [isDeleteMessagePending, deleteMessage] = useMutation(
-    DeleteMessageMutation
-  ) as [boolean, (config?: any) => void];
-
-  function onDelete(messageId, collectionId) {
-    deleteMessage({
-      variables: {
-        input: {
-          messageId: messageId,
-        },
-        connections: [messages?.__id],
-      },
-      updater: (store) => {},
-    });
-  }
 
   return (
     <Box sx={{ columnCount: "4" }} columnGap="1em" data-cy="tiles">
       {messages?.tile?.edges?.map((edge) => {
-        return <Message key={edge.node.rowId} node={edge.node} {...{ tags }} />;
+        return (
+          <Message
+            key={edge.node.rowId}
+            node={edge.node}
+            {...{ tags }}
+            connections={[messages.tile.__id]}
+          />
+        );
       })}
       <CreateMessage {...{ query }} connections={[messages.tile.__id]} />
     </Box>
