@@ -178,7 +178,7 @@ export function CreateMessage({ query, connections }) {
       display="inline-block"
       data-cy="create_message"
     >
-      <Box p={4}>
+      <Box p={4} data-cy="editor">
         <EditorContent editor={editor} />
       </Box>
       <Box data-cy="tags" px={4} py={2} minWidth="340px">
@@ -204,6 +204,7 @@ export function CreateMessage({ query, connections }) {
       </Box>
       <HStack justify="end" m={1}>
         <Button
+          data-cy="save"
           color="white"
           fontWeight="bold"
           bg="#46E28E"
