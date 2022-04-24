@@ -173,6 +173,7 @@ export function EditTag({
                 Cancel
               </Button>
               <Button
+                data-cy="confirm_delete_tag"
                 colorScheme="red"
                 onClick={(e) => {
                   onDelete(e);
@@ -187,7 +188,7 @@ export function EditTag({
         </AlertDialogOverlay>
       </AlertDialog>
       <Button
-        data-cy="remove_tag_button"
+        data-cy="delete_tag_button"
         borderRightRadius={0}
         size="sm"
         onClick={onOpen}
@@ -203,7 +204,6 @@ export function EditTag({
         onChange={(e) => setValue(e.target.value)}
         placeholder="Add Category"
         {...{ value }}
-        data-cy="add_category_tag"
         m={0}
         maxWidth={28}
         borderRightRadius={0}

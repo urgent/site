@@ -407,6 +407,7 @@ export default function Message({
                 {name}
                 {parseInt(editMessage as string) === node.rowId && (
                   <Button
+                    data-cy="remove_tag_from_message"
                     onClick={() =>
                       onDeleteMessageTag(rowId, messageTagsByMessageId.__id)
                     }
@@ -437,7 +438,7 @@ export default function Message({
             }}
           >
             <Badge
-              data-cy="message_tag"
+              data-cy="add_tag_to_message"
               key="add"
               px={2}
               mt={1}
@@ -470,7 +471,7 @@ export default function Message({
 
         {parseInt(message as string) !== rowId && (
           <Badge
-            data-cy="message_tag"
+            data-cy="add_tag_to_message"
             key="add"
             px={2}
             mt={1}

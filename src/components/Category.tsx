@@ -327,7 +327,7 @@ export function Category({
               }
               query.tags = query.tags.filter((tag) => !!tag);
               return (
-                <WrapItem key={rowId}>
+                <WrapItem key={rowId} data-cy="add_category_tag">
                   <Box>
                     <EditTag
                       id={rowId}
