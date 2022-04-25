@@ -2,10 +2,8 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import axios, {AxiosRequestConfig} from 'axios'
 
 export default async (req:NextApiRequest, res:NextApiResponse) => {
-    const {
-        body: { text },
-    } = req;
-
+    const {body} = req;
+    const {text} = JSON.parse(body);
     const stop='.';
     const creativity='70';
     const only_response='true';

@@ -47,7 +47,7 @@ export default function Tiles({ query, tags }: { query: any; tags: any }) {
       {messages?.tile?.edges?.map((edge) => {
         return (
           <Message
-            key={edge.node.rowId}
+            key={`${edge.node.rowId}m`}
             node={edge.node}
             {...{ tags }}
             connections={[messages.tile.__id]}

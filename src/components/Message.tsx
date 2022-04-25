@@ -166,6 +166,48 @@ export function CreateMessage({ query, connections }) {
     InsertMessageMutation
   ) as [boolean, (config?: any) => void];
 
+  function autoComplete({ editor, transaction }) {
+    if (!editor.options.editorProps.autoComplete) {
+      editor.options.editorProps.autoComplete = true;
+      setTimeout(async () => {
+        editor.options.editorProps.autoComplete = false;
+        const text = editor.getText();
+        const response = await fetch("/api/nlp", {
+          method: "POST",
+          body: JSON.stringify({
+            text,
+          }),
+        });
+        const data = await response.json();
+        const nlp = JSON.parse(data?.text);
+        editor.commands.setContent({
+          type: "doc",
+          content: [
+            {
+              type: "paragraph",
+              content: [
+                {
+                  type: "text",
+                  text: nlp.data.text,
+                },
+              ],
+            },
+          ],
+        });
+      }, 4000);
+    }
+  }
+
+  // autosave and autocomplete
+  useEffect(() => {
+    if (editor) {
+      editor.on("update", autoComplete);
+      return () => {
+        editor.off("update", autoComplete);
+      };
+    }
+  }, [editor]);
+
   function create() {
     const content = JSON.stringify(editor?.getJSON());
     insertMessage({
@@ -358,13 +400,50 @@ export default function Message({
     }
   }
 
-  // autosave
+  function autoComplete({ editor, transaction }) {
+    if (!editor.options.editorProps.autoComplete) {
+      editor.options.editorProps.autoComplete = true;
+      setTimeout(async () => {
+        editor.options.editorProps.autoComplete = false;
+        const content = JSON.stringify(editor.getJSON());
+        const text = editor.getText();
+        if (content !== node.content) {
+          const response = await fetch("/api/nlp", {
+            method: "POST",
+            body: JSON.stringify({
+              text,
+            }),
+          });
+          const data = await response.json();
+          const nlp = JSON.parse(data?.text);
+          editor.commands.setContent({
+            type: "doc",
+            content: [
+              {
+                type: "paragraph",
+                content: [
+                  {
+                    type: "text",
+                    text: nlp.data.text,
+                  },
+                ],
+              },
+            ],
+          });
+        }
+      }, 4000);
+    }
+  }
+
+  // autosave and autocomplete
   useEffect(() => {
     if (editor && parseInt(editMessage as string) === rowId) {
       editor.on("update", autoSave);
+      editor.on("update", autoComplete);
       editor.on("blur", save);
       return () => {
         editor.off("update", autoSave);
+        editor.off("update", autoComplete);
         editor.off("blur", save);
       };
     }
@@ -404,7 +483,7 @@ export default function Message({
               borderRadius={4}
             >
               <Box>
-                {name}
+                {`${name} ${rowId}`}
                 {parseInt(editMessage as string) === node.rowId && (
                   <Button
                     data-cy="remove_tag_from_message"
