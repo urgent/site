@@ -1,4 +1,4 @@
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import { getInitialPreloadedQuery, getRelayProps } from "relay-nextjs/app";
@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>Align | Interface</title>
       </Head>
-      <Provider session={pageProps.session}>
+      <SessionProvider session={pageProps.session}>
         <RelayEnvironmentProvider environment={env}>
           <ChakraProvider theme={theme}>
             <DndProvider backend={HTML5Backend}>
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }) {
             </DndProvider>
           </ChakraProvider>
         </RelayEnvironmentProvider>
-      </Provider>
+      </SessionProvider>
     </>
   );
 }

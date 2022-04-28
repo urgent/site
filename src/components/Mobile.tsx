@@ -10,12 +10,12 @@ import {
   VStack,
   Icon,
 } from "@chakra-ui/react";
-import { signIn, signOut, useSession } from "next-auth/client";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
 
 export default function Mobile({ query, tags }) {
   const [nav, setNav] = useState(true);
-  const [session] = useSession();
+  const { data: session } = useSession();
   if (session) {
     return (
       <>

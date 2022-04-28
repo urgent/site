@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "relay": "relay-compiler",
-    "test": "jest --watch --setupFiles dotenv/config",
+    "test": "jest --watch --setupFiles dotenv/config && cypress run",
     "test:e2e:open": "cypress open",
     "test:e2e:run": "cypress run",
-    "schema": "npx postgraphile -c 'postgres://localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql"
+    "schema": "npx postgraphile -c 'postgres://localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.13",
@@ -20,6 +21,7 @@
     "@graphile-contrib/pg-many-to-many": "^1.0.1",
     "@loomhq/loom-embed": "^1.2.12",
     "@loomhq/loom-sdk": "^2.29.0",
+    "@next-auth/typeorm-legacy-adapter": "^1.0.3",
     "@stripe/stripe-js": "^1.22.0",
     "@tiptap/extension-character-count": "^2.0.0-beta.25",
     "@tiptap/extension-mention": "^2.0.0-beta.95",
@@ -65,6 +67,7 @@
     "cypress-social-logins": "^1.13.0",
     "dotenv": "^10.0.0",
     "graphql": "^15.5.0",
+    "husky": "^7.0.4",
     "jest": "^26.6.3",
     "relay-compiler": "^13.0.2",
     "relay-config": "^12.0.1",
