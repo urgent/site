@@ -45,11 +45,11 @@ describe('webhook', () => {
         // simulate user creation:
         checkoutSession.data.metadata.user_id = 'new';
         // delete test user
-        await pool.query(`DELETE FROM verification_requests WHERE identifier=$1`, [checkoutSession.data.customer_email]);
+        await pool.query(`DELETE FROM verification_tokens WHERE identifier=$1`, [checkoutSession.data.customer_email]);
         //pay
         await pay(checkoutSession);
         //check test user
-        const userRes = await pool.query(`SELECT * FROM verification_requests WHERE identifier=$1`, [checkoutSession.data.customer_email]);
+        const userRes = await pool.query(`SELECT * FROM verification_tokens WHERE identifier=$1`, [checkoutSession.data.customer_email]);
         expect(userRes.rows.length).toBeGreaterThan(0);
         done();
     })

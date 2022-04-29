@@ -1,4 +1,8 @@
 {
   "baseUrl": "http://localhost:3000",
-  "chromeWebSecurity": false
+  "chromeWebSecurity": false,
+  "video": false,
+  "videoUploadOnPasses": false,
+  "screenshotOnRunFailure ": false,
+  "experimentalStudio": true
 }

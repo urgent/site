@@ -57,7 +57,7 @@ describe('stripe policies', () => {
         const userRes = await admin.query(`INSERT INTO users(name) VALUES('${test_username}') RETURNING users.id`);
         user = userRes.rows[0]['id']
         // create session for user
-        await admin.query(`INSERT INTO sessions(userId, expires, sessionToken) SELECT ${user}, NOW() + INTERVAL '1 hour', 'test12@test'`);
+        await admin.query(`INSERT INTO sessions("userId", expires, "sessionToken") SELECT ${user}, NOW() + INTERVAL '1 hour', 'test12@test'`);
         // create org for user, messages are by organization
         const orgRes = await admin.query(`INSERT INTO organization(user_id, slug) SELECT ${user}, 'stripe_unit test' RETURNING organization.id`);
         org = orgRes.rows[0]['id']
@@ -74,9 +74,9 @@ describe('stripe policies', () => {
 
     afterAll(async (done) => {
         // delete test user and sessions
+        await admin.query(`DELETE FROM sessions WHERE "sessionToken"='test12@test'`);
         await admin.query(`DELETE FROM users WHERE name='${test_username}'`);
         await admin.query(`DELETE FROM users WHERE name='${test_username}2'`);
-        await admin.query(`DELETE FROM sessions WHERE sessionToken='test12@test'`);
         await admin.query(`DELETE FROM organization WHERE id='${org}'`);
         await admin.query(`DELETE FROM message WHERE organization_id='${org}'`)
         await admin.query(`SELECT set_config('user.id', '', false)`);

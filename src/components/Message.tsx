@@ -483,7 +483,7 @@ export default function Message({
               borderRadius={4}
             >
               <Box>
-                {`${name} ${rowId}`}
+                {`${name}`}
                 {parseInt(editMessage as string) === node.rowId && (
                   <Button
                     data-cy="remove_tag_from_message"

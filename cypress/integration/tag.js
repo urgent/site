@@ -29,6 +29,7 @@ describe('Tag', () => {
         cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=add_tag_to_message]').click()
         cy.wait(1000)
         cy.get('[data-cy=tag]').eq(1).click()
+        cy.wait(1000)
         cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('have.text', 'CIO')
     })
     it('delete tag to message', () => {

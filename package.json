@@ -7,9 +7,9 @@
     "build": "next build",
     "start": "next start",
     "relay": "relay-compiler",
-    "test": "jest --watch --setupFiles dotenv/config && cypress run",
+    "test": "jest --setupFiles dotenv/config",
     "test:e2e:open": "cypress open",
-    "test:e2e:run": "cypress run",
+    "test:e2e:run": "cypress run  --headless --browser chrome",
     "schema": "npx postgraphile -c 'postgres://localhost:5432/smooms' --classic-ids --disable-default-mutations --export-schema-graphql=schema.graphql",
     "prepare": "husky install"
   },
