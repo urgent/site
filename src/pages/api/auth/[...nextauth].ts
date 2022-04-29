@@ -7,6 +7,7 @@ import { TypeORMLegacyAdapter } from "@next-auth/typeorm-legacy-adapter"
 
 
 export default NextAuth({
+    secret: process.env.NEXT_AUTH_SECRET,
     // Configure one or more authentication providers
     providers: [
         EmailProvider({

@@ -43,7 +43,16 @@ export default function Tiles({ query, tags }: { query: any; tags: any }) {
   const messages = useFragment(messageFragment, query);
 
   return (
-    <Box sx={{ columnCount: "4" }} columnGap="1em" data-cy="tiles">
+    <Box
+      sx={{
+        columnCount: "2",
+        "@media (min-width:1180px)": {
+          columnCount: "4",
+        },
+      }}
+      columnGap="1em"
+      data-cy="tiles"
+    >
       {messages?.tile?.edges?.map((edge) => {
         return (
           <Message

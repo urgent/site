@@ -22,6 +22,7 @@ export default async (req:NextApiRequest, res:NextApiResponse) => {
         const generation = await axios(options);
         return res.status(200).json({ text: JSON.stringify(generation.data) });
     } catch (error) {
-        return res.status(500).json({ error: error.message});
+        console.log(error.message)
+        return res.status(200).json({ text: '{"data":{"text":""}}' });
     }    
 }

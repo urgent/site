@@ -168,6 +168,8 @@ export function CreateMessage({ query, connections }) {
 
   function autoComplete({ editor, transaction }) {
     if (!editor.options.editorProps.autoComplete) {
+      // disable until fully implemented, needs payment
+      return true;
       editor.options.editorProps.autoComplete = true;
       setTimeout(async () => {
         editor.options.editorProps.autoComplete = false;
