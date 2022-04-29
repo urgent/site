@@ -47,6 +47,9 @@ export default function Tiles({ query, tags }: { query: any; tags: any }) {
       sx={{
         columnCount: "2",
         "@media (min-width:1180px)": {
+          columnCount: "3",
+        },
+        "@media (min-width:1650px)": {
           columnCount: "4",
         },
       }}
