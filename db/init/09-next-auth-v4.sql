@@ -1,4 +1,5 @@
 BEGIN;
+ALTER TABLE stripe ALTER COLUMN user_id DROP NOT NULL; 
 --- fk violations
 DELETE FROM sessions WHERE user_id NOT IN (SELECT id FROM users);
 
