@@ -240,7 +240,7 @@ export function OrganizationMenu({ query, organization }) {
               },
               updater: (store) => {},
             });
-            window.location.href = `/${e.target.value}`;
+            window.location.href = `/${e.target.value}/admin`;
           }}
           width="200px"
           bg="black"
