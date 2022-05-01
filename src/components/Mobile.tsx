@@ -12,14 +12,15 @@ import {
 } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
+import { useRouter } from "next/router";
 
 export default function Mobile({ query, tags }) {
-  const [nav, setNav] = useState(true);
   const { data: session } = useSession();
+  const router = useRouter();
   if (session) {
     return (
       <>
-        {nav && (
+        {tags.length === 0 && (
           <>
             <Box gridTemplateRows={`[menu] auto [button] 5rem`}>
               <Box gridRow="menu">
@@ -30,23 +31,11 @@ export default function Mobile({ query, tags }) {
                   <Image src="/images/align3_webclip.png" h={8} />
                 </Box>
                 <Spacer />
-                <Box p="4">
-                  <Button
-                    gridRow="button"
-                    display="block"
-                    mx="auto"
-                    bg={"primary.400"}
-                    color="white"
-                    onClick={() => setNav(false)}
-                  >
-                    Show Results
-                  </Button>
-                </Box>
               </Flex>
             </Box>
           </>
         )}
-        {!nav && (
+        {tags.length !== 0 && (
           <>
             <Flex>
               <Box p="4">
@@ -56,14 +45,16 @@ export default function Mobile({ query, tags }) {
                   mx="auto"
                   bg={"primary.400"}
                   color="white"
-                  onClick={() => setNav(true)}
+                  onClick={() => router.push(`/`, "/", { shallow: true })}
+                  position="fixed"
+                  opacity="0.7"
                 >
                   &#x25C0;
                 </Button>
               </Box>
               <Spacer />
               <Box p="4">
-                <Image src="/images/logo.png" h={8} />
+                <Image src="/images/align_blue.png" h={8} />
               </Box>
             </Flex>
             <Tiles {...{ query, tags }} />

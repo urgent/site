@@ -9,6 +9,7 @@ import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 import { useRouter } from "next/router";
 import { parse } from "../../utils/route";
+import { useMediaQuery } from "react-responsive";
 
 const HomeQuery = graphql`
   query Organization_HomeQuery($organization: Int, $tag: [Int]) {
@@ -31,35 +32,37 @@ function Home({ preloadedQuery }) {
   const { organization, tags } = router.query;
   const path = router.pathname.split("/");
   const parsedTags = parse(tags);
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 630px)" });
 
   return (
     <>
-      <Grid
-        data-cy="grid"
-        templateColumns="[nav] 4rem [sidebar] 250px [content] auto"
-        bg={"background.50"}
-        color={"text.600"}
-        minHeight="100vh"
-        d={["none", "none", "none", "grid", "grid"]}
-      >
-        <Nav {...{ query, organization, path }} />
-        <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
-          <Sidebar path="" tags={parsedTags} {...{ query }} />
-        </Box>
-        <Box
-          as="main"
-          gridColumn="content"
-          pt={2}
-          mx="auto"
-          sx={{ textAlign: "center" }}
-          width="100%"
-          maxHeight="99vh"
-          overflowY="scroll"
+      {isTabletOrMobile && <Mobile tags={parsedTags} {...{ query }} />}
+      {!isTabletOrMobile && (
+        <Grid
+          data-cy="grid"
+          templateColumns="[nav] 4rem [sidebar] 250px [content] auto"
+          bg={"background.50"}
+          color={"text.600"}
+          minHeight="100vh"
         >
-          <Tiles tags={parsedTags} {...{ query }} />
-        </Box>
-      </Grid>
-      <Box d={["inherit", "inherit", "inherit", "none", "none"]}></Box>
+          <Nav {...{ query, organization, path }} />
+          <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
+            <Sidebar path="" tags={parsedTags} {...{ query }} />
+          </Box>
+          <Box
+            as="main"
+            gridColumn="content"
+            pt={2}
+            mx="auto"
+            sx={{ textAlign: "center" }}
+            width="100%"
+            maxHeight="99vh"
+            overflowY="scroll"
+          >
+            <Tiles tags={parsedTags} {...{ query }} />
+          </Box>
+        </Grid>
+      )}
     </>
   );
 }

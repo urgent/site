@@ -45,7 +45,10 @@ export default function Tiles({ query, tags }: { query: any; tags: any }) {
   return (
     <Box
       sx={{
-        columnCount: "2",
+        columnCount: "1",
+        "@media (min-width:990px)": {
+          columnCount: "2",
+        },
         "@media (min-width:1350px)": {
           columnCount: "3",
         },
