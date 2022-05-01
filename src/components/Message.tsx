@@ -441,11 +441,9 @@ export default function Message({
   useEffect(() => {
     if (editor && parseInt(editMessage as string) === rowId) {
       editor.on("update", autoSave);
-      editor.on("update", autoComplete);
       editor.on("blur", save);
       return () => {
         editor.off("update", autoSave);
-        editor.off("update", autoComplete);
         editor.off("blur", save);
       };
     }
