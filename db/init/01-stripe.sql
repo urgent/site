@@ -68,8 +68,8 @@ ON stripe
 USING (stripe.user_id IN (SELECT organization.user_id
 FROM organization
 INNER JOIN organization_user ON organization.id = organization_user.organization_id
-INNER JOIN sessions ON sessions.userId = organization_user.user_id
-WHERE sessions.sessionToken = current_user_id()));
+INNER JOIN sessions ON sessions.user_id = organization_user.user_id
+WHERE sessions.session_token = current_user_id()));
 
 --- need stripe payments from organization owner, not organization user
 --- need to go from organization_user.organization_id to organization.user_id to get owner

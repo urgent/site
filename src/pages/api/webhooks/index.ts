@@ -4,7 +4,13 @@ import { buffer } from 'micro'
 import { Pool } from 'pg';
 import { invite } from '../invite';
 
-export async function pay(intent) {
+export function decode({ created, data }) {
+    const { amount_total, metadata, customer_email } = data;
+    let { seats=0, user_id=0 } = { ...metadata };
+    return {created, amount_total, customer_email, seats, user_id};
+}
+
+export async function pay({created, amount_total, customer_email, seats, user_id}) {
     let pool;
     try {
         pool = new Pool({
@@ -16,21 +22,6 @@ export async function pay(intent) {
         });
     } catch (e) {
         console.log(e)
-    }
-    const { created, data } = intent;
-    const { amount_total, metadata, customer_email } = data;
-    let { seats=0, user_id=0 } = { ...metadata };
-    
-    if(user_id === 0) return;
-
-    let res;
-    if(user_id==='new') {
-        try {
-            res = await invite({email:customer_email, slug:'test'});
-        } catch (e) {
-            console.log(e);
-        }
-    user_id=null;
     }
 
     try {
@@ -45,6 +36,21 @@ export async function pay(intent) {
         console.log(e);
     }
     pool.end();
+}
+
+export async function handle(intent) {
+    let {created, amount_total, customer_email, seats, user_id} = decode(intent)
+    if(user_id === 0) return;
+    if(user_id==='new') {
+        try {
+            await invite({email:customer_email, slug:'test'});
+        } catch (e) {
+            console.log(e);
+        }
+    user_id=null;
+    }
+
+    await pay({created, amount_total, customer_email, seats, user_id});
 }
 
 const stripe = new (Stripe as any)(process.env.STRIPE_SECRET_KEY);
@@ -80,6 +86,7 @@ const webhookHandler = async (req, res) => {
         }
 
         // Successfully constructed event
+        await handle(event);
         res.status(200).send('ack')
 
         console.log('✅ Success:', event.id)

@@ -12,7 +12,7 @@ describe('organizaton menu', () => {
     })
 
     test('organization menu returns multiple users', async () => {
-        await pool.query(`SELECT set_config('user.id', $1, false)`, ['3c38b7f1-bafc-4acc-a505-16866690ab87']);
+        await pool.query(`SELECT set_config('user.id', $1, false)`, ['bbf3ed77-eef7-43c0-bf30-03c8037ed051']);
         const organizationRes = await pool.query(`SELECT user_id FROM organization_user WHERE organization_id=$1`, [1]);
         expect(organizationRes.rows.length).toBeGreaterThan(3)
     })

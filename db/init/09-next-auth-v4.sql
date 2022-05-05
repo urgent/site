@@ -38,6 +38,7 @@ DROP POLICY IF EXISTS select_if_organization on stripe;
 DROP POLICY IF EXISTS select_user_config_if_author on user_config;
 DROP POLICY IF EXISTS delete_if_organization_owner ON organization_user;
 DROP POLICY IF EXISTS select_if_organization_owner ON organization_user;
+DROP POLICY IF EXISTS insert_if_organization_owner ON organization_user;
 DROP FUNCTION IF EXISTS create_user_config;
 DROP FUNCTION IF EXISTS sort_category;
 DROP FUNCTION IF EXISTS create_organization_user;
@@ -401,5 +402,12 @@ CREATE POLICY select_user_config_if_author ON public.user_config FOR SELECT USIN
 CREATE POLICY delete_if_organization_owner ON public.organization_user FOR DELETE USING ((organization_id IN ( SELECT public.organization_owner() AS organization_owner)));
 
 CREATE POLICY select_if_organization_owner ON public.organization_user FOR SELECT USING ((organization_id IN ( SELECT public.organization_owner() AS organization_owner)));
+
+CREATE POLICY insert_if_organization_owner
+  on organization_user
+  for insert 
+  WITH CHECK ( organization_user.organization_id IN (
+    SELECT organization_owner()
+  ));
 
 COMMIT;
