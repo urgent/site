@@ -16,7 +16,6 @@ export async function invite({ email, slug }) {
             'Access-Control-Request-Headers': 'Content-Type, Authorization',
         }
     };
-
     const GetCSRFResponse = await axios(options);
 
     const params = {

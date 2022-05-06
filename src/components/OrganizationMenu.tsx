@@ -193,7 +193,7 @@ export function OrganizationMenu({ query, organization }) {
     insertInvite({
       variables: {
         input: {
-          organizationId: organization,
+          organizationId: parseInt(organization),
           email: addEmail,
         },
         connections: [allInvites.__id],
@@ -206,7 +206,7 @@ export function OrganizationMenu({ query, organization }) {
     deleteOrgUser({
       variables: {
         input: {
-          organizationId: organization,
+          organizationId: parseInt(organization),
           userId,
         },
         connections: [allOrganizationUsers.__id],
