@@ -123,7 +123,7 @@ export function Sidebar({
         <EditSidebar
           connections={[sidebarCategories.__id]}
           organization={categories[0]?.node.organizationId}
-          title="Persona"
+          title="Category Color"
         />
       )}
     </Grid>
