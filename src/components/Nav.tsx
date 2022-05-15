@@ -88,6 +88,7 @@ export default function Nav({ query, organization, path }) {
           bg={colors.admin}
           color="white"
           _hover={{ bg: "secondary.400" }}
+          data-cy="org_mode"
           ref={btnRef}
           onClick={(e) => {
             router.push(

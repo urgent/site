@@ -65,3 +65,5 @@ migrate-backup.sql
 migrate-local-backup.sql
 local_backup_rls_debug.sql
 staging.sql
+
+cypress/screenshots

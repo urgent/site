@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<71586ac8dde755a2166731308aae5f7a>>
+ * @generated SignedSource<<5971b72a8178b41304844fb6a0189028>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,6 @@ export type useCategoryClickDeleteMutation$variables = {
   input: DeleteCategoryInput;
   connections: ReadonlyArray<string>;
 };
-export type useCategoryClickDeleteMutationVariables = useCategoryClickDeleteMutation$variables;
 export type useCategoryClickDeleteMutation$data = {
   readonly deleteCategory: {
     readonly category: {
@@ -43,9 +42,8 @@ export type useCategoryClickDeleteMutation$data = {
     } | null;
   } | null;
 };
-export type useCategoryClickDeleteMutationResponse = useCategoryClickDeleteMutation$data;
 export type useCategoryClickDeleteMutation = {
-  variables: useCategoryClickDeleteMutationVariables;
+  variables: useCategoryClickDeleteMutation$variables;
   response: useCategoryClickDeleteMutation$data;
 };
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<aa6d4923cb60115b9cfe777ee1b23fd3>>
+ * @generated SignedSource<<4f65e2cb44136a1fc93dda5d49d7af04>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type OrganizationMenuDeleteInviteMutation$variables = {
   input: DeleteInviteInput;
   connections: ReadonlyArray<string>;
 };
-export type OrganizationMenuDeleteInviteMutationVariables = OrganizationMenuDeleteInviteMutation$variables;
 export type OrganizationMenuDeleteInviteMutation$data = {
   readonly deleteInvite: {
     readonly invite: {
@@ -28,9 +27,8 @@ export type OrganizationMenuDeleteInviteMutation$data = {
     } | null;
   } | null;
 };
-export type OrganizationMenuDeleteInviteMutationResponse = OrganizationMenuDeleteInviteMutation$data;
 export type OrganizationMenuDeleteInviteMutation = {
-  variables: OrganizationMenuDeleteInviteMutationVariables;
+  variables: OrganizationMenuDeleteInviteMutation$variables;
   response: OrganizationMenuDeleteInviteMutation$data;
 };
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<432dc8dc08606b6e7d50cd1787761015>>
+ * @generated SignedSource<<fc382863f1ad0715740ac1927991d6d9>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,6 @@ export type SortCategoryInput = {
 export type useSidebarSortMutation$variables = {
   input: SortCategoryInput;
 };
-export type useSidebarSortMutationVariables = useSidebarSortMutation$variables;
 export type useSidebarSortMutation$data = {
   readonly sortCategory: {
     readonly query: {
@@ -52,9 +51,8 @@ export type useSidebarSortMutation$data = {
     } | null;
   } | null;
 };
-export type useSidebarSortMutationResponse = useSidebarSortMutation$data;
 export type useSidebarSortMutation = {
-  variables: useSidebarSortMutationVariables;
+  variables: useSidebarSortMutation$variables;
   response: useSidebarSortMutation$data;
 };
 

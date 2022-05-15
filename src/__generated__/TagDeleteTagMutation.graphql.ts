@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<7e3769a11d1c1977dd992f829424a581>>
+ * @generated SignedSource<<5cae915c83017f5fb4ba63ba014ec297>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -23,7 +23,6 @@ export type TagDeleteTagMutation$variables = {
   tagConnections: ReadonlyArray<string>;
   messageTagConnections: ReadonlyArray<string>;
 };
-export type TagDeleteTagMutationVariables = TagDeleteTagMutation$variables;
 export type TagDeleteTagMutation$data = {
   readonly deleteMessageTag: {
     readonly query: {
@@ -51,9 +50,8 @@ export type TagDeleteTagMutation$data = {
     } | null;
   } | null;
 };
-export type TagDeleteTagMutationResponse = TagDeleteTagMutation$data;
 export type TagDeleteTagMutation = {
-  variables: TagDeleteTagMutationVariables;
+  variables: TagDeleteTagMutation$variables;
   response: TagDeleteTagMutation$data;
 };
 

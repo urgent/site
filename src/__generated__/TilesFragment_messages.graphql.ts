@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<69bd33713ced8cf2deef6172eaa12a95>>
+ * @generated SignedSource<<807b501acfaa81b518b991b508c99d7c>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -42,7 +42,6 @@ export type TilesFragment_messages$data = {
   } | null;
   readonly " $fragmentType": "TilesFragment_messages";
 };
-export type TilesFragment_messages = TilesFragment_messages$data;
 export type TilesFragment_messages$key = {
   readonly " $data"?: TilesFragment_messages$data;
   readonly " $fragmentSpreads": FragmentRefs<"TilesFragment_messages">;

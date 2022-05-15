@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<07b734caf4dea30b917ba0e65c705393>>
+ * @generated SignedSource<<f82e0ef4669966cb6e287fc9231f2bfe>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type UpdateCategoryInput = {
 export type useCategoryClickUpdateMutation$variables = {
   input: UpdateCategoryInput;
 };
-export type useCategoryClickUpdateMutationVariables = useCategoryClickUpdateMutation$variables;
 export type useCategoryClickUpdateMutation$data = {
   readonly updateCategory: {
     readonly category: {
@@ -36,9 +35,8 @@ export type useCategoryClickUpdateMutation$data = {
     } | null;
   } | null;
 };
-export type useCategoryClickUpdateMutationResponse = useCategoryClickUpdateMutation$data;
 export type useCategoryClickUpdateMutation = {
-  variables: useCategoryClickUpdateMutationVariables;
+  variables: useCategoryClickUpdateMutation$variables;
   response: useCategoryClickUpdateMutation$data;
 };
 

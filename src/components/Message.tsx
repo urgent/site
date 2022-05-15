@@ -122,7 +122,7 @@ const tagFragment = graphql`
 `;
 
 const DeleteMessageMutation = graphql`
-  mutation TilesDeleteMessageMutation(
+  mutation MessageDeleteMessageMutation(
     $input: DeleteMessageInput!
     $connections: [ID!]!
   ) {

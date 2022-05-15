@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c6c19b4a5ad6e7e08230d49a6d68570c>>
+ * @generated SignedSource<<f169ebbbba459033ad6efbe5f9846eb7>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type UpdateMessageInput = {
 export type MessageUpdateMessageMutation$variables = {
   input: UpdateMessageInput;
 };
-export type MessageUpdateMessageMutationVariables = MessageUpdateMessageMutation$variables;
 export type MessageUpdateMessageMutation$data = {
   readonly updateMessage: {
     readonly messages: ReadonlyArray<{
@@ -46,9 +45,8 @@ export type MessageUpdateMessageMutation$data = {
     } | null> | null;
   } | null;
 };
-export type MessageUpdateMessageMutationResponse = MessageUpdateMessageMutation$data;
 export type MessageUpdateMessageMutation = {
-  variables: MessageUpdateMessageMutationVariables;
+  variables: MessageUpdateMessageMutation$variables;
   response: MessageUpdateMessageMutation$data;
 };
 

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9aa6629d30f2d14a92fd35e8673a3af0>>
+ * @generated SignedSource<<ca3511f5232383756d50988092cbe648>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type TagInsertTagMutation$variables = {
   input: CreateTagInput;
   connections: ReadonlyArray<string>;
 };
-export type TagInsertTagMutationVariables = TagInsertTagMutation$variables;
 export type TagInsertTagMutation$data = {
   readonly createTag: {
     readonly tag: {
@@ -28,9 +27,8 @@ export type TagInsertTagMutation$data = {
     } | null;
   } | null;
 };
-export type TagInsertTagMutationResponse = TagInsertTagMutation$data;
 export type TagInsertTagMutation = {
-  variables: TagInsertTagMutationVariables;
+  variables: TagInsertTagMutation$variables;
   response: TagInsertTagMutation$data;
 };
 

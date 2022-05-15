@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<d6c615c5e215c70214958e90b57cce35>>
+ * @generated SignedSource<<b6419fe7414dcea5913fa0de77c8f0fa>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -28,7 +28,6 @@ export type SidebarFragment_messages$data = {
   } | null;
   readonly " $fragmentType": "SidebarFragment_messages";
 };
-export type SidebarFragment_messages = SidebarFragment_messages$data;
 export type SidebarFragment_messages$key = {
   readonly " $data"?: SidebarFragment_messages$data;
   readonly " $fragmentSpreads": FragmentRefs<"SidebarFragment_messages">;

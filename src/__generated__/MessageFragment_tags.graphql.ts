@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<524b15bf903940c484a8e206ada5b514>>
+ * @generated SignedSource<<0ea88857d5a0fe647aa812d58f9ebecc>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -25,7 +25,6 @@ export type MessageFragment_tags$data = {
   } | null;
   readonly " $fragmentType": "MessageFragment_tags";
 };
-export type MessageFragment_tags = MessageFragment_tags$data;
 export type MessageFragment_tags$key = {
   readonly " $data"?: MessageFragment_tags$data;
   readonly " $fragmentSpreads": FragmentRefs<"MessageFragment_tags">;

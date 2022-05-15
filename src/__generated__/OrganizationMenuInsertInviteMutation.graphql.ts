@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<215e209fbec440634a571bf6d9364e5c>>
+ * @generated SignedSource<<5af980d4fe5cacbc03b3a6e624d18533>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type OrganizationMenuInsertInviteMutation$variables = {
   input: CreateInviteInput;
   connections: ReadonlyArray<string>;
 };
-export type OrganizationMenuInsertInviteMutationVariables = OrganizationMenuInsertInviteMutation$variables;
 export type OrganizationMenuInsertInviteMutation$data = {
   readonly createInvite: {
     readonly invite: {
@@ -27,9 +26,8 @@ export type OrganizationMenuInsertInviteMutation$data = {
     } | null;
   } | null;
 };
-export type OrganizationMenuInsertInviteMutationResponse = OrganizationMenuInsertInviteMutation$data;
 export type OrganizationMenuInsertInviteMutation = {
-  variables: OrganizationMenuInsertInviteMutationVariables;
+  variables: OrganizationMenuInsertInviteMutation$variables;
   response: OrganizationMenuInsertInviteMutation$data;
 };
 

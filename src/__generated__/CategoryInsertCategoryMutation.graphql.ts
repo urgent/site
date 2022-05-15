@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<c771703329b67b0028aa899791561d4c>>
+ * @generated SignedSource<<184c6acab7e22aaf6f7c1e24fac85325>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -19,7 +19,6 @@ export type CategoryInsertCategoryMutation$variables = {
   input: CreateCategoryInput;
   connections: ReadonlyArray<string>;
 };
-export type CategoryInsertCategoryMutationVariables = CategoryInsertCategoryMutation$variables;
 export type CategoryInsertCategoryMutation$data = {
   readonly createCategory: {
     readonly category: {
@@ -40,9 +39,8 @@ export type CategoryInsertCategoryMutation$data = {
     } | null;
   } | null;
 };
-export type CategoryInsertCategoryMutationResponse = CategoryInsertCategoryMutation$data;
 export type CategoryInsertCategoryMutation = {
-  variables: CategoryInsertCategoryMutationVariables;
+  variables: CategoryInsertCategoryMutation$variables;
   response: CategoryInsertCategoryMutation$data;
 };
 

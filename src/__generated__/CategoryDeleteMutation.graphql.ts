@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9839005aea19ba77fa24e6b63400eabd>>
+ * @generated SignedSource<<58e59a3403957209d7c6c0999c428f48>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -17,7 +17,6 @@ export type CategoryDeleteMutation$variables = {
   input: DeleteCategoryInput;
   connections: ReadonlyArray<string>;
 };
-export type CategoryDeleteMutationVariables = CategoryDeleteMutation$variables;
 export type CategoryDeleteMutation$data = {
   readonly deleteCategory: {
     readonly category: {
@@ -25,9 +24,8 @@ export type CategoryDeleteMutation$data = {
     } | null;
   } | null;
 };
-export type CategoryDeleteMutationResponse = CategoryDeleteMutation$data;
 export type CategoryDeleteMutation = {
-  variables: CategoryDeleteMutationVariables;
+  variables: CategoryDeleteMutation$variables;
   response: CategoryDeleteMutation$data;
 };
 

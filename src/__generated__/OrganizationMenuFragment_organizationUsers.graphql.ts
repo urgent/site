@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8063747c87f76939d043954e981bbe17>>
+ * @generated SignedSource<<df11fca471fc9ac468af643e36454474>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,6 +15,7 @@ export type OrganizationMenuFragment_organizationUsers$data = {
     readonly __id: string;
     readonly edges: ReadonlyArray<{
       readonly node: {
+        readonly rowId: number;
         readonly userId: number;
         readonly organizationId: number;
         readonly userByUserId: {
@@ -32,7 +33,6 @@ export type OrganizationMenuFragment_organizationUsers$data = {
   } | null;
   readonly " $fragmentType": "OrganizationMenuFragment_organizationUsers";
 };
-export type OrganizationMenuFragment_organizationUsers = OrganizationMenuFragment_organizationUsers$data;
 export type OrganizationMenuFragment_organizationUsers$key = {
   readonly " $data"?: OrganizationMenuFragment_organizationUsers$data;
   readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organizationUsers">;
@@ -40,6 +40,13 @@ export type OrganizationMenuFragment_organizationUsers$key = {
 
 const node: ReaderFragment = (function(){
 var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "rowId",
+  "storageKey": null
+},
+v1 = {
   "alias": null,
   "args": null,
   "concreteType": "User",
@@ -105,6 +112,7 @@ return {
               "name": "node",
               "plural": false,
               "selections": [
+                (v0/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -119,7 +127,7 @@ return {
                   "name": "organizationId",
                   "storageKey": null
                 },
-                (v0/*: any*/),
+                (v1/*: any*/),
                 {
                   "alias": null,
                   "args": null,
@@ -128,13 +136,7 @@ return {
                   "name": "organizationByOrganizationId",
                   "plural": false,
                   "selections": [
-                    {
-                      "alias": null,
-                      "args": null,
-                      "kind": "ScalarField",
-                      "name": "rowId",
-                      "storageKey": null
-                    },
+                    (v0/*: any*/),
                     {
                       "alias": null,
                       "args": null,
@@ -142,7 +144,7 @@ return {
                       "name": "slug",
                       "storageKey": null
                     },
-                    (v0/*: any*/)
+                    (v1/*: any*/)
                   ],
                   "storageKey": null
                 }
@@ -173,6 +175,6 @@ return {
 };
 })();
 
-(node as any).hash = "9c88895a4ec06ff460e3ba35247b321b";
+(node as any).hash = "f38281e201aab805d566c5fca104d49b";
 
 export default node;

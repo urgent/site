@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<6f8440c61a507766a964cd0f44f28183>>
+ * @generated SignedSource<<f23c097badb6161261c936c042e76816>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -20,7 +20,6 @@ export type OrganizationMenuFragment_userConfig$data = {
   } | null;
   readonly " $fragmentType": "OrganizationMenuFragment_userConfig";
 };
-export type OrganizationMenuFragment_userConfig = OrganizationMenuFragment_userConfig$data;
 export type OrganizationMenuFragment_userConfig$key = {
   readonly " $data"?: OrganizationMenuFragment_userConfig$data;
   readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_userConfig">;

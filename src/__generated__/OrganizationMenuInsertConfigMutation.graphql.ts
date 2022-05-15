@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<becebdc17ad8b02be48fb3515a5e4e5b>>
+ * @generated SignedSource<<e79076f662fc710007353e20ec62aab2>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,7 +16,6 @@ export type CreateUserConfigInput = {
 export type OrganizationMenuInsertConfigMutation$variables = {
   input: CreateUserConfigInput;
 };
-export type OrganizationMenuInsertConfigMutationVariables = OrganizationMenuInsertConfigMutation$variables;
 export type OrganizationMenuInsertConfigMutation$data = {
   readonly createUserConfig: {
     readonly userConfig: {
@@ -24,9 +23,8 @@ export type OrganizationMenuInsertConfigMutation$data = {
     } | null;
   } | null;
 };
-export type OrganizationMenuInsertConfigMutationResponse = OrganizationMenuInsertConfigMutation$data;
 export type OrganizationMenuInsertConfigMutation = {
-  variables: OrganizationMenuInsertConfigMutationVariables;
+  variables: OrganizationMenuInsertConfigMutation$variables;
   response: OrganizationMenuInsertConfigMutation$data;
 };
 

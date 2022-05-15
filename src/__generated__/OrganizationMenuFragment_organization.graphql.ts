@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4ceb1fd2176d7240da1be94ae4a49cfd>>
+ * @generated SignedSource<<85a79005c6705ca38883c3ccb7666ea6>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,7 +21,6 @@ export type OrganizationMenuFragment_organization$data = {
   } | null;
   readonly " $fragmentType": "OrganizationMenuFragment_organization";
 };
-export type OrganizationMenuFragment_organization = OrganizationMenuFragment_organization$data;
 export type OrganizationMenuFragment_organization$key = {
   readonly " $data"?: OrganizationMenuFragment_organization$data;
   readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization">;

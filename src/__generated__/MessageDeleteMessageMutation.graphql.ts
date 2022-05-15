@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<05cc4bf1c362a169962a4cfee0ad5ba5>>
+ * @generated SignedSource<<026881573af51cce1de71480e2841f88>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,22 +13,20 @@ export type DeleteMessageInput = {
   clientMutationId?: string | null;
   messageId: number;
 };
-export type TilesDeleteMessageMutation$variables = {
+export type MessageDeleteMessageMutation$variables = {
   input: DeleteMessageInput;
   connections: ReadonlyArray<string>;
 };
-export type TilesDeleteMessageMutationVariables = TilesDeleteMessageMutation$variables;
-export type TilesDeleteMessageMutation$data = {
+export type MessageDeleteMessageMutation$data = {
   readonly deleteMessage: {
     readonly message: {
       readonly id: string;
     } | null;
   } | null;
 };
-export type TilesDeleteMessageMutationResponse = TilesDeleteMessageMutation$data;
-export type TilesDeleteMessageMutation = {
-  variables: TilesDeleteMessageMutationVariables;
-  response: TilesDeleteMessageMutation$data;
+export type MessageDeleteMessageMutation = {
+  variables: MessageDeleteMessageMutation$variables;
+  response: MessageDeleteMessageMutation$data;
 };
 
 const node: ConcreteRequest = (function(){
@@ -64,7 +62,7 @@ return {
     ],
     "kind": "Fragment",
     "metadata": null,
-    "name": "TilesDeleteMessageMutation",
+    "name": "MessageDeleteMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -100,7 +98,7 @@ return {
       (v0/*: any*/)
     ],
     "kind": "Operation",
-    "name": "TilesDeleteMessageMutation",
+    "name": "MessageDeleteMessageMutation",
     "selections": [
       {
         "alias": null,
@@ -144,16 +142,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "b7408581553f5c253f60ec6671920e7d",
+    "cacheID": "c32ffefd36cbf087746acbe86c68d25b",
     "id": null,
     "metadata": {},
-    "name": "TilesDeleteMessageMutation",
+    "name": "MessageDeleteMessageMutation",
     "operationKind": "mutation",
-    "text": "mutation TilesDeleteMessageMutation(\n  $input: DeleteMessageInput!\n) {\n  deleteMessage(input: $input) {\n    message {\n      id\n    }\n  }\n}\n"
+    "text": "mutation MessageDeleteMessageMutation(\n  $input: DeleteMessageInput!\n) {\n  deleteMessage(input: $input) {\n    message {\n      id\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "80258f25ab58bd841bcf6df03eda0185";
+(node as any).hash = "f1ca0ce6190e038fa4f4657542e2b43a";
 
 export default node;

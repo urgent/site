@@ -86,6 +86,7 @@ const organizationUsersFragment = graphql`
       __id
       edges {
         node {
+          rowId
           userId
           organizationId
           userByUserId {
@@ -120,11 +121,15 @@ const organizationFragment = graphql`
 const inviteFragment = graphql`
   fragment OrganizationMenuFragment_invite on Query
   @argumentDefinitions(organization: { type: "Int" }) {
-    allInvites(condition: { organizationId: $organization }) {
+    allInvites(
+      condition: { organizationId: $organization }
+      orderBy: PRIMARY_KEY_ASC
+    ) {
       __id
       edges {
         node {
           id
+          rowId
           organizationId
           email
         }
@@ -145,7 +150,7 @@ const userConfigFragment = graphql`
   }
 `;
 
-function sendEmail(email, slug) {
+export function sendEmail(email, slug) {
   return fetch("/api/invite", {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
@@ -277,34 +282,6 @@ export function OrganizationMenu({ query, organization }) {
         Users
       </Heading>
       <Grid templateColumns="repeat(6, 1fr)" gap={6} mb="5">
-        {allInvites?.edges
-          ?.filter((edge) => {
-            const { email } = edge.node;
-            // do not show user's own invite, and show only focused organization
-            return email !== defaultUser?.email;
-          })
-          .map((edge) => {
-            const { email } = edge.node;
-            return (
-              <span key={email}>
-                <Box>{email}</Box>
-                <Button
-                  size="sm"
-                  onClick={() => onRemoveInvite(email)}
-                  style={gridButtonStyle}
-                >
-                  Remove
-                </Button>
-                <Button
-                  size="sm"
-                  onClick={() => sendEmail(email, defaultOrganization.slug)}
-                  style={gridButtonStyle}
-                >
-                  Resend Invite
-                </Button>
-              </span>
-            );
-          })}
         {allOrganizationUsers?.edges
           ?.filter((edge) => {
             // do not show user's own organization entry
@@ -317,7 +294,7 @@ export function OrganizationMenu({ query, organization }) {
             const { email } = userByUserId;
             return (
               <span key={slug}>
-                <Box>{email}</Box>
+                <Box data-cy="user_email">{email}</Box>
                 <Button
                   size="sm"
                   onClick={() => onRemoveUser(userId)}
@@ -335,13 +312,47 @@ export function OrganizationMenu({ query, organization }) {
               </span>
             );
           })}
+        {allInvites?.edges
+          ?.filter((edge) => {
+            const { email } = edge.node;
+            // do not show user's own invite, and show only focused organization
+            return email !== defaultUser?.email;
+          })
+          .map((edge) => {
+            const { email } = edge.node;
+            return (
+              <span key={email}>
+                <Box data-cy="invite_email">{email}</Box>
+                <Button
+                  size="sm"
+                  onClick={() => onRemoveInvite(email)}
+                  style={gridButtonStyle}
+                >
+                  Remove
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => sendEmail(email, defaultOrganization.slug)}
+                  style={gridButtonStyle}
+                >
+                  Resend Invite
+                </Button>
+              </span>
+            );
+          })}
         <Input
           type="email"
           placeholder="Email"
           style={gridInputStyle}
           onChange={(e) => setAddEmail(e.target.value)}
+          data-cy="email"
         />
-        <Button size="sm" style={gridButtonStyle} onClick={onAddUser}>
+        <Button
+          size="sm"
+          style={gridButtonStyle}
+          onClick={onAddUser}
+          data-cy="add"
+        >
           Add
         </Button>
       </Grid>

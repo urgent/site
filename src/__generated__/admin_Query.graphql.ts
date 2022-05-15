@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<a560bdcf9861d75dd1ce314ad6bc47f6>>
+ * @generated SignedSource<<f663bbb6acb0b90f5737deb37fd994e3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -13,15 +13,13 @@ import { FragmentRefs } from "relay-runtime";
 export type admin_Query$variables = {
   organization?: number | null;
 };
-export type admin_QueryVariables = admin_Query$variables;
 export type admin_Query$data = {
   readonly query: {
     readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite" | "NavFragment_organization">;
   };
 };
-export type admin_QueryResponse = admin_Query$data;
 export type admin_Query = {
-  variables: admin_QueryVariables;
+  variables: admin_Query$variables;
   response: admin_Query$data;
 };
 
@@ -68,13 +66,11 @@ v5 = [
     "variableName": "organization"
   }
 ],
-v6 = [
-  {
-    "fields": (v5/*: any*/),
-    "kind": "ObjectValue",
-    "name": "condition"
-  }
-],
+v6 = {
+  "fields": (v5/*: any*/),
+  "kind": "ObjectValue",
+  "name": "condition"
+},
 v7 = {
   "alias": null,
   "args": null,
@@ -213,7 +209,9 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": [
+              (v6/*: any*/)
+            ],
             "concreteType": "OrganizationUsersConnection",
             "kind": "LinkedField",
             "name": "allOrganizationUsers",
@@ -235,6 +233,7 @@ return {
                     "name": "node",
                     "plural": false,
                     "selections": [
+                      (v2/*: any*/),
                       {
                         "alias": null,
                         "args": null,
@@ -313,7 +312,14 @@ return {
           },
           {
             "alias": null,
-            "args": (v6/*: any*/),
+            "args": [
+              (v6/*: any*/),
+              {
+                "kind": "Literal",
+                "name": "orderBy",
+                "value": "PRIMARY_KEY_ASC"
+              }
+            ],
             "concreteType": "InvitesConnection",
             "kind": "LinkedField",
             "name": "allInvites",
@@ -336,6 +342,7 @@ return {
                     "plural": false,
                     "selections": [
                       (v4/*: any*/),
+                      (v2/*: any*/),
                       (v7/*: any*/),
                       (v8/*: any*/)
                     ],
@@ -362,12 +369,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0f410064a7f4be24538d0d8119eb574e",
+    "cacheID": "175303c461e8b9a4d29299686768279a",
     "id": null,
     "metadata": {},
     "name": "admin_Query",
     "operationKind": "query",
-    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        id\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}, orderBy: PRIMARY_KEY_ASC) {\n    edges {\n      node {\n        id\n        rowId\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        rowId\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();

@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<e22dc18900d1547b10ed09fa55081819>>
+ * @generated SignedSource<<7590aa3ba7fb7ca42b010d95d6febd06>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -18,7 +18,6 @@ export type MessageDeleteTagMutation$variables = {
   input: RemoveMessageTagInput;
   connections: ReadonlyArray<string>;
 };
-export type MessageDeleteTagMutationVariables = MessageDeleteTagMutation$variables;
 export type MessageDeleteTagMutation$data = {
   readonly removeMessageTag: {
     readonly query: {
@@ -41,9 +40,8 @@ export type MessageDeleteTagMutation$data = {
     } | null;
   } | null;
 };
-export type MessageDeleteTagMutationResponse = MessageDeleteTagMutation$data;
 export type MessageDeleteTagMutation = {
-  variables: MessageDeleteTagMutationVariables;
+  variables: MessageDeleteTagMutation$variables;
   response: MessageDeleteTagMutation$data;
 };
 

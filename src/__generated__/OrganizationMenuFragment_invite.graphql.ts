@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<ea8c6ec7c0101e44002b1c1c396bc78f>>
+ * @generated SignedSource<<047feade5345f5aad8ddd51db7862f64>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -16,6 +16,7 @@ export type OrganizationMenuFragment_invite$data = {
     readonly edges: ReadonlyArray<{
       readonly node: {
         readonly id: string;
+        readonly rowId: number;
         readonly organizationId: number;
         readonly email: string | null;
       } | null;
@@ -23,7 +24,6 @@ export type OrganizationMenuFragment_invite$data = {
   } | null;
   readonly " $fragmentType": "OrganizationMenuFragment_invite";
 };
-export type OrganizationMenuFragment_invite = OrganizationMenuFragment_invite$data;
 export type OrganizationMenuFragment_invite$key = {
   readonly " $data"?: OrganizationMenuFragment_invite$data;
   readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_invite">;
@@ -54,6 +54,11 @@ const node: ReaderFragment = {
           ],
           "kind": "ObjectValue",
           "name": "condition"
+        },
+        {
+          "kind": "Literal",
+          "name": "orderBy",
+          "value": "PRIMARY_KEY_ASC"
         }
       ],
       "concreteType": "InvitesConnection",
@@ -82,6 +87,13 @@ const node: ReaderFragment = {
                   "args": null,
                   "kind": "ScalarField",
                   "name": "id",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "rowId",
                   "storageKey": null
                 },
                 {
@@ -124,6 +136,6 @@ const node: ReaderFragment = {
   "abstractKey": null
 };
 
-(node as any).hash = "ef32f32d2a5d82ee31fefb2ac8ea3300";
+(node as any).hash = "5840598edefa233da83e3f48d8636411";
 
 export default node;

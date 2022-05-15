@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<5acfba56b4b3f804d303c8311a3b34ef>>
+ * @generated SignedSource<<8e263b25a5f501b676208f2364ce0ada>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,15 +14,13 @@ export type edit_EditQuery$variables = {
   organization?: number | null;
   tag?: ReadonlyArray<number | null> | null;
 };
-export type edit_EditQueryVariables = edit_EditQuery$variables;
 export type edit_EditQuery$data = {
   readonly query: {
     readonly " $fragmentSpreads": FragmentRefs<"TilesFragment_messages" | "SidebarFragment_messages" | "SidebarFragment_categories" | "NavFragment_organization">;
   };
 };
-export type edit_EditQueryResponse = edit_EditQuery$data;
 export type edit_EditQuery = {
-  variables: edit_EditQueryVariables;
+  variables: edit_EditQuery$variables;
   response: edit_EditQuery$data;
 };
 

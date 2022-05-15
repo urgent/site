@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f0d2f10d4b97b4bb91022f03afe3e228>>
+ * @generated SignedSource<<6ea11af621c9e1bacadcfe7e1dbfa09f>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -14,7 +14,6 @@ export type NavFragment_organization$data = {
   readonly organizationDefault: number | null;
   readonly " $fragmentType": "NavFragment_organization";
 };
-export type NavFragment_organization = NavFragment_organization$data;
 export type NavFragment_organization$key = {
   readonly " $data"?: NavFragment_organization$data;
   readonly " $fragmentSpreads": FragmentRefs<"NavFragment_organization">;
