@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { parse } from "../utils/route";
 import Mobile from "../components/Mobile";
 import { useMediaQuery } from "react-responsive";
+import { useSession, getSession } from "next-auth/react";
 
 const HomeQuery = graphql`
   query pages_HomeQuery($organization: Int, $tag: [Int]) {
@@ -122,3 +123,12 @@ export default withRelay(Home, HomeQuery, {
     };
   },
 });
+
+// makes next-auth session load faster
+export async function getInitialProps(context) {
+  return {
+    props: {
+      session: await getSession(context),
+    },
+  };
+}
