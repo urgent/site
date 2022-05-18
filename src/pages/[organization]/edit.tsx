@@ -23,7 +23,8 @@ const EditQuery = graphql`
   }
 `;
 
-function Edit({ preloadedQuery }) {
+function Edit(props) {
+  const { preloadedQuery, session } = props;
   const { query } = usePreloadedQuery(EditQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tags } = router.query;
@@ -39,7 +40,7 @@ function Edit({ preloadedQuery }) {
       minHeight="100vh"
       d={["none", "none", "none", "grid", "grid"]}
     >
-      <Nav {...{ query, organization, path }} />
+      <Nav {...{ query, organization, path, session }} />
       <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
         <Sidebar tags={parsedTags} path="" {...{ query }} edit={true} />
       </Box>
@@ -78,9 +79,11 @@ export default withRelay(Edit, EditQuery, {
     // This is an example of getting an auth token from the request context.
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
-
+    const { getSession } = await import("next-auth/react");
+    const session = await getSession(ctx);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
+      session,
     };
   },
   // Server-side props can be accessed as the second argument

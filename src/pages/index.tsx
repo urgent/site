@@ -10,7 +10,6 @@ import { useRouter } from "next/router";
 import { parse } from "../utils/route";
 import Mobile from "../components/Mobile";
 import { useMediaQuery } from "react-responsive";
-import { useSession, getSession } from "next-auth/react";
 
 const HomeQuery = graphql`
   query pages_HomeQuery($organization: Int, $tag: [Int]) {
@@ -27,7 +26,8 @@ const HomeQuery = graphql`
   }
 `;
 
-function Home({ preloadedQuery }) {
+function Home(props) {
+  const { preloadedQuery, session } = props;
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tags, edit, editMessage } = router.query;
@@ -40,7 +40,7 @@ function Home({ preloadedQuery }) {
 
   return (
     <>
-      {isTabletOrMobile && <Mobile tags={parsedTags} {...{ query }} />}
+      {isTabletOrMobile && <Mobile tags={parsedTags} {...{ query, session }} />}
       {!isTabletOrMobile && (
         <Grid
           data-cy="grid"
@@ -49,7 +49,7 @@ function Home({ preloadedQuery }) {
           color={"text.600"}
           minHeight="100vh"
         >
-          <Nav {...{ query, organization, path }} />
+          <Nav {...{ query, organization, path, session }} />
           <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
             <Sidebar
               tags={parsedTags}
@@ -87,6 +87,7 @@ export default withRelay(Home, HomeQuery, {
   // Fallback to render while the page is loading.
   // This property is optional.
   fallback: <Loading />,
+
   // Create a Relay environment on the client-side.
   // Note: This function must always return the same value.
   createClientEnvironment: () => getClientEnvironment(),
@@ -95,9 +96,11 @@ export default withRelay(Home, HomeQuery, {
     // This is an example of getting an auth token from the request context.
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
-
+    const { getSession } = await import("next-auth/react");
+    const session = await getSession(ctx);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
+      session,
     };
   },
   // Server-side props can be accessed as the second argument
@@ -123,12 +126,3 @@ export default withRelay(Home, HomeQuery, {
     };
   },
 });
-
-// makes next-auth session load faster
-export async function getInitialProps(context) {
-  return {
-    props: {
-      session: await getSession(context),
-    },
-  };
-}

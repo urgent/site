@@ -7,7 +7,7 @@ import {
   HiChartBar,
 } from "react-icons/hi";
 import { FiGitMerge, FiLogIn, FiLogOut, FiEdit } from "react-icons/fi";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
 import { graphql, useFragment } from "react-relay";
 import { useRouter } from "next/router";
 
@@ -26,9 +26,18 @@ function link({ organization, organizationDefault }) {
   }
 }
 
-export default function Nav({ query, organization, path }) {
+export default function Nav({
+  query,
+  organization,
+  path,
+  session,
+}: {
+  query: any;
+  organization: any;
+  path: any;
+  session?: any;
+}) {
   const btnRef = React.useRef();
-  const { data: session } = useSession();
   const { organizationDefault } = useFragment(navFragment, query);
   const router = useRouter();
 

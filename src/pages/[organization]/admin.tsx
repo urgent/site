@@ -20,7 +20,8 @@ const OrganizationQuery = graphql`
   }
 `;
 
-function Organization({ preloadedQuery }) {
+function Organization(props) {
+  const { preloadedQuery, session } = props;
   const { query } = usePreloadedQuery(OrganizationQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tag } = router.query;
@@ -36,7 +37,7 @@ function Organization({ preloadedQuery }) {
         minHeight="100vh"
         d={["none", "none", "none", "grid", "grid"]}
       >
-        <Nav {...{ query, organization, path }} />
+        <Nav {...{ query, organization, path, session }} />
         <Box
           as="main"
           gridColumn="content"
@@ -73,9 +74,11 @@ export default withRelay(Organization, OrganizationQuery, {
     // This is an example of getting an auth token from the request context.
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
-
+    const { getSession } = await import("next-auth/react");
+    const session = await getSession(ctx);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
+      session,
     };
   },
   // Server-side props can be accessed as the second argument

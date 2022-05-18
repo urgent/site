@@ -26,7 +26,8 @@ const HomeQuery = graphql`
   }
 `;
 
-function Home({ preloadedQuery }) {
+function Home(props) {
+  const { preloadedQuery, session } = props;
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tags } = router.query;
@@ -36,7 +37,7 @@ function Home({ preloadedQuery }) {
 
   return (
     <>
-      {isTabletOrMobile && <Mobile tags={parsedTags} {...{ query }} />}
+      {isTabletOrMobile && <Mobile tags={parsedTags} {...{ query, session }} />}
       {!isTabletOrMobile && (
         <Grid
           data-cy="grid"
@@ -45,7 +46,7 @@ function Home({ preloadedQuery }) {
           color={"text.600"}
           minHeight="100vh"
         >
-          <Nav {...{ query, organization, path }} />
+          <Nav {...{ query, organization, path, session }} />
           <Box gridColumn="sidebar" maxHeight="99vh" overflowY="scroll">
             <Sidebar path="" tags={parsedTags} {...{ query }} />
           </Box>
@@ -86,9 +87,11 @@ export default withRelay(Home, HomeQuery, {
     // This is an example of getting an auth token from the request context.
     // If you don't need to authenticate users this can be removed and return an
     // empty object instead.
-
+    const { getSession } = await import("next-auth/react");
+    const session = await getSession(ctx);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
+      session,
     };
   },
   // Server-side props can be accessed as the second argument
