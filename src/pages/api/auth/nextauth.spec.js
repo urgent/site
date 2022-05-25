@@ -38,7 +38,7 @@ describe('webhook', () => {
         await pay(decoded);
         const afterPayRes = await admin.query("SELECT * FROM stripe WHERE user_id IS NULL");
         expect(afterPayRes.rows.length).toBe(1);
-        await signIn({ user: { id: 9, email: 'teststripe@test.com' } });
+        await signIn({ user: { id: 9 }, account: { providerAccountId: 'teststripe@test.com' } });
         const signInRes = await admin.query("SELECT * FROM stripe WHERE user_id IS NULL");
         expect(signInRes.rows.length).toBe(0);
         done();

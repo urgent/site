@@ -146,7 +146,11 @@ export default function Nav({
           bg="none"
           color="white"
           _hover={{ bg: "secondary.400" }}
-          onClick={(e) => signOut()}
+          onClick={(e) =>
+            signOut({
+              callbackUrl: `/`,
+            })
+          }
           data-cy="signout"
         >
           <Icon as={FiLogOut} w={6} h={6} />
