@@ -6,6 +6,7 @@ import { graphql, usePreloadedQuery } from "react-relay/hooks";
 import { Grid, Box } from "@chakra-ui/react";
 import { getClientEnvironment } from "../../lib/client_environment";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 const OrganizationQuery = graphql`
   query admin_Query($organization: Int) {
@@ -21,7 +22,14 @@ const OrganizationQuery = graphql`
 `;
 
 function Organization(props) {
-  const { preloadedQuery, session } = props;
+  const { preloadedQuery, CSN } = props;
+  let session;
+  if (CSN) {
+    const { data, status } = useSession();
+    session = data;
+  } else {
+    session = props.session;
+  }
   const { query } = usePreloadedQuery(OrganizationQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tag } = router.query;
@@ -76,6 +84,7 @@ export default withRelay(Organization, OrganizationQuery, {
     // empty object instead.
     const { getSession } = await import("next-auth/react");
     const session = await getSession(ctx);
+    console.log(session);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
       session,

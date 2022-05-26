@@ -10,6 +10,7 @@ import { getClientEnvironment } from "../../lib/client_environment";
 import { useRouter } from "next/router";
 import { parse } from "../../utils/route";
 import { useMediaQuery } from "react-responsive";
+import { useSession } from "next-auth/react";
 
 const HomeQuery = graphql`
   query Organization_HomeQuery($organization: Int, $tag: [Int]) {
@@ -27,7 +28,14 @@ const HomeQuery = graphql`
 `;
 
 function Home(props) {
-  const { preloadedQuery, session } = props;
+  const { preloadedQuery, CSN } = props;
+  let session;
+  if (CSN) {
+    const { data, status } = useSession();
+    session = data;
+  } else {
+    session = props.session;
+  }
   const { query } = usePreloadedQuery(HomeQuery, preloadedQuery) as any;
   const router = useRouter();
   const { organization, tags } = router.query;
@@ -89,6 +97,7 @@ export default withRelay(Home, HomeQuery, {
     // empty object instead.
     const { getSession } = await import("next-auth/react");
     const session = await getSession(ctx);
+    console.log(session);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
       session,

@@ -160,13 +160,17 @@ export default function Nav({
   } else {
     return (
       <VStack spacing={2} as="nav" gridColumn={"nav"} bg={"primary.400"}>
-        <Image
+        <Button
+          bg="none"
           gridColumn="logo"
           mt={2}
-          width={8}
-          src="/images/align_white.png"
-          alt="smooms.io"
-        />
+          _hover={{ bg: "secondary.400" }}
+          onClick={(e) => {
+            router.push(`/`, "/", { shallow: true });
+          }}
+        >
+          <Image width={8} src="/images/align_white.png" alt="smooms.io" />
+        </Button>
         <Button
           onClick={() => signIn()}
           data-cy="signin"
