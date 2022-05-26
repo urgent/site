@@ -2,13 +2,9 @@ import { Pool } from 'pg';
 import crypto from "crypto";
 
 export async function createUser(message) {
-
     const pool = new Pool()
     // stripe only credentials
     await pool.query(`SELECT set_config('user.id', 'webhook', false)`);
-    // add a balance for stripe rls
-    // add two in case of invite, one for invite, one for user's org
-    await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW() + INTERVAL '1 year', 2, 2, $1, $2` , [message.user.id, message.account.providerAccountId])
     // non-stripe credentials
     await pool.query(`SELECT set_config('user.id', 'server', false)`);
     // create organization for user
@@ -19,6 +15,9 @@ export async function createUser(message) {
     if (message.account.providerAccountId) {
         // look up invite by email to get organization id
         const organizationRes = await pool.query(`SELECT organization_id FROM invite WHERE email=$1`, [message.account.providerAccountId]);
+        // add a balance for stripe rls
+        // add two in case of invite, one for invite, one for user's org
+        await pool.query(`INSERT INTO stripe(stripe_transaction_date, amount, quantity, user_id, email) SELECT NOW() + INTERVAL '1 year', 2, 2, $1, $2` , [message.user.id, message.account.providerAccountId])
         // has invite?
         if (organizationRes.rows.length > 0) {
             // User has invite from invite signup page. Add user to invite organization
