@@ -97,7 +97,6 @@ export default withRelay(Home, HomeQuery, {
     // empty object instead.
     const { getSession } = await import("next-auth/react");
     const session = await getSession(ctx);
-    console.log(session);
     return {
       token: (ctx.req as unknown as NextCtx).cookies[process.env.COOKIE_NAME],
       session,
