@@ -17,6 +17,8 @@ const OrganizationQuery = graphql`
       ...OrganizationMenuFragment_userConfig
       ...OrganizationMenuFragment_invite @arguments(organization: $organization)
       ...NavFragment_organization @arguments(organization: $organization)
+      ...MessageFragment_organization @arguments(organization: $organization)
+      ...CategoryFragment_organization @arguments(organization: $organization)
     }
   }
 `;

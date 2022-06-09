@@ -122,15 +122,15 @@ export function Sidebar({
       {edit && (
         <EditSidebar
           connections={[sidebarCategories.__id]}
-          organization={categories[0]?.node.organizationId}
           title="Category Color"
+          query={query}
         />
       )}
     </Grid>
   );
 }
 
-export function EditSidebar({ title, connections, organization }) {
+export function EditSidebar({ title, connections, query }) {
   const [color, setColor] = useState({ hex: "#000000" });
 
   return (
@@ -143,7 +143,7 @@ export function EditSidebar({ title, connections, organization }) {
 
       <SketchPicker color={color} hange={setColor} />
       <Box mt={4}>
-        <AddCategory {...{ connections, organization }} color={color.hex} />
+        <AddCategory {...{ connections, query }} color={color.hex} />
       </Box>
     </Box>
   );

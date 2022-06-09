@@ -19,6 +19,8 @@ const EditQuery = graphql`
       ...SidebarFragment_categories
         @arguments(organization: $organization, tag: $tag)
       ...NavFragment_organization @arguments(organization: $organization)
+      ...MessageFragment_organization @arguments(organization: $organization)
+      ...CategoryFragment_organization @arguments(organization: $organization)
     }
   }
 `;

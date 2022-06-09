@@ -30,19 +30,19 @@ describe('Tag', () => {
         cy.wait(1000)
         cy.get('[data-cy=tag]').eq(1).click()
         cy.wait(1000)
-        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('have.text', 'CIO')
+        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('have.text', 'Highspot')
     })
     it('delete tag to message', () => {
         cy.setCookie(Cypress.env('COOKIE_NAME'), Cypress.env('SESSION_TOKEN'));
         cy.visit('/')
         cy.get('[data-cy=tag]').first().click()
         cy.wait(2000)
-        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('have.text', 'CIO')
+        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('have.text', 'Highspot')
         cy.get('[data-cy=message]').last().dblclick()
         cy.wait(2000)
         cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().find('[data-cy=remove_tag_from_message]').click()
         cy.wait(1000)
-        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('not.have.text', 'CIO')
+        cy.get('[data-cy=message]').last().find('[data-cy=tags] [data-cy=message_tag]').last().should('not.have.text', 'Highspot')
 
     })
 })

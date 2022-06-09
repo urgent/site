@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<f663bbb6acb0b90f5737deb37fd994e3>>
+ * @generated SignedSource<<5563d9ad4b62c5545bb74adbe9d446d1>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -15,7 +15,7 @@ export type admin_Query$variables = {
 };
 export type admin_Query$data = {
   readonly query: {
-    readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite" | "NavFragment_organization">;
+    readonly " $fragmentSpreads": FragmentRefs<"OrganizationMenuFragment_organization" | "OrganizationMenuFragment_organizationUsers" | "OrganizationMenuFragment_userConfig" | "OrganizationMenuFragment_invite" | "NavFragment_organization" | "MessageFragment_organization" | "CategoryFragment_organization">;
   };
 };
 export type admin_Query = {
@@ -149,6 +149,16 @@ return {
             "args": (v1/*: any*/),
             "kind": "FragmentSpread",
             "name": "NavFragment_organization"
+          },
+          {
+            "args": (v1/*: any*/),
+            "kind": "FragmentSpread",
+            "name": "MessageFragment_organization"
+          },
+          {
+            "args": (v1/*: any*/),
+            "kind": "FragmentSpread",
+            "name": "CategoryFragment_organization"
           }
         ],
         "storageKey": null
@@ -369,16 +379,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "175303c461e8b9a4d29299686768279a",
+    "cacheID": "e0321be6dfdfd0ff4a176df0e8f1f24b",
     "id": null,
     "metadata": {},
     "name": "admin_Query",
     "operationKind": "query",
-    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    ...NavFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}, orderBy: PRIMARY_KEY_ASC) {\n    edges {\n      node {\n        id\n        rowId\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        rowId\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query admin_Query(\n  $organization: Int\n) {\n  query {\n    ...OrganizationMenuFragment_organization\n    ...OrganizationMenuFragment_organizationUsers_1rgJoH\n    ...OrganizationMenuFragment_userConfig\n    ...OrganizationMenuFragment_invite_1rgJoH\n    ...NavFragment_organization_1rgJoH\n    ...MessageFragment_organization_1rgJoH\n    ...CategoryFragment_organization_1rgJoH\n    id\n  }\n}\n\nfragment CategoryFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment MessageFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment NavFragment_organization_1rgJoH on Query {\n  organizationDefault(organizationId: $organization)\n}\n\nfragment OrganizationMenuFragment_invite_1rgJoH on Query {\n  allInvites(condition: {organizationId: $organization}, orderBy: PRIMARY_KEY_ASC) {\n    edges {\n      node {\n        id\n        rowId\n        organizationId\n        email\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organization on Query {\n  allOrganizations {\n    edges {\n      node {\n        rowId\n        slug\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_organizationUsers_1rgJoH on Query {\n  allOrganizationUsers(condition: {organizationId: $organization}) {\n    edges {\n      node {\n        rowId\n        userId\n        organizationId\n        userByUserId {\n          email\n          id\n        }\n        organizationByOrganizationId {\n          rowId\n          slug\n          userByUserId {\n            email\n            id\n          }\n          id\n        }\n        id\n      }\n    }\n  }\n}\n\nfragment OrganizationMenuFragment_userConfig on Query {\n  allUserConfigs {\n    edges {\n      node {\n        defaultOrganization\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "e57332eee8212036305c9ba064e6c8af";
+(node as any).hash = "1940d21a1356f75a0e26bd806387a95d";
 
 export default node;

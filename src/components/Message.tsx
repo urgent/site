@@ -134,6 +134,13 @@ const DeleteMessageMutation = graphql`
   }
 `;
 
+const MessageFragment = graphql`
+  fragment MessageFragment_organization on Query
+  @argumentDefinitions(organization: { type: "Int" }) {
+    organizationDefault(organizationId: $organization)
+  }
+`;
+
 const LoomEmbed = dynamic(() => import("./LoomEmbed"), {
   ssr: false,
 });
@@ -153,6 +160,7 @@ function colorize({ active, color }) {
 
 export function CreateMessage({ query, connections }) {
   const tags = useFragment(tagFragment, query);
+  const { organizationDefault } = useFragment(MessageFragment, query);
   const editor = useEditor({
     editable: true,
     extensions: [
@@ -171,8 +179,7 @@ export function CreateMessage({ query, connections }) {
     insertMessage({
       variables: {
         input: {
-          organizationId:
-            tags.routerTags.edges[0].node.categoryByCategoryId.organizationId,
+          organizationId: organizationDefault,
           content,
           loomSharedUrl: "",
           tags: tags.routerTags.edges.map(({ node }) => node.rowId),

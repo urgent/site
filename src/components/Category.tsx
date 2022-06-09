@@ -22,7 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { useCategoryDrag } from "./useCategoryDrag";
 import useMutation from "./useMutation";
-import { graphql } from "react-relay";
+import { graphql, useFragment } from "react-relay";
 import { catchJSON } from "../utils/editor";
 import { AddTag, EditTag } from "../components/Tag";
 import { SketchPicker } from "react-color";
@@ -83,8 +83,16 @@ const InsertCategoryMutation = graphql`
   }
 `;
 
-export function AddCategory({ connections, organization, color }) {
+const categoryFragment = graphql`
+  fragment CategoryFragment_organization on Query
+  @argumentDefinitions(organization: { type: "Int" }) {
+    organizationDefault(organizationId: $organization)
+  }
+`;
+
+export function AddCategory({ connections, color, query }) {
   const [name, setName] = useState("");
+  const { organizationDefault } = useFragment(categoryFragment, query);
   const [isCategoryPending, insertCategory] = useMutation(
     InsertCategoryMutation
   ) as [boolean, (config?: any) => void];
@@ -95,7 +103,7 @@ export function AddCategory({ connections, organization, color }) {
     insertCategory({
       variables: {
         input: {
-          organizationId: organization,
+          organizationId: organizationDefault,
           name,
           color,
         },
